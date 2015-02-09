@@ -47,6 +47,7 @@ import org.semanticwb.model.SWBComparator;
 import org.semanticwb.model.Sortable;
 import org.semanticwb.model.User;
 import org.semanticwb.model.VersionInfo;
+import org.semanticwb.model.WebPage;
 import org.semanticwb.model.WebSite;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
@@ -962,5 +963,23 @@ public class SWPDocumentationResource extends GenericAdmResource {
             ex.printStackTrace();
         }
     }
+    static List<RepositoryDirectory> list = new ArrayList<RepositoryDirectory>();
 
+    public static List<RepositoryDirectory> listRepositoryDerectoryByParent(WebPage webpage, boolean clear) {
+        if (clear) {
+            list.clear();
+        }
+        Iterator<RepositoryDirectory> it = SWBComparator.sortByCreated(RepositoryDirectory.ClassMgr.listRepositoryDirectoryByParent(webpage), true);
+        while (it.hasNext()) {
+            RepositoryDirectory rep = it.next();
+            Iterator<RepositoryDirectory> itRep = SWBComparator.sortByCreated(RepositoryDirectory.ClassMgr.listRepositoryDirectoryByParent(rep), true);
+            while (itRep.hasNext()) {
+                RepositoryDirectory repDir = itRep.next();
+                list.add(repDir);
+                listRepositoryDerectoryByParent(repDir, false);
+            }
+            list.add(rep);
+        }
+        return list;
+    }
 }
