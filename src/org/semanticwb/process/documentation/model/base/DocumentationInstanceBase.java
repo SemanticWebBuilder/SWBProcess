@@ -3,12 +3,12 @@ package org.semanticwb.process.documentation.model.base;
 
 public abstract class DocumentationInstanceBase extends org.semanticwb.model.SWBClass implements org.semanticwb.model.Traceable
 {
-    public static final org.semanticwb.platform.SemanticClass swpdoc_DocumentTemplate=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate");
-    public static final org.semanticwb.platform.SemanticProperty swpdoc_docTypeDefinition=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#docTypeDefinition");
     public static final org.semanticwb.platform.SemanticClass swpdoc_DocumentSectionInstance=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#DocumentSectionInstance");
-    public static final org.semanticwb.platform.SemanticProperty swpdoc_hasDocumnetSectionInstance=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#hasDocumnetSectionInstance");
+    public static final org.semanticwb.platform.SemanticProperty swpdoc_hasDocumentSectionInstance=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#hasDocumentSectionInstance");
     public static final org.semanticwb.platform.SemanticClass swp_Process=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/process#Process");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_processRef=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#processRef");
+    public static final org.semanticwb.platform.SemanticClass swpdoc_DocumentTemplate=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate");
+    public static final org.semanticwb.platform.SemanticProperty swpdoc_docTypeDefinition=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#docTypeDefinition");
     public static final org.semanticwb.platform.SemanticClass swpdoc_DocumentationInstance=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#DocumentationInstance");
    /**
    * The semantic class that represents the currentObject
@@ -85,6 +85,52 @@ public abstract class DocumentationInstanceBase extends org.semanticwb.model.SWB
             return (getDocumentationInstance(id, model)!=null);
         }
        /**
+       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined DocumentSectionInstance
+       * @param value DocumentSectionInstance of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @param model Model of the org.semanticwb.process.documentation.model.DocumentationInstance
+       * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByDocumentSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasDocumentSectionInstance, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined DocumentSectionInstance
+       * @param value DocumentSectionInstance of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByDocumentSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasDocumentSectionInstance,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined ProcessRef
+       * @param value ProcessRef of the type org.semanticwb.process.model.Process
+       * @param model Model of the org.semanticwb.process.documentation.model.DocumentationInstance
+       * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByProcessRef(org.semanticwb.process.model.Process value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_processRef, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined ProcessRef
+       * @param value ProcessRef of the type org.semanticwb.process.model.Process
+       * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByProcessRef(org.semanticwb.process.model.Process value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_processRef,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
        * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined ModifiedBy
        * @param value ModifiedBy of the type org.semanticwb.model.User
        * @param model Model of the org.semanticwb.process.documentation.model.DocumentationInstance
@@ -105,52 +151,6 @@ public abstract class DocumentationInstanceBase extends org.semanticwb.model.SWB
         public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByModifiedBy(org.semanticwb.model.User value)
         {
             org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined DocTypeDefinition
-       * @param value DocTypeDefinition of the type org.semanticwb.process.documentation.model.DocumentTemplate
-       * @param model Model of the org.semanticwb.process.documentation.model.DocumentationInstance
-       * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByDocTypeDefinition(org.semanticwb.process.documentation.model.DocumentTemplate value,org.semanticwb.model.SWBModel model)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_docTypeDefinition, value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined DocTypeDefinition
-       * @param value DocTypeDefinition of the type org.semanticwb.process.documentation.model.DocumentTemplate
-       * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByDocTypeDefinition(org.semanticwb.process.documentation.model.DocumentTemplate value)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_docTypeDefinition,value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined DocumnetSectionInstance
-       * @param value DocumnetSectionInstance of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
-       * @param model Model of the org.semanticwb.process.documentation.model.DocumentationInstance
-       * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByDocumnetSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value,org.semanticwb.model.SWBModel model)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasDocumnetSectionInstance, value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined DocumnetSectionInstance
-       * @param value DocumnetSectionInstance of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
-       * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByDocumnetSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasDocumnetSectionInstance,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -177,26 +177,26 @@ public abstract class DocumentationInstanceBase extends org.semanticwb.model.SWB
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined ProcessRef
-       * @param value ProcessRef of the type org.semanticwb.process.model.Process
+       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined DocTypeDefinition
+       * @param value DocTypeDefinition of the type org.semanticwb.process.documentation.model.DocumentTemplate
        * @param model Model of the org.semanticwb.process.documentation.model.DocumentationInstance
        * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByProcessRef(org.semanticwb.process.model.Process value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByDocTypeDefinition(org.semanticwb.process.documentation.model.DocumentTemplate value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_processRef, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_docTypeDefinition, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined ProcessRef
-       * @param value ProcessRef of the type org.semanticwb.process.model.Process
+       * Gets all org.semanticwb.process.documentation.model.DocumentationInstance with a determined DocTypeDefinition
+       * @param value DocTypeDefinition of the type org.semanticwb.process.documentation.model.DocumentTemplate
        * @return Iterator with all the org.semanticwb.process.documentation.model.DocumentationInstance
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByProcessRef(org.semanticwb.process.model.Process value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.DocumentationInstance> listDocumentationInstanceByDocTypeDefinition(org.semanticwb.process.documentation.model.DocumentTemplate value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_processRef,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentationInstance> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_docTypeDefinition,value.getSemanticObject(),sclass));
             return it;
         }
     }
@@ -213,6 +213,145 @@ public abstract class DocumentationInstanceBase extends org.semanticwb.model.SWB
     public DocumentationInstanceBase(org.semanticwb.platform.SemanticObject base)
     {
         super(base);
+    }
+   /**
+   * Gets all the org.semanticwb.process.documentation.model.DocumentSectionInstance
+   * @return A GenericIterator with all the org.semanticwb.process.documentation.model.DocumentSectionInstance
+   */
+
+    public org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentSectionInstance> listDocumentSectionInstances()
+    {
+        return new org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentSectionInstance>(getSemanticObject().listObjectProperties(swpdoc_hasDocumentSectionInstance));
+    }
+
+   /**
+   * Gets true if has a DocumentSectionInstance
+   * @param value org.semanticwb.process.documentation.model.DocumentSectionInstance to verify
+   * @return true if the org.semanticwb.process.documentation.model.DocumentSectionInstance exists, false otherwise
+   */
+    public boolean hasDocumentSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
+    {
+        boolean ret=false;
+        if(value!=null)
+        {
+           ret=getSemanticObject().hasObjectProperty(swpdoc_hasDocumentSectionInstance,value.getSemanticObject());
+        }
+        return ret;
+    }
+   /**
+   * Adds a DocumentSectionInstance
+   * @param value org.semanticwb.process.documentation.model.DocumentSectionInstance to add
+   */
+
+    public void addDocumentSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
+    {
+        getSemanticObject().addObjectProperty(swpdoc_hasDocumentSectionInstance, value.getSemanticObject());
+    }
+   /**
+   * Removes all the DocumentSectionInstance
+   */
+
+    public void removeAllDocumentSectionInstance()
+    {
+        getSemanticObject().removeProperty(swpdoc_hasDocumentSectionInstance);
+    }
+   /**
+   * Removes a DocumentSectionInstance
+   * @param value org.semanticwb.process.documentation.model.DocumentSectionInstance to remove
+   */
+
+    public void removeDocumentSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
+    {
+        getSemanticObject().removeObjectProperty(swpdoc_hasDocumentSectionInstance,value.getSemanticObject());
+    }
+
+   /**
+   * Gets the DocumentSectionInstance
+   * @return a org.semanticwb.process.documentation.model.DocumentSectionInstance
+   */
+    public org.semanticwb.process.documentation.model.DocumentSectionInstance getDocumentSectionInstance()
+    {
+         org.semanticwb.process.documentation.model.DocumentSectionInstance ret=null;
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpdoc_hasDocumentSectionInstance);
+         if(obj!=null)
+         {
+             ret=(org.semanticwb.process.documentation.model.DocumentSectionInstance)obj.createGenericInstance();
+         }
+         return ret;
+    }
+   /**
+   * Sets the value for the property ProcessRef
+   * @param value ProcessRef to set
+   */
+
+    public void setProcessRef(org.semanticwb.process.model.Process value)
+    {
+        if(value!=null)
+        {
+            getSemanticObject().setObjectProperty(swpdoc_processRef, value.getSemanticObject());
+        }else
+        {
+            removeProcessRef();
+        }
+    }
+   /**
+   * Remove the value for ProcessRef property
+   */
+
+    public void removeProcessRef()
+    {
+        getSemanticObject().removeProperty(swpdoc_processRef);
+    }
+
+   /**
+   * Gets the ProcessRef
+   * @return a org.semanticwb.process.model.Process
+   */
+    public org.semanticwb.process.model.Process getProcessRef()
+    {
+         org.semanticwb.process.model.Process ret=null;
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpdoc_processRef);
+         if(obj!=null)
+         {
+             ret=(org.semanticwb.process.model.Process)obj.createGenericInstance();
+         }
+         return ret;
+    }
+
+/**
+* Gets the Created property
+* @return java.util.Date with the Created
+*/
+    public java.util.Date getCreated()
+    {
+        return getSemanticObject().getDateProperty(swb_created);
+    }
+
+/**
+* Sets the Created property
+* @param value long with the Created
+*/
+    public void setCreated(java.util.Date value)
+    {
+        getSemanticObject().setDateProperty(swb_created, value);
+    }
+
+/**
+* Gets the Updated property
+* @return java.util.Date with the Updated
+*/
+    public java.util.Date getUpdated()
+    {
+        return getSemanticObject().getDateProperty(swb_updated);
+    }
+
+/**
+* Sets the Updated property
+* @param value long with the Updated
+*/
+    public void setUpdated(java.util.Date value)
+    {
+        getSemanticObject().setDateProperty(swb_updated, value);
     }
    /**
    * Sets the value for the property ModifiedBy
@@ -249,145 +388,6 @@ public abstract class DocumentationInstanceBase extends org.semanticwb.model.SWB
          if(obj!=null)
          {
              ret=(org.semanticwb.model.User)obj.createGenericInstance();
-         }
-         return ret;
-    }
-
-/**
-* Gets the Updated property
-* @return java.util.Date with the Updated
-*/
-    public java.util.Date getUpdated()
-    {
-        return getSemanticObject().getDateProperty(swb_updated);
-    }
-
-/**
-* Sets the Updated property
-* @param value long with the Updated
-*/
-    public void setUpdated(java.util.Date value)
-    {
-        getSemanticObject().setDateProperty(swb_updated, value);
-    }
-
-/**
-* Gets the Created property
-* @return java.util.Date with the Created
-*/
-    public java.util.Date getCreated()
-    {
-        return getSemanticObject().getDateProperty(swb_created);
-    }
-
-/**
-* Sets the Created property
-* @param value long with the Created
-*/
-    public void setCreated(java.util.Date value)
-    {
-        getSemanticObject().setDateProperty(swb_created, value);
-    }
-   /**
-   * Sets the value for the property DocTypeDefinition
-   * @param value DocTypeDefinition to set
-   */
-
-    public void setDocTypeDefinition(org.semanticwb.process.documentation.model.DocumentTemplate value)
-    {
-        if(value!=null)
-        {
-            getSemanticObject().setObjectProperty(swpdoc_docTypeDefinition, value.getSemanticObject());
-        }else
-        {
-            removeDocTypeDefinition();
-        }
-    }
-   /**
-   * Remove the value for DocTypeDefinition property
-   */
-
-    public void removeDocTypeDefinition()
-    {
-        getSemanticObject().removeProperty(swpdoc_docTypeDefinition);
-    }
-
-   /**
-   * Gets the DocTypeDefinition
-   * @return a org.semanticwb.process.documentation.model.DocumentTemplate
-   */
-    public org.semanticwb.process.documentation.model.DocumentTemplate getDocTypeDefinition()
-    {
-         org.semanticwb.process.documentation.model.DocumentTemplate ret=null;
-         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpdoc_docTypeDefinition);
-         if(obj!=null)
-         {
-             ret=(org.semanticwb.process.documentation.model.DocumentTemplate)obj.createGenericInstance();
-         }
-         return ret;
-    }
-   /**
-   * Gets all the org.semanticwb.process.documentation.model.DocumentSectionInstance
-   * @return A GenericIterator with all the org.semanticwb.process.documentation.model.DocumentSectionInstance
-   */
-
-    public org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentSectionInstance> listDocumnetSectionInstances()
-    {
-        return new org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.DocumentSectionInstance>(getSemanticObject().listObjectProperties(swpdoc_hasDocumnetSectionInstance));
-    }
-
-   /**
-   * Gets true if has a DocumnetSectionInstance
-   * @param value org.semanticwb.process.documentation.model.DocumentSectionInstance to verify
-   * @return true if the org.semanticwb.process.documentation.model.DocumentSectionInstance exists, false otherwise
-   */
-    public boolean hasDocumnetSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
-    {
-        boolean ret=false;
-        if(value!=null)
-        {
-           ret=getSemanticObject().hasObjectProperty(swpdoc_hasDocumnetSectionInstance,value.getSemanticObject());
-        }
-        return ret;
-    }
-   /**
-   * Adds a DocumnetSectionInstance
-   * @param value org.semanticwb.process.documentation.model.DocumentSectionInstance to add
-   */
-
-    public void addDocumnetSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
-    {
-        getSemanticObject().addObjectProperty(swpdoc_hasDocumnetSectionInstance, value.getSemanticObject());
-    }
-   /**
-   * Removes all the DocumnetSectionInstance
-   */
-
-    public void removeAllDocumnetSectionInstance()
-    {
-        getSemanticObject().removeProperty(swpdoc_hasDocumnetSectionInstance);
-    }
-   /**
-   * Removes a DocumnetSectionInstance
-   * @param value org.semanticwb.process.documentation.model.DocumentSectionInstance to remove
-   */
-
-    public void removeDocumnetSectionInstance(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
-    {
-        getSemanticObject().removeObjectProperty(swpdoc_hasDocumnetSectionInstance,value.getSemanticObject());
-    }
-
-   /**
-   * Gets the DocumnetSectionInstance
-   * @return a org.semanticwb.process.documentation.model.DocumentSectionInstance
-   */
-    public org.semanticwb.process.documentation.model.DocumentSectionInstance getDocumnetSectionInstance()
-    {
-         org.semanticwb.process.documentation.model.DocumentSectionInstance ret=null;
-         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpdoc_hasDocumnetSectionInstance);
-         if(obj!=null)
-         {
-             ret=(org.semanticwb.process.documentation.model.DocumentSectionInstance)obj.createGenericInstance();
          }
          return ret;
     }
@@ -430,40 +430,40 @@ public abstract class DocumentationInstanceBase extends org.semanticwb.model.SWB
          return ret;
     }
    /**
-   * Sets the value for the property ProcessRef
-   * @param value ProcessRef to set
+   * Sets the value for the property DocTypeDefinition
+   * @param value DocTypeDefinition to set
    */
 
-    public void setProcessRef(org.semanticwb.process.model.Process value)
+    public void setDocTypeDefinition(org.semanticwb.process.documentation.model.DocumentTemplate value)
     {
         if(value!=null)
         {
-            getSemanticObject().setObjectProperty(swpdoc_processRef, value.getSemanticObject());
+            getSemanticObject().setObjectProperty(swpdoc_docTypeDefinition, value.getSemanticObject());
         }else
         {
-            removeProcessRef();
+            removeDocTypeDefinition();
         }
     }
    /**
-   * Remove the value for ProcessRef property
+   * Remove the value for DocTypeDefinition property
    */
 
-    public void removeProcessRef()
+    public void removeDocTypeDefinition()
     {
-        getSemanticObject().removeProperty(swpdoc_processRef);
+        getSemanticObject().removeProperty(swpdoc_docTypeDefinition);
     }
 
    /**
-   * Gets the ProcessRef
-   * @return a org.semanticwb.process.model.Process
+   * Gets the DocTypeDefinition
+   * @return a org.semanticwb.process.documentation.model.DocumentTemplate
    */
-    public org.semanticwb.process.model.Process getProcessRef()
+    public org.semanticwb.process.documentation.model.DocumentTemplate getDocTypeDefinition()
     {
-         org.semanticwb.process.model.Process ret=null;
-         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpdoc_processRef);
+         org.semanticwb.process.documentation.model.DocumentTemplate ret=null;
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpdoc_docTypeDefinition);
          if(obj!=null)
          {
-             ret=(org.semanticwb.process.model.Process)obj.createGenericInstance();
+             ret=(org.semanticwb.process.documentation.model.DocumentTemplate)obj.createGenericInstance();
          }
          return ret;
     }

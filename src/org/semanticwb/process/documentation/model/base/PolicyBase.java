@@ -1,7 +1,7 @@
 package org.semanticwb.process.documentation.model.base;
 
 
-public abstract class PolicyBase extends org.semanticwb.process.documentation.model.SectionElement implements org.semanticwb.process.documentation.model.Instantiable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.documentation.model.Prefixeable,org.semanticwb.process.documentation.model.Numerable,org.semanticwb.model.Traceable,org.semanticwb.model.Sortable
+public abstract class PolicyBase extends org.semanticwb.process.documentation.model.SectionElement implements org.semanticwb.model.Traceable,org.semanticwb.process.documentation.model.Numerable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.documentation.model.Instantiable,org.semanticwb.process.documentation.model.ElementReferable,org.semanticwb.model.Sortable,org.semanticwb.process.documentation.model.Prefixeable
 {
     public static final org.semanticwb.platform.SemanticClass swpdoc_Policy=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#Policy");
    /**
@@ -79,26 +79,49 @@ public abstract class PolicyBase extends org.semanticwb.process.documentation.mo
             return (getPolicy(id, model)!=null);
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Policy with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * Gets all org.semanticwb.process.documentation.model.Policy with a determined ProcessElementScope
+       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
        * @param model Model of the org.semanticwb.process.documentation.model.Policy
        * @return Iterator with all the org.semanticwb.process.documentation.model.Policy
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByProcessElementScope(org.semanticwb.process.model.ProcessElement value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Policy with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * Gets all org.semanticwb.process.documentation.model.Policy with a determined ProcessElementScope
+       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
        * @return Iterator with all the org.semanticwb.process.documentation.model.Policy
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByModifiedBy(org.semanticwb.model.User value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByProcessElementScope(org.semanticwb.process.model.ProcessElement value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Policy with a determined DocumentSectionInst
+       * @param value DocumentSectionInst of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @param model Model of the org.semanticwb.process.documentation.model.Policy
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Policy
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByDocumentSectionInst(org.semanticwb.process.documentation.model.DocumentSectionInstance value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentSectionInst, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Policy with a determined DocumentSectionInst
+       * @param value DocumentSectionInst of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Policy
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByDocumentSectionInst(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentSectionInst,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -125,26 +148,26 @@ public abstract class PolicyBase extends org.semanticwb.process.documentation.mo
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Policy with a determined ProcessElementScope
-       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
+       * Gets all org.semanticwb.process.documentation.model.Policy with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
        * @param model Model of the org.semanticwb.process.documentation.model.Policy
        * @return Iterator with all the org.semanticwb.process.documentation.model.Policy
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByProcessElementScope(org.semanticwb.process.model.ProcessElement value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Policy with a determined ProcessElementScope
-       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
+       * Gets all org.semanticwb.process.documentation.model.Policy with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
        * @return Iterator with all the org.semanticwb.process.documentation.model.Policy
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByProcessElementScope(org.semanticwb.process.model.ProcessElement value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByModifiedBy(org.semanticwb.model.User value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -170,6 +193,29 @@ public abstract class PolicyBase extends org.semanticwb.process.documentation.mo
             org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_creator,value.getSemanticObject(),sclass));
             return it;
         }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Policy with a determined DocumentTemplate
+       * @param value DocumentTemplate of the type org.semanticwb.process.documentation.model.DocumentTemplate
+       * @param model Model of the org.semanticwb.process.documentation.model.Policy
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Policy
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByDocumentTemplate(org.semanticwb.process.documentation.model.DocumentTemplate value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentTemplate, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Policy with a determined DocumentTemplate
+       * @param value DocumentTemplate of the type org.semanticwb.process.documentation.model.DocumentTemplate
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Policy
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Policy> listPolicyByDocumentTemplate(org.semanticwb.process.documentation.model.DocumentTemplate value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Policy> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentTemplate,value.getSemanticObject(),sclass));
+            return it;
+        }
     }
 
     public static PolicyBase.ClassMgr getPolicyClassMgr()
@@ -184,39 +230,6 @@ public abstract class PolicyBase extends org.semanticwb.process.documentation.mo
     public PolicyBase(org.semanticwb.platform.SemanticObject base)
     {
         super(base);
-    }
-
-/**
-* Gets the Number property
-* @return String with the Number
-*/
-    public String getNumber()
-    {
-        return getSemanticObject().getProperty(swpdoc_number);
-    }
-
-/**
-* Sets the Number property
-* @param value long with the Number
-*/
-    public void setNumber(String value)
-    {
-        getSemanticObject().setProperty(swpdoc_number, value);
-    }
-
-    public String getNumber(String lang)
-    {
-        return getSemanticObject().getProperty(swpdoc_number, null, lang);
-    }
-
-    public String getDisplayNumber(String lang)
-    {
-        return getSemanticObject().getLocaleProperty(swpdoc_number, lang);
-    }
-
-    public void setNumber(String number, String lang)
-    {
-        getSemanticObject().setProperty(swpdoc_number, number, lang);
     }
 
 /**
@@ -250,5 +263,38 @@ public abstract class PolicyBase extends org.semanticwb.process.documentation.mo
     public void setPrefix(String prefix, String lang)
     {
         getSemanticObject().setProperty(swpdoc_prefix, prefix, lang);
+    }
+
+/**
+* Gets the Number property
+* @return String with the Number
+*/
+    public String getNumber()
+    {
+        return getSemanticObject().getProperty(swpdoc_number);
+    }
+
+/**
+* Sets the Number property
+* @param value long with the Number
+*/
+    public void setNumber(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_number, value);
+    }
+
+    public String getNumber(String lang)
+    {
+        return getSemanticObject().getProperty(swpdoc_number, null, lang);
+    }
+
+    public String getDisplayNumber(String lang)
+    {
+        return getSemanticObject().getLocaleProperty(swpdoc_number, lang);
+    }
+
+    public void setNumber(String number, String lang)
+    {
+        getSemanticObject().setProperty(swpdoc_number, number, lang);
     }
 }

@@ -83,29 +83,6 @@ public abstract class SectionElementRefBase extends org.semanticwb.process.docum
             return (getSectionElementRef(id, model)!=null);
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
-       * @param model Model of the org.semanticwb.process.documentation.model.SectionElementRef
-       * @return Iterator with all the org.semanticwb.process.documentation.model.SectionElementRef
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
-       * @return Iterator with all the org.semanticwb.process.documentation.model.SectionElementRef
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByModifiedBy(org.semanticwb.model.User value)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
        * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined SectionElement
        * @param value SectionElement of the type org.semanticwb.process.documentation.model.SectionElement
        * @param model Model of the org.semanticwb.process.documentation.model.SectionElementRef
@@ -129,29 +106,6 @@ public abstract class SectionElementRefBase extends org.semanticwb.process.docum
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined Creator
-       * @param value Creator of the type org.semanticwb.model.User
-       * @param model Model of the org.semanticwb.process.documentation.model.SectionElementRef
-       * @return Iterator with all the org.semanticwb.process.documentation.model.SectionElementRef
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByCreator(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_creator, value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined Creator
-       * @param value Creator of the type org.semanticwb.model.User
-       * @return Iterator with all the org.semanticwb.process.documentation.model.SectionElementRef
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByCreator(org.semanticwb.model.User value)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_creator,value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
        * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined Activity
        * @param value Activity of the type org.semanticwb.process.documentation.model.Activity
        * @param model Model of the org.semanticwb.process.documentation.model.SectionElementRef
@@ -172,6 +126,52 @@ public abstract class SectionElementRefBase extends org.semanticwb.process.docum
         public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByActivity(org.semanticwb.process.documentation.model.Activity value)
         {
             org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_activity,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * @param model Model of the org.semanticwb.process.documentation.model.SectionElementRef
+       * @return Iterator with all the org.semanticwb.process.documentation.model.SectionElementRef
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * @return Iterator with all the org.semanticwb.process.documentation.model.SectionElementRef
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByModifiedBy(org.semanticwb.model.User value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined Creator
+       * @param value Creator of the type org.semanticwb.model.User
+       * @param model Model of the org.semanticwb.process.documentation.model.SectionElementRef
+       * @return Iterator with all the org.semanticwb.process.documentation.model.SectionElementRef
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByCreator(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_creator, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.SectionElementRef with a determined Creator
+       * @param value Creator of the type org.semanticwb.model.User
+       * @return Iterator with all the org.semanticwb.process.documentation.model.SectionElementRef
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.SectionElementRef> listSectionElementRefByCreator(org.semanticwb.model.User value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.SectionElementRef> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_creator,value.getSemanticObject(),sclass));
             return it;
         }
     }

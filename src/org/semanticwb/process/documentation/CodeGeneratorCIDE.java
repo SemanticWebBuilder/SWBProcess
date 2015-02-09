@@ -39,10 +39,10 @@ import org.semanticwb.codegen.CodeGeneratorException;
  *
  * @author serch
  */
-public class CodeGeneratorRural {
+public class CodeGeneratorCIDE {
 
     public static void main(String[] args) {
-        new CodeGeneratorRural().codeGen(args);
+        new CodeGeneratorCIDE().codeGen(args);
     }
 
     public void codeGen(String[] args) {
@@ -53,17 +53,18 @@ public class CodeGeneratorRural {
 //        SWBPlatform.getSemanticMgr().addBaseOntology(base + "/../../../../SWB4/swbp/WEB-INF/owl/ext/swp.owl");
 //        SWBPlatform.getSemanticMgr().addBaseOntology(base + "/../../src/org/semanticwb/process/documentation/swpdoc.owl");
         SWBPlatform.getSemanticMgr().addBaseOntology("D:\\Infotec\\SWB4\\swb\\web\\WEB-INF\\owl\\swb.owl");
-        SWBPlatform.getSemanticMgr().addBaseOntology("D:\\Infotec\\SWB4\\swbp\\WEB-INF\\owl\\ext\\swp.owl");
-        SWBPlatform.getSemanticMgr().addBaseOntology("D:\\Infotec\\swbproys\\SWPDocumentation\\src\\org\\semanticwb\\process\\documentation\\swpdoc.owl");
+        //SWBPlatform.getSemanticMgr().addBaseOntology("D:\\Infotec\\SWB4\\swbp\\WEB-INF\\owl\\ext\\swp.owl");
+        SWBPlatform.getSemanticMgr().addBaseOntology("D:\\Infotec\\swbproys\\JusticiaCiudadana\\JusticiaCiudadana\\src\\com\\infotec\\cide\\resources\\sem\\carousel\\carousel.owl");
+        //com.infotec.cide.resources.sem.carousel
         SWBPlatform.getSemanticMgr().loadBaseVocabulary();
         SWBPlatform.getSemanticMgr().getOntology().rebind();
 
         try {
             String path = getClass().getResource("/").getPath().replaceAll("%20", " ");
             System.out.println("the path : " + path);
-            File dir = new File("D:\\Infotec\\swbproys\\SWPDocumentation\\src\\");
+            File dir = new File("D:\\Infotec\\swbproys\\JusticiaCiudadana\\JusticiaCiudadana\\src\\");
             CodeGenerator codeGeneration = new CodeGenerator();
-            codeGeneration.generateCode("swpdoc", false, dir);
+            codeGeneration.generateCode("carousel", false, dir);
             System.out.println("Generación de clases completa");
         } catch (CodeGeneratorException cge) {
             cge.printStackTrace();

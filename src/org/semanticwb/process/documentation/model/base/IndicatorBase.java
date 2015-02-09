@@ -1,15 +1,15 @@
 package org.semanticwb.process.documentation.model.base;
 
 
-public abstract class IndicatorBase extends org.semanticwb.process.documentation.model.SectionElement implements org.semanticwb.process.documentation.model.Instantiable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.documentation.model.Numerable,org.semanticwb.model.Traceable,org.semanticwb.model.Sortable
+public abstract class IndicatorBase extends org.semanticwb.process.documentation.model.SectionElement implements org.semanticwb.process.documentation.model.Numerable,org.semanticwb.model.Traceable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.documentation.model.Instantiable,org.semanticwb.process.documentation.model.ElementReferable,org.semanticwb.model.Sortable
 {
-    public static final org.semanticwb.platform.SemanticProperty swpdoc_methodVerification=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#methodVerification");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_frequencyCalculation=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#frequencyCalculation");
-    public static final org.semanticwb.platform.SemanticProperty swpdoc_objetive=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#objetive");
-    public static final org.semanticwb.platform.SemanticProperty swpdoc_weightingIndicator=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#weightingIndicator");
-    public static final org.semanticwb.platform.SemanticProperty swpdoc_responsible=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#responsible");
-    public static final org.semanticwb.platform.SemanticProperty swpdoc_informationSource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#informationSource");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_clasification=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#clasification");
+    public static final org.semanticwb.platform.SemanticProperty swpdoc_informationSource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#informationSource");
+    public static final org.semanticwb.platform.SemanticProperty swpdoc_methodVerification=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#methodVerification");
+    public static final org.semanticwb.platform.SemanticProperty swpdoc_responsible=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#responsible");
+    public static final org.semanticwb.platform.SemanticProperty swpdoc_weightingIndicator=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#weightingIndicator");
+    public static final org.semanticwb.platform.SemanticProperty swpdoc_objetive=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#objetive");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_formula=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#formula");
     public static final org.semanticwb.platform.SemanticClass swpdoc_Indicator=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#Indicator");
    /**
@@ -87,26 +87,49 @@ public abstract class IndicatorBase extends org.semanticwb.process.documentation
             return (getIndicator(id, model)!=null);
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined ProcessElementScope
+       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
        * @param model Model of the org.semanticwb.process.documentation.model.Indicator
        * @return Iterator with all the org.semanticwb.process.documentation.model.Indicator
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByProcessElementScope(org.semanticwb.process.model.ProcessElement value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined ProcessElementScope
+       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
        * @return Iterator with all the org.semanticwb.process.documentation.model.Indicator
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByModifiedBy(org.semanticwb.model.User value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByProcessElementScope(org.semanticwb.process.model.ProcessElement value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined DocumentSectionInst
+       * @param value DocumentSectionInst of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @param model Model of the org.semanticwb.process.documentation.model.Indicator
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Indicator
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByDocumentSectionInst(org.semanticwb.process.documentation.model.DocumentSectionInstance value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentSectionInst, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined DocumentSectionInst
+       * @param value DocumentSectionInst of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Indicator
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByDocumentSectionInst(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentSectionInst,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -133,26 +156,26 @@ public abstract class IndicatorBase extends org.semanticwb.process.documentation
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined ProcessElementScope
-       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
+       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
        * @param model Model of the org.semanticwb.process.documentation.model.Indicator
        * @return Iterator with all the org.semanticwb.process.documentation.model.Indicator
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByProcessElementScope(org.semanticwb.process.model.ProcessElement value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined ProcessElementScope
-       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
+       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
        * @return Iterator with all the org.semanticwb.process.documentation.model.Indicator
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByProcessElementScope(org.semanticwb.process.model.ProcessElement value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByModifiedBy(org.semanticwb.model.User value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -178,6 +201,29 @@ public abstract class IndicatorBase extends org.semanticwb.process.documentation
             org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_creator,value.getSemanticObject(),sclass));
             return it;
         }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined DocumentTemplate
+       * @param value DocumentTemplate of the type org.semanticwb.process.documentation.model.DocumentTemplate
+       * @param model Model of the org.semanticwb.process.documentation.model.Indicator
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Indicator
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByDocumentTemplate(org.semanticwb.process.documentation.model.DocumentTemplate value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentTemplate, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Indicator with a determined DocumentTemplate
+       * @param value DocumentTemplate of the type org.semanticwb.process.documentation.model.DocumentTemplate
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Indicator
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Indicator> listIndicatorByDocumentTemplate(org.semanticwb.process.documentation.model.DocumentTemplate value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Indicator> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentTemplate,value.getSemanticObject(),sclass));
+            return it;
+        }
     }
 
     public static IndicatorBase.ClassMgr getIndicatorClassMgr()
@@ -192,24 +238,6 @@ public abstract class IndicatorBase extends org.semanticwb.process.documentation
     public IndicatorBase(org.semanticwb.platform.SemanticObject base)
     {
         super(base);
-    }
-
-/**
-* Gets the MethodVerification property
-* @return String with the MethodVerification
-*/
-    public String getMethodVerification()
-    {
-        return getSemanticObject().getProperty(swpdoc_methodVerification);
-    }
-
-/**
-* Sets the MethodVerification property
-* @param value long with the MethodVerification
-*/
-    public void setMethodVerification(String value)
-    {
-        getSemanticObject().setProperty(swpdoc_methodVerification, value);
     }
 
 /**
@@ -264,93 +292,6 @@ public abstract class IndicatorBase extends org.semanticwb.process.documentation
     }
 
 /**
-* Gets the Objetive property
-* @return String with the Objetive
-*/
-    public String getObjetive()
-    {
-        return getSemanticObject().getProperty(swpdoc_objetive);
-    }
-
-/**
-* Sets the Objetive property
-* @param value long with the Objetive
-*/
-    public void setObjetive(String value)
-    {
-        getSemanticObject().setProperty(swpdoc_objetive, value);
-    }
-
-    public String getObjetive(String lang)
-    {
-        return getSemanticObject().getProperty(swpdoc_objetive, null, lang);
-    }
-
-    public String getDisplayObjetive(String lang)
-    {
-        return getSemanticObject().getLocaleProperty(swpdoc_objetive, lang);
-    }
-
-    public void setObjetive(String objetive, String lang)
-    {
-        getSemanticObject().setProperty(swpdoc_objetive, objetive, lang);
-    }
-
-/**
-* Gets the WeightingIndicator property
-* @return String with the WeightingIndicator
-*/
-    public String getWeightingIndicator()
-    {
-        return getSemanticObject().getProperty(swpdoc_weightingIndicator);
-    }
-
-/**
-* Sets the WeightingIndicator property
-* @param value long with the WeightingIndicator
-*/
-    public void setWeightingIndicator(String value)
-    {
-        getSemanticObject().setProperty(swpdoc_weightingIndicator, value);
-    }
-
-/**
-* Gets the Responsible property
-* @return String with the Responsible
-*/
-    public String getResponsible()
-    {
-        return getSemanticObject().getProperty(swpdoc_responsible);
-    }
-
-/**
-* Sets the Responsible property
-* @param value long with the Responsible
-*/
-    public void setResponsible(String value)
-    {
-        getSemanticObject().setProperty(swpdoc_responsible, value);
-    }
-
-/**
-* Gets the InformationSource property
-* @return String with the InformationSource
-*/
-    public String getInformationSource()
-    {
-        return getSemanticObject().getProperty(swpdoc_informationSource);
-    }
-
-/**
-* Sets the InformationSource property
-* @param value long with the InformationSource
-*/
-    public void setInformationSource(String value)
-    {
-        getSemanticObject().setProperty(swpdoc_informationSource, value);
-    }
-
-/**
 * Gets the Clasification property
 * @return String with the Clasification
 */
@@ -381,6 +322,111 @@ public abstract class IndicatorBase extends org.semanticwb.process.documentation
     public void setClasification(String clasification, String lang)
     {
         getSemanticObject().setProperty(swpdoc_clasification, clasification, lang);
+    }
+
+/**
+* Gets the InformationSource property
+* @return String with the InformationSource
+*/
+    public String getInformationSource()
+    {
+        return getSemanticObject().getProperty(swpdoc_informationSource);
+    }
+
+/**
+* Sets the InformationSource property
+* @param value long with the InformationSource
+*/
+    public void setInformationSource(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_informationSource, value);
+    }
+
+/**
+* Gets the MethodVerification property
+* @return String with the MethodVerification
+*/
+    public String getMethodVerification()
+    {
+        return getSemanticObject().getProperty(swpdoc_methodVerification);
+    }
+
+/**
+* Sets the MethodVerification property
+* @param value long with the MethodVerification
+*/
+    public void setMethodVerification(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_methodVerification, value);
+    }
+
+/**
+* Gets the Responsible property
+* @return String with the Responsible
+*/
+    public String getResponsible()
+    {
+        return getSemanticObject().getProperty(swpdoc_responsible);
+    }
+
+/**
+* Sets the Responsible property
+* @param value long with the Responsible
+*/
+    public void setResponsible(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_responsible, value);
+    }
+
+/**
+* Gets the WeightingIndicator property
+* @return String with the WeightingIndicator
+*/
+    public String getWeightingIndicator()
+    {
+        return getSemanticObject().getProperty(swpdoc_weightingIndicator);
+    }
+
+/**
+* Sets the WeightingIndicator property
+* @param value long with the WeightingIndicator
+*/
+    public void setWeightingIndicator(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_weightingIndicator, value);
+    }
+
+/**
+* Gets the Objetive property
+* @return String with the Objetive
+*/
+    public String getObjetive()
+    {
+        return getSemanticObject().getProperty(swpdoc_objetive);
+    }
+
+/**
+* Sets the Objetive property
+* @param value long with the Objetive
+*/
+    public void setObjetive(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_objetive, value);
+    }
+
+    public String getObjetive(String lang)
+    {
+        return getSemanticObject().getProperty(swpdoc_objetive, null, lang);
+    }
+
+    public String getDisplayObjetive(String lang)
+    {
+        return getSemanticObject().getLocaleProperty(swpdoc_objetive, lang);
+    }
+
+    public void setObjetive(String objetive, String lang)
+    {
+        getSemanticObject().setProperty(swpdoc_objetive, objetive, lang);
     }
 
 /**

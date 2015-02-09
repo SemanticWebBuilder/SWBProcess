@@ -1,7 +1,7 @@
 package org.semanticwb.process.documentation.model.base;
 
 
-public abstract class RiskBase extends org.semanticwb.process.documentation.model.SectionElement implements org.semanticwb.process.documentation.model.Instantiable,org.semanticwb.model.Descriptiveable,org.semanticwb.model.Traceable,org.semanticwb.model.Sortable
+public abstract class RiskBase extends org.semanticwb.process.documentation.model.SectionElement implements org.semanticwb.model.Traceable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.documentation.model.Instantiable,org.semanticwb.process.documentation.model.ElementReferable,org.semanticwb.model.Sortable
 {
     public static final org.semanticwb.platform.SemanticClass swpdoc_Risk=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#Risk");
    /**
@@ -79,26 +79,49 @@ public abstract class RiskBase extends org.semanticwb.process.documentation.mode
             return (getRisk(id, model)!=null);
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Risk with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * Gets all org.semanticwb.process.documentation.model.Risk with a determined ProcessElementScope
+       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
        * @param model Model of the org.semanticwb.process.documentation.model.Risk
        * @return Iterator with all the org.semanticwb.process.documentation.model.Risk
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByProcessElementScope(org.semanticwb.process.model.ProcessElement value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Risk with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * Gets all org.semanticwb.process.documentation.model.Risk with a determined ProcessElementScope
+       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
        * @return Iterator with all the org.semanticwb.process.documentation.model.Risk
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByModifiedBy(org.semanticwb.model.User value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByProcessElementScope(org.semanticwb.process.model.ProcessElement value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Risk with a determined DocumentSectionInst
+       * @param value DocumentSectionInst of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @param model Model of the org.semanticwb.process.documentation.model.Risk
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Risk
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByDocumentSectionInst(org.semanticwb.process.documentation.model.DocumentSectionInstance value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentSectionInst, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Risk with a determined DocumentSectionInst
+       * @param value DocumentSectionInst of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Risk
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByDocumentSectionInst(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentSectionInst,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -125,26 +148,26 @@ public abstract class RiskBase extends org.semanticwb.process.documentation.mode
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Risk with a determined ProcessElementScope
-       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
+       * Gets all org.semanticwb.process.documentation.model.Risk with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
        * @param model Model of the org.semanticwb.process.documentation.model.Risk
        * @return Iterator with all the org.semanticwb.process.documentation.model.Risk
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByProcessElementScope(org.semanticwb.process.model.ProcessElement value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Risk with a determined ProcessElementScope
-       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
+       * Gets all org.semanticwb.process.documentation.model.Risk with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
        * @return Iterator with all the org.semanticwb.process.documentation.model.Risk
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByProcessElementScope(org.semanticwb.process.model.ProcessElement value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByModifiedBy(org.semanticwb.model.User value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -168,6 +191,29 @@ public abstract class RiskBase extends org.semanticwb.process.documentation.mode
         public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByCreator(org.semanticwb.model.User value)
         {
             org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_creator,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Risk with a determined DocumentTemplate
+       * @param value DocumentTemplate of the type org.semanticwb.process.documentation.model.DocumentTemplate
+       * @param model Model of the org.semanticwb.process.documentation.model.Risk
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Risk
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByDocumentTemplate(org.semanticwb.process.documentation.model.DocumentTemplate value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentTemplate, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Risk with a determined DocumentTemplate
+       * @param value DocumentTemplate of the type org.semanticwb.process.documentation.model.DocumentTemplate
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Risk
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Risk> listRiskByDocumentTemplate(org.semanticwb.process.documentation.model.DocumentTemplate value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Risk> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentTemplate,value.getSemanticObject(),sclass));
             return it;
         }
     }

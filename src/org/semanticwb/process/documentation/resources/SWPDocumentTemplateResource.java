@@ -46,7 +46,7 @@ import org.semanticwb.process.documentation.model.Rule;
 import org.semanticwb.process.documentation.model.SectionElement;
 import org.semanticwb.process.documentation.model.SectionElementRef;
 import org.semanticwb.process.documentation.model.TemplateContainer;
-import org.semanticwb.process.documentation.resources.v2.utils.SWPUtils;
+import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 
 /**
  *

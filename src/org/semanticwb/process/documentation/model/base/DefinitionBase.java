@@ -1,7 +1,7 @@
 package org.semanticwb.process.documentation.model.base;
 
 
-public abstract class DefinitionBase extends org.semanticwb.process.documentation.model.SectionElement implements org.semanticwb.process.documentation.model.Instantiable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.documentation.model.Numerable,org.semanticwb.process.documentation.model.Prefixeable,org.semanticwb.model.Traceable,org.semanticwb.model.Sortable,org.semanticwb.process.documentation.model.Referable
+public abstract class DefinitionBase extends org.semanticwb.process.documentation.model.SectionElement implements org.semanticwb.process.documentation.model.Numerable,org.semanticwb.model.Traceable,org.semanticwb.process.documentation.model.Referable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.documentation.model.Instantiable,org.semanticwb.process.documentation.model.ElementReferable,org.semanticwb.model.Sortable,org.semanticwb.process.documentation.model.Prefixeable
 {
     public static final org.semanticwb.platform.SemanticClass swpdoc_Definition=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#Definition");
    /**
@@ -79,49 +79,26 @@ public abstract class DefinitionBase extends org.semanticwb.process.documentatio
             return (getDefinition(id, model)!=null);
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ProcessElementScope
+       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
        * @param model Model of the org.semanticwb.process.documentation.model.Definition
        * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByProcessElementScope(org.semanticwb.process.model.ProcessElement value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ModifiedBy
-       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ProcessElementScope
+       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
        * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByModifiedBy(org.semanticwb.model.User value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByProcessElementScope(org.semanticwb.process.model.ProcessElement value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ParentSection
-       * @param value ParentSection of the type org.semanticwb.process.documentation.model.DocumentSection
-       * @param model Model of the org.semanticwb.process.documentation.model.Definition
-       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByParentSection(org.semanticwb.process.documentation.model.DocumentSection value,org.semanticwb.model.SWBModel model)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_parentSection, value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ParentSection
-       * @param value ParentSection of the type org.semanticwb.process.documentation.model.DocumentSection
-       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByParentSection(org.semanticwb.process.documentation.model.DocumentSection value)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_parentSection,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -148,26 +125,95 @@ public abstract class DefinitionBase extends org.semanticwb.process.documentatio
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ProcessElementScope
-       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined Version
+       * @param value Version of the type org.semanticwb.model.VersionInfo
        * @param model Model of the org.semanticwb.process.documentation.model.Definition
        * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByProcessElementScope(org.semanticwb.process.model.ProcessElement value,org.semanticwb.model.SWBModel model)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByVersion(org.semanticwb.model.VersionInfo value,org.semanticwb.model.SWBModel model)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope, value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_version, value.getSemanticObject(),sclass));
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ProcessElementScope
-       * @param value ProcessElementScope of the type org.semanticwb.process.model.ProcessElement
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined Version
+       * @param value Version of the type org.semanticwb.model.VersionInfo
        * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
        */
 
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByProcessElementScope(org.semanticwb.process.model.ProcessElement value)
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByVersion(org.semanticwb.model.VersionInfo value)
         {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_hasProcessElementScope,value.getSemanticObject(),sclass));
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_version,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined DocumentSectionInst
+       * @param value DocumentSectionInst of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @param model Model of the org.semanticwb.process.documentation.model.Definition
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByDocumentSectionInst(org.semanticwb.process.documentation.model.DocumentSectionInstance value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentSectionInst, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined DocumentSectionInst
+       * @param value DocumentSectionInst of the type org.semanticwb.process.documentation.model.DocumentSectionInstance
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByDocumentSectionInst(org.semanticwb.process.documentation.model.DocumentSectionInstance value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentSectionInst,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ParentSection
+       * @param value ParentSection of the type org.semanticwb.process.documentation.model.DocumentSection
+       * @param model Model of the org.semanticwb.process.documentation.model.Definition
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByParentSection(org.semanticwb.process.documentation.model.DocumentSection value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_parentSection, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ParentSection
+       * @param value ParentSection of the type org.semanticwb.process.documentation.model.DocumentSection
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByParentSection(org.semanticwb.process.documentation.model.DocumentSection value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_parentSection,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * @param model Model of the org.semanticwb.process.documentation.model.Definition
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByModifiedBy(org.semanticwb.model.User value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
             return it;
         }
        /**
@@ -193,6 +239,29 @@ public abstract class DefinitionBase extends org.semanticwb.process.documentatio
             org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_creator,value.getSemanticObject(),sclass));
             return it;
         }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined DocumentTemplate
+       * @param value DocumentTemplate of the type org.semanticwb.process.documentation.model.DocumentTemplate
+       * @param model Model of the org.semanticwb.process.documentation.model.Definition
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByDocumentTemplate(org.semanticwb.process.documentation.model.DocumentTemplate value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentTemplate, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.Definition with a determined DocumentTemplate
+       * @param value DocumentTemplate of the type org.semanticwb.process.documentation.model.DocumentTemplate
+       * @return Iterator with all the org.semanticwb.process.documentation.model.Definition
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.Definition> listDefinitionByDocumentTemplate(org.semanticwb.process.documentation.model.DocumentTemplate value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.Definition> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_documentTemplate,value.getSemanticObject(),sclass));
+            return it;
+        }
     }
 
     public static DefinitionBase.ClassMgr getDefinitionClassMgr()
@@ -210,21 +279,69 @@ public abstract class DefinitionBase extends org.semanticwb.process.documentatio
     }
 
 /**
-* Gets the File property
-* @return String with the File
+* Gets the Prefix property
+* @return String with the Prefix
 */
-    public String getFile()
+    public String getPrefix()
     {
-        return getSemanticObject().getProperty(swpdoc_file);
+        return getSemanticObject().getProperty(swpdoc_prefix);
     }
 
 /**
-* Sets the File property
-* @param value long with the File
+* Sets the Prefix property
+* @param value long with the Prefix
 */
-    public void setFile(String value)
+    public void setPrefix(String value)
     {
-        getSemanticObject().setProperty(swpdoc_file, value);
+        getSemanticObject().setProperty(swpdoc_prefix, value);
+    }
+
+    public String getPrefix(String lang)
+    {
+        return getSemanticObject().getProperty(swpdoc_prefix, null, lang);
+    }
+
+    public String getDisplayPrefix(String lang)
+    {
+        return getSemanticObject().getLocaleProperty(swpdoc_prefix, lang);
+    }
+
+    public void setPrefix(String prefix, String lang)
+    {
+        getSemanticObject().setProperty(swpdoc_prefix, prefix, lang);
+    }
+
+/**
+* Gets the Number property
+* @return String with the Number
+*/
+    public String getNumber()
+    {
+        return getSemanticObject().getProperty(swpdoc_number);
+    }
+
+/**
+* Sets the Number property
+* @param value long with the Number
+*/
+    public void setNumber(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_number, value);
+    }
+
+    public String getNumber(String lang)
+    {
+        return getSemanticObject().getProperty(swpdoc_number, null, lang);
+    }
+
+    public String getDisplayNumber(String lang)
+    {
+        return getSemanticObject().getLocaleProperty(swpdoc_number, lang);
+    }
+
+    public void setNumber(String number, String lang)
+    {
+        getSemanticObject().setProperty(swpdoc_number, number, lang);
     }
    /**
    * Sets the value for the property RefRepository
@@ -264,70 +381,60 @@ public abstract class DefinitionBase extends org.semanticwb.process.documentatio
          }
          return ret;
     }
+   /**
+   * Sets the value for the property Version
+   * @param value Version to set
+   */
 
-/**
-* Gets the Number property
-* @return String with the Number
-*/
-    public String getNumber()
+    public void setVersion(org.semanticwb.model.VersionInfo value)
     {
-        return getSemanticObject().getProperty(swpdoc_number);
+        if(value!=null)
+        {
+            getSemanticObject().setObjectProperty(swpdoc_version, value.getSemanticObject());
+        }else
+        {
+            removeVersion();
+        }
+    }
+   /**
+   * Remove the value for Version property
+   */
+
+    public void removeVersion()
+    {
+        getSemanticObject().removeProperty(swpdoc_version);
+    }
+
+   /**
+   * Gets the Version
+   * @return a org.semanticwb.model.VersionInfo
+   */
+    public org.semanticwb.model.VersionInfo getVersion()
+    {
+         org.semanticwb.model.VersionInfo ret=null;
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpdoc_version);
+         if(obj!=null)
+         {
+             ret=(org.semanticwb.model.VersionInfo)obj.createGenericInstance();
+         }
+         return ret;
     }
 
 /**
-* Sets the Number property
-* @param value long with the Number
+* Gets the File property
+* @return String with the File
 */
-    public void setNumber(String value)
+    public String getFile()
     {
-        getSemanticObject().setProperty(swpdoc_number, value);
-    }
-
-    public String getNumber(String lang)
-    {
-        return getSemanticObject().getProperty(swpdoc_number, null, lang);
-    }
-
-    public String getDisplayNumber(String lang)
-    {
-        return getSemanticObject().getLocaleProperty(swpdoc_number, lang);
-    }
-
-    public void setNumber(String number, String lang)
-    {
-        getSemanticObject().setProperty(swpdoc_number, number, lang);
+        return getSemanticObject().getProperty(swpdoc_file);
     }
 
 /**
-* Gets the Prefix property
-* @return String with the Prefix
+* Sets the File property
+* @param value long with the File
 */
-    public String getPrefix()
+    public void setFile(String value)
     {
-        return getSemanticObject().getProperty(swpdoc_prefix);
-    }
-
-/**
-* Sets the Prefix property
-* @param value long with the Prefix
-*/
-    public void setPrefix(String value)
-    {
-        getSemanticObject().setProperty(swpdoc_prefix, value);
-    }
-
-    public String getPrefix(String lang)
-    {
-        return getSemanticObject().getProperty(swpdoc_prefix, null, lang);
-    }
-
-    public String getDisplayPrefix(String lang)
-    {
-        return getSemanticObject().getLocaleProperty(swpdoc_prefix, lang);
-    }
-
-    public void setPrefix(String prefix, String lang)
-    {
-        getSemanticObject().setProperty(swpdoc_prefix, prefix, lang);
+        getSemanticObject().setProperty(swpdoc_file, value);
     }
 }

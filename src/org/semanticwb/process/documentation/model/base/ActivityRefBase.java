@@ -104,29 +104,6 @@ public abstract class ActivityRefBase extends org.semanticwb.process.documentati
             return it;
         }
        /**
-       * Gets all org.semanticwb.process.documentation.model.ActivityRef with a determined ProcessActivity
-       * @param value ProcessActivity of the type org.semanticwb.process.model.Activity
-       * @param model Model of the org.semanticwb.process.documentation.model.ActivityRef
-       * @return Iterator with all the org.semanticwb.process.documentation.model.ActivityRef
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.ActivityRef> listActivityRefByProcessActivity(org.semanticwb.process.model.Activity value,org.semanticwb.model.SWBModel model)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.ActivityRef> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_processActivity, value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
-       * Gets all org.semanticwb.process.documentation.model.ActivityRef with a determined ProcessActivity
-       * @param value ProcessActivity of the type org.semanticwb.process.model.Activity
-       * @return Iterator with all the org.semanticwb.process.documentation.model.ActivityRef
-       */
-
-        public static java.util.Iterator<org.semanticwb.process.documentation.model.ActivityRef> listActivityRefByProcessActivity(org.semanticwb.process.model.Activity value)
-        {
-            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.ActivityRef> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_processActivity,value.getSemanticObject(),sclass));
-            return it;
-        }
-       /**
        * Gets all org.semanticwb.process.documentation.model.ActivityRef with a determined Creator
        * @param value Creator of the type org.semanticwb.model.User
        * @param model Model of the org.semanticwb.process.documentation.model.ActivityRef
@@ -147,6 +124,29 @@ public abstract class ActivityRefBase extends org.semanticwb.process.documentati
         public static java.util.Iterator<org.semanticwb.process.documentation.model.ActivityRef> listActivityRefByCreator(org.semanticwb.model.User value)
         {
             org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.ActivityRef> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_creator,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.ActivityRef with a determined ProcessActivity
+       * @param value ProcessActivity of the type org.semanticwb.process.model.Activity
+       * @param model Model of the org.semanticwb.process.documentation.model.ActivityRef
+       * @return Iterator with all the org.semanticwb.process.documentation.model.ActivityRef
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.ActivityRef> listActivityRefByProcessActivity(org.semanticwb.process.model.Activity value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.ActivityRef> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swpdoc_processActivity, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.documentation.model.ActivityRef with a determined ProcessActivity
+       * @param value ProcessActivity of the type org.semanticwb.process.model.Activity
+       * @return Iterator with all the org.semanticwb.process.documentation.model.ActivityRef
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.documentation.model.ActivityRef> listActivityRefByProcessActivity(org.semanticwb.process.model.Activity value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.documentation.model.ActivityRef> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swpdoc_processActivity,value.getSemanticObject(),sclass));
             return it;
         }
     }

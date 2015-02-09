@@ -16,7 +16,7 @@ import org.semanticwb.portal.api.GenericResource;
 import org.semanticwb.portal.api.SWBActionResponse;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
-import org.semanticwb.process.documentation.resources.v2.utils.SWPUtils;
+import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 
 /**
  *
