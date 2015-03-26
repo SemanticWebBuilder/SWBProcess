@@ -159,7 +159,7 @@ public class SWPUtils {
     static public List<org.semanticwb.process.model.Process> listProcesses(HttpServletRequest request, SWBParamRequest paramRequest) {
         WebSite model = paramRequest.getWebPage().getWebSite();
         String idpg = request.getParameter("idpg") != null ? request.getParameter("idpg") : "";
-        ProcessGroup group = (ProcessGroup) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idpg);
+        ProcessGroup group = ProcessGroup.ClassMgr.getProcessGroup(idpg, model);//(ProcessGroup) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idpg);
         List<org.semanticwb.process.model.Process> list = new ArrayList<org.semanticwb.process.model.Process>();
         Iterator<org.semanticwb.process.model.Process> iterator = org.semanticwb.process.model.Process.ClassMgr.listProcesses(model);
         while (iterator.hasNext()) {
