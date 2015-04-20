@@ -39,7 +39,6 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
 
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
-        String action = response.getAction();
         super.processAction(request, response); //To change body of generated methods, choose Tools | Templates.
     }
 
