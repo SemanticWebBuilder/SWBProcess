@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -157,18 +158,26 @@ public class SWPUtils {
     }
 
     static public List<org.semanticwb.process.model.Process> listProcesses(HttpServletRequest request, SWBParamRequest paramRequest) {
+        List<org.semanticwb.process.model.Process> list = new ArrayList<org.semanticwb.process.model.Process>();
         WebSite model = paramRequest.getWebPage().getWebSite();
         String idpg = request.getParameter("idpg") != null ? request.getParameter("idpg") : "";
-        ProcessGroup group = ProcessGroup.ClassMgr.getProcessGroup(idpg, model);//(ProcessGroup) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idpg);
-        List<org.semanticwb.process.model.Process> list = new ArrayList<org.semanticwb.process.model.Process>();
-        Iterator<org.semanticwb.process.model.Process> iterator = org.semanticwb.process.model.Process.ClassMgr.listProcesses(model);
-        while (iterator.hasNext()) {
-            org.semanticwb.process.model.Process process = iterator.next();
-            if (process.isDeleted() || !process.isActive() || (group != null && !group.hasProcess(process))) {
-                continue;
+        
+        if (!idpg.isEmpty()) {
+            ProcessGroup group = ProcessGroup.ClassMgr.getProcessGroup(idpg, model);//(ProcessGroup) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idpg);
+            if (null != group) {
+                Iterator<org.semanticwb.process.model.Process> iterator = group.listProcesses();//org.semanticwb.process.model.Process.ClassMgr.listProcesses(model);
+                while (iterator.hasNext()) {
+                    org.semanticwb.process.model.Process process = iterator.next();
+                    /*if (process.isDeleted() || !process.isActive()) {
+                        continue;
+                    }*/
+                    if (process.isValid()) {
+                        list.add(process);
+                    }
+                }
             }
-            list.add(process);
         }
+        list = SWBUtils.Collections.copyIterator(SWBComparator.sortByDisplayName(list.iterator(), paramRequest.getUser().getLanguage()));
         return list;
     }
 
