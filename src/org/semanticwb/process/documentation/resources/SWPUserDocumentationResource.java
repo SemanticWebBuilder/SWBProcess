@@ -18,7 +18,6 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.semanticwb.Logger;
-import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBActionResponse;
@@ -32,15 +31,13 @@ import org.semanticwb.process.documentation.resources.utils.SWPUtils;
  * @author carlos.alvarez
  */
 public class SWPUserDocumentationResource extends GenericAdmResource {
-
     private final Logger log = SWBUtils.getLogger(SWPUserDocumentationResource.class);
-
     public final static String MODE_VIEW_DOCUMENTATION = "m_vdoc";//Modo EDITAR de sección de documentación
     public final static String MODE_EXPORT_MODEL = "m_expm";
 
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
-        super.processAction(request, response); //To change body of generated methods, choose Tools | Templates.
+        super.processAction(request, response);
     }
 
     @Override
@@ -51,7 +48,7 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
         } else if (mode.equals(MODE_EXPORT_MODEL)) {
             doExportModel(request, response, paramRequest);
         } else {
-            super.processRequest(request, response, paramRequest); //To change body of generated methods, choose Tools | Templates.
+            super.processRequest(request, response, paramRequest);
         }
     }
 
