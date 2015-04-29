@@ -24,6 +24,7 @@ import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBActionResponse;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
+import org.semanticwb.process.model.Process;
 import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 
 /**
@@ -86,7 +87,7 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
         String data = request.getParameter("data");
         String viewBox = request.getParameter("viewBox");
         String[] values = viewBox != null ? viewBox.split("\\ ") : "0 0 3800 2020".split("\\ ");
-        org.semanticwb.process.model.Process p = (org.semanticwb.process.model.Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(request.getParameter("suri"));
+        Process p = Process.ClassMgr.getProcess(request.getParameter("idp"), paramRequest.getWebPage().getWebSite());
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + (p != null ? p.getTitle() : "Proceso") + "." + format + "\"");
@@ -131,6 +132,5 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
                 log.error("Ocurrió un problema al generar la imagen", ex);
             }
         }
-
     }
 }
