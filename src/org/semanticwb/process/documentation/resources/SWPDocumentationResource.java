@@ -116,113 +116,141 @@ public class SWPDocumentationResource extends GenericAdmResource {
         WebSite model = response.getWebPage().getWebSite();
         try {
             //Leer parámetros
-            String uridsi = "uridsi";
-            String urise = "urise";
-            String uriscls = "scls";
+
+            String uriDocSectionInstance = "uridsi";
+            String uriSectionElement = "urise";
+            String uriSemanticCls = "scls";
             String props = "props";
             String configData = DocumentSection.swpdoc_configData.getPropId();
             Map values = new HashMap();
-            InputStream is = null;
-            String filename = null;
+            InputStream inputStream = null;
+            String fileName = null;
             String link = "lfile";
-            String urire = "urire";
-            RepositoryDirectory rd = null;
+            String uriRepositoryElement = "urire";
+            RepositoryDirectory repositoryDirec = null;
             Referable referable = null;
+
             if (ServletFileUpload.isMultipartContent(request)) {
                 List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-                String encoding = "UTF-8";
+
                 for (FileItem item : multiparts) {
                     if (item.isFormField()) {
-                        if (item.getFieldName().equals(uridsi)) {
-                            uridsi = SWBUtils.TEXT.decode(item.getString(), encoding);
+                        String encoding = "UTF-8";
+                        String itemName = item.getFieldName();
+                        switch (itemName) {
+                            case "uridsi":
+                                uriDocSectionInstance = SWBUtils.TEXT.decode(item.getString(), encoding);
+                                break;
+                            case "urise":
+                                uriSectionElement = SWBUtils.TEXT.decode(item.getString(), encoding);
+                                break;
+                            case "scls":
+                                uriSemanticCls = SWBUtils.TEXT.decode(item.getString(), encoding);
+                                break;
+                            case "props":
+                                props = SWBUtils.TEXT.decode(item.getString(), encoding);
+                                break;
+                            case "lfile":
+                                link = SWBUtils.TEXT.decode(item.getString(), encoding);
+                                break;
+                            case "urire":
+                                uriRepositoryElement = SWBUtils.TEXT.decode(item.getString(), encoding);
+                                break;
                         }
-                        if (item.getFieldName().equals(urise)) {
-                            urise = SWBUtils.TEXT.decode(item.getString(), encoding);
-                        }
-                        if (item.getFieldName().equals(uriscls)) {
-                            uriscls = SWBUtils.TEXT.decode(item.getString(), encoding);
-                        }
-                        if (item.getFieldName().equals(props)) {
-                            props = SWBUtils.TEXT.decode(item.getString(), encoding);
-                        }
-                        if (item.getFieldName().equals(props)) {
-                            props = SWBUtils.TEXT.decode(item.getString(), encoding);
-                        }
-                        if (item.getFieldName().equals(configData)) {
+                        if (itemName.equals(configData)) {
                             configData = SWBUtils.TEXT.decode(item.getString(), encoding);
                         }
-                        if (item.getFieldName().equals(link)) {
-                            link = SWBUtils.TEXT.decode(item.getString(), encoding);
-                        }
-                        if (item.getFieldName().equals(urire)) {
-                            urire = SWBUtils.TEXT.decode(item.getString(), encoding);
-                        }
+
+                        /*if (item.getFieldName().equals(uriDocSectionInstance)) {
+                         uriDocSectionInstance = SWBUtils.TEXT.decode(item.getString(), encoding);
+                         }
+                         if (item.getFieldName().equals(uriSectionElement)) {
+                         uriSectionElement = SWBUtils.TEXT.decode(item.getString(), encoding);
+                         }
+                         if (item.getFieldName().equals(uriSemanticCls)) {
+                         uriSemanticCls = SWBUtils.TEXT.decode(item.getString(), encoding);
+                         }
+                         if (item.getFieldName().equals(props)) {
+                         props = SWBUtils.TEXT.decode(item.getString(), encoding);
+                         }
+                         if (item.getFieldName().equals(props)) {
+                         props = SWBUtils.TEXT.decode(item.getString(), encoding);
+                         }
+                         if (item.getFieldName().equals(configData)) {
+                         configData = SWBUtils.TEXT.decode(item.getString(), encoding);
+                         }
+                         if (item.getFieldName().equals(link)) {
+                         link = SWBUtils.TEXT.decode(item.getString(), encoding);
+                         }
+                         if (item.getFieldName().equals(uriRepositoryElement)) {
+                         uriRepositoryElement = SWBUtils.TEXT.decode(item.getString(), encoding);
+                         }*/
                         values.put(item.getFieldName(), SWBUtils.TEXT.decode(item.getString(), encoding));
                     } else {
 
-                        is = item.getInputStream();
-                        filename = SWBUtils.TEXT.decode(item.getName(), "UTF-8").trim();
+                        inputStream = item.getInputStream();
+                        fileName = SWBUtils.TEXT.decode(item.getName(), "UTF-8").trim();
                     }
                 }
             }
             if (action.equals(ACTION_ADD_INSTANTIABLE)) {
-                DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
-                if (dsi != null) {
-                    SemanticClass scls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(uriscls);
+                DocumentSectionInstance docSectionInstance = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSectionInstance);
+                if (docSectionInstance != null) {
+                    SemanticClass semCls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(uriSemanticCls);
                     SemanticObject semObj = null;
-                    String clsId = scls.getClassId();
+                    String clsId = semCls.getClassId();
                     if (clsId.equals(Definition.sclass.getClassId())
                             || clsId.equals(Format.sclass.getClassId())
                             || clsId.equals(Reference.sclass.getClassId())) { //Referable
                         SectionElement se = null;
-                        if (is != null && !configData.equals(DocumentSection.swpdoc_configData.getPropId())) {
-                            rd = (RepositoryDirectory) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(configData);
+                        if (inputStream != null && !configData.equals(DocumentSection.swpdoc_configData.getPropId())) {
+                            repositoryDirec = (RepositoryDirectory) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(configData);
                             if (clsId.equals(Definition.sclass.getClassId())) { //Definition
-                                Definition def = Definition.ClassMgr.createDefinition(model);
-                                semObj = def.getSemanticObject();
-                                referable = (Referable) def;
-                                se = (SectionElement) def;
+                                Definition definition = Definition.ClassMgr.createDefinition(model);
+                                semObj = definition.getSemanticObject();
+                                referable = (Referable) definition;
+                                se = (SectionElement) definition;
                             } else if (clsId.equals(Format.sclass.getClassId())) {
-                                Format def = Format.ClassMgr.createFormat(model);
-                                semObj = def.getSemanticObject();
-                                referable = (Referable) def;
-                                se = (SectionElement) def;
+                                Format format = Format.ClassMgr.createFormat(model);
+                                semObj = format.getSemanticObject();
+                                referable = (Referable) format;
+                                se = (SectionElement) format;
                             } else {
-                                Reference def = Reference.ClassMgr.createReference(model);
-                                semObj = def.getSemanticObject();
-                                referable = (Referable) def;
-                                se = (SectionElement) def;
+                                Reference reference = Reference.ClassMgr.createReference(model);
+                                semObj = reference.getSemanticObject();
+                                referable = (Referable) reference;
+                                se = (SectionElement) reference;
                             }
-                            se.setDocumentSectionInst(dsi);
-                            se.setDocumentTemplate(dsi.getSecTypeDefinition().getParentTemplate());
-                            se.setParentSection(dsi.getSecTypeDefinition());
-                            dsi.addDocuSectionElementInstance(se);
-                            urise = se.getURI();
+                            se.setDocumentSectionInst(docSectionInstance);
+                            se.setDocumentTemplate(docSectionInstance.getSecTypeDefinition().getParentTemplate());
+                            se.setParentSection(docSectionInstance.getSecTypeDefinition());
+                            docSectionInstance.addDocuSectionElementInstance(se);
+                            uriSectionElement = se.getURI();
                         }
                     } else { // Instantiable
-                        SemanticObject semOb = model.getSemanticModel().createSemanticObjectById(model.getSemanticModel().getCounter(scls) + "", scls);
+                        SemanticObject semOb = model.getSemanticModel().createSemanticObjectById(model.getSemanticModel().getCounter(semCls) + "", semCls);
                         SectionElement se = (SectionElement) semOb.createGenericInstance();
-                        urise = se.getURI();
-                        se.setDocumentSectionInst(dsi);
-                        se.setDocumentTemplate(dsi.getSecTypeDefinition().getParentTemplate());
-                        se.setParentSection(dsi.getSecTypeDefinition());
-                        dsi.addDocuSectionElementInstance(se);
+                        uriSectionElement = se.getURI();
+                        se.setDocumentSectionInst(docSectionInstance);
+                        se.setDocumentTemplate(docSectionInstance.getSecTypeDefinition().getParentTemplate());
+                        se.setParentSection(docSectionInstance.getSecTypeDefinition());
+                        docSectionInstance.addDocuSectionElementInstance(se);
                         semObj = se.getSemanticObject();
                     }
                     if (semObj != null) {
-                        String[] addprops = props.split("\\|");
-                        for (String propt : addprops) {
-                            String idprop = propt.substring(propt.indexOf(";") + 1, propt.length());
-                            SemanticProperty sp = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
-                            if (!idprop.equals(Sortable.swb_index.getPropId())) {
-                                semObj.setProperty(sp, values.containsKey(idprop) ? values.get(idprop).toString() : null);
+                        String[] addProps = props.split("\\|");
+                        for (String propt : addProps) {
+                            String idProperty = propt.substring(propt.indexOf(";") + 1, propt.length());
+                            SemanticProperty sp = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idProperty);
+                            if (!idProperty.equals(Sortable.swb_index.getPropId())) {
+                                semObj.setProperty(sp, values.containsKey(idProperty) ? values.get(idProperty).toString() : null);
                             } else {
                                 int index;
                                 try {
-                                    index = Integer.parseInt(values.containsKey(idprop) ? values.get(idprop).toString() : semObj.getId());
+                                    index = Integer.parseInt(values.containsKey(idProperty) ? values.get(idProperty).toString() : semObj.getId());
                                 } catch (NumberFormatException e) {
                                     index = Integer.parseInt(semObj.getId());
-                                    log.info("Error parsing " + values.get(idprop) + " to int, " + e.getMessage() + ", " + e.getCause());
+                                    log.info("Error parsing " + values.get(idProperty) + " to int, " + e.getMessage() + ", " + e.getCause());
                                 }
                                 semObj.setProperty(sp, index + "");
                             }
@@ -231,133 +259,134 @@ public class SWPDocumentationResource extends GenericAdmResource {
                             SemanticProperty sp = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(Sortable.swb_index.getPropId());
                             semObj.setProperty(sp, semObj.getId());
                         }
-                        if (rd != null && referable != null) {//Es Archivo
+                        if (repositoryDirec != null && referable != null) {//Es Archivo
                             if (values.containsKey("hftype") && values.get("hftype").equals("file")) {
-                                RepositoryFile rf = RepositoryFile.ClassMgr.createRepositoryFile(rd.getProcessSite());
-                                referable.setRefRepository(rf);
-                                rf.setRepositoryDirectory(rd);
-                                rf.storeFile(filename, is, null, Boolean.TRUE, null);
-                                rf.setTitle(semObj.getProperty(Descriptiveable.swb_title));
-                                rf.setDescription(semObj.getProperty(Descriptiveable.swb_description));
+                                RepositoryFile repositoeyFile = RepositoryFile.ClassMgr.createRepositoryFile(repositoryDirec.getProcessSite());
+                                referable.setRefRepository(repositoeyFile);
+                                repositoeyFile.setRepositoryDirectory(repositoryDirec);
+                                repositoeyFile.storeFile(fileName, inputStream, null, Boolean.TRUE, null);
+                                repositoeyFile.setTitle(semObj.getProperty(Descriptiveable.swb_title));
+                                repositoeyFile.setDescription(semObj.getProperty(Descriptiveable.swb_description));
                             } else { //Es URL
-                                RepositoryURL repoUrl = RepositoryURL.ClassMgr.createRepositoryURL(rd.getProcessSite());
-                                repoUrl.setRepositoryDirectory(rd);
-                                referable.setRefRepository(repoUrl);
+                                RepositoryURL repositoryUrl = RepositoryURL.ClassMgr.createRepositoryURL(repositoryDirec.getProcessSite());
+                                repositoryUrl.setRepositoryDirectory(repositoryDirec);
+                                referable.setRefRepository(repositoryUrl);
                                 User usr = response.getUser();
-                                repoUrl.setTitle(semObj.getProperty(Descriptiveable.swb_title));
-                                repoUrl.setDescription(semObj.getProperty(Descriptiveable.swb_description));
-                                repoUrl.setOwnerUserGroup(usr.getUserGroup());
-                                repoUrl.storeFile(link.startsWith("http://") ? link : "http://" + link, null, Boolean.TRUE, null);
+                                repositoryUrl.setTitle(semObj.getProperty(Descriptiveable.swb_title));
+                                repositoryUrl.setDescription(semObj.getProperty(Descriptiveable.swb_description));
+                                repositoryUrl.setOwnerUserGroup(usr.getUserGroup());
+                                repositoryUrl.storeFile(link.startsWith("http://") ? link : "http://" + link, null, Boolean.TRUE, null);
                             }
                         }
                     }
                 }
-                response.setRenderParameter("uridsi", uridsi);
-                response.setRenderParameter("urise", urise);
+                response.setRenderParameter("uridsi", uriDocSectionInstance);
+                response.setRenderParameter("urise", uriSectionElement);
                 response.setCallMethod(SWBResourceURL.Call_DIRECT);
                 response.setMode(MODE_ACTUALIZA_TAB);
             } else if (action.equals(ACTION_EDIT_INSTANTIABLE)) {
-                SemanticObject semObj = SemanticObject.createSemanticObject(urise);
+                SemanticObject semObj = SemanticObject.createSemanticObject(uriSectionElement);
                 if (semObj != null) {
-                    String[] addprops = props.split("\\|");
-                    for (String propt : addprops) {
-                        String idprop = propt.substring(propt.indexOf(";") + 1, propt.length());
-                        SemanticProperty sp = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
-                        if (idprop.equals(DocumentSection.swpdoc_configData.getPropId())) {
-                            configData = values.containsKey(idprop) ? values.get(idprop).toString() : "";
+                    String[] addProps = props.split("\\|");
+                    for (String propt : addProps) {
+                        String idProperty = propt.substring(propt.indexOf(";") + 1, propt.length());
+                        SemanticProperty sp = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idProperty);
+                        if (idProperty.equals(DocumentSection.swpdoc_configData.getPropId())) {
+                            configData = values.containsKey(idProperty) ? values.get(idProperty).toString() : "";
                         }
-                        if (!idprop.equals(Sortable.swb_index.getPropId())) {
-                            semObj.setProperty(sp, values.containsKey(idprop) ? values.get(idprop).toString() : null);
+                        if (!idProperty.equals(Sortable.swb_index.getPropId())) {
+                            semObj.setProperty(sp, values.containsKey(idProperty) ? values.get(idProperty).toString() : null);
                         } else {
                             int index;
                             try {
-                                index = Integer.parseInt(values.get(idprop).toString());
+                                index = Integer.parseInt(values.get(idProperty).toString());
                             } catch (NumberFormatException e) {
                                 index = Integer.parseInt(semObj.getId());
-                                log.info("Error parsing " + values.get(idprop) + " to int, " + e.getMessage() + ", " + e.getCause());
+                                log.info("Error parsing " + values.get(idProperty) + " to int, " + e.getMessage() + ", " + e.getCause());
                             }
                             semObj.setProperty(sp, index + "");
                         }
                     }
                 }
-                rd = (RepositoryDirectory) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(configData);
-                RepositoryElement re = (RepositoryElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urire);
+                repositoryDirec = (RepositoryDirectory) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(configData);
+                RepositoryElement repElement = (RepositoryElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriRepositoryElement);
                 SectionElement se = semObj != null ? (SectionElement) semObj.createGenericInstance() : null;
                 if (se != null && se instanceof Referable) {
-                    Referable ref = (Referable) se;
-                    String urivi = values.containsKey("versionref") ? values.get("versionref").toString() : "";
-                    VersionInfo vi = (VersionInfo) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urivi);
-                    if (vi != null) {
-                        ref.setVersion(vi);
+                   // Referable referable = (Referable) se;
+                    String uriVersionInfo = values.containsKey("versionref") ? values.get("versionref").toString() : "";
+                    VersionInfo versionInfo = (VersionInfo) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriVersionInfo);
+                    if (versionInfo != null) {
+                        referable.setVersion(versionInfo);
                     }
                 }
-                if (re != null) {
-                    re.setRepositoryDirectory(rd);
+                if (repElement != null) {
+                    repElement.setRepositoryDirectory(repositoryDirec);
                     if (semObj != null) {
-                        re.getSemanticObject().setProperty(Descriptiveable.swb_title, semObj.getProperty(Descriptiveable.swb_title));
-                        re.getSemanticObject().setProperty(Descriptiveable.swb_description, semObj.getProperty(Descriptiveable.swb_description));
+                        repElement.getSemanticObject().setProperty(Descriptiveable.swb_title, semObj.getProperty(Descriptiveable.swb_title));
+                        repElement.getSemanticObject().setProperty(Descriptiveable.swb_description, semObj.getProperty(Descriptiveable.swb_description));
                     }
                 }
-                response.setRenderParameter("uridsi", uridsi);
-                response.setRenderParameter("urise", urise);
+                response.setRenderParameter("uridsi", uriDocSectionInstance);
+                response.setRenderParameter("urise", uriSectionElement);
                 response.setCallMethod(SWBResourceURL.Call_DIRECT);
                 response.setMode(MODE_ACTUALIZA_TAB);
             } else if (action.equals(ACTION_ADD_RELATE)) {
-                uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
-                String urirel = request.getParameter("related") != null ? request.getParameter("related") : "";
-                if (!uridsi.equals("") && !urirel.equals("")) {
-                    DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
+                uriDocSectionInstance = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+                String uriRelated = request.getParameter("related") != null ? request.getParameter("related") : "";
+                if (!uriDocSectionInstance.equals("") && !uriRelated.equals("")) {
+                    DocumentSectionInstance docSectionInstance = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSectionInstance);
 
-                    ElementReferable er = (ElementReferable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urirel);
-                    ElementReference eref = ElementReference.ClassMgr.createElementReference(model);
-                    eref.setDocumentTemplate(dsi.getSecTypeDefinition().getParentTemplate());
-                    eref.setParentSection(dsi.getSecTypeDefinition());
-                    eref.setDocumentSectionInst(dsi);
-                    eref.setElementRef(er);
-                    eref.setIndex(Integer.parseInt(er.getId()));
+                    ElementReferable elemReferable = (ElementReferable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriRelated);
+                    ElementReference elemReference = ElementReference.ClassMgr.createElementReference(model);
+                    elemReference.setDocumentTemplate(docSectionInstance.getSecTypeDefinition().getParentTemplate());
+                    elemReference.setParentSection(docSectionInstance.getSecTypeDefinition());
+                    elemReference.setDocumentSectionInst(docSectionInstance);
+                    elemReference.setElementRef(elemReferable);
+                    elemReference.setIndex(Integer.parseInt(elemReferable.getId()));
 
-                    dsi.addDocuSectionElementInstance(eref);
-                    urise = eref.getURI();
+                    docSectionInstance.addDocuSectionElementInstance(elemReference);
+                    uriSectionElement = elemReference.getURI();
                 }
-                response.setRenderParameter("uridsi", uridsi);
-                response.setRenderParameter("urise", urise);
+                response.setRenderParameter("uridsi", uriDocSectionInstance);
+                response.setRenderParameter("urise", uriSectionElement);
                 response.setCallMethod(SWBResourceURL.Call_DIRECT);
                 response.setMode(MODE_ACTUALIZA_TAB);
             } else if (action.equals(SWBResourceURL.Action_REMOVE)) {
-                uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
-                urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
-                DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
-                SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
-                dsi.removeDocuSectionElementInstance(se);
+                uriDocSectionInstance = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+                uriSectionElement = request.getParameter("urise") != null ? request.getParameter("urise") : "";
+                DocumentSectionInstance docSectionInstance = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSectionInstance);
+                SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriSectionElement);
+                docSectionInstance.removeDocuSectionElementInstance(se);
                 se.remove();
             } else if (action.equals(ACTION_EDIT_TEXT)) {
-                uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+                uriDocSectionInstance = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
                 String data = request.getParameter("data") != null ? request.getParameter("data") : "";
-                urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
-                SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
+                uriSectionElement = request.getParameter("urise") != null ? request.getParameter("urise") : "";
+                SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriSectionElement);
                 if (se instanceof FreeText) {
-                    FreeText ft = (FreeText) se;
-                    ft.setText(data);
+                    FreeText freeText = (FreeText) se;
+                    freeText.setText(data);
                 } else if (se instanceof Activity) {
-                    Activity a = (Activity) se;
-                    a.setDescription(data);
-                    response.setRenderParameter("uridsi", a.getDocumentSectionInst().getURI());
-                    response.setRenderParameter("urise", urise);
-                    response.setRenderParameter("urip", a.getActivityRef().getProcessActivity().getProcess().getURI());
+                    Activity activity = (Activity) se;
+                    activity.setDescription(data);
+                    response.setRenderParameter("uridsi", activity.getDocumentSectionInst().getURI());
+                    response.setRenderParameter("urise", uriSectionElement);
+                    //response.setRenderParameter("urip", activity.getActivityRef().getProcessActivity().getProcess().getURI());
+                    response.setRenderParameter("urip", activity.getActivityRef().getProcessActivity().getProcess().getId());
                     response.setCallMethod(SWBResourceURL.Call_DIRECT);
                     response.setMode(MODE_ACTUALIZA_TAB);
                 }
             } else if (action.equals(ACTION_EDIT_DESCRIPTION)) {
-                urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
-                uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+                uriSectionElement = request.getParameter("urise") != null ? request.getParameter("urise") : "";
+                uriDocSectionInstance = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
                 String urip = request.getParameter("urip") != null ? request.getParameter("urip") : "";
                 String data = request.getParameter("data") != null ? request.getParameter("data") : "";
-                Activity activity = (Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
+                Activity activity = (Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriSectionElement);
                 if (activity != null) {
                     activity.setDescription(data);
                 }
-                response.setRenderParameter("uridsi", uridsi);
-                response.setRenderParameter("urise", urise);
+                response.setRenderParameter("uridsi", uriDocSectionInstance);
+                response.setRenderParameter("urise", uriSectionElement);
                 response.setRenderParameter("urip", urip);
                 response.setCallMethod(SWBResourceURL.Call_DIRECT);
                 response.setMode(MODE_ACTUALIZA_TAB);
@@ -368,38 +397,38 @@ public class SWPDocumentationResource extends GenericAdmResource {
 
                 String description = values.containsKey("description") ? values.get("description").toString() : null;
                 if (!uridi.equals("") && !title.equals("")) {
-                    DocumentationInstance di = (DocumentationInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridi);
-                    if (di != null) {
-                        Iterator<Documentation> itdoc = SWBComparator.sortSortableObject(Documentation.ClassMgr.listDocumentationByProcess(di.getProcessRef()));
+                    DocumentationInstance docInstance = (DocumentationInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridi);
+                    if (docInstance != null) {
+                        Iterator<Documentation> itdoc = SWBComparator.sortSortableObject(Documentation.ClassMgr.listDocumentationByProcess(docInstance.getProcessRef()));
                         while (itdoc.hasNext()) {
-                            Documentation d = itdoc.next();
-                            if (d.isActualVersion()) {
-                                d.setActualVersion(false);
+                            Documentation documentation = itdoc.next();
+                            if (documentation.isActualVersion()) {
+                                documentation.setActualVersion(false);
                             }
                         }
                         //Nueva versión publicada
                         Documentation doc = Documentation.ClassMgr.createDocumentation(model);
-                        doc.setProcess(di.getProcessRef());
+                        doc.setProcess(docInstance.getProcessRef());
                         doc.setTitle(title);
                         doc.setDescription(description);
                         doc.setActualVersion(true);
 
-                        String path = SWBPortal.getWorkPath() + "/models/" + model.getId() + "/Resource/" + di.getProcessRef().getId() + "/" + doc.getId() + "/";
+                        String path = SWBPortal.getWorkPath() + "/models/" + model.getId() + "/Resource/" + docInstance.getProcessRef().getId() + "/" + doc.getId() + "/";
                         File base = new File(path);
                         if (!base.exists()) {
                             base.mkdirs();
                         }
-                        File index = new File(base + "/" + di.getProcessRef().getId() + ".html");
+                        File index = new File(base + "/" + docInstance.getProcessRef().getId() + ".html");
                         FileOutputStream out = new FileOutputStream(index);
                         try {
-                            org.w3c.dom.Document dom = SWPUtils.getDocument(di, request, false);
+                            org.w3c.dom.Document dom = SWPUtils.getDocument(docInstance, request, false);
                             if (dom != null) {
                                 String tlpPath = "/work/models/" + response.getWebPage().getWebSiteId() + "/jsp/documentation/documentation.xsl";
                                 javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
                                 out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes("UTF-8"));
 
                                 Transformer transformer = TransformerFactory.newInstance().newTransformer();
-                                Result output = new StreamResult(new File(path + "/" + di.getProcessRef().getId() + ".xml"));
+                                Result output = new StreamResult(new File(path + "/" + docInstance.getProcessRef().getId() + ".xml"));
                                 Source input = new DOMSource(dom);
                                 transformer.transform(input, output);
 
@@ -411,56 +440,57 @@ public class SWPDocumentationResource extends GenericAdmResource {
                             log.error("Error on write file " + index.getAbsolutePath() + ", " + e.getMessage() + ", " + e.getCause());
                         }
                         response.setRenderParameter("uridoc", doc.getURI());
-                        response.setRenderParameter("urip", doc.getProcess().getURI());
+                        //response.setRenderParameter("urip", doc.getProcess().getURI());
+                        response.setRenderParameter("urip", doc.getProcess().getId());
                     }
                 }
                 response.setRenderParameter("uridi", uridi);
-                response.setRenderParameter("uridsi", uridsi);
+                response.setRenderParameter("uridsi", uriDocSectionInstance);
                 response.setMode(MODE_MSG_VERSION);
                 response.setCallMethod(SWBResourceURL.Call_DIRECT);
             } else if (action.equals(ACTION_RELATED_ACTIVITY)) {
-                Activity a = (Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
-                DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
-                if (a != null && dsi != null && dsi.getDocumentationInstance() != null) {
-                    DocumentationInstance di = dsi.getDocumentationInstance();
-                    Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
+                Activity a = (Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriSectionElement);
+                DocumentSectionInstance docSectionInstance = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSectionInstance);
+                if (a != null && docSectionInstance != null && docSectionInstance.getDocumentationInstance() != null) {
+                    DocumentationInstance docInstance = docSectionInstance.getDocumentationInstance();
+                    Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(docInstance.listDocumentSectionInstances());
                     Map map = new HashMap();
-                    Iterator<SectionElementRef> itser = a.listSectionElementRefs();
-                    while (itser.hasNext()) {
-                        SectionElementRef ser = itser.next();
+                    Iterator<SectionElementRef> itSectionElementRef = a.listSectionElementRefs();
+                    while (itSectionElementRef.hasNext()) {
+                        SectionElementRef ser = itSectionElementRef.next();
                         map.put(ser.getSectionElement(), ser);
                     }
                     while (itdsi.hasNext()) {
-                        DocumentSectionInstance dsin = itdsi.next();
-                        SemanticClass cls = dsin.getSecTypeDefinition() != null && dsin.getSecTypeDefinition().getSectionType() != null ? dsin.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
+                        DocumentSectionInstance docSectInstance = itdsi.next();
+                        SemanticClass cls = docSectInstance.getSecTypeDefinition() != null && docSectInstance.getSecTypeDefinition().getSectionType() != null ? docSectInstance.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
                         if (cls != null
                                 && cls.isSubClass(Instantiable.swpdoc_Instantiable, false)
-                                && dsin.listDocuSectionElementInstances().hasNext()) {
-                            Iterator<SectionElement> itse = dsin.listDocuSectionElementInstances();
+                                && docSectInstance.listDocuSectionElementInstances().hasNext()) {
+                            Iterator<SectionElement> itse = docSectInstance.listDocuSectionElementInstances();
                             while (itse.hasNext()) {
-                                SectionElement sen = itse.next();
-                                if (values.containsKey(sen.getURI()) && !map.containsKey(sen)) { // Add new SER
-                                    SectionElementRef ser = SectionElementRef.ClassMgr.createSectionElementRef(model);
-                                    ser.setSectionElement(sen);
-                                    ser.setActivity(a);
-                                    a.addSectionElementRef(ser);
-                                } else if (map.containsKey(sen) && !values.containsKey(sen.getURI())) { //Remove SER
-                                    SectionElementRef ser = (SectionElementRef) map.get(sen);
-                                    if (ser != null) {
-                                        ser.remove();
-                                        a.removeSectionElementRef(ser);
+                                SectionElement sectElement = itse.next();
+                                if (values.containsKey(sectElement.getURI()) && !map.containsKey(sectElement)) { // Add new SER
+                                    SectionElementRef sectElementRef = SectionElementRef.ClassMgr.createSectionElementRef(model);
+                                    sectElementRef.setSectionElement(sectElement);
+                                    sectElementRef.setActivity(a);
+                                    a.addSectionElementRef(sectElementRef);
+                                } else if (map.containsKey(sectElement) && !values.containsKey(sectElement.getURI())) { //Remove SER
+                                    SectionElementRef sectElementRef = (SectionElementRef) map.get(sectElement);
+                                    if (sectElementRef != null) {
+                                        sectElementRef.remove();
+                                        a.removeSectionElementRef(sectElementRef);
                                     }
                                 }
                             }
                         }
                     }
                 }
-                response.setRenderParameter("uridsi", uridsi);
-                response.setRenderParameter("urise", urise);
+                response.setRenderParameter("uridsi", uriDocSectionInstance);
+                response.setRenderParameter("urise", uriSectionElement);
             } else if (action.equals(ACTION_UPDATE_FILL)) {
-                urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
+                uriSectionElement = request.getParameter("urise") != null ? request.getParameter("urise") : "";
                 String fill = request.getParameter("fill") != null ? request.getParameter("fill") : "";
-                Activity activity = (Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
+                Activity activity = (Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriSectionElement);
                 if (activity != null) {
                     if (fill.equals("defaultFill")) {
                         activity.setFill(null);
@@ -469,16 +499,16 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     }
                 }
             } else if (action.equals(ACTION_UPLOAD_PICTURE)) {
-                SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
-                if (is != null && se != null) {
+                SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriSectionElement);
+                if (inputStream != null && se != null) {
                     String basePath = SWBPortal.getWorkPath() + "/models/" + model.getId() + "/swp_DocumentationImage";
                     File dir = new File(basePath);
                     if (!dir.exists()) {
                         dir.mkdirs();
                     }
-                    OutputStream out = new FileOutputStream(new File(basePath + "/" + filename));
-                    IOUtils.copy(is, out);
-                    is.close();
+                    OutputStream out = new FileOutputStream(new File(basePath + "/" + fileName));
+                    IOUtils.copy(inputStream, out);
+                    inputStream.close();
                     out.flush();
                     out.close();
                 }
@@ -639,8 +669,8 @@ public class SWPDocumentationResource extends GenericAdmResource {
             String viewBox = request.getParameter("viewBox");
 
             org.semanticwb.process.model.Process p = (org.semanticwb.process.model.Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urip);
-            DocumentationInstance di = (DocumentationInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridi);
-            if (p != null && di != null) {
+            DocumentationInstance docInstance = (DocumentationInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridi);
+            if (p != null && docInstance != null) {
                 WebSite model = paramRequest.getWebPage().getWebSite();
 
                 response.setContentType("text/html; charset=UTF-8");
@@ -692,7 +722,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     SWBUtils.IO.copyStructure(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/images/", basePath + "/css/images/");
                     File index = new File(basePath + "/" + p.getId() + ".html");
                     FileOutputStream out = new FileOutputStream(index);
-                    org.w3c.dom.Document dom = SWPUtils.getDocument(di, request, true);
+                    org.w3c.dom.Document dom = SWPUtils.getDocument(docInstance, request, true);
                     if (dom != null) {
                         String tlpPath = "/work/models/" + model.getId() + "/jsp/documentation/documentation.xsl";
                         javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
@@ -700,7 +730,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                         out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes());
 
                         Transformer transformer = TransformerFactory.newInstance().newTransformer();
-                        Result output = new StreamResult(new File(basePath + "/" + di.getProcessRef().getId() + ".xml"));
+                        Result output = new StreamResult(new File(basePath + "/" + docInstance.getProcessRef().getId() + ".xml"));
                         Source input = new DOMSource(dom);
                         transformer.transform(input, output);
 
@@ -726,39 +756,39 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     //Sections
                     doc.newPage();
                     doc.add(new Paragraph("Secciones"));
-                    Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
+                    Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(docInstance.listDocumentSectionInstances());
                     while (itdsi.hasNext()) {//Sections
-                        DocumentSectionInstance dsi = itdsi.next();
-                        SemanticClass cls = dsi.getSecTypeDefinition() != null && dsi.getSecTypeDefinition().getSectionType() != null ? dsi.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
-                        if (!dsi.getSecTypeDefinition().isActive() || (cls != null && cls.equals(Model.sclass))) {
+                        DocumentSectionInstance docSectionInstance = itdsi.next();
+                        SemanticClass cls = docSectionInstance.getSecTypeDefinition() != null && docSectionInstance.getSecTypeDefinition().getSectionType() != null ? docSectionInstance.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
+                        if (!docSectionInstance.getSecTypeDefinition().isActive() || (cls != null && cls.equals(Model.sclass))) {
                             continue;
                         }
-                        doc.add(new Paragraph(dsi.getSecTypeDefinition().getTitle()));
+                        doc.add(new Paragraph(docSectionInstance.getSecTypeDefinition().getTitle()));
                     }
 
                     //Content
                     doc.newPage();
                     doc.add(new Paragraph("Contenido"));
 
-                    itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
+                    itdsi = SWBComparator.sortSortableObject(docInstance.listDocumentSectionInstances());
                     while (itdsi.hasNext()) {//Sections
-                        DocumentSectionInstance dsi = itdsi.next();
-                        doc.add(new Paragraph(dsi.getSecTypeDefinition().getTitle()));
+                        DocumentSectionInstance docSectionInstance = itdsi.next();
+                        doc.add(new Paragraph(docSectionInstance.getSecTypeDefinition().getTitle()));
 
-                        Iterator<SectionElement> itse = SWBComparator.sortSortableObject(dsi.listDocuSectionElementInstances());
+                        Iterator<SectionElement> itse = SWBComparator.sortSortableObject(docSectionInstance.listDocuSectionElementInstances());
                         List<SectionElement> list = new ArrayList<SectionElement>();
                         while (itse.hasNext()) {
                             SectionElement se = itse.next();
                             list.add(se);
                         }
 
-                        SemanticClass cls = dsi.getSecTypeDefinition() != null && dsi.getSecTypeDefinition().getSectionType() != null ? dsi.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
+                        SemanticClass cls = docSectionInstance.getSecTypeDefinition() != null && docSectionInstance.getSecTypeDefinition().getSectionType() != null ? docSectionInstance.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
                         if (cls != null) {
-                            if (!dsi.getSecTypeDefinition().isActive() || cls.equals(Model.sclass)) {
+                            if (!docSectionInstance.getSecTypeDefinition().isActive() || cls.equals(Model.sclass)) {
                                 continue;
                             }
                             if (cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {//Instantiable
-                                String[] props = dsi.getSecTypeDefinition().getVisibleProperties().split("\\|");
+                                String[] props = docSectionInstance.getSecTypeDefinition().getVisibleProperties().split("\\|");
                                 //Add Table
                                 Table t = new Table(props.length, (list.size() + 1));
 
@@ -768,8 +798,8 @@ public class SWPDocumentationResource extends GenericAdmResource {
                                 }
                                 for (SectionElement se : list) {//Instances
                                     for (String propt : props) {
-                                        String idprop = propt.substring(propt.indexOf(";") + 1, propt.length());
-                                        SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
+                                        String idProperty = propt.substring(propt.indexOf(";") + 1, propt.length());
+                                        SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idProperty);
                                         String value = "es archivo";
                                         if (prop != null && !prop.getPropId().equals(Referable.swpdoc_file.getPropId())) {
                                             value = (se.getSemanticObject().getProperty(prop) != null ? se.getSemanticObject().getProperty(prop) : "");
@@ -780,13 +810,13 @@ public class SWPDocumentationResource extends GenericAdmResource {
                                             Referable ref = (Referable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
                                             //RepositoryDirectory rd = ref.getRefRepository().getRepositoryDirectory();
                                             RepositoryElement re = (RepositoryElement) ref.getRefRepository();
-                                            VersionInfo vi = ref.getVersion() != null ? ref.getVersion() : re.getLastVersion();
+                                            VersionInfo versionInfo = ref.getVersion() != null ? ref.getVersion() : re.getLastVersion();
 
                                             if (re instanceof RepositoryFile) {
-                                                String basePathE = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/";
+                                                String basePathE = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber() + "/";
                                                 File baseDir = new File(basePathE);
                                                 String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/";
-                                                File repFile = new File(basePathDest + "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/");
+                                                File repFile = new File(basePathDest + "rep_files/" + ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber() + "/");
                                                 if (!repFile.exists()) {
                                                     repFile.mkdirs();
                                                 }
@@ -794,13 +824,13 @@ public class SWPDocumentationResource extends GenericAdmResource {
                                                     File[] files = baseDir.listFiles();
                                                     for (File file : files) {
                                                         String fileName = file.getName().substring(file.getName().lastIndexOf("."));
-                                                        anchor.setReference("rep_Files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/" + se.getId() + fileName);
+                                                        anchor.setReference("rep_Files/" + ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber() + "/" + se.getId() + fileName);
                                                         copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + se.getId() + fileName);
                                                         break;
                                                     }
                                                 }
                                             } else if (re instanceof RepositoryURL) {
-                                                anchor.setReference(vi.getVersionFile());
+                                                anchor.setReference(versionInfo.getVersionFile());
                                             }
                                             t.addCell(new Cell(anchor));
                                         }
@@ -809,13 +839,13 @@ public class SWPDocumentationResource extends GenericAdmResource {
                                 doc.add(t);
                             } else if (cls.equals(FreeText.sclass)) {//FreeText
                                 for (SectionElement se : list) {
-                                    FreeText ft = (FreeText) se;
+                                    FreeText freeText = (FreeText) se;
                                     File dir = new File(basePath + "rep_files/img/" + se.getId() + "/");
                                     if (!dir.exists()) {
                                         dir.mkdirs();
                                     }
-                                    if (ft.getText() != null) {
-                                        SWPUtils.addTextHtmlToRtf(ft.getText(), doc, se, model, p);
+                                    if (freeText.getText() != null) {
+                                        SWPUtils.addTextHtmlToRtf(freeText.getText(), doc, se, model, p);
                                     }
                                 }
                             } else if (cls.equals(Activity.sclass)) {//Activity
