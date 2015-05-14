@@ -75,218 +75,227 @@ public class SWPDocumentTemplateResource extends GenericResource {
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
         String action = response.getAction();
         response.setRenderParameter("action", action);
-        WebSite model = response.getWebPage().getWebSite();
+        WebSite model = response.getWebPage().getWebSite();  
+        String uriTemplateCont = "";
+        String uriDocTemplate = "";
+        String uriDocSection = "";
+        DocumentTemplate docTemplate = null;
+        String titleTemplateCont = null;
+        TemplateContainer templateCont = null;
+        DocumentationInstance docInstance = null;
+        DocumentSection docSection = null;
+        
+        
         if (action.equals(SWBResourceURL.Action_ADD)) {//Agregar nueva plantilla de documentación
             //String title = request.getParameter("titleTemplate") != null ? request.getParameter("titleTemplate").trim() : "";
-            String titletc = request.getParameter("titletc") != null ? request.getParameter("titletc").trim() : "";
-            if (!titletc.equals("")) {
-                TemplateContainer tc = TemplateContainer.ClassMgr.createTemplateContainer(model);
-                tc.setTitle(titletc);
-                DocumentTemplate dt = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
-                dt.setTemplateContainer(tc);
-                tc.addTemplate(dt);
-                tc.setActualTemplate(dt);
-                tc.setLastTemplate(dt);
-                dt.setTitle(titletc);
+            titleTemplateCont= request.getParameter("titletc") != null ? request.getParameter("titletc").trim() : "";
+            if (!titleTemplateCont.equals("")) {
+                templateCont = TemplateContainer.ClassMgr.createTemplateContainer(model);
+                templateCont.setTitle(titleTemplateCont);
+                docTemplate = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
+                docTemplate.setTemplateContainer(templateCont);
+                templateCont.addTemplate(docTemplate);
+                templateCont.setActualTemplate(docTemplate);
+                templateCont.setLastTemplate(docTemplate);
+                docTemplate.setTitle(titleTemplateCont);
                 String[] processes = request.getParameterValues("procesess");
                 if (processes != null) {
-                    for (int i = 0; i < processes.length; i++) {
-                        String idp = processes[i];
+                    for (String idp : processes) {
                         org.semanticwb.process.model.Process process = (org.semanticwb.process.model.Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idp);
                         if (process != null) {
-                            tc.addProcess(process);
+                            templateCont.addProcess(process);
                         }
                     }
                 }
-                response.setRenderParameter("uritc", tc.getURI());
+                response.setRenderParameter("uritc", templateCont.getURI());
             }
         } else if (action.equals(SWBResourceURL.Action_EDIT)) { //Editar plantilla de documentación
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-            String titletc = request.getParameter("titletc") != null ? request.getParameter("titletc").trim() : "";
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            titleTemplateCont = request.getParameter("titletc") != null ? request.getParameter("titletc").trim() : "";
             //String title = request.getParameter("titleTemplate") != null ? request.getParameter("titleTemplate").trim() : "";
-            if (!uritc.equals("") && !titletc.equals("")) {
-                TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-                if (tc != null) {
-                    tc.setTitle(titletc);
-                    DocumentTemplate dt = tc.getActualTemplate();
-                    if (dt != null) {
+            if (!uriTemplateCont.equals("") && !titleTemplateCont.equals("")) {
+                templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+                if (templateCont != null) {
+                    templateCont.setTitle(titleTemplateCont);
+                    docTemplate = templateCont.getActualTemplate();
+                    if (docTemplate != null) {
                         //dt.setTitle(title);
-                        tc.removeAllProcess();
+                        templateCont.removeAllProcess();
                         String[] processes = request.getParameterValues("procesess");
                         if (processes != null) {
-                            for (int i = 0; i < processes.length; i++) {
-                                String idp = processes[i];
+                            for (String idp : processes) {
                                 org.semanticwb.process.model.Process process = (org.semanticwb.process.model.Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idp);
                                 if (process != null) {
-                                    tc.addProcess(process);
+                                    templateCont.addProcess(process);
                                 }
                             }
                         }
-                        Iterator<DocumentSection> iterator = dt.listDocumentSections();
-                        while (iterator.hasNext()) {
-                            DocumentSection ds = iterator.next();
-                            try {
-                                Integer index = Integer.parseInt(request.getParameter("ind" + ds.getURI()));
-                                ds.setIndex(index);
+                        Iterator<DocumentSection> itDocSections = docTemplate.listDocumentSections();
+                        while (itDocSections.hasNext()) {
+                            docSection = itDocSections.next();
+                            try{
+                                Integer index = Integer.parseInt(request.getParameter("ind" + docSection.getURI()));
+                                docSection.setIndex(index);
                             } catch (NumberFormatException e) {
-                                log.error("NumberFormatException, on " + action + ", " + e.getMessage() + ", " + e.getCause());
+                                log.error("NumberFormatException, on " + action + ", " + e.getMessage());
                             }
-                            if (request.getParameter(ds.getURI()) != null) {
-                                ds.setActive(true);
+                                                        
+                            if (request.getParameter(docSection.getURI()) != null) {
+                                docSection.setActive(true);
                             } else {
-                                ds.setActive(false);
+                                docSection.setActive(false);
                             }
                         }
                     }
                 }
             }
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_ADD_VERSION_TEMPLATE)) {
             String title = request.getParameter("title") != null ? request.getParameter("title").trim() : "";
             String description = request.getParameter("description") != null ? request.getParameter("description").trim() : "";
 
             String uridtp = request.getParameter("uridtp") != null ? request.getParameter("uridtp").trim() : "";
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
             boolean actual = request.getParameter("actual") != null;
-            DocumentTemplate dtp = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridtp);
-            TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-            if (dtp != null && tc != null) {
-                DocumentTemplate dtn = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
-                Iterator<DocumentSection> itds = dtp.listDocumentSections();
+            docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridtp);
+            templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+            if (docTemplate != null && templateCont != null) {
+                DocumentTemplate docTemplateNew = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
+                Iterator<DocumentSection> itds = docTemplate.listDocumentSections();
                 Map map = new HashMap();
                 while (itds.hasNext()) {
-                    DocumentSection ds = itds.next();
-                    if (request.getParameter(ds.getURI()) != null) {
-                        DocumentSection dsn = DocumentSection.ClassMgr.createDocumentSection(model);
-                        dsn.setActive(ds.isActive());
-                        dsn.setConfigData(ds.getConfigData());
-                        dsn.setDescription(ds.getDescription());
-                        dsn.setIndex(ds.getIndex());
-                        dsn.setSectionType(ds.getSectionType());
-                        dsn.setTitle(ds.getTitle());
-                        dsn.setVisibleProperties(ds.getVisibleProperties());
-                        dsn.setParentTemplate(dtn);
-                        dtn.addDocumentSection(dsn);
-                        map.put(ds.getURI(), dsn);
+                    docSection = itds.next();
+                    if (request.getParameter(docSection.getURI()) != null) {
+                        DocumentSection docSectionNew = DocumentSection.ClassMgr.createDocumentSection(model);
+                        docSectionNew.setActive(docSection.isActive());
+                        docSectionNew.setConfigData(docSection.getConfigData());
+                        docSectionNew.setDescription(docSection.getDescription());
+                        docSectionNew.setIndex(docSection.getIndex());
+                        docSectionNew.setSectionType(docSection.getSectionType());
+                        docSectionNew.setTitle(docSection.getTitle());
+                        docSectionNew.setVisibleProperties(docSection.getVisibleProperties());
+                        docSectionNew.setParentTemplate(docTemplateNew);
+                        docTemplateNew.addDocumentSection(docSectionNew);
+                        map.put(docSection.getURI(), docSectionNew);
                     }
                 }
                 //Copiar instancias de documentación
-                Iterator<org.semanticwb.process.model.Process> itpro = tc.listProcesses();
+                Iterator<org.semanticwb.process.model.Process> itpro = templateCont.listProcesses();
                 while (itpro.hasNext()) {
                     org.semanticwb.process.model.Process process = itpro.next();
-                    Iterator<DocumentationInstance> itdi = DocumentationInstance.ClassMgr.listDocumentationInstanceByProcessRef(process, model);
-                    while (itdi.hasNext()) {
-                        DocumentationInstance di = itdi.next();
+                    Iterator<DocumentationInstance> itDocInstance = DocumentationInstance.ClassMgr.listDocumentationInstanceByProcessRef(process, model);
+                    while (itDocInstance.hasNext()) {
+                        docInstance = itDocInstance.next();
 
                         //Duplicar objeto DocumentationInstance
-                        DocumentationInstance din = DocumentationInstance.ClassMgr.createDocumentationInstance(model);
-                        din.setDocTypeDefinition(dtn);
-                        din.setProcessRef(process);
+                        DocumentationInstance docInstanceNew = DocumentationInstance.ClassMgr.createDocumentationInstance(model);
+                        docInstanceNew.setDocTypeDefinition(docTemplateNew);
+                        docInstanceNew.setProcessRef(process);
                         
-                        if (di.getDocTypeDefinition().getURI().equals(dtp.getURI())) {
-                            Iterator<DocumentSectionInstance> itdsi = di.listDocumentSectionInstances();
-                            while (itdsi.hasNext()) {
-                                DocumentSectionInstance dsi = itdsi.next();
-                                if (map.containsKey(dsi.getSecTypeDefinition().getURI())) {
+                        if (docInstance.getDocTypeDefinition().getURI().equals(docTemplate.getURI())) {
+                            Iterator<DocumentSectionInstance> itDocSectInst = docInstance.listDocumentSectionInstances();
+                            while (itDocSectInst.hasNext()) {
+                                DocumentSectionInstance docSectionInstance = itDocSectInst.next();
+                                if (map.containsKey(docSectionInstance.getSecTypeDefinition().getURI())) {
 
                                     //Duplicar objeto DocumentSectionInstance
-                                    DocumentSectionInstance dsin = DocumentSectionInstance.ClassMgr.createDocumentSectionInstance(model);
-                                    din.addDocumentSectionInstance(dsin);
-                                    dsin.setDocumentationInstance(din);
+                                    DocumentSectionInstance docSectionInstanceNew = DocumentSectionInstance.ClassMgr.createDocumentSectionInstance(model);
+                                    docInstanceNew.addDocumentSectionInstance(docSectionInstanceNew);
+                                    docSectionInstanceNew.setDocumentationInstance(docInstanceNew);
 
                                     Map replySe = new HashMap();//Almacenar elementos relacionados
-                                    DocumentSection ds = (DocumentSection) map.get(dsi.getSecTypeDefinition().getURI());
-                                    dsin.setSecTypeDefinition(ds);
-                                    dsi.setIndex(ds.getIndex());
-                                    Iterator<SectionElement> itse = dsi.listDocuSectionElementInstances();
+                                    docSection = (DocumentSection) map.get(docSectionInstance.getSecTypeDefinition().getURI());
+                                    docSectionInstanceNew.setSecTypeDefinition(docSection);
+                                    docSectionInstance.setIndex(docSection.getIndex());
+                                    Iterator<SectionElement> itse = docSectionInstance.listDocuSectionElementInstances();
                                     while (itse.hasNext()) {
                                         SectionElement se = itse.next();
 
 //                                        SemanticObject semObj = SemanticObject.createSemanticObject(se.getSemanticObject().getRDFResource());
-                                        SemanticClass scls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(dsi.getSecTypeDefinition().getSectionType().getURI());
+                                        SemanticClass scls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(docSectionInstance.getSecTypeDefinition().getSectionType().getURI());
                                         SemanticObject semOb = model.getSemanticModel().createSemanticObjectById(model.getSemanticModel().getCounter(scls) + "", scls);
-                                        SectionElement sen = (SectionElement) semOb.createGenericInstance();
-                                        sen.setDescription(se.getDescription());
-                                        sen.setDocumentSectionInst(dsin);
-                                        sen.setDocumentTemplate(dtn);
-                                        sen.setIndex(se.getIndex());
-                                        sen.setParentSection(ds);
-                                        sen.setTitle(se.getTitle());
-                                        dsin.addDocuSectionElementInstance(sen);
-                                        replySe.put(se, sen);
+                                        SectionElement sectionElementNew = (SectionElement) semOb.createGenericInstance();
+                                        sectionElementNew.setDescription(se.getDescription());
+                                        sectionElementNew.setDocumentSectionInst(docSectionInstanceNew);
+                                        sectionElementNew.setDocumentTemplate(docTemplateNew);
+                                        sectionElementNew.setIndex(se.getIndex());
+                                        sectionElementNew.setParentSection(docSection);
+                                        sectionElementNew.setTitle(se.getTitle());
+                                        docSectionInstanceNew.addDocuSectionElementInstance(sectionElementNew);
+                                        replySe.put(se, sectionElementNew);
                                         //Role OK
                                         if (se instanceof Rule) {
-                                            ((Rule) sen).setNumber(((Rule) se).getNumber());
-                                            ((Rule) sen).setPrefix(((Rule) se).getPrefix());
+                                            ((Rule) sectionElementNew).setNumber(((Rule) se).getNumber());
+                                            ((Rule) sectionElementNew).setPrefix(((Rule) se).getPrefix());
                                         }
                                         //Referable ok
-                                        if (se instanceof Referable) {
-                                            ((Referable) sen).setRefRepository(((Referable) se).getRefRepository());
+                                        else if (se instanceof Referable) {
+                                            ((Referable) sectionElementNew).setRefRepository(((Referable) se).getRefRepository());
                                         }
-                                        if (se instanceof Definition) {
-                                            ((Definition) sen).setFile(((Definition) se).getFile());
-                                            ((Definition) sen).setNumber(((Definition) se).getNumber());
-                                            ((Definition) sen).setPrefix(((Definition) se).getPrefix());
-                                            ((Definition) sen).setRefRepository(((Definition) se).getRefRepository());
+                                        else if (se instanceof Definition) {
+                                            ((Definition) sectionElementNew).setFile(((Definition) se).getFile());
+                                            ((Definition) sectionElementNew).setNumber(((Definition) se).getNumber());
+                                            ((Definition) sectionElementNew).setPrefix(((Definition) se).getPrefix());
+                                            ((Definition) sectionElementNew).setRefRepository(((Definition) se).getRefRepository());
                                         }
-                                        if (se instanceof ElementReference) {
-                                            ((ElementReference) sen).setElementRef(((ElementReference) se).getElementRef());
-                                            ((ElementReference) sen).setElementType(((ElementReference) se).getElementType());
+                                        else if (se instanceof ElementReference) {
+                                            ((ElementReference) sectionElementNew).setElementRef(((ElementReference) se).getElementRef());
+                                            ((ElementReference) sectionElementNew).setElementType(((ElementReference) se).getElementType());
                                         }
-                                        if (se instanceof Format) {
-                                            ((Format) sen).setFile(((Format) se).getFile());
-                                            ((Format) sen).setKeyWords(((Format) se).getKeyWords());
-                                            ((Format) sen).setRelatedSubjects(((Format) se).getRelatedSubjects());
+                                        else if (se instanceof Format) {
+                                            ((Format) sectionElementNew).setFile(((Format) se).getFile());
+                                            ((Format) sectionElementNew).setKeyWords(((Format) se).getKeyWords());
+                                            ((Format) sectionElementNew).setRelatedSubjects(((Format) se).getRelatedSubjects());
                                         }
-                                        if (se instanceof FreeText) {
-                                            ((FreeText) sen).setText(((FreeText) se).getText());
+                                        else if (se instanceof FreeText) {
+                                            ((FreeText) sectionElementNew).setText(((FreeText) se).getText());
                                         }
-                                        if (se instanceof Indicator) {
-                                            ((Indicator) sen).setFormula(((Indicator) se).getFormula());
-                                            ((Indicator) sen).setFrequencyCalculation(((Indicator) se).getFrequencyCalculation());
-                                            ((Indicator) sen).setInformationSource(((Indicator) se).getInformationSource());
-                                            ((Indicator) sen).setMethodVerification(((Indicator) se).getMethodVerification());
-                                            ((Indicator) sen).setNumber(((Indicator) se).getNumber());
-                                            ((Indicator) sen).setObjetive(((Indicator) se).getObjetive());
-                                            ((Indicator) sen).setResponsible(((Indicator) se).getResponsible());
-                                            ((Indicator) sen).setWeightingIndicator(((Indicator) se).getWeightingIndicator());
+                                        else if (se instanceof Indicator) {
+                                            ((Indicator) sectionElementNew).setFormula(((Indicator) se).getFormula());
+                                            ((Indicator) sectionElementNew).setFrequencyCalculation(((Indicator) se).getFrequencyCalculation());
+                                            ((Indicator) sectionElementNew).setInformationSource(((Indicator) se).getInformationSource());
+                                            ((Indicator) sectionElementNew).setMethodVerification(((Indicator) se).getMethodVerification());
+                                            ((Indicator) sectionElementNew).setNumber(((Indicator) se).getNumber());
+                                            ((Indicator) sectionElementNew).setObjetive(((Indicator) se).getObjetive());
+                                            ((Indicator) sectionElementNew).setResponsible(((Indicator) se).getResponsible());
+                                            ((Indicator) sectionElementNew).setWeightingIndicator(((Indicator) se).getWeightingIndicator());
                                         }
                                         //Model OK
                                         //Objetive OK
-                                        if (se instanceof Policy) {
-                                            ((Policy) sen).setNumber(((Policy) se).getNumber());
-                                            ((Policy) sen).setPrefix(((Policy) se).getPrefix());
+                                        else if (se instanceof Policy) {
+                                            ((Policy) sectionElementNew).setNumber(((Policy) se).getNumber());
+                                            ((Policy) sectionElementNew).setPrefix(((Policy) se).getPrefix());
                                         }
-                                        if (se instanceof Reference) {
-                                            ((Reference) sen).setFile(((Reference) se).getFile());
-                                            ((Reference) sen).setNumber(((Reference) se).getNumber());
-                                            ((Reference) sen).setPrefix(((Reference) se).getPrefix());
-                                            ((Reference) sen).setRefRepository(((Reference) se).getRefRepository());
-                                            ((Reference) sen).setTypeReference(((Reference) se).getTypeReference());
+                                        else if (se instanceof Reference) {
+                                            ((Reference) sectionElementNew).setFile(((Reference) se).getFile());
+                                            ((Reference) sectionElementNew).setNumber(((Reference) se).getNumber());
+                                            ((Reference) sectionElementNew).setPrefix(((Reference) se).getPrefix());
+                                            ((Reference) sectionElementNew).setRefRepository(((Reference) se).getRefRepository());
+                                            ((Reference) sectionElementNew).setTypeReference(((Reference) se).getTypeReference());
                                         }
                                         //Risk OK
 
-                                        if (se instanceof Activity) {//Activity
-                                            Activity act = (Activity) se;
-                                            Activity actn = (Activity) sen;
+                                        else if (se instanceof Activity) {//Activity
+                                            Activity activity = (Activity) se;
+                                            Activity activityNew = (Activity) sectionElementNew;
 
-                                            ActivityRef actrn = ActivityRef.ClassMgr.createActivityRef(model);
-                                            actrn.setProcessActivity(act.getActivityRef().getProcessActivity());
-                                            actn.setDescription(act.getDescription());
-                                            actn.setActivityRef(actrn);
-                                            actn.setDocumentTemplate(dtn);
-                                            actn.setFill(act.getFill());
-                                            actn.setIndex(act.getIndex());
-                                            actn.setTitle(act.getTitle());
-                                            actn.setParentSection(ds);
+                                            ActivityRef activityRefNew = ActivityRef.ClassMgr.createActivityRef(model);
+                                            activityRefNew.setProcessActivity(activity.getActivityRef().getProcessActivity());
+                                            activityNew.setDescription(activity.getDescription());
+                                            activityNew.setActivityRef(activityRefNew);
+                                            activityNew.setDocumentTemplate(docTemplateNew);
+                                            activityNew.setFill(activity.getFill());
+                                            activityNew.setIndex(activity.getIndex());
+                                            activityNew.setTitle(activity.getTitle());
+                                            activityNew.setParentSection(docSection);
 
-                                            Iterator<SectionElementRef> itser = act.listSectionElementRefs();
+                                            Iterator<SectionElementRef> itser = activity.listSectionElementRefs();
                                             while (itser.hasNext()) {
                                                 SectionElementRef ser = itser.next();
                                                 SectionElementRef sern = SectionElementRef.ClassMgr.createSectionElementRef(model);
-                                                sern.setActivity(actn);
+                                                sern.setActivity(activityNew);
                                                 sern.setSectionElement((SectionElement) replySe.get(ser.getSectionElement()));
-                                                actn.addSectionElementRef(sern);
+                                                activityNew.addSectionElementRef(sern);
                                             }
                                         }
                                     }
@@ -296,83 +305,83 @@ public class SWPDocumentTemplateResource extends GenericResource {
                     }
                 }
 
-                dtn.setTitle(title);
-                dtn.setDescription(!description.equals("") ? description : null);
-                dtn.setTemplateContainer(tc);
-                dtn.setPreviousTemplate(tc.getLastTemplate());
-                DocumentTemplate lt = tc.getLastTemplate();
-                if (lt != null) {
-                    lt.setNextTemplate(dtn);
+                docTemplateNew.setTitle(title);
+                docTemplateNew.setDescription(!description.equals("") ? description : null);
+                docTemplateNew.setTemplateContainer(templateCont);
+                docTemplateNew.setPreviousTemplate(templateCont.getLastTemplate());
+                DocumentTemplate lastTemplate = templateCont.getLastTemplate();
+                if (lastTemplate != null) {
+                    lastTemplate.setNextTemplate(docTemplateNew);
                 }
-                tc.addTemplate(dtn);
-                tc.setLastTemplate(dtn);
+                templateCont.addTemplate(docTemplateNew);
+                templateCont.setLastTemplate(docTemplateNew);
                 if (actual) {
-                    tc.setActualTemplate(dtn);
+                    templateCont.setActualTemplate(docTemplateNew);
                 }
 
-                response.setRenderParameter("uridtn", dtn.getURI());
+                response.setRenderParameter("uridtn", docTemplateNew.getURI());
 
             }
             response.setRenderParameter("uridtp", uridtp);
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_EDIT_VERSION_TEMPLATE)) {
-            String uridt = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            uriDocTemplate = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
 
-            DocumentTemplate dt = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridt);
-            TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-            if (dt != null && tc != null) {
+            docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocTemplate);
+            templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+            if (docTemplate != null && templateCont != null) {
                 String title = request.getParameter("title") != null ? request.getParameter("title").trim() : "";
                 String description = request.getParameter("description") != null ? request.getParameter("description").trim() : "";
                 boolean actual = request.getParameter("actual") != null;
-                dt.setTitle(title);
-                dt.setDescription(description);
+                docTemplate.setTitle(title);
+                docTemplate.setDescription(description);
                 if (actual) {
-                    tc.setActualTemplate(dt);
+                    templateCont.setActualTemplate(docTemplate);
                 }
             }
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(SWBResourceURL.Action_REMOVE)) {//Eliminar plantilla de documentación
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-            TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-            if (tc != null) {
-                Iterator<DocumentTemplate> itdt = tc.listTemplates();
-                while (itdt.hasNext()) {
-                    DocumentTemplate dt = itdt.next();
-                    Iterator<DocumentationInstance> itdi = dt.listDocumentationInstances();
-                    while (itdi.hasNext()) {
-                        DocumentationInstance di = itdi.next();
-                        di.remove();
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+            if (templateCont != null) {
+                Iterator<DocumentTemplate> itDocTemplate = templateCont.listTemplates();
+                while (itDocTemplate.hasNext()) {
+                    docTemplate = itDocTemplate.next();
+                    Iterator<DocumentationInstance> itDocInstance = docTemplate.listDocumentationInstances();
+                    while (itDocInstance.hasNext()) {
+                        docInstance = itDocInstance.next();
+                        docInstance.remove();
                     }
-                    dt.removeAllDocumentSection();
-                    dt.remove();
+                    docTemplate.removeAllDocumentSection();
+                    docTemplate.remove();
                 }
-                tc.removeAllTemplate();
-                tc.remove();
+                templateCont.removeAllTemplate();
+                templateCont.remove();
             }
         } else if (action.equals(ACTION_ADD_DOCUMENT_SECTION) && model != null) {
             String titleSection = request.getParameter("titleSection") != null ? request.getParameter("titleSection").trim() : "";
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
             String dstype = request.getParameter("dstype") != null ? request.getParameter("dstype").trim() : "";
             SemanticClass semCls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(URLDecoder.decode(dstype));
-            String configdata = "configdata";
+            String configData = "configdata";
             if (semCls != null) {
                 if (semCls.isSubClass(Referable.swpdoc_Referable, false)) {
-                    configdata = request.getParameter("configdata") != null ? request.getParameter("configdata").trim() : "";
+                    configData = request.getParameter("configdata") != null ? request.getParameter("configdata").trim() : "";
                 }
-                if (!titleSection.equals("") && !uritc.equals("") && !dstype.equals("") && !configdata.equals("")) {
-                    TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-                    if (tc != null) {
-                        DocumentTemplate dt = tc.getActualTemplate();
-                        DocumentSection ds = DocumentSection.ClassMgr.createDocumentSection(model);
-                        ds.setConfigData(configdata);
-                        ds.setTitle(titleSection);
-                        ds.setParentTemplate(dt);
-                        int i = (Integer.parseInt(SWBUtils.Collections.sizeOf(dt.listDocumentSections()) + "") + 1);
-                        ds.setIndex(i);
-                        ds.setSectionType(semCls.getSemanticObject());
-                        ds.setActive(true);
-                        dt.addDocumentSection(ds);
+                if (!titleSection.equals("") && !uriTemplateCont.equals("") && !dstype.equals("") && !configData.equals("")) {
+                    templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+                    if (templateCont != null) {
+                        docTemplate = templateCont.getActualTemplate();
+                        docSection = DocumentSection.ClassMgr.createDocumentSection(model);
+                        docSection.setConfigData(configData);
+                        docSection.setTitle(titleSection);
+                        docSection.setParentTemplate(docTemplate);
+                        int i = (Integer.parseInt(SWBUtils.Collections.sizeOf(docTemplate.listDocumentSections()) + "") + 1);
+                        docSection.setIndex(i);
+                        docSection.setSectionType(semCls.getSemanticObject());
+                        docSection.setActive(true);
+                        docTemplate.addDocumentSection(docSection);
                         SWBFormMgr formMgr = new SWBFormMgr(semCls, model.getSemanticObject(), SWBFormMgr.MODE_EDIT);
                         formMgr.clearProperties();
                         Iterator<SemanticProperty> itsp = semCls.listProperties();
@@ -382,7 +391,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
                                 formMgr.addProperty(sp);
                             }
                         }
-                        ds.setVisibleProperties("");
+                        docSection.setVisibleProperties("");
                         String newprop = "";
                         itsp = formMgr.getProperties().iterator();
                         while (itsp.hasNext()) {
@@ -392,146 +401,147 @@ public class SWPDocumentTemplateResource extends GenericResource {
                                 newprop += label + ";" + sp.getPropId() + "|";
                             }
                         }
-                        ds.setVisibleProperties(newprop);
-                        response.setRenderParameter("urids", ds.getURI());
+                        docSection.setVisibleProperties(newprop);
+                        response.setRenderParameter("urids", docSection.getURI());
                     }
                 }
             }
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_DEFINE_VERSION_TEMPLATE)) {
-            String uridt = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            uriDocTemplate = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
 
-            DocumentTemplate dt = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridt);
-            TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
+            docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocTemplate);
+            templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
 
-            if (dt != null && tc != null) {
-                tc.setActualTemplate(dt);
+            if (docTemplate != null && templateCont != null) {
+                templateCont.setActualTemplate(docTemplate);
             }
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_REMOVE_VERSION_TEMPLATE)) {
-            String uridt = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-            DocumentTemplate dt = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridt);
-            TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-            if (dt != null && tc != null) {
-                DocumentTemplate dtp = dt.getPreviousTemplate();//Previous template
-                DocumentTemplate dtn = dt.getNextTemplate();//Next template
-                if (dtp != null) {
-                    dtp.setNextTemplate(dtn);
+            uriDocTemplate = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocTemplate);
+            templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+            if (docTemplate != null && templateCont != null) {
+                DocumentTemplate docTemplatePrev = docTemplate.getPreviousTemplate();//Previous template
+                DocumentTemplate docTemplateNext = docTemplate.getNextTemplate();//Next template
+                if (docTemplatePrev != null) {
+                    docTemplatePrev.setNextTemplate(docTemplateNext);
                 }
-                if (dtn != null) {
-                    dtn.setPreviousTemplate(dtp);
+                if (docTemplateNext != null) {
+                    docTemplateNext.setPreviousTemplate(docTemplatePrev);
                 }
-                if (tc.getLastTemplate() != null
-                        && tc.getLastTemplate().getURI().equals(dt.getURI())
-                        && dt.getPreviousTemplate() != null
-                        && dtp != null) {
-                    tc.setLastTemplate(dtp);
-                } else if (tc.getLastTemplate() != null
-                        && tc.getLastTemplate().getURI().equals(dt.getURI())
-                        && dt.getPreviousTemplate() != null
-                        && dtn != null) {
-                    tc.setLastTemplate(dtn);
+                if (templateCont.getLastTemplate() != null
+                        && templateCont.getLastTemplate().getURI().equals(docTemplate.getURI())
+                        && docTemplate.getPreviousTemplate() != null
+                        && docTemplatePrev != null) {
+                    templateCont.setLastTemplate(docTemplatePrev);
+                } else if (templateCont.getLastTemplate() != null
+                        && templateCont.getLastTemplate().getURI().equals(docTemplate.getURI())
+                        && docTemplate.getPreviousTemplate() != null
+                        && docTemplateNext != null) {
+                    templateCont.setLastTemplate(docTemplateNext);
                 }
-                if (tc.getActualTemplate() != null
-                        && tc.getActualTemplate().getURI().equals(dt.getURI())
-                        && dtp != null) {
-                    tc.setActualTemplate(dtp);
-                } else if (tc.getActualTemplate() != null
-                        && tc.getActualTemplate().getURI().equals(dt.getURI())
-                        && dtn != null) {
-                    tc.setActualTemplate(dtn);
+                if (templateCont.getActualTemplate() != null
+                        && templateCont.getActualTemplate().getURI().equals(docTemplate.getURI())
+                        && docTemplatePrev != null) {
+                    templateCont.setActualTemplate(docTemplatePrev);
+                } else if (templateCont.getActualTemplate() != null
+                        && templateCont.getActualTemplate().getURI().equals(docTemplate.getURI())
+                        && docTemplateNext != null) {
+                    templateCont.setActualTemplate(docTemplateNext);
                 }
-                tc.removeTemplate(dt);
-                dt.remove();
+                templateCont.removeTemplate(docTemplate);
+                docTemplate.remove();
             }
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("uritc", uriTemplateCont);
+            
         } else if (action.equals(ACTION_EDIT_DOCUMENT_SECTION) && model != null) {
             String titleSection = request.getParameter("titleSection") != null ? request.getParameter("titleSection").trim() : "";
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-            String urids = request.getParameter("urids") != null ? request.getParameter("urids").trim() : "";
-            if (!titleSection.equals("") && !uritc.equals("") && !urids.equals("")) {
-                DocumentSection ds = (DocumentSection) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urids);
-                ds.setTitle(titleSection);
-                TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-                ds.setParentTemplate(tc != null ? tc.getActualTemplate() : null);
-                SemanticClass semCls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(ds.getSectionType().getURI());
-                ds.setSectionType(semCls.getSemanticObject());
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids").trim() : "";
+            if (!titleSection.equals("") && !uriTemplateCont.equals("") && !uriDocSection.equals("")) {
+                docSection = (DocumentSection) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSection);
+                docSection.setTitle(titleSection);
+                templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+                docSection.setParentTemplate(templateCont != null ? templateCont.getActualTemplate() : null);
+                SemanticClass semCls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(docSection.getSectionType().getURI());
+                docSection.setSectionType(semCls.getSemanticObject());
                 SWBFormMgr formMgr = new SWBFormMgr(semCls, model.getSemanticObject(), SWBFormMgr.MODE_EDIT);
                 formMgr.clearProperties();
-                Iterator<SemanticProperty> itsp = semCls.listProperties();
-                while (itsp.hasNext()) {
-                    SemanticProperty sp = itsp.next();
+                Iterator<SemanticProperty> itSemanticProperty = semCls.listProperties();
+                while (itSemanticProperty.hasNext()) {
+                    SemanticProperty sp = itSemanticProperty.next();
                     if (sp.getDisplayProperty() != null) {
                         formMgr.addProperty(sp);
                     }
                 }
-                ds.setVisibleProperties("");
+                docSection.setVisibleProperties("");
                 String newprop = "";
-                itsp = formMgr.getProperties().iterator();
-                while (itsp.hasNext()) {
-                    SemanticProperty sp = itsp.next();
+                itSemanticProperty = formMgr.getProperties().iterator();
+                while (itSemanticProperty.hasNext()) {
+                    SemanticProperty sp = itSemanticProperty.next();
                     if (request.getParameter(sp.getPropId()) != null) {
                         String label = request.getParameter("label" + sp.getPropId());
                         newprop += label + ";" + sp.getPropId() + "|";
                     }
                 }
-                ds.setVisibleProperties(newprop);
+                docSection.setVisibleProperties(newprop);
             }
-            response.setRenderParameter("urids", urids);
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("urids", uriDocSection);
+            response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_REMOVE_DOCUMENT_SECTION)) {
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-            String urids = request.getParameter("urids") != null ? request.getParameter("urids").trim() : "";
-            if (!uritc.equals("") && !urids.equals("")) {
-                TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-                if (tc != null) {
-                    DocumentTemplate dt = tc.getActualTemplate();
-                    DocumentSection ds = (DocumentSection) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urids);
-                    if (dt != null && ds != null) {
-                        dt.removeDocumentSection(ds);
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids").trim() : "";
+            if (!uriTemplateCont.equals("") && !uriDocSection.equals("")) {
+                templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+                if (templateCont != null) {
+                    docTemplate = templateCont.getActualTemplate();
+                    DocumentSection ds = (DocumentSection) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSection);
+                    if (docTemplate != null && ds != null) {
+                        docTemplate.removeDocumentSection(ds);
                         ds.remove();
                     }
                 }
             }
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_DUPLICATE_TEMPLATE)) {
-            String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
             String titletcd = request.getParameter("titletcd") != null ? request.getParameter("titletcd").trim() : "";
             String versiontemp = request.getParameter("versiontemp") != null ? request.getParameter("versiontemp").trim() : "";
 //            TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
             DocumentTemplate dtact = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(versiontemp);
             if (dtact != null) {
-                TemplateContainer tcn = TemplateContainer.ClassMgr.createTemplateContainer(model);
-                tcn.setTitle(titletcd.trim());
-                DocumentTemplate dt = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
-                dt.setTemplateContainer(tcn);
-                tcn.addTemplate(dt);
-                tcn.setActualTemplate(dt);
-                tcn.setLastTemplate(dt);
-                dt.setTitle(dtact.getTitle());
-                dt.setDescription(dtact.getDescription());
+                templateCont = TemplateContainer.ClassMgr.createTemplateContainer(model);
+                templateCont.setTitle(titletcd.trim());
+                docTemplate = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
+                docTemplate.setTemplateContainer(templateCont);
+                templateCont.addTemplate(docTemplate);
+                templateCont.setActualTemplate(docTemplate);
+                templateCont.setLastTemplate(docTemplate);
+                docTemplate.setTitle(dtact.getTitle());
+                docTemplate.setDescription(dtact.getDescription());
 
-                Iterator<DocumentSection> itds = SWBComparator.sortSortableObject(dtact.listDocumentSections());
-                while (itds.hasNext()) {
-                    DocumentSection ds = itds.next();
+                Iterator<DocumentSection> itDocSection = SWBComparator.sortSortableObject(dtact.listDocumentSections());
+                while (itDocSection.hasNext()) {
+                    docSection = itDocSection.next();
                     //New DocumentSection
-                    DocumentSection dsn = DocumentSection.ClassMgr.createDocumentSection(model);
-                    dsn.setParentTemplate(dt);
-                    dt.addDocumentSection(dsn);
-                    dsn.setConfigData(ds.getConfigData());
-                    dsn.setIndex(ds.getIndex());
-                    dsn.setSectionType(ds.getSectionType());
-                    dsn.setTitle(ds.getTitle());
-                    dsn.setVisibleProperties(ds.getVisibleProperties());
-                    dsn.setActive(ds.isActive());
+                    DocumentSection docSectionNew = DocumentSection.ClassMgr.createDocumentSection(model);
+                    docSectionNew.setParentTemplate(docTemplate);
+                    docTemplate.addDocumentSection(docSectionNew);
+                    docSectionNew.setConfigData(docSection.getConfigData());
+                    docSectionNew.setIndex(docSection.getIndex());
+                    docSectionNew.setSectionType(docSection.getSectionType());
+                    docSectionNew.setTitle(docSection.getTitle());
+                    docSectionNew.setVisibleProperties(docSection.getVisibleProperties());
+                    docSectionNew.setActive(docSection.isActive());
                 }
-                uritc = tcn.getURI();
+                uriTemplateCont = templateCont.getURI();
             }
             response.setCallMethod(SWBResourceURL.Call_DIRECT);
             response.setMode(SWBResourceURL.Mode_EDIT);
-            response.setRenderParameter("uritc", uritc);
+            response.setRenderParameter("uritc", uriTemplateCont);
         } else {
             super.processAction(request, response);
         }
@@ -540,24 +550,34 @@ public class SWPDocumentTemplateResource extends GenericResource {
     @Override
     public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         String mode = paramRequest.getMode();
-        if (mode.equals(SWBResourceURL.Mode_VIEW)) {
-            doView(request, response, paramRequest);
-        } else if (mode.equals(SWBResourceURL.Mode_EDIT)) {
-            doEdit(request, response, paramRequest);
-        } else if (mode.equals(MODE_EDIT_DOCUMENT_SECTION)) {
-            doEditDocumentSection(request, response, paramRequest);
-        } else if (mode.equals(MODE_PROPERTIES)) {
-            doViewProperties(request, response, paramRequest);
-        } else if (mode.equals(MODE_VIEW_LOG)) {
-            doViewLog(request, response, paramRequest);
-        } else if (mode.equals(MODE_VIEW_VERSION)) {
-            doViewVersion(request, response, paramRequest);
-        } else if (mode.equals(MODE_EDIT_VERSION_TEMPLATE)) {
-            doEditVersionTemplate(request, response, paramRequest);
-        } else if (mode.equals(MODE_DUPLICATE_TEMPLATE)) {
-            doDuplicateTemplate(request, response, paramRequest);
-        } else {
-            super.processRequest(request, response, paramRequest);
+        switch (mode) {
+            case SWBResourceURL.Mode_VIEW:
+                doView(request, response, paramRequest);
+                break;
+            case SWBResourceURL.Mode_EDIT:
+                doEdit(request, response, paramRequest);
+                break;
+            case MODE_EDIT_DOCUMENT_SECTION:
+                doEditDocumentSection(request, response, paramRequest);
+                break;
+            case MODE_PROPERTIES:
+                doViewProperties(request, response, paramRequest);
+                break;
+            case MODE_VIEW_LOG:
+                doViewLog(request, response, paramRequest);
+                break;
+            case MODE_VIEW_VERSION:
+                doViewVersion(request, response, paramRequest);
+                break;
+            case MODE_EDIT_VERSION_TEMPLATE:
+                doEditVersionTemplate(request, response, paramRequest);
+                break;
+            case MODE_DUPLICATE_TEMPLATE:
+                doDuplicateTemplate(request, response, paramRequest);
+                break;
+            default:
+                super.processRequest(request, response, paramRequest);
+                break;
         }
     }
 
