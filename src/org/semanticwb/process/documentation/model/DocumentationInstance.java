@@ -24,8 +24,9 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
         Iterator<DocumentSectionInstance> itdsi = di.listDocumentSectionInstances();
         while (itdsi.hasNext()) {
             DocumentSectionInstance dsit = itdsi.next();
-            dsit.setIndex(dsit.getSecTypeDefinition().getIndex());
-            if (dsit.getSecTypeDefinition() != null) {
+            DocumentSection ds = dsit.getSecTypeDefinition();
+            if (null != ds) {
+                dsit.setIndex(ds.getIndex());
                 map.put(dsit.getSecTypeDefinition().getURI(), dsit.getURI());
             } else {
                 dsit.remove();
@@ -109,9 +110,6 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                     String urige = ge.getURI();
                                     org.semanticwb.process.model.Activity act = (org.semanticwb.process.model.Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urige);
 
-//                                if(act.getParent() != null && act.getParent() instanceof SubProcess){
-//                                    System.out.println("activity : " + act + " is child of subprocess : " + act.getParent());
-//                                }
                                     ActivityRef actRef = ActivityRef.ClassMgr.createActivityRef(model);
                                     actRef.setProcessActivity(act);
                                     Activity actFin = Activity.ClassMgr.createActivity(model);
