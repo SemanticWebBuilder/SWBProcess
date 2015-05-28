@@ -43,12 +43,16 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
     @Override
     public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         String mode = paramRequest.getMode();
-        if (mode.equals(MODE_VIEW_DOCUMENTATION)) {
-            doViewDocumentation(request, response, paramRequest);
-        } else if (mode.equals(MODE_EXPORT_MODEL)) {
-            doExportModel(request, response, paramRequest);
-        } else {
-            super.processRequest(request, response, paramRequest);
+        switch (mode) {
+            case MODE_VIEW_DOCUMENTATION:
+                doViewDocumentation(request, response, paramRequest);
+                break;
+            case MODE_EXPORT_MODEL:
+                doExportModel(request, response, paramRequest);
+                break;
+            default:
+                super.processRequest(request, response, paramRequest);
+                break;
         }
     }
 
