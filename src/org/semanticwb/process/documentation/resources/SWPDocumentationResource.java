@@ -695,12 +695,12 @@ public class SWPDocumentationResource extends GenericAdmResource {
 
         try {
             String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
+            String urip = request.getParameter("urip") != null ? request.getParameter("urip") : "";
             String uridi = request.getParameter("uridi") != null ? request.getParameter("uridi") : "";
             String data = request.getParameter("data");
             String format = request.getParameter("format") != null ? request.getParameter("format") : "";
             String viewBox = request.getParameter("viewBox");
-
-            org.semanticwb.process.model.Process p = (org.semanticwb.process.model.Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idp);
+            org.semanticwb.process.model.Process p = (org.semanticwb.process.model.Process)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urip);
             DocumentationInstance docInstance = (DocumentationInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridi);
             if (p != null && docInstance != null) {
                 WebSite model = paramRequest.getWebPage().getWebSite();
