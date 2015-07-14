@@ -94,10 +94,13 @@ public class SWPUtils {
         }
         int page = 1;
         int itemsPerPage = 10;
-        Iterator<TemplateContainer> it = SWBComparator.sortByDisplayName(TemplateContainer.ClassMgr.listTemplateContainers(model), lang);
-        while (it.hasNext()) {
-            TemplateContainer dt = it.next();
-            unpaged.add(dt);
+        Iterator<TemplateContainer> tplContainers_it = TemplateContainer.ClassMgr.listTemplateContainers(model);
+        if (tplContainers_it != null && tplContainers_it.hasNext()) {
+            Iterator<TemplateContainer> it = SWBComparator.sortByDisplayName(tplContainers_it, lang);
+            while (it.hasNext()) {
+                TemplateContainer dt = it.next();
+                unpaged.add(dt);
+            }
         }
         //Realizar paginado de instancias
         int maxPages = 1;
