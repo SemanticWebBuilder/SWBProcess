@@ -5,6 +5,7 @@
  */
 package org.semanticwb.process.documentation.resources.utils;
 
+import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
 import java.io.ByteArrayInputStream;
@@ -17,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
+import org.apache.log4j.Level;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
@@ -164,7 +167,7 @@ public class SWPUtils {
         List<org.semanticwb.process.model.Process> list = new ArrayList<org.semanticwb.process.model.Process>();
         WebSite model = paramRequest.getWebPage().getWebSite();
         String idpg = request.getParameter("idpg") != null ? request.getParameter("idpg") : "";
-        
+
         if (!idpg.isEmpty()) {
             ProcessGroup group = ProcessGroup.ClassMgr.getProcessGroup(idpg, model);//(ProcessGroup) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idpg);
             if (null != group) {
@@ -172,8 +175,8 @@ public class SWPUtils {
                 while (iterator.hasNext()) {
                     org.semanticwb.process.model.Process process = iterator.next();
                     /*if (process.isDeleted() || !process.isActive()) {
-                        continue;
-                    }*/
+                     continue;
+                     }*/
                     if (process.isValid()) {
                         list.add(process);
                     }
@@ -302,7 +305,8 @@ public class SWPUtils {
                         } else if (cls.equals(FreeText.sclass)) {//FreeText
                             //Validar el export
                             FreeText ft = (FreeText) se;
-                            String html = ft.getText();
+                            String html = ft.getText().replace("&ldquo;", "&quot;");
+                            html = html.replace("&rdquo;", "&quot;");
                             org.jsoup.nodes.Document d = null;
                             if (html != null) {
                                 d = Jsoup.parse(html);
@@ -1531,6 +1535,23 @@ public class SWPUtils {
                     Image image = null;
                     if (src.startsWith("../..")) {
                         image = Image.getInstance(SWBPortal.getWorkPath() + src.substring(10));//Model Image
+                    } else if (src.startsWith("data:image")) {
+                        int endImg = src.indexOf("base64,");
+                        if (endImg > -1) {
+                            endImg += 7;
+                            src = src.substring(endImg, src.length());
+                        }
+                        //Decodificar los datos y guardarlos en un archivo
+                        byte[] data = Base64.getDecoder().decode(src);
+                        try (OutputStream stream = new FileOutputStream(dir.getAbsolutePath() + "/" + se.getId() + i + ".png")) {
+                            stream.write(data);
+                            //Insertar la imagen en el documento
+                            image = Image.getInstance(dir.getAbsolutePath() + "/" + se.getId() + i + ".png");
+
+                        } catch (IOException ioe) {
+                            log.error("Error on getDocument, " + ioe.getLocalizedMessage());
+                        }
+
                     } else {
                         SWPUtils.saveFile(src, dir.getAbsolutePath() + "/" + se.getId() + i + "." + src.substring(src.lastIndexOf(".") + 1));
                         image = Image.getInstance(dir.getAbsolutePath() + "/" + se.getId() + i + "." + src.substring(src.lastIndexOf(".") + 1));//Model Image
