@@ -190,7 +190,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                          }*/
                         values.put(item.getFieldName(), SWBUtils.TEXT.decode(item.getString(), encoding));
                     } else {
-
+                        
                         inputStream = item.getInputStream();
                         fileName = SWBUtils.TEXT.decode(item.getName(), "UTF-8").trim();
                     }
