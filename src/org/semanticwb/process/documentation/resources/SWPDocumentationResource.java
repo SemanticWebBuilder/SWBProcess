@@ -517,6 +517,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     break;
                 }
                 case ACTION_UPLOAD_PICTURE: {
+                    uriSectionElement = request.getParameter("urise") != null ? request.getParameter("urise") : "";
                     SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriSectionElement);
                     if (inputStream != null && se != null) {
                         String basePath = SWBPortal.getWorkPath() + "/models/" + model.getId() + "/swp_DocumentationImage";
@@ -530,6 +531,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                             out.flush();
                         }
                     }
+                    response.setRenderParameter("urise", uriSectionElement);
                     break;
                 }
                 default:
