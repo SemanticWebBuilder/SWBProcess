@@ -886,7 +886,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                                 for (SectionElement se : list) {
                                     Activity a = (Activity) se;
                                     doc.add(new Paragraph(a.getTitle()));
-                                    if (a.getDescription() != null) {
+                                    if (a.getDescription() != null || a.getDescription() != "") {
                                         SWPUtils.addTextHtmlToRtf(a.getDescription(), doc, se, model, p);
                                     }
                                 }
