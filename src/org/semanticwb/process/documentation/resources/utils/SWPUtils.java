@@ -1521,14 +1521,15 @@ public class SWPUtils {
             Elements elements = d.select("[src]");
             html = d.html();
             int i = 1;
+            org.jsoup.nodes.Document d1 = Jsoup.parse(html.substring(0));
+            doc.add(new Paragraph(d1.text()));   
             for (org.jsoup.nodes.Element element : elements) {
+                    
                 if (element.tagName().equals("img")) {
+                    element.replaceWith(new TextNode("", element.baseUri()));
                     int init = html.indexOf(element.outerHtml());
                     int end = init + element.outerHtml().length();
-                    element.replaceWith(new TextNode("", element.baseUri()));
-                    org.jsoup.nodes.Document d1 = Jsoup.parse(html.substring(0, init));
-                    doc.add(new Paragraph(d1.text()));
-                    html = html.substring(end);
+                    html = html.substring(end);                
                     String src = element.attr("src");
                     String width = element.attr("width");
                     String height = element.attr("height");
@@ -1563,6 +1564,7 @@ public class SWPUtils {
                     doc.add(image);
                     i++;
                 }
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
