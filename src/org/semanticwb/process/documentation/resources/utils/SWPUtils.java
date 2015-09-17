@@ -389,6 +389,7 @@ public class SWPUtils {
                             Map mapSect = new HashMap();
                             while (itser.hasNext()) {
                                 SectionElementRef ser = itser.next();
+                                if(ser.getSectionElement()!= null){
                                 String uris = "";
                                 if (mapSect.containsKey(ser.getSectionElement().getParentSection())) {
                                     uris = mapSect.get(ser.getSectionElement().getParentSection()).toString() + "|" + ser.getSectionElement();
@@ -396,9 +397,9 @@ public class SWPUtils {
                                     uris = ser.getSectionElement().getURI();
                                 }
                                 mapSect.put(ser.getSectionElement().getParentSection(), uris);
+                                }
                             }
                             Iterator itset = mapSect.entrySet().iterator();
-
                             while (itset.hasNext()) {
                                 Map.Entry e = (Map.Entry) itset.next();
                                 Element eds = doc.createElement("documentSection");
