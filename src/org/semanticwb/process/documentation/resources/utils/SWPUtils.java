@@ -307,6 +307,7 @@ public class SWPUtils {
                             FreeText ft = (FreeText) se;
                             String html = ft.getText().replace("&ldquo;", "&quot;");
                             html = html.replace("&rdquo;", "&quot;");
+                            html = html.replace("&ndash;", "-");
                             org.jsoup.nodes.Document d = null;
                             if (html != null) {
                                 d = Jsoup.parse(html);
