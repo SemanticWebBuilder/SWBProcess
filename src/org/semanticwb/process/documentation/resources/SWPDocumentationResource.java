@@ -99,6 +99,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public final static String ACTION_EDIT_TEXT = "a_edt";
     public final static String ACTION_EDIT_DESCRIPTION = "a_edes";
     public final static String ACTION_SAVE_VERSION = "a_sver";
+    public final static String ACTION_REMOVE_VERSION = "a_rever";
     public final static String ACTION_RELATED_ACTIVITY = "a_ract";
     public final static String ACTION_UPDATE_FILL = "a_ufill";
     public final static String ACTION_DOWNLOAD = "a_down";
@@ -110,6 +111,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public final static String MODE_RELATED_ACTIVITY = "m_relact";
     public final static String MODE_TRACEABLE = "m_trac";
     public final static String MODE_VERSION = "m_nver";
+    public final static String MODE_ADMIN_VERSION = "m_nadver";
     public final static String MODE_MSG_VERSION = "m_msgv";
     public final static String MODE_DOWNLOAD = "m_down";
 
@@ -369,6 +371,14 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     se.remove();
                     break;
                 }
+                case ACTION_REMOVE_VERSION: {
+                    String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
+                    String uriDocumentation = request.getParameter("uridoc") != null ? request.getParameter("uridoc") : "";
+                    Documentation doc = (Documentation)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocumentation);
+                    response.setRenderParameter("idp", idp);
+                    doc.remove();
+                    break;
+                }
                 case ACTION_EDIT_TEXT: {
                     uriDocSectionInstance = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
                     String data = request.getParameter("data") != null ? request.getParameter("data") : "";
@@ -562,6 +572,9 @@ public class SWPDocumentationResource extends GenericAdmResource {
             case MODE_VERSION:
                 doVersion(request, response, paramRequest);
                 break;
+            case MODE_ADMIN_VERSION:
+                doAdminVersion(request, response, paramRequest);
+                break;
             case MODE_RELATED_ACTIVITY:
                 doRelateActivity(request, response, paramRequest);
                 break;
@@ -646,6 +659,18 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public void doVersion(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         response.setContentType("text/html; charset=UTF-8");
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/saveVersion.jsp";
+        RequestDispatcher rd = request.getRequestDispatcher(path);
+        try {
+            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            rd.forward(request, response);
+        } catch (ServletException ex) {
+            log.error("Error on doVersion, " + path + ", " + ex.getMessage());
+        }
+    }
+    
+    public void doAdminVersion(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
+        response.setContentType("text/html; charset=UTF-8");
+        String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/documentationVersion.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
             request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
