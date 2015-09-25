@@ -308,6 +308,7 @@ public class SWPUtils {
                             String html = ft.getText().replace("&ldquo;", "&quot;");
                             html = html.replace("&rdquo;", "&quot;");
                             html = html.replace("&ndash;", "-");
+                            html = html.replace("&mdash;", "-");
                             org.jsoup.nodes.Document d = null;
                             if (html != null) {
                                 d = Jsoup.parse(html);
