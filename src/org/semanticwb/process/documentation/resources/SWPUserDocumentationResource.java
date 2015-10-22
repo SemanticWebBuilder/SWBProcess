@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.semanticwb.process.documentation.resources;
 
 import java.io.ByteArrayInputStream;
@@ -20,25 +15,19 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.portal.api.GenericAdmResource;
-import org.semanticwb.portal.api.SWBActionResponse;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 
 /**
- *
+ * Componente que permite la visualización de la documentación de un proceso.
  * @author carlos.alvarez
  */
 public class SWPUserDocumentationResource extends GenericAdmResource {
     private final Logger log = SWBUtils.getLogger(SWPUserDocumentationResource.class);
     public final static String MODE_VIEW_DOCUMENTATION = "m_vdoc";//Modo EDITAR de sección de documentación
     public final static String MODE_EXPORT_MODEL = "m_expm";
-
-    @Override
-    public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
-        super.processAction(request, response);
-    }
 
     @Override
     public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
