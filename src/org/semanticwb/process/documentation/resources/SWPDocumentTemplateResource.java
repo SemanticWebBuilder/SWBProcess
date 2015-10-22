@@ -567,9 +567,11 @@ public class SWPDocumentTemplateResource extends GenericResource {
         response.setContentType("text/html; charset=UTF-8");
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/documentTemplateEdit.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
+        String contURI = request.getParameter("uritc") != null ? request.getParameter("uritc") : "";
+        
         try {
             request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
-            request.setAttribute(SWPUtils.LIST_PROCESSES, SWPUtils.listProcessesByTemplate(request, paramRequest));
+            request.setAttribute(SWPUtils.LIST_PROCESSES, SWPUtils.listProcessesByTemplate(contURI, paramRequest.getWebPage().getWebSite()));
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doEdit, " + path + ", " + ex.getMessage());
