@@ -43,7 +43,6 @@ import org.semanticwb.portal.api.SWBResourceURLImp;
 import org.semanticwb.process.documentation.model.Activity;
 import org.semanticwb.process.documentation.model.DocumentSection;
 import org.semanticwb.process.documentation.model.DocumentSectionInstance;
-import org.semanticwb.process.documentation.model.DocumentTemplate;
 import org.semanticwb.process.documentation.model.DocumentationInstance;
 import org.semanticwb.process.documentation.model.ElementReference;
 import org.semanticwb.process.documentation.model.FreeText;
@@ -53,17 +52,17 @@ import org.semanticwb.process.documentation.model.Referable;
 import org.semanticwb.process.documentation.model.SectionElement;
 import org.semanticwb.process.documentation.model.SectionElementRef;
 import org.semanticwb.process.documentation.model.TemplateContainer;
-import org.semanticwb.process.model.ProcessGroup;
 import org.semanticwb.process.model.RepositoryDirectory;
 import org.semanticwb.process.model.RepositoryElement;
 import org.semanticwb.process.model.RepositoryFile;
 import org.semanticwb.process.model.RepositoryURL;
+import org.semanticwb.process.model.Process;
 import org.semanticwb.process.resources.ProcessFileRepository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * Clase utilitaria para los componentes de documentación de procesos.
  * @author carlos.alvarez
  */
 public class SWPUtils {
@@ -76,6 +75,12 @@ public class SWPUtils {
     public final static String FORMAT_WORD = "word";
     private final static Logger log = SWBUtils.getLogger(SWPUtils.class);
 
+    /**
+     * Obtiene la lista de {@code TemplateContainers} del sitio.
+     * @param request
+     * @param paramRequest
+     * @return 
+     */
     static public List<TemplateContainer> listTemplateContainers(HttpServletRequest request, SWBParamRequest paramRequest) {
         ArrayList<TemplateContainer> unpaged = new ArrayList<TemplateContainer>();
         WebSite model = paramRequest.getWebPage().getWebSite();
@@ -128,15 +133,19 @@ public class SWPUtils {
         return ret;
     }
 
-    static public List<org.semanticwb.process.model.Process> listProcessesByTemplate(HttpServletRequest request, SWBParamRequest paramRequest) {
-        WebSite model = paramRequest.getWebPage().getWebSite();
-        String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc") : "";
-        TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
+    /**
+     * Obtiene la lista de los procesos asociados con un {@code TemplateContainer}.
+     * @param containerURI URI del {@code TemplateContainer}
+     * @param model Modelo.
+     * @return Lista de procesos asociados al {@code TemplateContainer}
+     */
+    static public List<Process> listProcessesByTemplate(String containerURI, WebSite model) {//TODO:Revisar por qué es necesario usar este en lugar del TemplateContainer.listProcesses()
+        TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(containerURI);
         TemplateContainer tctemp = null;
-        List<org.semanticwb.process.model.Process> list = new ArrayList<org.semanticwb.process.model.Process>();
-        Iterator<org.semanticwb.process.model.Process> iterator = org.semanticwb.process.model.Process.ClassMgr.listProcesses(model);
+        List<Process> list = new ArrayList<Process>();
+        Iterator<Process> iterator = Process.ClassMgr.listProcesses(model);
         while (iterator.hasNext()) {//Filtrado de procesos por algún criterio
-            org.semanticwb.process.model.Process process = iterator.next();
+            Process process = iterator.next();
             Iterator<TemplateContainer> templates = TemplateContainer.ClassMgr.listTemplateContainerByProcess(process, model);
             if (templates.hasNext()) {
                 tctemp = templates.next();
@@ -152,39 +161,18 @@ public class SWPUtils {
         return list;
     }
 
-    static public List<org.semanticwb.process.model.Process> listProcesses(HttpServletRequest request, SWBParamRequest paramRequest) {
-        List<org.semanticwb.process.model.Process> list = new ArrayList<org.semanticwb.process.model.Process>();
-        WebSite model = paramRequest.getWebPage().getWebSite();
-        String idpg = request.getParameter("idpg") != null ? request.getParameter("idpg") : "";
-
-        if (!idpg.isEmpty()) {
-            ProcessGroup group = ProcessGroup.ClassMgr.getProcessGroup(idpg, model);
-            if (null != group) {
-                Iterator<org.semanticwb.process.model.Process> iterator = group.listProcesses();
-                while (iterator.hasNext()) {
-                    org.semanticwb.process.model.Process process = iterator.next();
-                    if (process.isValid()) {
-                        list.add(process);
-                    }
-                }
-            }
-        }
-        list = SWBUtils.Collections.copyIterator(SWBComparator.sortByDisplayName(list.iterator(), paramRequest.getUser().getLanguage()));
-        return list;
-    }
-
-    static public List<SectionElement> listSectionElementByTemplate(DocumentTemplate dt, SemanticClass sc) {
-        List<SectionElement> list = new ArrayList<SectionElement>();
-        Iterator<SemanticObject> it = sc.listInstances();
-        while (it.hasNext()) {
-            SemanticObject so = it.next();
-            SectionElement se = (SectionElement) so.createGenericInstance();
-            if (se.getDocumentTemplate().getURI().equals(dt.getURI())) {
-                list.add(se);
-            }
-        }
-        return list;
-    }
+//    static public List<SectionElement> listSectionElementByTemplate(DocumentTemplate dt, SemanticClass sc) {
+//        List<SectionElement> list = new ArrayList<SectionElement>();
+//        Iterator<SemanticObject> it = sc.listInstances();
+//        while (it.hasNext()) {
+//            SemanticObject so = it.next();
+//            SectionElement se = (SectionElement) so.createGenericInstance();
+//            if (se.getDocumentTemplate().getURI().equals(dt.getURI())) {
+//                list.add(se);
+//            }
+//        }
+//        return list;
+//    }
 
     static public Document getDocument(DocumentationInstance di, HttpServletRequest request, boolean export) {
         Document doc = SWBUtils.XML.getNewDocument();
@@ -514,29 +502,29 @@ public class SWPUtils {
         return doc;
     }
 
-    static public List<VersionInfo> listVersions(RepositoryElement el) {
-        ArrayList<VersionInfo> ret = new ArrayList<VersionInfo>();
-        if (el != null) {
-            VersionInfo vi = el.getLastVersion();
-            VersionInfo ver = null;
-            if (null != vi) {
-                ver = vi;
-                while (ver.getPreviousVersion() != null) {
-                    ver = ver.getPreviousVersion();
-                }
-            }
-            if (ver != null) {
-                ret.add(ver);
-                while (ver != null) {
-                    ver = ver.getNextVersion();
-                    if (ver != null) {
-                        ret.add(ver);
-                    }
-                }
-            }
-        }
-        return ret;
-    }
+//    static public List<VersionInfo> listVersions(RepositoryElement el) {
+//        ArrayList<VersionInfo> ret = new ArrayList<VersionInfo>();
+//        if (el != null) {
+//            VersionInfo vi = el.getLastVersion();
+//            VersionInfo ver = null;
+//            if (null != vi) {
+//                ver = vi;
+//                while (ver.getPreviousVersion() != null) {
+//                    ver = ver.getPreviousVersion();
+//                }
+//            }
+//            if (ver != null) {
+//                ret.add(ver);
+//                while (ver != null) {
+//                    ver = ver.getNextVersion();
+//                    if (ver != null) {
+//                        ret.add(ver);
+//                    }
+//                }
+//            }
+//        }
+//        return ret;
+//    }
 
     public static void copyFileFromSWBAdmin(String source, String destination, String fileName) throws FileNotFoundException, IOException {
         InputStream inputStream = SWBPortal.getAdminFileStream(source);
@@ -556,7 +544,8 @@ public class SWPUtils {
         inputStream.close();
     }
 
-    public static void copyFile(String sourceFile, String destFile) throws IOException {
+    
+    public static void copyFile(String sourceFile, String destFile) throws IOException {//TODO: Revisar por qué es necesario esto en lugar de SWBUtils.IO.copyStream
         InputStream inStream = null;
         OutputStream outStream = null;
         try {
@@ -577,19 +566,19 @@ public class SWPUtils {
         }
     }
 
-    public static void deleteDerectory(File dir) {
-        File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
-            if (file.isDirectory()) {
-                deleteDerectory(file);
-                file.delete();
-            } else {
-                file.delete();
-            }
-        }
-        dir.delete();
-    }
+//    public static void deleteDirectory(File dir) {
+//        File[] files = dir.listFiles();
+//        for (int i = 0; i < files.length; i++) {
+//            File file = files[i];
+//            if (file.isDirectory()) {
+//                deleteDirectory(file);
+//                file.delete();
+//            } else {
+//                file.delete();
+//            }
+//        }
+//        dir.delete();
+//    }
 
     public static void generateImageModel(org.semanticwb.process.model.Process p, String format, String data, String viewBox) {
         try {
@@ -628,7 +617,6 @@ public class SWPUtils {
 
     public static void saveFile(String src, String dest) {
         try {
-
             URL url = new URL(src);
             InputStream is = url.openStream();
             OutputStream os = new FileOutputStream(dest);
