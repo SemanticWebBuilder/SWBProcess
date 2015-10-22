@@ -39,10 +39,10 @@ import org.semanticwb.codegen.CodeGeneratorException;
  *
  * @author serch
  */
-public class CodeGeneratorRural {
+public class CodeGeneratorDocumenter {
 
     public static void main(String[] args) {
-        new CodeGeneratorRural().codeGen(args);
+        new CodeGeneratorDocumenter().codeGen(args);
     }
 
     public void codeGen(String[] args) {
