@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.semanticwb.process.documentation.resources;
 
 import java.io.IOException;
@@ -47,15 +42,14 @@ import org.semanticwb.process.documentation.model.SectionElement;
 import org.semanticwb.process.documentation.model.SectionElementRef;
 import org.semanticwb.process.documentation.model.TemplateContainer;
 import org.semanticwb.process.documentation.resources.utils.SWPUtils;
+import org.semanticwb.process.model.Process;
 
 /**
- *
+ * Componente que permite la administración de plantillas de documentación.
  * @author carlos.alvarez
  */
 public class SWPDocumentTemplateResource extends GenericResource {
-
     private final Logger log = SWBUtils.getLogger(SWPDocumentTemplateResource.class);
-
     public final static String MODE_EDIT_DOCUMENT_SECTION = "m_eds";//Modo EDITAR de sección de documentación
     public final static String ACTION_ADD_DOCUMENT_SECTION = "a_ads";//Acción GUARDAR NUEVA sección de documentación
     public final static String ACTION_ADD_VERSION_TEMPLATE = "a_anvt";//Acción GUARDAR NUEVA sección de documentación
@@ -74,77 +68,67 @@ public class SWPDocumentTemplateResource extends GenericResource {
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
         String action = response.getAction();
-        response.setRenderParameter("action", action);
         WebSite model = response.getWebPage().getWebSite();  
-        String uriTemplateCont = "";
-        String uriDocTemplate = "";
-        String uriDocSection = "";
+        String uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+        String uriDocTemplate = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
+        String uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids").trim() : "";
         DocumentTemplate docTemplate = null;
-        String titleTemplateCont = null;
+        String titleTemplateCont = request.getParameter("titletc") != null ? request.getParameter("titletc").trim() : "";
         TemplateContainer templateCont = null;
         DocumentationInstance docInstance = null;
         DocumentSection docSection = null;
         
+        response.setRenderParameter("action", action);
         
-        if (action.equals(SWBResourceURL.Action_ADD)) {//Agregar nueva plantilla de documentación
-            //String title = request.getParameter("titleTemplate") != null ? request.getParameter("titleTemplate").trim() : "";
-            titleTemplateCont= request.getParameter("titletc") != null ? request.getParameter("titletc").trim() : "";
-            if (!titleTemplateCont.equals("")) {
-                templateCont = TemplateContainer.ClassMgr.createTemplateContainer(model);
-                templateCont.setTitle(titleTemplateCont);
-                docTemplate = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
-                docTemplate.setTemplateContainer(templateCont);
-                templateCont.addTemplate(docTemplate);
-                templateCont.setActualTemplate(docTemplate);
-                templateCont.setLastTemplate(docTemplate);
-                docTemplate.setTitle(titleTemplateCont);
-                String[] processes = request.getParameterValues("procesess");
-                if (processes != null) {
-                    for (String idp : processes) {
-                        org.semanticwb.process.model.Process process = (org.semanticwb.process.model.Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idp);
-                        if (process != null) {
-                            templateCont.addProcess(process);
-                        }
+        if (action.equals(SWBResourceURL.Action_ADD) && !titleTemplateCont.isEmpty()) {//Agregar nueva plantilla de documentación
+            templateCont = TemplateContainer.ClassMgr.createTemplateContainer(model);
+            templateCont.setTitle(titleTemplateCont);
+            docTemplate = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
+            docTemplate.setTemplateContainer(templateCont);
+            templateCont.addTemplate(docTemplate);
+            templateCont.setActualTemplate(docTemplate);
+            templateCont.setLastTemplate(docTemplate);
+            docTemplate.setTitle(titleTemplateCont);
+            String[] processes = request.getParameterValues("procesess");
+            if (processes != null) {
+                for (String idp : processes) {
+                    Process process = (Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idp);
+                    if (process != null) {
+                        templateCont.addProcess(process);
                     }
                 }
-                response.setRenderParameter("uritc", templateCont.getURI());
             }
+            response.setRenderParameter("uritc", templateCont.getURI());
         } else if (action.equals(SWBResourceURL.Action_EDIT)) { //Editar plantilla de documentación
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-            titleTemplateCont = request.getParameter("titletc") != null ? request.getParameter("titletc").trim() : "";
-            //String title = request.getParameter("titleTemplate") != null ? request.getParameter("titleTemplate").trim() : "";
-            if (!uriTemplateCont.equals("") && !titleTemplateCont.equals("")) {
-                templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
-                if (templateCont != null) {
-                    templateCont.setTitle(titleTemplateCont);
-                    docTemplate = templateCont.getActualTemplate();
-                    if (docTemplate != null) {
-                        //dt.setTitle(title);
-                        templateCont.removeAllProcess();
-                        String[] processes = request.getParameterValues("procesess");
-                        if (processes != null) {
-                            for (String idp : processes) {
-                                org.semanticwb.process.model.Process process = (org.semanticwb.process.model.Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idp);
-                                if (process != null) {
-                                    templateCont.addProcess(process);
-                                }
+            templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
+            if (templateCont != null) {
+                templateCont.setTitle(titleTemplateCont);
+                docTemplate = templateCont.getActualTemplate();
+                if (docTemplate != null) {
+                    templateCont.removeAllProcess();//TODO: Verificar que esto se deba hacer antes de validar que vengan procesos en el parámetro
+                    String[] processes = request.getParameterValues("procesess");
+                    if (processes != null) {
+                        for (String idp : processes) {
+                            Process process = (Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(idp);
+                            if (process != null) {
+                                templateCont.addProcess(process);
                             }
                         }
-                        Iterator<DocumentSection> itDocSections = docTemplate.listDocumentSections();
-                        while (itDocSections.hasNext()) {
-                            docSection = itDocSections.next();
-                            try{
-                                Integer index = Integer.parseInt(request.getParameter("ind" + docSection.getURI()));
-                                docSection.setIndex(index);
-                            } catch (NumberFormatException e) {
-                                log.error("NumberFormatException, on " + action + ", " + e.getMessage());
-                            }
-                                                        
-                            if (request.getParameter(docSection.getURI()) != null) {
-                                docSection.setActive(true);
-                            } else {
-                                docSection.setActive(false);
-                            }
+                    }
+                    Iterator<DocumentSection> itDocSections = docTemplate.listDocumentSections();
+                    while (itDocSections.hasNext()) {
+                        docSection = itDocSections.next();
+                        try{
+                            Integer index = Integer.parseInt(request.getParameter("ind" + docSection.getURI()));
+                            docSection.setIndex(index);
+                        } catch (NumberFormatException e) {
+                            log.error("NumberFormatException, on " + action + ", " + e.getMessage());
+                        }
+
+                        if (request.getParameter(docSection.getURI()) != null) {
+                            docSection.setActive(true);
+                        } else {
+                            docSection.setActive(false);
                         }
                     }
                 }
@@ -153,9 +137,8 @@ public class SWPDocumentTemplateResource extends GenericResource {
         } else if (action.equals(ACTION_ADD_VERSION_TEMPLATE)) {
             String title = request.getParameter("title") != null ? request.getParameter("title").trim() : "";
             String description = request.getParameter("description") != null ? request.getParameter("description").trim() : "";
-
             String uridtp = request.getParameter("uridtp") != null ? request.getParameter("uridtp").trim() : "";
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
+            
             boolean actual = request.getParameter("actual") != null;
             docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridtp);
             templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
@@ -180,9 +163,9 @@ public class SWPDocumentTemplateResource extends GenericResource {
                     }
                 }
                 //Copiar instancias de documentación
-                Iterator<org.semanticwb.process.model.Process> itpro = templateCont.listProcesses();
+                Iterator<Process> itpro = templateCont.listProcesses();
                 while (itpro.hasNext()) {
-                    org.semanticwb.process.model.Process process = itpro.next();
+                    Process process = itpro.next();
                     Iterator<DocumentationInstance> itDocInstance = DocumentationInstance.ClassMgr.listDocumentationInstanceByProcessRef(process, model);
                     while (itDocInstance.hasNext()) {
                         docInstance = itDocInstance.next();
@@ -325,9 +308,6 @@ public class SWPDocumentTemplateResource extends GenericResource {
             response.setRenderParameter("uridtp", uridtp);
             response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_EDIT_VERSION_TEMPLATE)) {
-            uriDocTemplate = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-
             docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocTemplate);
             templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
             if (docTemplate != null && templateCont != null) {
@@ -342,7 +322,6 @@ public class SWPDocumentTemplateResource extends GenericResource {
             }
             response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(SWBResourceURL.Action_REMOVE)) {//Eliminar plantilla de documentación
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
             templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
             if (templateCont != null) {
                 Iterator<DocumentTemplate> itDocTemplate = templateCont.listTemplates();
@@ -361,7 +340,6 @@ public class SWPDocumentTemplateResource extends GenericResource {
             }
         } else if (action.equals(ACTION_ADD_DOCUMENT_SECTION) && model != null) {
             String titleSection = request.getParameter("titleSection") != null ? request.getParameter("titleSection").trim() : "";
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
             String dstype = request.getParameter("dstype") != null ? request.getParameter("dstype").trim() : "";
             SemanticClass semCls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(URLDecoder.decode(dstype));
             String configData = "configdata";
@@ -369,7 +347,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
                 if (semCls.isSubClass(Referable.swpdoc_Referable, false)) {
                     configData = request.getParameter("configdata") != null ? request.getParameter("configdata").trim() : "";
                 }
-                if (!titleSection.equals("") && !uriTemplateCont.equals("") && !dstype.equals("") && !configData.equals("")) {
+                if (!titleSection.isEmpty() && !uriTemplateCont.isEmpty() && !dstype.isEmpty() && !configData.isEmpty()) {
                     templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
                     if (templateCont != null) {
                         docTemplate = templateCont.getActualTemplate();
@@ -408,9 +386,6 @@ public class SWPDocumentTemplateResource extends GenericResource {
             }
             response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_DEFINE_VERSION_TEMPLATE)) {
-            uriDocTemplate = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-
             docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocTemplate);
             templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
 
@@ -419,8 +394,6 @@ public class SWPDocumentTemplateResource extends GenericResource {
             }
             response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_REMOVE_VERSION_TEMPLATE)) {
-            uriDocTemplate = request.getParameter("uridt") != null ? request.getParameter("uridt").trim() : "";
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
             docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocTemplate);
             templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
             if (docTemplate != null && templateCont != null) {
@@ -456,12 +429,9 @@ public class SWPDocumentTemplateResource extends GenericResource {
                 docTemplate.remove();
             }
             response.setRenderParameter("uritc", uriTemplateCont);
-            
         } else if (action.equals(ACTION_EDIT_DOCUMENT_SECTION) && model != null) {
             String titleSection = request.getParameter("titleSection") != null ? request.getParameter("titleSection").trim() : "";
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-            uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids").trim() : "";
-            if (!titleSection.equals("") && !uriTemplateCont.equals("") && !uriDocSection.equals("")) {
+            if (!titleSection.isEmpty() && !uriTemplateCont.isEmpty() && !uriDocSection.isEmpty()) {
                 docSection = (DocumentSection) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSection);
                 docSection.setTitle(titleSection);
                 templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
@@ -492,9 +462,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
             response.setRenderParameter("urids", uriDocSection);
             response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_REMOVE_DOCUMENT_SECTION)) {
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
-            uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids").trim() : "";
-            if (!uriTemplateCont.equals("") && !uriDocSection.equals("")) {
+            if (!uriTemplateCont.isEmpty() && !uriDocSection.isEmpty()) {
                 templateCont = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriTemplateCont);
                 if (templateCont != null) {
                     docTemplate = templateCont.getActualTemplate();
@@ -507,10 +475,9 @@ public class SWPDocumentTemplateResource extends GenericResource {
             }
             response.setRenderParameter("uritc", uriTemplateCont);
         } else if (action.equals(ACTION_DUPLICATE_TEMPLATE)) {
-            uriTemplateCont = request.getParameter("uritc") != null ? request.getParameter("uritc").trim() : "";
             String titletcd = request.getParameter("titletcd") != null ? request.getParameter("titletcd").trim() : "";
             String versiontemp = request.getParameter("versiontemp") != null ? request.getParameter("versiontemp").trim() : "";
-//            TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
+
             DocumentTemplate dtact = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(versiontemp);
             if (dtact != null) {
                 templateCont = TemplateContainer.ClassMgr.createTemplateContainer(model);
@@ -680,40 +647,4 @@ public class SWPDocumentTemplateResource extends GenericResource {
             log.error("Error on doDuplicateTemplate, " + path + ", " + ex.getMessage());
         }
     }
-//int i = 0;
-//    public void cloneInstance(SemanticObject instance, WebSite model) {
-//        System.out.print("\n\ncloning instance...." + instance);
-//        Iterator<SemanticProperty> itsp = instance.getSemanticClass().listProperties();
-//        while (itsp.hasNext()) {
-//            i++;
-//            SemanticProperty sp = itsp.next();
-//            if (!sp.getPropId().contains("swb:") && !sp.getPropId().contains("swpdoc:has")) {
-//                System.out.print("\nsp: " + sp.getPropId());
-//                if (sp.isObjectProperty()) {
-//                    System.out.print(", obj value: " + instance.getObjectProperty(sp));
-//                    SemanticObject sem = instance.getObjectProperty(sp);
-//                    if (sem != null) {
-//                        cloneInstance(instance.getObjectProperty(sp), model);
-//                    }
-//                } else {
-//                    System.out.print(", prop value: " + instance.getProperty(sp));
-//                }
-//            }
-//            if(i>100){
-//                break;
-//            }
-//        }
-//
-////        try {
-////            Field[] fields = instance.getClass().getFields();
-////            for (Field field : fields) {
-//////                if (!field.getName().contains("sclass") && !field.getName().contains("swb_")) {
-////                    System.out.println("obj : " + instance + ", field : " + field.getName() + ", value : " + field.get(instance));
-//////                }
-////            }
-////        } catch (Exception e) {
-////            log.error("Error on cloneInstance, " + e.getMessage() + ", " + e.getCause());
-////        }
-//    }
-
 }
