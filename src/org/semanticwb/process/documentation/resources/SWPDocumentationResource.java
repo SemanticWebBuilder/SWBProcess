@@ -74,11 +74,11 @@ import org.semanticwb.process.documentation.model.SectionElementRef;
 import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFile;
 import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFileFromSWBAdmin;
-import static org.semanticwb.process.documentation.resources.utils.SWPUtils.deleteDerectory;
 import org.semanticwb.process.model.RepositoryDirectory;
 import org.semanticwb.process.model.RepositoryElement;
 import org.semanticwb.process.model.RepositoryFile;
 import org.semanticwb.process.model.RepositoryURL;
+import static org.semanticwb.process.resources.DocumentationResource.deleteDerectory;
 
 /**
  * Componente que permite capturar la documentación de un proceso.
