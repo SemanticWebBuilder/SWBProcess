@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.semanticwb.process.documentation.resources;
 
 import com.lowagie.text.Anchor;
@@ -86,11 +81,10 @@ import org.semanticwb.process.model.RepositoryFile;
 import org.semanticwb.process.model.RepositoryURL;
 
 /**
- *
+ * Componente que permite capturar la documentación de un proceso.
  * @author carlos.alvarez
  */
 public class SWPDocumentationResource extends GenericAdmResource {
-
     private final Logger log = SWBUtils.getLogger(SWPDocumentationResource.class);
 
     public final static String ACTION_ADD_INSTANTIABLE = "a_ain";
@@ -120,8 +114,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String action = response.getAction();
         WebSite model = response.getWebPage().getWebSite();
         try {
-            //Leer parámetros
-
             String uriDocSectionInstance = "uridsi";
             String uriSectionElement = "urise";
             String uriSemanticCls = "scls";
@@ -137,7 +129,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
 
             if (ServletFileUpload.isMultipartContent(request)) {
                 List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-
                 for (FileItem item : multiparts) {
                     if (item.isFormField()) {
                         String encoding = "UTF-8";
@@ -165,39 +156,14 @@ public class SWPDocumentationResource extends GenericAdmResource {
                         if (itemName.equals(configData)) {
                             configData = SWBUtils.TEXT.decode(item.getString(), encoding);
                         }
-
-                        /*if (item.getFieldName().equals(uriDocSectionInstance)) {
-                         uriDocSectionInstance = SWBUtils.TEXT.decode(item.getString(), encoding);
-                         }
-                         if (item.getFieldName().equals(uriSectionElement)) {
-                         uriSectionElement = SWBUtils.TEXT.decode(item.getString(), encoding);
-                         }
-                         if (item.getFieldName().equals(uriSemanticCls)) {
-                         uriSemanticCls = SWBUtils.TEXT.decode(item.getString(), encoding);
-                         }
-                         if (item.getFieldName().equals(props)) {
-                         props = SWBUtils.TEXT.decode(item.getString(), encoding);
-                         }
-                         if (item.getFieldName().equals(props)) {
-                         props = SWBUtils.TEXT.decode(item.getString(), encoding);
-                         }
-                         if (item.getFieldName().equals(configData)) {
-                         configData = SWBUtils.TEXT.decode(item.getString(), encoding);
-                         }
-                         if (item.getFieldName().equals(link)) {
-                         link = SWBUtils.TEXT.decode(item.getString(), encoding);
-                         }
-                         if (item.getFieldName().equals(uriRepositoryElement)) {
-                         uriRepositoryElement = SWBUtils.TEXT.decode(item.getString(), encoding);
-                         }*/
                         values.put(item.getFieldName(), SWBUtils.TEXT.decode(item.getString(), encoding));
                     } else {
-                        
                         inputStream = item.getInputStream();
                         fileName = SWBUtils.TEXT.decode(item.getName(), "UTF-8").trim();
                     }
                 }
             }
+            
             switch (action) {
                 case ACTION_ADD_INSTANTIABLE: {
                     DocumentSectionInstance docSectionInstance = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSectionInstance);
@@ -324,7 +290,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                         String uriVersionInfo = values.containsKey("versionref") ? values.get("versionref").toString() : "";
                         VersionInfo versionInfo = (VersionInfo) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriVersionInfo);
                         if (versionInfo != null) {
-                            referable.setVersion(versionInfo);
+                            referable.setVersion(versionInfo); //TODO: Revisar, esto tira siempre un NPE
                         }
                     }
                     if (repElement != null) {
