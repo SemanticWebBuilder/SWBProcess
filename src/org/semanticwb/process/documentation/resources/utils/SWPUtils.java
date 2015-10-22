@@ -502,29 +502,29 @@ public class SWPUtils {
         return doc;
     }
 
-//    static public List<VersionInfo> listVersions(RepositoryElement el) {
-//        ArrayList<VersionInfo> ret = new ArrayList<VersionInfo>();
-//        if (el != null) {
-//            VersionInfo vi = el.getLastVersion();
-//            VersionInfo ver = null;
-//            if (null != vi) {
-//                ver = vi;
-//                while (ver.getPreviousVersion() != null) {
-//                    ver = ver.getPreviousVersion();
-//                }
-//            }
-//            if (ver != null) {
-//                ret.add(ver);
-//                while (ver != null) {
-//                    ver = ver.getNextVersion();
-//                    if (ver != null) {
-//                        ret.add(ver);
-//                    }
-//                }
-//            }
-//        }
-//        return ret;
-//    }
+    static public List<VersionInfo> listVersions(RepositoryElement el) {
+        ArrayList<VersionInfo> ret = new ArrayList<VersionInfo>();
+        if (el != null) {
+            VersionInfo vi = el.getLastVersion();
+            VersionInfo ver = null;
+            if (null != vi) {
+                ver = vi;
+                while (ver.getPreviousVersion() != null) {
+                    ver = ver.getPreviousVersion();
+                }
+            }
+            if (ver != null) {
+                ret.add(ver);
+                while (ver != null) {
+                    ver = ver.getNextVersion();
+                    if (ver != null) {
+                        ret.add(ver);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
 
     public static void copyFileFromSWBAdmin(String source, String destination, String fileName) throws FileNotFoundException, IOException {
         InputStream inputStream = SWBPortal.getAdminFileStream(source);
