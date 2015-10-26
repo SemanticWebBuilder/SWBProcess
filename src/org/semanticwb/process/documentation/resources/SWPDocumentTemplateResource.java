@@ -2,8 +2,10 @@ package org.semanticwb.process.documentation.resources;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBComparator;
+import org.semanticwb.model.User;
 import org.semanticwb.model.WebSite;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
@@ -555,7 +558,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
             request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
-            request.setAttribute(SWPUtils.LIST_TEMPLATES_CONTAINER, SWPUtils.listTemplateContainers(request, paramRequest));
+            request.setAttribute(SWPUtils.LIST_TEMPLATES_CONTAINER, listTemplateContainers(request, paramRequest));
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doView, " + path + ", " + ex.getMessage());
@@ -648,5 +651,63 @@ public class SWPDocumentTemplateResource extends GenericResource {
         } catch (ServletException ex) {
             log.error("Error on doDuplicateTemplate, " + path + ", " + ex.getMessage());
         }
+    }
+    
+    /**
+     * Obtiene la lista de {@code TemplateContainers} del sitio.
+     * @param request
+     * @param paramRequest
+     * @return 
+     */
+    static public List<TemplateContainer> listTemplateContainers(HttpServletRequest request, SWBParamRequest paramRequest) {
+        ArrayList<TemplateContainer> unpaged = new ArrayList<TemplateContainer>();
+        WebSite model = paramRequest.getWebPage().getWebSite();
+        String lang = "es";
+        User user = paramRequest.getUser();
+        if (user != null && user.getLanguage() != null) {
+            lang = user.getLanguage();
+        }
+        int page = 1;
+        int itemsPerPage = 10;
+        Iterator<TemplateContainer> tplContainers_it = TemplateContainer.ClassMgr.listTemplateContainers(model);
+        if (tplContainers_it != null && tplContainers_it.hasNext()) {
+            Iterator<TemplateContainer> it = SWBComparator.sortByDisplayName(tplContainers_it, lang);
+            while (it.hasNext()) {
+                TemplateContainer dt = it.next();
+                unpaged.add(dt);
+            }
+        }
+        //Realizar paginado de instancias
+        int maxPages = 1;
+        if (request.getParameter("p") != null && !request.getParameter("p").trim().equals("")) {
+            page = Integer.valueOf(request.getParameter("p"));
+            if (page < 0) {
+                page = 1;
+            }
+        }
+        if (itemsPerPage < 10) {
+            itemsPerPage = 10;
+        }
+        if (unpaged.size() >= itemsPerPage) {
+            maxPages = (int) Math.ceil((double) unpaged.size() / itemsPerPage);
+        }
+        if (page > maxPages) {
+            page = maxPages;
+        }
+        int sIndex = (page - 1) * itemsPerPage;
+        if (unpaged.size() > itemsPerPage && sIndex > unpaged.size() - 1) {
+            sIndex = unpaged.size() - itemsPerPage;
+        }
+        int eIndex = sIndex + itemsPerPage;
+        if (eIndex >= unpaged.size()) {
+            eIndex = unpaged.size();
+        }
+        request.setAttribute("maxPages", maxPages);
+        ArrayList<TemplateContainer> ret = new ArrayList<TemplateContainer>();
+        for (int i = sIndex; i < eIndex; i++) {
+            TemplateContainer dt = unpaged.get(i);
+            ret.add(dt);
+        }
+        return ret;
     }
 }
