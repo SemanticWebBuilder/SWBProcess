@@ -43,6 +43,7 @@ import org.semanticwb.portal.api.SWBResourceURLImp;
 import org.semanticwb.process.documentation.model.Activity;
 import org.semanticwb.process.documentation.model.DocumentSection;
 import org.semanticwb.process.documentation.model.DocumentSectionInstance;
+import org.semanticwb.process.documentation.model.Documentation;
 import org.semanticwb.process.documentation.model.DocumentationInstance;
 import org.semanticwb.process.documentation.model.ElementReference;
 import org.semanticwb.process.documentation.model.FreeText;
@@ -693,5 +694,21 @@ public class SWPUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Obtiene la versión actual de la documentación de un proceso.
+     * @param process Proceso del cual se requiere obtener la versión actual de la documentación.
+     * @return Versión actual de la documentación o null si esta no existe.
+     */
+    public static Documentation getActualDocumentationVersion(Process process) {
+        Iterator<Documentation> itdoc = SWBComparator.sortByCreated(Documentation.ClassMgr.listDocumentationByProcess(process), true);
+        while (itdoc.hasNext()) {
+            Documentation doc = itdoc.next();
+            if (doc.isActualVersion()) {
+                return doc;
+            }
+        }
+        return null;
     }
 }
