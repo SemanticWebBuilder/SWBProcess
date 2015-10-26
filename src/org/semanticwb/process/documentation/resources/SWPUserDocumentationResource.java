@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -17,8 +19,8 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
+import org.semanticwb.model.Descriptiveable;
 import org.semanticwb.model.SWBComparator;
-import org.semanticwb.model.WebSite;
 import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
@@ -34,6 +36,14 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
     private final Logger log = SWBUtils.getLogger(SWPUserDocumentationResource.class);
     public final static String MODE_VIEW_DOCUMENTATION = "m_vdoc";//Modo EDITAR de sección de documentación
     public final static String MODE_EXPORT_MODEL = "m_expm";
+    public final static String PARAM_PROCESSGROUP = "pg";
+    public final static String PARAM_SORTTYPE = "sort";
+    public final static String SORT_NAME = "name";
+    public final static String SORT_NAMEDESC = "namedesc";
+    public final static String SORT_DATE = "date";
+    public final static String SORT_DATEDESC = "datedesc";
+    public final static String SORT_TYPE = "type";
+    public final static String SORT_TYPEDESC = "typedesc";
 
     @Override
     public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
@@ -56,13 +66,11 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
         response.setContentType("text/html; charset=UTF-8");
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/userDocumentation.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
-        String lang = "es";
-        if (paramRequest.getUser() != null && paramRequest.getUser().getLanguage() != null) lang = paramRequest.getUser().getLanguage();
-        String idpg = request.getParameter("idpg") != null ? request.getParameter("idpg") : "";
+        String idpg = request.getParameter(PARAM_PROCESSGROUP) != null ? request.getParameter(PARAM_PROCESSGROUP) : "";
         
         try {
             request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
-            request.setAttribute(SWPUtils.LIST_PROCESSES, SWBUtils.Collections.copyIterator(SWBComparator.sortByDisplayName(listProcesses(idpg).iterator(), lang)));
+            request.setAttribute(SWPUtils.LIST_PROCESSES, getItems(ProcessGroup.ClassMgr.getProcessGroup(idpg, paramRequest.getWebPage().getWebSite())));
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doView, " + path + ", " + ex.getMessage());
@@ -79,30 +87,6 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
         } catch (ServletException ex) {
             log.error("Error on doViewDocumentation, " + path + ", " + ex.getMessage());
         }
-    }
-    
-    /**
-     * Obtiene la lista de los procesos asociados a un grupo de procesos.
-     * @param processGroupID Identificador del grupo de procesos.
-     * @return Lista de los procesos asociados el grupo con identificados {@code processGroupID}
-     */
-    private List<Process> listProcesses(String processGroupID) {
-        List<Process> list = new ArrayList<Process>();
-        WebSite model = this.getResourceBase().getWebSite();
-
-        if (!processGroupID.isEmpty()) {
-            ProcessGroup group = ProcessGroup.ClassMgr.getProcessGroup(processGroupID, model);
-            if (null != group) {
-                Iterator<org.semanticwb.process.model.Process> iterator = group.listProcesses();
-                while (iterator.hasNext()) {
-                    org.semanticwb.process.model.Process process = iterator.next();
-                    if (process.isValid()) {
-                        list.add(process);
-                    }
-                }
-            }
-        }
-        return list;
     }
 
     public void doExportModel(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
@@ -156,5 +140,46 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
                 log.error("Ocurrió un problema al generar la imagen", ex);
             }
         }
+    }
+    
+    /**
+     * Obtiene la lista de items para la tabla de navegación. Incluye objetos {@code Process} y {@code ProcessGroup} a partir del nivel indicado.
+     * @param root {@code ProcessGroup} que servirá como raíz del listado.
+     * @return Lista de elementos a mostrar en la tabla de navegación.
+     */
+    public List<Descriptiveable> getItems(ProcessGroup root) {
+        List<Descriptiveable> ret = new ArrayList<Descriptiveable>();
+        Iterator<ProcessGroup> allGroups;
+        
+        //Add groups to item list
+        if (null == root) {
+            allGroups = ProcessGroup.ClassMgr.listProcessGroups(getResourceBase().getWebSite());
+        } else {
+            allGroups = root.listProcessGroups();
+        }
+        
+        while (allGroups.hasNext()) {
+            ProcessGroup group = allGroups.next();
+            if (group.isValid()) {
+                if (null != root) {
+                    ret.add(group);
+                } else if (null == group.getParentGroup()) {
+                    ret.add(group);
+                }
+            }
+        }
+        
+        //Add processes to item list if group is not null
+        if (null != root) {
+            Iterator<Process> processes = root.listProcesses();
+            while (processes.hasNext()) {
+                Process process = processes.next();
+                if (process.isValid()) {
+                    ret.add(process);
+                }
+            }
+        }
+        
+        return ret;
     }
 }
