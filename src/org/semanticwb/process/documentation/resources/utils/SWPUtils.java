@@ -76,16 +76,15 @@ public class SWPUtils {
 
     /**
      * Obtiene la lista de los procesos asociados con un {@code TemplateContainer}.
-     * @param containerURI URI del {@code TemplateContainer}
+     * @param tc {@code TemplateContainer}
      * @param model Modelo.
      * @return Lista de procesos asociados al {@code TemplateContainer}
      */
-    static public List<Process> listProcessesByTemplate(String containerURI, WebSite model) {//TODO:Revisar por qué es necesario usar este en lugar del TemplateContainer.listProcesses()
-        TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(containerURI);
+    static public List<Process> listProcessesByTemplate(TemplateContainer tc, WebSite model) {//TODO:Revisar por qué es necesario usar este en lugar del TemplateContainer.listProcesses()
         TemplateContainer tctemp = null;
         List<Process> list = new ArrayList<Process>();
         Iterator<Process> iterator = Process.ClassMgr.listProcesses(model);
-        while (iterator.hasNext()) {//Filtrado de procesos por algún criterio
+        while (iterator.hasNext()) {
             Process process = iterator.next();
             Iterator<TemplateContainer> templates = TemplateContainer.ClassMgr.listTemplateContainerByProcess(process, model);
             if (templates.hasNext()) {
