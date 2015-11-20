@@ -571,10 +571,11 @@ public class SWPDocumentTemplateResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/documentTemplateEdit.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         String contURI = request.getParameter("uritc") != null ? request.getParameter("uritc") : "";
+        TemplateContainer tc = (TemplateContainer)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(contURI);
         
         try {
             request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
-            request.setAttribute(SWPUtils.LIST_PROCESSES, SWPUtils.listProcessesByTemplate(contURI, paramRequest.getWebPage().getWebSite()));
+            request.setAttribute(SWPUtils.LIST_PROCESSES, SWPUtils.listProcessesByTemplate(tc, paramRequest.getWebPage().getWebSite()));
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doEdit, " + path + ", " + ex.getMessage());
