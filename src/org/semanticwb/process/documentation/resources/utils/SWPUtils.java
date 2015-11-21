@@ -1,7 +1,10 @@
 package org.semanticwb.process.documentation.resources.utils;
 
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.rtf.style.RtfFont;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -546,67 +549,6 @@ public class SWPUtils {
             log.error("Error on saveFile, " + e.getMessage() + ", " + e.getCause());
         }
     }
-
-    public static void addTextHtmlToRtf(String html, com.lowagie.text.Document doc, SectionElement se, WebSite model, org.semanticwb.process.model.Process p) {
-        try {
-            String basePath = SWBPortal.getWorkPath() + "/models/" + model.getId() + "/Resource/" + p.getId() + "/download/";
-            File dir = new File(basePath + "rep_files/img/" + se.getId() + "/");
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            org.jsoup.nodes.Document d = Jsoup.parse(html);
-            Elements elements = d.select("[src]");
-            html = d.html();
-            int i = 1;
-            org.jsoup.nodes.Document d1 = Jsoup.parse(html.substring(0));
-            doc.add(new Paragraph(d1.text()));   
-            for (org.jsoup.nodes.Element element : elements) {
-                    
-                if (element.tagName().equals("img")) {
-                    element.replaceWith(new TextNode("", element.baseUri()));
-                    int init = html.indexOf(element.outerHtml());
-                    int end = init + element.outerHtml().length();
-                    html = html.substring(end);                
-                    String src = element.attr("src");
-                    String width = element.attr("width");
-                    String height = element.attr("height");
-                    Image image = null;
-                    if (src.startsWith("../..")) {
-                        image = Image.getInstance(SWBPortal.getWorkPath() + src.substring(10));//Model Image
-                    } else if (src.startsWith("data:image")) {
-                        int endImg = src.indexOf("base64,");
-                        if (endImg > -1) {
-                            endImg += 7;
-                            src = src.substring(endImg, src.length());
-                        }
-                        //Decodificar los datos y guardarlos en un archivo
-                        byte[] data = Base64.getDecoder().decode(src);
-                        try (OutputStream stream = new FileOutputStream(dir.getAbsolutePath() + "/" + se.getId() + i + ".png")) {
-                            stream.write(data);
-                            //Insertar la imagen en el documento
-                            image = Image.getInstance(dir.getAbsolutePath() + "/" + se.getId() + i + ".png");
-
-                        } catch (IOException ioe) {
-                            log.error("Error on getDocument, " + ioe.getLocalizedMessage());
-                        }
-
-                    } else {
-                        SWPUtils.saveFile(src, dir.getAbsolutePath() + "/" + se.getId() + i + "." + src.substring(src.lastIndexOf(".") + 1));
-                        image = Image.getInstance(dir.getAbsolutePath() + "/" + se.getId() + i + "." + src.substring(src.lastIndexOf(".") + 1));//Model Image
-                    }
-
-                    if (width != null && height != null && !width.isEmpty() && !height.isEmpty()) {
-                        image.scaleToFit(Float.parseFloat(width), Float.parseFloat(height));
-                    }
-                    doc.add(image);
-                    i++;
-                }
-                
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     
     /**
      * Obtiene la versión actual de la documentación de un proceso.
@@ -622,5 +564,13 @@ public class SWPUtils {
             }
         }
         return null;
+    }
+    
+    public static class FONTS {
+        public static final Font body = new RtfFont("Arial", 10);
+        public static final Font h = new RtfFont("Arial", 8);
+        public static final Font h1 = new RtfFont("Arial", 16, Font.BOLD);
+        public static final Font h2 = new RtfFont("Arial", 14, Font.BOLDITALIC);
+        public static final Font h3 = new RtfFont("Arial", 13, Font.BOLD);
     }
 }
