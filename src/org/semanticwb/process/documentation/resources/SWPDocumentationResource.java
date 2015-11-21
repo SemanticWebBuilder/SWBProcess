@@ -4,10 +4,19 @@ import com.lowagie.text.Anchor;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.Table;
 import com.lowagie.text.rtf.RtfWriter2;
+import com.lowagie.text.rtf.field.RtfPageNumber;
+import com.lowagie.text.rtf.headerfooter.RtfHeaderFooter;
+import com.lowagie.text.rtf.style.RtfFont;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -74,6 +83,7 @@ import org.semanticwb.process.documentation.model.SectionElementRef;
 import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFile;
 import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFileFromSWBAdmin;
+import org.semanticwb.process.documentation.writers.RTFWriter;
 import org.semanticwb.process.model.RepositoryDirectory;
 import org.semanticwb.process.model.RepositoryElement;
 import org.semanticwb.process.model.RepositoryFile;
@@ -762,254 +772,19 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     out.flush();
                     out.close();
                 } else if (format.equals(SWPUtils.FORMAT_WORD)) {
-
-                    //Document
-                    Document doc = new Document();
-                    RtfWriter2.getInstance(doc, new FileOutputStream(basePath + p.getId() + ".rtf"));
-                    doc.open();
-                    doc.addTitle(p.getId());
-
-                    Paragraph pTitle = new Paragraph();//Title
-                    pTitle.add(p.getTitle());
-                    doc.add(pTitle);
-
-                    Image image2 = Image.getInstance(basePath + "rep_files/" + p.getId() + ".png");//Model Image
-                    image2.scaleToFit(400, 400);
-                    doc.add(image2);
-
-                    //Sections
-                    doc.newPage();
-                    doc.add(new Paragraph("Secciones"));
-                    Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(docInstance.listDocumentSectionInstances());
-                    while (itdsi.hasNext()) {//Sections
-                        DocumentSectionInstance docSectionInstance = itdsi.next();
-                        SemanticClass cls = docSectionInstance.getSecTypeDefinition() != null && docSectionInstance.getSecTypeDefinition().getSectionType() != null ? docSectionInstance.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
-                        if (!docSectionInstance.getSecTypeDefinition().isActive() || (cls != null && cls.equals(Model.sclass))) {
-                            continue;
-                        }
-                        doc.add(new Paragraph(docSectionInstance.getSecTypeDefinition().getTitle()));
-                    }
-
-                    //Content
-                    doc.newPage();
-                    doc.add(new Paragraph("Contenido"));
-
-                    itdsi = SWBComparator.sortSortableObject(docInstance.listDocumentSectionInstances());
-                    while (itdsi.hasNext()) {//Sections
-                        DocumentSectionInstance docSectionInstance = itdsi.next();
-                        doc.add(new Paragraph(docSectionInstance.getSecTypeDefinition().getTitle()));
-
-                        Iterator<SectionElement> itse = SWBComparator.sortSortableObject(docSectionInstance.listDocuSectionElementInstances());
-                        List<SectionElement> list = new ArrayList<SectionElement>();
-                        while (itse.hasNext()) {
-                            SectionElement se = itse.next();
-                            list.add(se);
-                        }
-
-                        SemanticClass cls = docSectionInstance.getSecTypeDefinition() != null && docSectionInstance.getSecTypeDefinition().getSectionType() != null ? docSectionInstance.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
-                        if (cls != null) {
-                            if (!docSectionInstance.getSecTypeDefinition().isActive() || cls.equals(Model.sclass)) {
-                                continue;
-                            }
-                            if (cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {//Instantiable
-                                String[] props = docSectionInstance.getSecTypeDefinition().getVisibleProperties().split("\\|");
-                                //Add Table
-                                Table t = new Table(props.length, (list.size() + 1));
-
-                                for (String propt : props) {//Header
-                                    String titleprop = propt.substring(0, propt.indexOf(";"));
-                                    t.addCell(new Cell(titleprop));
-                                }
-                                for (SectionElement se : list) {//Instances
-                                    for (String propt : props) {
-                                        String idProperty = propt.substring(propt.indexOf(";") + 1, propt.length());
-                                        SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idProperty);
-                                        String value = "es archivo";
-                                        if (prop != null && !prop.getPropId().equals(Referable.swpdoc_file.getPropId())) {
-                                            value = (se.getSemanticObject().getProperty(prop) != null ? se.getSemanticObject().getProperty(prop) : "");
-                                            t.addCell(new Cell(value));
-                                        } else {
-
-                                            Anchor anchor = new Anchor(se.getTitle());
-                                            Referable ref = (Referable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
-                                            //RepositoryDirectory rd = ref.getRefRepository().getRepositoryDirectory();
-                                            RepositoryElement re = (RepositoryElement) ref.getRefRepository();
-                                            VersionInfo versionInfo = ref.getVersion() != null ? ref.getVersion() : re.getLastVersion();
-
-                                            if (re instanceof RepositoryFile) {
-                                                String basePathE = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber() + "/";
-                                                File baseDir = new File(basePathE);
-                                                String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/";
-                                                File repFile = new File(basePathDest + "rep_files/" + ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber() + "/");
-                                                if (!repFile.exists()) {
-                                                    repFile.mkdirs();
-                                                }
-                                                if (baseDir.isDirectory()) {
-                                                    File[] files = baseDir.listFiles();
-                                                    for (File file : files) {
-                                                        String fileName = file.getName().substring(file.getName().lastIndexOf("."));
-                                                        anchor.setReference("rep_Files/" + ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber() + "/" + se.getId() + fileName);
-                                                        copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + se.getId() + fileName);
-                                                        break;
-                                                    }
-                                                }
-                                            } else if (re instanceof RepositoryURL) {
-                                                anchor.setReference(versionInfo.getVersionFile());
-                                            }
-                                            t.addCell(new Cell(anchor));
-                                        }
-                                    }
-                                }
-                                doc.add(t);
-                            } else if (cls.equals(FreeText.sclass)) {//FreeText
-                                for (SectionElement se : list) {
-                                    FreeText freeText = (FreeText) se;
-                                    File dir = new File(basePath + "rep_files/img/" + se.getId() + "/");
-                                    if (!dir.exists()) {
-                                        dir.mkdirs();
-                                    }
-                                    if (freeText.getText() != null) {
-                                        SWPUtils.addTextHtmlToRtf(freeText.getText(), doc, se, model, p);
-                                    }
-                                }
-                            } else if (cls.equals(Activity.sclass)) {//Activity
-                                for (SectionElement se : list) {
-                                    Activity a = (Activity) se;
-                                    doc.add(new Paragraph(a.getTitle()));
-                                    if (a.getDescription() != null || a.getDescription() != "") {
-                                        SWPUtils.addTextHtmlToRtf(a.getDescription(), doc, se, model, p);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    /*
-                     CustomWord document = new CustomWord();
-                     //Title
-                     XWPFParagraph pTitle = document.createParagraph();
-                     pTitle.setAlignment(ParagraphAlignment.CENTER);
-                     XWPFRun rTitle = pTitle.createRun();
-                     rTitle.setText(p.getTitle());
-                     rTitle.setFontSize(25);
-                     rTitle.setFontFamily("Helvetica");
-
-                     InputStream is = new FileInputStream(new File(basePath + "rep_files/" + p.getId() + ".png"));
-                     String blipId = document.addPictureData(is, XWPFDocument.PICTURE_TYPE_PNG);
-                     document.createPicture(blipId, document.getNextPicNameNumber(Document.PICTURE_TYPE_PNG), 600, 600);
-                     document.createParagraph().createRun().addBreak(BreakType.PAGE);
-
-                     //Sections
-                     XWPFParagraph pSections = document.createParagraph();
-                     XWPFRun rSections = pSections.createRun();
-                     rSections.setText("Secciones");
-                     rSections.setFontSize(18);
-                     rSections.addBreak();
-
-                     //Sections
-                     XWPFParagraph pSection = document.createParagraph();
-                     Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
-                     while (itdsi.hasNext()) {//Sections
-                     DocumentSectionInstance dsi = itdsi.next();
-                     SemanticClass cls = dsi.getSecTypeDefinition() != null && dsi.getSecTypeDefinition().getSectionType() != null ? dsi.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
-                     if (!dsi.getSecTypeDefinition().isActive() || (cls != null && cls.equals(Model.sclass))) {
-                     continue;
-                     }
-                     XWPFRun rSection = pSection.createRun();
-                     rSection.setText(dsi.getSecTypeDefinition().getTitle());
-                     rSection.addBreak();
-                     }
-                     document.createParagraph().createRun().addBreak(BreakType.PAGE);
-
-                     //Sections
-                     XWPFParagraph pContent = document.createParagraph();
-                     XWPFRun rContent = pContent.createRun();
-                     rContent.setText("Contenido a detalle");
-                     rContent.setFontSize(18);
-                     rContent.addBreak();
-
-                     //Sections
-                     XWPFParagraph pContents = document.createParagraph();
-                     itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
-                     while (itdsi.hasNext()) {//Sections
-                     DocumentSectionInstance dsi = itdsi.next();
-                     SemanticClass cls = dsi.getSecTypeDefinition() != null && dsi.getSecTypeDefinition().getSectionType() != null ? dsi.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
-                     if (cls != null) {
-                     if (!dsi.getSecTypeDefinition().isActive() || cls.equals(Model.sclass)) {
-                     continue;
-                     }
-                     XWPFRun rSection = pContents.createRun();
-                     rSection.setText(dsi.getSecTypeDefinition().getTitle());
-                     rSection.addBreak();
-
-                     Iterator<SectionElement> itse = SWBComparator.sortSortableObject(dsi.listDocuSectionElementInstances());
-                     List<SectionElement> list = new ArrayList<SectionElement>();
-                     while (itse.hasNext()) {
-                     SectionElement se = itse.next();
-                     list.add(se);
-                     }
-
-
-                     if (cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {//Instantiable
-                     String[] props = dsi.getSecTypeDefinition().getVisibleProperties().split("\\|");
-                     //Add Table
-                     XWPFTable table = document.createTable((list.size() + 1), props.length);
-                     XWPFTableRow header = table.getRow(0);
-                     int col = 0;
-                     for (String propt : props) {//Header
-                     String titleprop = propt.substring(0, propt.indexOf(";"));
-                     header.getCell(col++).setText(titleprop);
-                     }
-                     int rowi = 1;
-                     for (SectionElement se : list) {//Instances
-                     XWPFTableRow row = table.getRow(rowi++);
-                     col = 0;
-                     for (String propt : props) {
-                     String idprop = propt.substring(propt.indexOf(";") + 1, propt.length());
-                     SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
-                     String value = "";
-                     if (prop != null && !prop.getPropId().equals(Referable.swpdoc_file.getPropId())) {
-                     value = (se.getSemanticObject().getProperty(prop) != null ? se.getSemanticObject().getProperty(prop) : "");
-                     } else {
-
-                     }
-                     row.getCell(col++).setText(value);
-                     }
-                     }
-                     document.createParagraph().createRun().addBreak(BreakType.TEXT_WRAPPING);
-                     document.createParagraph().createRun().addBreak(BreakType.TEXT_WRAPPING);
-                     } else if (cls.equals(FreeText.sclass)) {//FreeText
-                     for (SectionElement se : list) {
-                     XWPFRun rSectionT = pContents.createRun();
-                     FreeText ft = (FreeText) se;
-                     rSectionT.setText(SWBUtils.TEXT.parseHTML(ft.getText()));
-                     rSectionT.addBreak();
-                     rSectionT.addBreak();
-                     rSectionT.addBreak();
-                     }
-                     } else if (cls.equals(Activity.sclass)) {//Activity
-
-                     }
-
-                     }
-
-                     }
-                     */
-                    doc.close();
-
-//                    FileOutputStream output = new FileOutputStream(basePath + p.getId() + ".docx");
-//                    doc.write(output);
-//                    output.close();
+                    RTFWriter rtfw = new RTFWriter(docInstance);
+                    rtfw.write(basePath);
                 }
+                
+                //ZIP content and remove temp dir
                 try (OutputStream ou = response.getOutputStream(); ZipOutputStream zos = new ZipOutputStream(ou)) {
                     SWBUtils.IO.zip(dest, new File(basePath), zos);
                     zos.flush();
                 }
                 deleteDerectory(dest);
-
             }
 
-        } catch (DocumentException | IOException | TransformerException ex) {
+        } catch (IOException | TransformerException ex) {
             log.error("Error on doDownload, " + ex.getMessage());
         }
     }
