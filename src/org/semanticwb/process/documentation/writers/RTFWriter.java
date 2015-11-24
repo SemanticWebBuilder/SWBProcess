@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
@@ -33,7 +34,6 @@ import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBComparator;
 import org.semanticwb.model.VersionInfo;
-import org.semanticwb.model.WebSite;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticProperty;
 import org.semanticwb.process.documentation.model.Activity;
@@ -58,9 +58,9 @@ import org.semanticwb.process.model.RepositoryURL;
  */
 public class RTFWriter implements DocumentWriter {
     private static final Logger log = SWBUtils.getLogger(RTFWriter.class);
-    private DocumentationInstance di;
-    private Process p;
-    private ProcessSite model;
+    private final DocumentationInstance di;
+    private final Process p;
+    private final ProcessSite model;
     
     public RTFWriter(DocumentationInstance di) {
         this.di = di;
@@ -122,17 +122,21 @@ public class RTFWriter implements DocumentWriter {
                 }
                 
                 if (cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {
-                    //Get visible props
+                    //Get visible props from config
                     String [] props = dsi.getSecTypeDefinition().getVisibleProperties().split("\\|");
                     
                     //Add properties table
                     if (props.length > 0 && !sectionElementInstances.isEmpty()) {
                         Table propsTable = new Table(props.length, (sectionElementInstances.size() + 1));
-
+                        propsTable.setPadding(15);
                         //Add table header
                         for (String propt : props) {//Header
                             String titleprop = propt.substring(0, propt.indexOf(";"));
-                            propsTable.addCell(new Cell(titleprop));
+                            Cell thead = new Cell(new Paragraph(titleprop, SWPUtils.FONTS.th));
+                            thead.setHorizontalAlignment(Element.ALIGN_CENTER);
+                            thead.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                            thead.setGrayFill(0.9f);
+                            propsTable.addCell(thead);
                         }
                         
                         //Add rows
@@ -140,13 +144,15 @@ public class RTFWriter implements DocumentWriter {
                             for (String propt : props) {
                                 String idProperty = propt.substring(propt.indexOf(";") + 1, propt.length());
                                 SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idProperty);
-                                String value = "es archivo";
+                                //String value = "es archivo";
+                                Element content;
                                 
                                 if (prop != null && !prop.getPropId().equals(Referable.swpdoc_file.getPropId())) { //Not a reference
-                                    value = (se.getSemanticObject().getProperty(prop) != null ? se.getSemanticObject().getProperty(prop) : "");
-                                    propsTable.addCell(new Cell(value));
+                                    content = new Paragraph((se.getSemanticObject().getProperty(prop) != null ? se.getSemanticObject().getProperty(prop) : ""), SWPUtils.FONTS.td);
+                                    //value = (se.getSemanticObject().getProperty(prop) != null ? se.getSemanticObject().getProperty(prop) : "");
+                                    //--propsTable.addCell(new Cell(value));
                                 } else { //Reference
-                                    Anchor anchor = new Anchor(se.getTitle());
+                                    Anchor anchor = new Anchor(se.getTitle(), SWPUtils.FONTS.td);
                                     Referable ref = (Referable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
                                     RepositoryElement re = (RepositoryElement) ref.getRefRepository();
                                     VersionInfo versionInfo = ref.getVersion() != null ? ref.getVersion() : re.getLastVersion();
@@ -171,8 +177,11 @@ public class RTFWriter implements DocumentWriter {
                                     } else if (re instanceof RepositoryURL) {
                                         anchor.setReference(versionInfo.getVersionFile());
                                     }
-                                    propsTable.addCell(new Cell(anchor));
+                                    content = anchor;
+                                    //--propsTable.addCell(new Cell(anchor));
                                 }
+                                Cell td = new Cell(content);
+                                propsTable.addCell(td);
                             }
                         }
                         doc.add(propsTable);
@@ -200,7 +209,8 @@ public class RTFWriter implements DocumentWriter {
                     }
                 } else if (cls.equals(Model.sclass)) {
                     Image image2 = Image.getInstance(basePath + "rep_files/" + p.getId() + ".png");//Model Image
-                    image2.scaleToFit(doc.getPageSize().getWidth(), doc.getPageSize().getWidth());
+                    image2.scaleAbsolute(doc.getPageSize().getWidth()-doc.leftMargin()-doc.rightMargin(),
+                            doc.getPageSize().getHeight()-doc.topMargin()-doc.bottomMargin());
                     doc.add(image2);
                 }
                 doc.newPage();
@@ -262,16 +272,22 @@ public class RTFWriter implements DocumentWriter {
                         image = Image.getInstance(dir.getAbsolutePath() + "/" + se.getId() + i + "." + src.substring(src.lastIndexOf(".") + 1));//Model Image
                     }
 
-                    if (width != null && height != null && !width.isEmpty() && !height.isEmpty()) {
-                        image.scaleToFit(400,400);
+                    if (null != image && width != null && height != null && !width.isEmpty() && !height.isEmpty()) {
+                        image.scaleToFit(doc.getPageSize().getWidth()-doc.leftMargin()-doc.rightMargin(),
+                            doc.getPageSize().getHeight()-doc.topMargin()-doc.bottomMargin());
                     }
                     doc.add(image);
                     i++;
                 }
-                
+
             }
         } catch (DocumentException | IOException e) {
             log.error(e);
         }
+    }
+
+    @Override
+    public void write(OutputStream ous) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
