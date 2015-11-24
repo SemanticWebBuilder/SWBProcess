@@ -135,6 +135,7 @@ public class SWPUtils {
                     section.setAttribute("className", cls.getName());
                     section.setAttribute("title", dsi.getSecTypeDefinition().getTitle());
                     section.setAttribute("uri", dsi.getURI());
+                    section.setAttribute("idSection", dsi.getId());
                     section.setAttribute("url", cls.getName() + dsi.getId());
 
                     Iterator<SectionElement> itse = SWBComparator.sortSortableObject(dsi.listDocuSectionElementInstances());
