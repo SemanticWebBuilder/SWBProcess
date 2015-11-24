@@ -1,34 +1,20 @@
 package org.semanticwb.process.documentation.resources;
 
-import com.lowagie.text.Anchor;
-import com.lowagie.text.Cell;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.HeaderFooter;
-import com.lowagie.text.Image;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Table;
-import com.lowagie.text.rtf.RtfWriter2;
-import com.lowagie.text.rtf.field.RtfPageNumber;
-import com.lowagie.text.rtf.headerfooter.RtfHeaderFooter;
-import com.lowagie.text.rtf.style.RtfFont;
-import java.awt.Color;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -75,7 +61,6 @@ import org.semanticwb.process.documentation.model.ElementReference;
 import org.semanticwb.process.documentation.model.Format;
 import org.semanticwb.process.documentation.model.FreeText;
 import org.semanticwb.process.documentation.model.Instantiable;
-import org.semanticwb.process.documentation.model.Model;
 import org.semanticwb.process.documentation.model.Referable;
 import org.semanticwb.process.documentation.model.Reference;
 import org.semanticwb.process.documentation.model.SectionElement;
@@ -83,6 +68,7 @@ import org.semanticwb.process.documentation.model.SectionElementRef;
 import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFile;
 import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFileFromSWBAdmin;
+import org.semanticwb.process.documentation.writers.DOCXWriter;
 import org.semanticwb.process.documentation.writers.RTFWriter;
 import org.semanticwb.process.model.RepositoryDirectory;
 import org.semanticwb.process.model.RepositoryElement;
@@ -692,37 +678,43 @@ public class SWPDocumentationResource extends GenericAdmResource {
 //            log.error("Error on doMsgVersion, " + path + ", " + ex.getMessage() + ", " + ex.getCause());
 //        }
     }
-
+    
     public void doDownload(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-
         try {
-            String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
             String urip = request.getParameter("urip") != null ? request.getParameter("urip") : "";
             String uridi = request.getParameter("uridi") != null ? request.getParameter("uridi") : "";
             String data = request.getParameter("data");
             String format = request.getParameter("format") != null ? request.getParameter("format") : "";
-            String viewBox = request.getParameter("viewBox");
+            //String viewBox = request.getParameter("viewBox");
+            double w = 3800;
+            double h = 2020;
+            try {
+                w = Double.parseDouble(request.getParameter("width"));
+                h = Double.parseDouble(request.getParameter("height"));
+            } catch (NumberFormatException nfe) {}
+            
             org.semanticwb.process.model.Process p = (org.semanticwb.process.model.Process)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urip);
             DocumentationInstance docInstance = (DocumentationInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridi);
             if (p != null && docInstance != null) {
                 WebSite model = paramRequest.getWebPage().getWebSite();
 
-                response.setContentType("text/html; charset=UTF-8");
-                response.setContentType("application/zip");
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".zip\"");
                 String basePath = SWBPortal.getWorkPath() + "/models/" + model.getId() + "/Resource/" + p.getId() + "/download/";
                 File dirBase = new File(basePath);
                 if (!dirBase.exists()) {
                     dirBase.mkdirs();
                 }
-                SWPUtils.generateImageModel(p, SWPUtils.FORMAT_PNG, data, viewBox);
-                SWPUtils.generateImageModel(p, SWPUtils.FORMAT_SVG, data, viewBox);
+                SWPUtils.generateImageModel(p, basePath+"/rep_files", SWPUtils.FORMAT_PNG, data, w, h);
+                SWPUtils.generateImageModel(p, basePath+"/rep_files", SWPUtils.FORMAT_SVG, data, w, h);
 
                 File dest = new File(basePath);
                 if (!dest.exists()) {
                     dest.mkdirs();
                 }
                 if (format.equals(SWPUtils.FORMAT_HTML)) {
+                    response.setContentType("text/html; charset=UTF-8");
+                    response.setContentType("application/zip");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".zip\"");
+
                     //Copy bootstrap files
                     copyFileFromSWBAdmin("/swbadmin/css/bootstrap/bootstrap.css", basePath + "css/bootstrap/", "/bootstrap.css");
                     copyFileFromSWBAdmin("/swbadmin/js/bootstrap/bootstrap.js", basePath + "js/bootstrap/", "/bootstrap.js");
@@ -760,7 +752,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     if (dom != null) {
                         String tlpPath = "/work/models/" + model.getId() + "/jsp/documentation/documentation.xsl";
                         javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
-                        //out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes("UTF-8"));
                         out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes());
 
                         Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -772,18 +763,22 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     out.flush();
                     out.close();
                 } else if (format.equals(SWPUtils.FORMAT_WORD)) {
-                    RTFWriter rtfw = new RTFWriter(docInstance);
-                    rtfw.write(basePath);
+                    response.setContentType("application/msword");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".docx\"");
+
+                    DOCXWriter docxw = new DOCXWriter(docInstance, basePath+"rep_files");
+                    docxw.write(response.getOutputStream());
                 }
                 
-                //ZIP content and remove temp dir
-                try (OutputStream ou = response.getOutputStream(); ZipOutputStream zos = new ZipOutputStream(ou)) {
-                    SWBUtils.IO.zip(dest, new File(basePath), zos);
-                    zos.flush();
+                if (SWPUtils.FORMAT_HTML.equals(format)) {
+                    //ZIP content and remove temp dir
+                    try (OutputStream ou = response.getOutputStream(); ZipOutputStream zos = new ZipOutputStream(ou)) {
+                        SWBUtils.IO.zip(dest, new File(basePath), zos);
+                        zos.flush();
+                    }
+                    deleteDerectory(dest);
                 }
-                deleteDerectory(dest);
             }
-
         } catch (IOException | TransformerException ex) {
             log.error("Error on doDownload, " + ex.getMessage());
         }
