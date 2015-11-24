@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
