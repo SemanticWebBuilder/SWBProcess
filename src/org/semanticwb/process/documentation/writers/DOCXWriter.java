@@ -160,8 +160,8 @@ public class DOCXWriter implements DocumentWriter {
 
                             colContent.getContent().add(colRun);
                             col.getContent().set(0, colContent);
-                            alignParagraph(colContent, JcEnumeration.CENTER);
-                            fillTableCell(col);
+                            //alignParagraph(colContent, JcEnumeration.CENTER);
+                            //fillTableCell(col);
                         }
                         
                         //Add rows
@@ -194,7 +194,6 @@ public class DOCXWriter implements DocumentWriter {
                     }
                 } else if (cls.equals(FreeText.sclass)) {
                     XHTMLImporterImpl importer = new XHTMLImporterImpl(doc);
-                    importer.setParagraphFormatting(FormattingOption.IGNORE_CLASS);
                     for (SectionElement se : sectionElementInstances) {
                         FreeText freeText = (FreeText) se;
                         if (null != se) {
@@ -208,20 +207,26 @@ public class DOCXWriter implements DocumentWriter {
                                 for (Object o : objects) {
                                     if (o instanceof Tbl) setStyle((Tbl)o, "TableGrid");
                                     if (o instanceof P) {
-                                        setStyle((P)o, "Normal");
+                                        //Fix harcoded runProperties
+                                        /*List<Object> pChilds = ((P)o).getContent();
+                                        for (Object child: pChilds) {
+                                            if (child instanceof R) {
+                                                ((R)child).setRPr(objectFactory.createRPr());
+                                            }
+                                        }*/
+                                        //setStyle((P)o, "Normal");
                                         alignParagraph((P)o, JcEnumeration.BOTH);
                                     }
                                 }
-                                content.getContent().addAll(importer.convert(sContent, null));
+                                content.getContent().addAll(objects);
                             }
                         }
                     }
                 } else if (cls.equals(Activity.sclass)) {
-                    XHTMLImporterImpl importer = new XHTMLImporterImpl(doc);
-                    importer.setParagraphFormatting(FormattingOption.IGNORE_CLASS);
                     for (SectionElement se : sectionElementInstances) {
                         Activity a = (Activity) se;
                         if (a.getDescription() != null && !a.getDescription().isEmpty()) {
+                            XHTMLImporterImpl importer = new XHTMLImporterImpl(doc);
                             content.addStyledParagraphOfText("Heading3", a.getTitle());
                             
                             String sContent = a.getDescription();
@@ -234,7 +239,14 @@ public class DOCXWriter implements DocumentWriter {
                                 for (Object o : objects) {
                                     if (o instanceof Tbl) setStyle((Tbl)o, "TableGrid");
                                     if (o instanceof P) {
-                                        setStyle((P)o, "Normal");
+                                        //Fix harcoded runProperties
+                                        /*List<Object> pChilds = ((P)o).getContent();
+                                        for (Object child: pChilds) {
+                                            if (child instanceof R) {
+                                                ((R)child).setRPr(objectFactory.createRPr());
+                                            }
+                                        }*/
+                                        //setStyle((P)o, "Normal");
                                         alignParagraph((P)o, JcEnumeration.BOTH);
                                     }
                                 }
@@ -339,6 +351,12 @@ public class DOCXWriter implements DocumentWriter {
         paragraph.setPPr(parProps);
     }
     
+    /**
+     * Sets font style (bold/italic) for a paragraph run
+     * @param runElement Run
+     * @param italic wheter to set italic style
+     * @param bold wheter to set bold style
+     */
     private void setFontStyle(R runElement, boolean italic, boolean bold) {
         RPr runProps = runElement.getRPr();
         if (null == runProps) runProps = objectFactory.createRPr();
@@ -348,11 +366,16 @@ public class DOCXWriter implements DocumentWriter {
         runElement.setRPr(runProps);
     }
     
-    private void fillTableCell(Tc cell) {
+    /**
+     * Fills table cell with given hex color
+     * @param cell
+     * @param hexColor 
+     */
+    private void fillTableCell(Tc cell, String hexColor) {
         TcPr cellProps = cell.getTcPr();
         if (null == cellProps) cellProps = objectFactory.createTcPr();
         CTShd shd = objectFactory.createCTShd();
-        shd.setFill("E7E6E6");
+        shd.setFill(hexColor);
         shd.setThemeFill(STThemeColor.BACKGROUND_2);
         cellProps.setShd(shd);
         cell.setTcPr(cellProps);
