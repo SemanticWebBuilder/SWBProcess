@@ -1,9 +1,6 @@
 package org.semanticwb.process.documentation.resources.utils;
 
 import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Image;
-import com.lowagie.text.Paragraph;
 import com.lowagie.text.rtf.style.RtfFont;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -15,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +21,6 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
@@ -497,11 +492,10 @@ public class SWPUtils {
         }
     }
 
-    public static void generateImageModel(org.semanticwb.process.model.Process p, String format, String data, String viewBox) {
+    public static void generateImageModel(org.semanticwb.process.model.Process p, String path, String format, String data, double width, double height) {
         try {
-            String[] values = viewBox != null ? viewBox.split("\\ ") : "0 0 3800 2020".split("\\ ");
-            String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/rep_files/";
-            File baseDir = new File(basePathDest);
+            //String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/rep_files/";
+            File baseDir = new File(path);
             if (!baseDir.exists()) {
                 baseDir.mkdirs();
             }
@@ -515,13 +509,27 @@ public class SWPUtils {
                 svg = svg.replace("style=\"display: none;\"", "");
                 out.write(svg.getBytes("ISO-8859-1"));
             } else if (format.equals(FORMAT_PNG)) {
+                //Fix image dimensions
+                String widthKey = "width=\"";
+                String heightKey = "height=\"";
+                if (data.contains(widthKey)) {
+                    int idx=data.indexOf(widthKey);
+                    int idx2=data.indexOf("\"", idx+widthKey.length());
+                    data = data.substring(0, idx)+widthKey+width+"\""+data.substring(idx2+1, data.length());
+                }
+                if (data.contains(heightKey)) {
+                    int idx=data.indexOf(heightKey);
+                    int idx2=data.indexOf("\"", idx+heightKey.length());
+                    data = data.substring(0, idx)+heightKey+height+"\""+data.substring(idx2+1, data.length());
+                }
+                
                 InputStream strStream = new ByteArrayInputStream(data.getBytes("ISO-8859-1"));
                 TranscoderInput ti = new TranscoderInput(strStream/*svgFile.toURI().toString()*/);
                 TranscoderOutput to = new TranscoderOutput(out);
 
                 PNGTranscoder t = new PNGTranscoder();
-                t.addTranscodingHint(PNGTranscoder.KEY_WIDTH, new Float(values[2]) + 2048);
-                t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(values[3]) + 1292);
+                t.addTranscodingHint(PNGTranscoder.KEY_WIDTH, new Float(width) + 100);
+                t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(height) + 100);
                 t.addTranscodingHint(PNGTranscoder.KEY_FORCE_TRANSPARENT_WHITE, Boolean.TRUE);
                 t.transcode(ti, to);
             }
@@ -561,7 +569,7 @@ public class SWPUtils {
         while (itdoc.hasNext()) {
             Documentation doc = itdoc.next();
             if (doc.isActualVersion()) {
-                return doc;
+               return doc;
             }
         }
         return null;
@@ -573,5 +581,7 @@ public class SWPUtils {
         public static final Font h1 = new RtfFont("Arial", 16, Font.BOLD);
         public static final Font h2 = new RtfFont("Arial", 14, Font.BOLDITALIC);
         public static final Font h3 = new RtfFont("Arial", 13, Font.BOLD);
+        public static final Font th = new RtfFont("Arial", 10, Font.BOLD);
+        public static final Font td = new RtfFont("Arial", 9);
     }
 }
