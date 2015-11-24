@@ -680,25 +680,25 @@ public class SWPDocumentationResource extends GenericAdmResource {
     }
     
     public void doDownload(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
+        String urip = request.getParameter("urip") != null ? request.getParameter("urip") : "";
+        String uridi = request.getParameter("uridi") != null ? request.getParameter("uridi") : "";
+        String data = request.getParameter("data");
+        String format = request.getParameter("format") != null ? request.getParameter("format") : "";
+        //String viewBox = request.getParameter("viewBox");
+        double w = 3800;
+        double h = 2020;
         try {
-            String urip = request.getParameter("urip") != null ? request.getParameter("urip") : "";
-            String uridi = request.getParameter("uridi") != null ? request.getParameter("uridi") : "";
-            String data = request.getParameter("data");
-            String format = request.getParameter("format") != null ? request.getParameter("format") : "";
-            //String viewBox = request.getParameter("viewBox");
-            double w = 3800;
-            double h = 2020;
+            w = Double.parseDouble(request.getParameter("width"));
+            h = Double.parseDouble(request.getParameter("height"));
+        } catch (NumberFormatException nfe) {}
+        
+        org.semanticwb.process.model.Process p = (org.semanticwb.process.model.Process)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urip);
+        DocumentationInstance docInstance = (DocumentationInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridi);
+        WebSite model = paramRequest.getWebPage().getWebSite();
+        String basePath = SWBPortal.getWorkPath() + "/models/" + model.getId() + "/Resource/" + p.getId() + "/download/";
+        
+        if (docInstance != null) {
             try {
-                w = Double.parseDouble(request.getParameter("width"));
-                h = Double.parseDouble(request.getParameter("height"));
-            } catch (NumberFormatException nfe) {}
-            
-            org.semanticwb.process.model.Process p = (org.semanticwb.process.model.Process)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urip);
-            DocumentationInstance docInstance = (DocumentationInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridi);
-            if (p != null && docInstance != null) {
-                WebSite model = paramRequest.getWebPage().getWebSite();
-
-                String basePath = SWBPortal.getWorkPath() + "/models/" + model.getId() + "/Resource/" + p.getId() + "/download/";
                 File dirBase = new File(basePath);
                 if (!dirBase.exists()) {
                     dirBase.mkdirs();
@@ -711,7 +711,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     dest.mkdirs();
                 }
                 if (format.equals(SWPUtils.FORMAT_HTML)) {
-                    response.setContentType("text/html; charset=UTF-8");
+                    //response.setContentType("text/html; charset=UTF-8");
                     response.setContentType("application/zip");
                     response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".zip\"");
 
@@ -758,29 +758,28 @@ public class SWPDocumentationResource extends GenericAdmResource {
                         Result output = new StreamResult(new File(basePath + "/" + docInstance.getProcessRef().getId() + ".xml"));
                         Source input = new DOMSource(dom);
                         transformer.transform(input, output);
-
                     }
                     out.flush();
                     out.close();
-                } else if (format.equals(SWPUtils.FORMAT_WORD)) {
-                    response.setContentType("application/msword");
-                    response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".docx\"");
-
-                    DOCXWriter docxw = new DOCXWriter(docInstance, basePath+"rep_files");
-                    docxw.write(response.getOutputStream());
-                }
-                
-                if (SWPUtils.FORMAT_HTML.equals(format)) {
+                    
                     //ZIP content and remove temp dir
                     try (OutputStream ou = response.getOutputStream(); ZipOutputStream zos = new ZipOutputStream(ou)) {
                         SWBUtils.IO.zip(dest, new File(basePath), zos);
                         zos.flush();
                     }
                     deleteDerectory(dest);
+                } else if (format.equals(SWPUtils.FORMAT_WORD)) {
+                    response.setContentType("application/msword");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".docx\"");
+
+                    DOCXWriter docxw = new DOCXWriter(docInstance, basePath+"rep_files");
+                    docxw.write(response.getOutputStream());
+                    response.flushBuffer();
+                    return;
                 }
+            } catch (IOException | TransformerException ex) {
+                log.error("Error on doDownload, " + ex.getMessage());
             }
-        } catch (IOException | TransformerException ex) {
-            log.error("Error on doDownload, " + ex.getMessage());
         }
     }
     static List<RepositoryDirectory> list = new ArrayList<>();
