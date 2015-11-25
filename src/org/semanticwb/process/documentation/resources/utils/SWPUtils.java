@@ -243,7 +243,7 @@ public class SWPUtils {
                             property.setAttribute("propid", Descriptiveable.swb_title.getPropId());
                             property.appendChild(doc.createTextNode(a.getTitle() != null ? a.getTitle() : ""));
 
-                            Element propertyd = doc.createElement("property");
+                            Element propertyd = doc.createElement("propertyd");
                             instance.appendChild(propertyd);
                             propertyd.setAttribute("title", Descriptiveable.swb_description.getLabel());
                             propertyd.setAttribute("propid", Descriptiveable.swb_description.getPropId());
