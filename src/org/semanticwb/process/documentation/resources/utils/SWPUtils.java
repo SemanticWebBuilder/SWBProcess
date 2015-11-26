@@ -410,12 +410,14 @@ public class SWPUtils {
 
                     String[] tasks = colorTask.split("\\|");
                     int i = 1;
-                    String script = "<script>";
+                    String script = "<script>"
+                            + "$(document).ready(function(){";
                     for (String task : tasks) {
                         script += "var colorTask" + i + " = $(document.getElementById('" + task.substring(0, task.lastIndexOf(";")) + "')).attr('style', 'fill:#" + task.substring(task.lastIndexOf(";") + 1, task.length()) + "');";
                         i++;
                     }
-                    script += "</script>";
+                    script += "});"
+                            + "</script>";
                     colorTaskE.appendChild(doc.createTextNode(script + "\n\t\t"));
                     root.appendChild(colorTaskE);
                     root.appendChild(doc.createTextNode("\n\t"));
