@@ -211,6 +211,7 @@ public class SWPUtils {
                             html = html.replace("&rdquo;", "&quot;");
                             html = html.replace("&ndash;", "-");
                             html = html.replace("&mdash;", "-");
+                            html = html.replace("&bull;", "<li>");
                             org.jsoup.nodes.Document d = null;
                             if (html != null) {
                                 d = Jsoup.parse(html);
