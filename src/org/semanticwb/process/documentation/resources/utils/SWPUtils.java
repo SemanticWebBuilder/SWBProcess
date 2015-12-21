@@ -55,6 +55,7 @@ import org.semanticwb.process.model.RepositoryFile;
 import org.semanticwb.process.model.RepositoryURL;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.resources.ProcessFileRepository;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -73,7 +74,9 @@ public class SWPUtils {
     private final static Logger log = SWBUtils.getLogger(SWPUtils.class);
 
     /**
-     * Obtiene la lista de los procesos asociados con un {@code TemplateContainer}.
+     * Obtiene la lista de los procesos asociados con un
+     * {@code TemplateContainer}.
+     *
      * @param tc {@code TemplateContainer}
      * @param model Modelo.
      * @return Lista de procesos asociados al {@code TemplateContainer}
@@ -110,6 +113,7 @@ public class SWPUtils {
         doc.appendChild(root);
         String colorTask = "";
         boolean hasModel = false;
+
         try {
             Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
             while (itdsi.hasNext()) {//Sections
@@ -136,15 +140,13 @@ public class SWPUtils {
                     Iterator<SectionElement> itse = SWBComparator.sortSortableObject(dsi.listDocuSectionElementInstances());
                     int count = 1;
                     while (itse.hasNext()) {//Instances
+                        boolean addInstance = false;
                         section.appendChild(doc.createTextNode("\n\t\t"));
                         SectionElement se = itse.next();
                         Element instance = doc.createElement("instance");
-                        section.appendChild(instance);
                         instance.setAttribute("id", se.getId());
                         instance.setAttribute("uri", se.getURI());
                         instance.setAttribute("className", cls.getName());
-                        instance.setAttribute("count", count + "");
-                        count++;
                         if (cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {//Elements Instantiable
                             String[] props = dsi.getSecTypeDefinition().getVisibleProperties().split("\\|");
                             for (String propt : props) {
@@ -169,6 +171,9 @@ public class SWPUtils {
                                         se = (SectionElement) er.getElementRef();
                                     }
                                     Referable ref = (Referable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
+                                    addInstance = ref.hasRepositoryReference();
+                                    if (!addInstance) continue;
+                                    
                                     RepositoryDirectory rd = ref.getRefRepository().getRepositoryDirectory();
                                     SWBResourceURL urld = new SWBResourceURLImp(request, rd.getResource(), rd, SWBResourceModes.UrlType_RENDER);
 
@@ -294,14 +299,14 @@ public class SWPUtils {
                             Map mapSect = new HashMap();
                             while (itser.hasNext()) {
                                 SectionElementRef ser = itser.next();
-                                if(ser.getSectionElement()!= null){
-                                String uris = "";
-                                if (mapSect.containsKey(ser.getSectionElement().getParentSection())) {
-                                    uris = mapSect.get(ser.getSectionElement().getParentSection()).toString() + "|" + ser.getSectionElement();
-                                } else {
-                                    uris = ser.getSectionElement().getURI();
-                                }
-                                mapSect.put(ser.getSectionElement().getParentSection(), uris);
+                                if (ser.getSectionElement() != null) {
+                                    String uris = "";
+                                    if (mapSect.containsKey(ser.getSectionElement().getParentSection())) {
+                                        uris = mapSect.get(ser.getSectionElement().getParentSection()).toString() + "|" + ser.getSectionElement();
+                                    } else {
+                                        uris = ser.getSectionElement().getURI();
+                                    }
+                                    mapSect.put(ser.getSectionElement().getParentSection(), uris);
                                 }
                             }
                             Iterator itset = mapSect.entrySet().iterator();
@@ -393,6 +398,11 @@ public class SWPUtils {
 
                             }
                         }
+                        if (addInstance) {
+                            instance.setAttribute("count", count + "");
+                            count++;
+                            section.appendChild(instance);
+                        }
                     }
                 }
             }
@@ -425,8 +435,10 @@ public class SWPUtils {
                 }
             }
 
-        } catch (Exception e) {
-            log.error("Error on getDocument, " + e.getLocalizedMessage());
+        } catch (DOMException doe) {
+            log.error("Error on getDocument, DOMEXception" + doe);
+        } catch (IOException ioe) {
+            log.error("Error on getDocument, IOEXception" + ioe);
         }
         return doc;
     }
@@ -473,7 +485,6 @@ public class SWPUtils {
         inputStream.close();
     }
 
-    
     public static void copyFile(String sourceFile, String destFile) throws IOException {//TODO: Revisar por qué es necesario esto en lugar de SWBUtils.IO.copyStream
         InputStream inStream = null;
         OutputStream outStream = null;
@@ -516,16 +527,16 @@ public class SWPUtils {
                 String widthKey = "width=\"";
                 String heightKey = "height=\"";
                 if (data.contains(widthKey)) {
-                    int idx=data.indexOf(widthKey);
-                    int idx2=data.indexOf("\"", idx+widthKey.length());
-                    data = data.substring(0, idx)+widthKey+width+"\""+data.substring(idx2+1, data.length());
+                    int idx = data.indexOf(widthKey);
+                    int idx2 = data.indexOf("\"", idx + widthKey.length());
+                    data = data.substring(0, idx) + widthKey + width + "\"" + data.substring(idx2 + 1, data.length());
                 }
                 if (data.contains(heightKey)) {
-                    int idx=data.indexOf(heightKey);
-                    int idx2=data.indexOf("\"", idx+heightKey.length());
-                    data = data.substring(0, idx)+heightKey+height+"\""+data.substring(idx2+1, data.length());
+                    int idx = data.indexOf(heightKey);
+                    int idx2 = data.indexOf("\"", idx + heightKey.length());
+                    data = data.substring(0, idx) + heightKey + height + "\"" + data.substring(idx2 + 1, data.length());
                 }
-                
+
                 InputStream strStream = new ByteArrayInputStream(data.getBytes("ISO-8859-1"));
                 TranscoderInput ti = new TranscoderInput(strStream/*svgFile.toURI().toString()*/);
                 TranscoderOutput to = new TranscoderOutput(out);
@@ -561,10 +572,12 @@ public class SWPUtils {
             log.error("Error on saveFile, " + e.getMessage() + ", " + e.getCause());
         }
     }
-    
+
     /**
      * Obtiene la versión actual de la documentación de un proceso.
-     * @param process Proceso del cual se requiere obtener la versión actual de la documentación.
+     *
+     * @param process Proceso del cual se requiere obtener la versión actual de
+     * la documentación.
      * @return Versión actual de la documentación o null si esta no existe.
      */
     public static Documentation getActualDocumentationVersion(Process process) {
@@ -572,13 +585,14 @@ public class SWPUtils {
         while (itdoc.hasNext()) {
             Documentation doc = itdoc.next();
             if (doc.isActualVersion()) {
-               return doc;
+                return doc;
             }
         }
         return null;
     }
-    
+
     public static class FONTS {
+
         public static final Font body = new RtfFont("Arial", 10);
         public static final Font h = new RtfFont("Arial", 8);
         public static final Font h1 = new RtfFont("Arial", 16, Font.BOLD);
