@@ -17,6 +17,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
@@ -140,16 +144,19 @@ public class SWPUtils {
                     Iterator<SectionElement> itse = SWBComparator.sortSortableObject(dsi.listDocuSectionElementInstances());
                     int count = 1;
                     while (itse.hasNext()) {//Instances
-                        boolean addInstance = false;
+                        boolean addInstance = true;
                         section.appendChild(doc.createTextNode("\n\t\t"));
                         SectionElement se = itse.next();
+//                        System.out.println("Procesando elemento "+se.getURI());
                         Element instance = doc.createElement("instance");
                         instance.setAttribute("id", se.getId());
                         instance.setAttribute("uri", se.getURI());
                         instance.setAttribute("className", cls.getName());
                         if (cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {//Elements Instantiable
+//                            System.out.println("  Es un instanciable");
                             String[] props = dsi.getSecTypeDefinition().getVisibleProperties().split("\\|");
                             for (String propt : props) {
+//                                System.out.println("  -Agregando propiedad "+propt);
                                 String idprop = propt.substring(propt.indexOf(";") + 1, propt.length());
                                 String titleprop = propt.substring(0, propt.indexOf(";"));
                                 SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
@@ -158,9 +165,13 @@ public class SWPUtils {
                                 instance.appendChild(property);
                                 property.setAttribute("title", titleprop);
                                 property.setAttribute("propid", idprop);
+//                                System.out.println("  -SemanticProperty: "+prop);
                                 if (prop != null && !prop.getPropId().equals(Referable.swpdoc_file.getPropId())) {
+//                                    System.out.println("  -Prop is not file ref");
                                     value = (se.getSemanticObject().getProperty(prop) != null ? se.getSemanticObject().getProperty(prop) : "");
+//                                    System.out.println("  -Prop value: "+value);
                                 } else {//Show URL download file
+//                                    System.out.println("  -Prop is file ref");
                                     if (se instanceof ElementReference) {
                                         ElementReference er = (ElementReference) se;
                                         if (er.getElementRef() == null) {
@@ -171,9 +182,11 @@ public class SWPUtils {
                                         se = (SectionElement) er.getElementRef();
                                     }
                                     Referable ref = (Referable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
-                                    addInstance = ref.hasRepositoryReference();
+                                    if (!ref.hasRepositoryReference()) addInstance = false;
+//                                    System.out.println("addInstance: "+addInstance);
                                     if (!addInstance) continue;
                                     
+//                                    System.out.println("  ...Continue adding element");
                                     RepositoryDirectory rd = ref.getRefRepository().getRepositoryDirectory();
                                     SWBResourceURL urld = new SWBResourceURLImp(request, rd.getResource(), rd, SWBResourceModes.UrlType_RENDER);
 
@@ -206,6 +219,7 @@ public class SWPUtils {
                                     }
 
                                 }
+//                                System.out.println("Adding property with val: "+value);
                                 property.appendChild(doc.createTextNode(value));
                             }
 
@@ -440,6 +454,19 @@ public class SWPUtils {
         } catch (IOException ioe) {
             log.error("Error on getDocument, IOEXception" + ioe);
         }
+        
+//        try {
+//            // Use a Transformer for output
+//            TransformerFactory tFactory = TransformerFactory.newInstance();
+//            Transformer transformer = tFactory.newTransformer();
+//
+//            DOMSource source = new DOMSource(doc);
+//            StreamResult result = new StreamResult(new FileOutputStream(new File("/Users/hasdai/Documents/xmlDocumentation.xml")));
+//            transformer.transform(source, result);
+//        } catch (Exception ex) {
+//            
+//        }
+        
         return doc;
     }
 
