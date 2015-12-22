@@ -1,5 +1,7 @@
 package org.semanticwb.process.documentation.model;
 
+import org.semanticwb.process.model.RepositoryDirectory;
+
 /**
  * Clase que encapsula las propiedades de un formato (elemento que asocia un archivo) en la documentación de un proceso.
  */
@@ -12,5 +14,15 @@ public class Format extends org.semanticwb.process.documentation.model.base.Form
     public Format(org.semanticwb.platform.SemanticObject base)
     {
         super(base);
+    }
+    
+    @Override
+    public boolean hasRepositoryReference() {
+        boolean ret = false;
+        if (null != this.getRefRepository()) {
+            RepositoryDirectory rd = getRefRepository().getRepositoryDirectory();
+            return rd != null;
+        }
+        return ret;
     }
 }
