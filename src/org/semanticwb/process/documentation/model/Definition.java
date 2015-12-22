@@ -25,4 +25,9 @@ public class Definition extends org.semanticwb.process.documentation.model.base.
         }
         return ret;
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return hasRepositoryReference();
+    }
 }

@@ -13,4 +13,9 @@ public class Risk extends org.semanticwb.process.documentation.model.base.RiskBa
     {
         super(base);
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return true;
+    }
 }

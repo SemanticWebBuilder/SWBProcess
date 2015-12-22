@@ -13,4 +13,9 @@ public class Policy extends org.semanticwb.process.documentation.model.base.Poli
     {
         super(base);
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return true;
+    }
 }

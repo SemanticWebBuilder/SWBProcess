@@ -13,4 +13,9 @@ public class Rule extends org.semanticwb.process.documentation.model.base.RuleBa
     {
         super(base);
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return true;
+    }
 }

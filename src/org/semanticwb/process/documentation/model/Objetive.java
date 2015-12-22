@@ -13,4 +13,9 @@ public class Objetive extends org.semanticwb.process.documentation.model.base.Ob
     {
         super(base);
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return true;
+    }
 }

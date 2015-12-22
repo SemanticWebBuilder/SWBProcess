@@ -13,4 +13,9 @@ public class Role extends org.semanticwb.process.documentation.model.base.RoleBa
     {
         super(base);
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return true;
+    }
 }

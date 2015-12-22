@@ -25,4 +25,9 @@ public class Reference extends org.semanticwb.process.documentation.model.base.R
         }
         return ret;
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return hasRepositoryReference();
+    }
 }

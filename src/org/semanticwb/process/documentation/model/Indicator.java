@@ -13,4 +13,9 @@ public class Indicator extends org.semanticwb.process.documentation.model.base.I
     {
         super(base);
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return true;
+    }
 }

@@ -25,4 +25,9 @@ public class Format extends org.semanticwb.process.documentation.model.base.Form
         }
         return ret;
     }
+
+    @Override
+    public boolean isInstanceValid() {
+        return hasRepositoryReference();
+    }
 }
