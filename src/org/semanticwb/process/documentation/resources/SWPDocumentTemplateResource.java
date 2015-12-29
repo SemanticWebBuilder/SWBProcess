@@ -575,7 +575,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         
         try {
             request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
-            request.setAttribute(SWPUtils.LIST_PROCESSES, SWPUtils.listProcessesByTemplate(tc, paramRequest.getWebPage().getWebSite()));
+            request.setAttribute(SWPUtils.LIST_PROCESSES, tc.listAvailableProcesses());
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doEdit, " + path + ", " + ex.getMessage());
