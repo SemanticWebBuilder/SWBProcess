@@ -1,20 +1,17 @@
 package org.semanticwb.process.documentation.resources;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
-import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +66,6 @@ import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFile;
 import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFileFromSWBAdmin;
 import org.semanticwb.process.documentation.writers.DOCXWriter;
-import org.semanticwb.process.documentation.writers.RTFWriter;
 import org.semanticwb.process.model.RepositoryDirectory;
 import org.semanticwb.process.model.RepositoryElement;
 import org.semanticwb.process.model.RepositoryFile;
@@ -104,6 +100,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public final static String MODE_ADMIN_VERSION = "m_nadver";
     public final static String MODE_MSG_VERSION = "m_msgv";
     public final static String MODE_DOWNLOAD = "m_down";
+    public final static String PARAM_REQUEST = "paramRequest";//Bean paramRequest
 
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
@@ -561,7 +558,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         RequestDispatcher rd = request.getRequestDispatcher(path);
 
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doView, " + path + ", " + ex.getMessage());
@@ -574,7 +571,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/documentationEdit.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doEdit, " + path + ", " + ex.getMessage());
@@ -586,7 +583,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/actualizaTab.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doActualizaTab, " + path + ", " + ex.getMessage());
@@ -598,7 +595,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/relatedItem.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doRelated, " + path + ", " + ex.getMessage());
@@ -610,7 +607,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/logView.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doTrace, " + path + ", " + ex.getMessage());
@@ -622,7 +619,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/saveVersion.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doVersion, " + path + ", " + ex.getMessage());
@@ -634,7 +631,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/documentationVersion.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doVersion, " + path + ", " + ex.getMessage());
@@ -646,7 +643,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/relateActivity.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doRelateActivity, " + path + ", " + ex.getMessage());
@@ -658,7 +655,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/editDescription.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doEditDescription(" + paramRequest.getMode() + "), " + path + ", " + ex.getMessage());
