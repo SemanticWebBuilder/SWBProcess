@@ -101,6 +101,8 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public final static String MODE_MSG_VERSION = "m_msgv";
     public final static String MODE_DOWNLOAD = "m_down";
     public final static String PARAM_REQUEST = "paramRequest";//Bean paramRequest
+    public final static String FORMAT_HTML = "html";
+    public final static String FORMAT_WORD = "word";
 
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
@@ -707,7 +709,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                 if (!dest.exists()) {
                     dest.mkdirs();
                 }
-                if (format.equals(SWPUtils.FORMAT_HTML)) {
+                if (format.equals(FORMAT_HTML)) {
                     //response.setContentType("text/html; charset=UTF-8");
                     response.setContentType("application/zip");
                     response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".zip\"");
@@ -765,7 +767,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                         zos.flush();
                     }
                     deleteDerectory(dest);
-                } else if (format.equals(SWPUtils.FORMAT_WORD)) {
+                } else if (format.equals(FORMAT_WORD)) {
                     response.setContentType("application/msword");
                     response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".docx\"");
 
