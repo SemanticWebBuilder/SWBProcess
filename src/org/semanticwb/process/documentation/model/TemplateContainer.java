@@ -27,6 +27,16 @@ public class TemplateContainer extends org.semanticwb.process.documentation.mode
      */
     public List<org.semanticwb.process.model.Process> listAvailableProcesses() {
         WebSite model = (WebSite) this.getSemanticObject().getModel().getModelObject().getGenericInstance();
+        return listAllAvailableProcesses(model, this);
+    }
+    
+    /**
+     * Obtiene la lista de los proecsos que no están asignados a un {@code TemplateContainer}.
+     * @param model Modelo
+     * @param skipContainer Objeto para omitir en el filtrado. Si se proporciona, los procesos asociados al objeto no son filtrados de la lista de asignados.
+     * @return Lista de procesos sin asignar a algún {@code TemplateContainer}.
+     */
+    public static List<Process> listAllAvailableProcesses(WebSite model, TemplateContainer skipContainer) {
         ArrayList<Process> assigned = new ArrayList<>();
         //Get all containers
         Iterator<TemplateContainer> containers = ClassMgr.listTemplateContainers(model);
@@ -36,7 +46,7 @@ public class TemplateContainer extends org.semanticwb.process.documentation.mode
             Iterator<Process> processes = container.listProcesses();
             while (processes.hasNext()) {
                 Process process = processes.next();
-                if (container.getURI().equals(this.getURI())) { //Skip current container
+                if (null != skipContainer && container.getURI().equals(skipContainer.getURI())) {
                     continue;
                 }
                 assigned.add(process);
