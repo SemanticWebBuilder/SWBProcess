@@ -69,6 +69,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
     public final static String MODE_PROPERTIES = "m_pro";//Acción ELIMINAR de sección de documentación
     public final static String LIST_PROCESSES = "listTemplates";//Listar instancias de objeto Process
     public final static String PARAM_REQUEST = "paramRequest";//Bean paramRequest
+    public final static String LIST_TEMPLATES_CONTAINER = "listContainers";//Listar instancias de objeto DocumentTemplate
 
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
@@ -560,7 +561,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
             request.setAttribute(PARAM_REQUEST, paramRequest);
-            request.setAttribute(SWPUtils.LIST_TEMPLATES_CONTAINER, listTemplateContainers(request, paramRequest));
+            request.setAttribute(LIST_TEMPLATES_CONTAINER, listTemplateContainers(request, paramRequest));
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doView, " + path + ", " + ex.getMessage());
