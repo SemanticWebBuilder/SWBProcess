@@ -64,13 +64,8 @@ import org.w3c.dom.Element;
  * @author carlos.alvarez
  */
 public class SWPUtils {
-    public final static String PARAM_REQUEST = "paramRequest";//Bean paramRequest
-    public final static String LIST_TEMPLATES_CONTAINER = "listContainers";//Listar instancias de objeto DocumentTemplate
-    public final static String LIST_PROCESSES = "listTemplates";//Listar instancias de objeto Process
     public final static String FORMAT_PNG = "png";
     public final static String FORMAT_SVG = "svg";
-    public final static String FORMAT_HTML = "html";
-    public final static String FORMAT_WORD = "word";
     private final static Logger log = SWBUtils.getLogger(SWPUtils.class);
 
     static public Document getDocument(DocumentationInstance di, HttpServletRequest request, boolean export) {
