@@ -16,14 +16,13 @@ import org.semanticwb.portal.api.GenericResource;
 import org.semanticwb.portal.api.SWBActionResponse;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
-import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 
 /**
  *
  * @author carlos.alvarez
  */
 public class SWPConfigurationResource extends GenericResource {
-
+    public final static String PARAM_REQUEST = "paramRequest";//Bean paramRequest
     private final Logger log = SWBUtils.getLogger(SWPConfigurationResource.class);
 
     @Override
@@ -44,7 +43,7 @@ public class SWPConfigurationResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/configuration.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doView, " + path + ", " + ex.getMessage() + ", " + ex.getCause());
