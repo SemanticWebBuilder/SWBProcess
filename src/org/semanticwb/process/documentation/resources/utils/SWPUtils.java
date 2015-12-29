@@ -17,10 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
@@ -468,30 +464,6 @@ public class SWPUtils {
 //        }
         
         return doc;
-    }
-
-    static public List<VersionInfo> listVersions(RepositoryElement el) {
-        ArrayList<VersionInfo> ret = new ArrayList<VersionInfo>();
-        if (el != null) {
-            VersionInfo vi = el.getLastVersion();
-            VersionInfo ver = null;
-            if (null != vi) {
-                ver = vi;
-                while (ver.getPreviousVersion() != null) {
-                    ver = ver.getPreviousVersion();
-                }
-            }
-            if (ver != null) {
-                ret.add(ver);
-                while (ver != null) {
-                    ver = ver.getNextVersion();
-                    if (ver != null) {
-                        ret.add(ver);
-                    }
-                }
-            }
-        }
-        return ret;
     }
 
     public static void copyFileFromSWBAdmin(String source, String destination, String fileName) throws FileNotFoundException, IOException {
