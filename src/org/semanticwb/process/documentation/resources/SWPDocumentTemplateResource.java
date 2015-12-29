@@ -67,6 +67,8 @@ public class SWPDocumentTemplateResource extends GenericResource {
     public final static String MODE_DUPLICATE_TEMPLATE = "m_dute";//Acción ELIMINAR de sección de documentación
     public final static String MODE_EDIT_VERSION_TEMPLATE = "m_nvet";//Acción ELIMINAR de sección de documentación
     public final static String MODE_PROPERTIES = "m_pro";//Acción ELIMINAR de sección de documentación
+    public final static String LIST_PROCESSES = "listTemplates";//Listar instancias de objeto Process
+    public final static String PARAM_REQUEST = "paramRequest";//Bean paramRequest
 
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
@@ -557,7 +559,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/documentTemplate.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             request.setAttribute(SWPUtils.LIST_TEMPLATES_CONTAINER, listTemplateContainers(request, paramRequest));
             rd.forward(request, response);
         } catch (ServletException ex) {
@@ -574,8 +576,10 @@ public class SWPDocumentTemplateResource extends GenericResource {
         TemplateContainer tc = (TemplateContainer)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(contURI);
         
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
-            request.setAttribute(SWPUtils.LIST_PROCESSES, tc.listAvailableProcesses());
+            request.setAttribute(PARAM_REQUEST, paramRequest);
+            if (null != tc) {
+                request.setAttribute(LIST_PROCESSES, tc.listAvailableProcesses());
+            }
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doEdit, " + path + ", " + ex.getMessage());
@@ -587,7 +591,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/documentTemplateEditSection.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doAddDS, " + path + ", " + ex.getMessage());
@@ -599,7 +603,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/documentTemplateProperties.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doViewProperties, " + path + ", " + ex.getMessage());
@@ -611,7 +615,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/logView.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doViewLog, " + path + ", " + ex.getMessage());
@@ -623,7 +627,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/viewVersion.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doViewVersion, " + path + ", " + ex.getMessage());
@@ -635,7 +639,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/newVersionTemplate.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doNewVersion, " + path + ", " + ex.getMessage());
@@ -647,7 +651,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/duplicateTemplate.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doDuplicateTemplate, " + path + ", " + ex.getMessage());
