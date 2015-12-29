@@ -73,35 +73,6 @@ public class SWPUtils {
     public final static String FORMAT_WORD = "word";
     private final static Logger log = SWBUtils.getLogger(SWPUtils.class);
 
-    /**
-     * Obtiene la lista de los procesos asociados con un
-     * {@code TemplateContainer}.
-     *
-     * @param tc {@code TemplateContainer}
-     * @param model Modelo.
-     * @return Lista de procesos asociados al {@code TemplateContainer}
-     */
-    static public List<Process> listProcessesByTemplate(TemplateContainer tc, WebSite model) {//TODO:Revisar por qué es necesario usar este en lugar del TemplateContainer.listProcesses()
-        TemplateContainer tctemp = null;
-        List<Process> list = new ArrayList<Process>();
-        Iterator<Process> iterator = Process.ClassMgr.listProcesses(model);
-        while (iterator.hasNext()) {
-            Process process = iterator.next();
-            Iterator<TemplateContainer> templates = TemplateContainer.ClassMgr.listTemplateContainerByProcess(process, model);
-            if (templates.hasNext()) {
-                tctemp = templates.next();
-            }
-            if (process.isDeleted()
-                    || (tctemp != null && tc != null && !tc.getURI().equals(tctemp.getURI()))
-                    || (tc == null && tctemp != null)) {
-                tctemp = null;
-                continue;
-            }
-            list.add(process);
-        }
-        return list;
-    }
-
     static public Document getDocument(DocumentationInstance di, HttpServletRequest request, boolean export) {
         Document doc = SWBUtils.XML.getNewDocument();
         org.semanticwb.process.model.Process p = di.getProcessRef();
@@ -570,24 +541,6 @@ public class SWPUtils {
         } catch (Exception e) {
             log.error("Error on saveFile, " + e.getMessage() + ", " + e.getCause());
         }
-    }
-
-    /**
-     * Obtiene la versión actual de la documentación de un proceso.
-     *
-     * @param process Proceso del cual se requiere obtener la versión actual de
-     * la documentación.
-     * @return Versión actual de la documentación o null si esta no existe.
-     */
-    public static Documentation getActualDocumentationVersion(Process process) {
-        Iterator<Documentation> itdoc = SWBComparator.sortByCreated(Documentation.ClassMgr.listDocumentationByProcess(process), true);
-        while (itdoc.hasNext()) {
-            Documentation doc = itdoc.next();
-            if (doc.isActualVersion()) {
-                return doc;
-            }
-        }
-        return null;
     }
 
     public static class FONTS {
