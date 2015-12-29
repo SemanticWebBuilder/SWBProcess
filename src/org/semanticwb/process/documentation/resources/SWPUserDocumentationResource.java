@@ -22,7 +22,6 @@ import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
 import org.semanticwb.process.model.Process;
-import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import org.semanticwb.process.model.ProcessGroup;
 
 /**
@@ -41,6 +40,8 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
     public final static String SORT_DATEDESC = "datedesc";
     public final static String SORT_TYPE = "type";
     public final static String SORT_TYPEDESC = "typedesc";
+    public final static String LIST_PROCESSES = "listTemplates";//Listar instancias de objeto Process
+    public final static String PARAM_REQUEST = "paramRequest";//Bean paramRequest
 
     @Override
     public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
@@ -66,8 +67,8 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
         String idpg = request.getParameter(PARAM_PROCESSGROUP) != null ? request.getParameter(PARAM_PROCESSGROUP) : "";
         
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
-            request.setAttribute(SWPUtils.LIST_PROCESSES, getItems(ProcessGroup.ClassMgr.getProcessGroup(idpg, paramRequest.getWebPage().getWebSite())));
+            request.setAttribute(PARAM_REQUEST, paramRequest);
+            request.setAttribute(LIST_PROCESSES, getItems(ProcessGroup.ClassMgr.getProcessGroup(idpg, paramRequest.getWebPage().getWebSite())));
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doView, " + path + ", " + ex.getMessage());
@@ -79,7 +80,7 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/userDocumentationView.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
-            request.setAttribute(SWPUtils.PARAM_REQUEST, paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
             log.error("Error on doViewDocumentation, " + path + ", " + ex.getMessage());
