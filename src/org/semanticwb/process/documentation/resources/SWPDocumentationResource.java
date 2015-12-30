@@ -71,6 +71,7 @@ import org.semanticwb.process.model.RepositoryElement;
 import org.semanticwb.process.model.RepositoryFile;
 import org.semanticwb.process.model.RepositoryURL;
 import static org.semanticwb.process.resources.DocumentationResource.deleteDerectory;
+import org.w3c.dom.Document;
 
 /**
  * Componente que permite capturar la documentación de un proceso.
@@ -405,7 +406,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                             File index = new File(base + "/" + docInstance.getProcessRef().getId() + ".html");
                             FileOutputStream out = new FileOutputStream(index);
                             try {
-                                org.w3c.dom.Document dom = SWPUtils.getDocument(docInstance, request, false);
+                                Document dom = docInstance.getXMLDocument(request, false);//SWPUtils.getDocument(docInstance, request, false);
                                 if (dom != null) {
                                     String tlpPath = "/work/models/" + response.getWebPage().getWebSiteId() + "/jsp/documentation/documentation.xsl";
                                     javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
@@ -747,7 +748,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     SWBUtils.IO.copyStructure(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/images/", basePath + "/css/images/");
                     File index = new File(basePath + "/" + p.getId() + ".html");
                     FileOutputStream out = new FileOutputStream(index);
-                    org.w3c.dom.Document dom = SWPUtils.getDocument(docInstance, request, true);
+                    Document dom = docInstance.getXMLDocument(request, true);//SWPUtils.getDocument(docInstance, request, true);
                     if (dom != null) {
                         String tlpPath = "/work/models/" + model.getId() + "/jsp/documentation/documentation.xsl";
                         javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
