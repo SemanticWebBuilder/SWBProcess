@@ -580,6 +580,8 @@ public class SWPDocumentTemplateResource extends GenericResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             if (null != tc) {
                 request.setAttribute(LIST_PROCESSES, tc.listAvailableProcesses());
+            } else {
+                request.setAttribute(LIST_PROCESSES, TemplateContainer.listAllAvailableProcesses(paramRequest.getWebPage().getWebSite(), null));
             }
             rd.forward(request, response);
         } catch (ServletException ex) {
