@@ -336,7 +336,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     break;
                 }
                 case ACTION_REMOVE_VERSION: {
-                    System.out.println("entra al action REMOVE!!");
                     String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
                     String uriDocumentation = request.getParameter("uridoc") != null ? request.getParameter("uridoc") : "";
                     Documentation doc = (Documentation)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocumentation);
@@ -348,7 +347,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     break;
                 }
                 case ACTION_ACTIVE_VERSION: {
-                    System.out.println("llega al action active version!!");
                     String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
                     String uriDocumentation = request.getParameter("uridoc") != null ? request.getParameter("uridoc") : "";
                     Documentation doc = (Documentation)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocumentation);
