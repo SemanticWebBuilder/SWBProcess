@@ -11,53 +11,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
 import org.semanticwb.Logger;
-import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
-import org.semanticwb.model.Descriptiveable;
-import org.semanticwb.model.SWBComparator;
-import org.semanticwb.model.VersionInfo;
-import org.semanticwb.model.WebSite;
-import org.semanticwb.platform.SemanticClass;
-import org.semanticwb.platform.SemanticObject;
-import org.semanticwb.platform.SemanticProperty;
-import org.semanticwb.portal.api.SWBResourceModes;
-import org.semanticwb.portal.api.SWBResourceURL;
-import org.semanticwb.portal.api.SWBResourceURLImp;
-import org.semanticwb.process.documentation.model.Activity;
-import org.semanticwb.process.documentation.model.DocumentSection;
-import org.semanticwb.process.documentation.model.DocumentSectionInstance;
-import org.semanticwb.process.documentation.model.Documentation;
-import org.semanticwb.process.documentation.model.DocumentationInstance;
-import org.semanticwb.process.documentation.model.ElementReference;
-import org.semanticwb.process.documentation.model.FreeText;
-import org.semanticwb.process.documentation.model.Instantiable;
-import org.semanticwb.process.documentation.model.Model;
-import org.semanticwb.process.documentation.model.Referable;
-import org.semanticwb.process.documentation.model.SectionElement;
-import org.semanticwb.process.documentation.model.SectionElementRef;
-import org.semanticwb.process.documentation.model.TemplateContainer;
-import org.semanticwb.process.model.RepositoryDirectory;
-import org.semanticwb.process.model.RepositoryElement;
-import org.semanticwb.process.model.RepositoryFile;
-import org.semanticwb.process.model.RepositoryURL;
-import org.semanticwb.process.model.Process;
-import org.semanticwb.process.resources.ProcessFileRepository;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Clase utilitaria para los componentes de documentación de procesos.
@@ -67,6 +27,7 @@ public class SWPUtils {
     public final static String FORMAT_PNG = "png";
     public final static String FORMAT_SVG = "svg";
     private final static Logger log = SWBUtils.getLogger(SWPUtils.class);
+    public static final SimpleDateFormat DateFormatter = new SimpleDateFormat("dd/MMM/yyyy - hh:mm:ss");
 
     public static void copyFileFromSWBAdmin(String source, String destination, String fileName) throws FileNotFoundException, IOException {
         InputStream inputStream = SWBPortal.getAdminFileStream(source);
