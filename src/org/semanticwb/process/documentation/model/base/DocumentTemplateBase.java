@@ -22,6 +22,7 @@ public abstract class DocumentTemplateBase extends org.semanticwb.model.SWBClass
     public static final org.semanticwb.platform.SemanticClass swpdoc_TemplateContainer=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/resources/documentation#TemplateContainer");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_templateContainer=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#templateContainer");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_previousTemplate=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#previousTemplate");
+    public static final org.semanticwb.platform.SemanticProperty swpdoc_versionComment=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#versionComment");
    /**
    * The semantic class that represents the currentObject
    */
@@ -543,6 +544,24 @@ public abstract class DocumentTemplateBase extends org.semanticwb.model.SWBClass
              ret=(org.semanticwb.process.documentation.model.DocumentTemplate)obj.createGenericInstance();
          }
          return ret;
+    }
+
+/**
+* Gets the VersionComment property
+* @return String with the VersionComment
+*/
+    public String getVersionComment()
+    {
+        return getSemanticObject().getProperty(swpdoc_versionComment);
+    }
+
+/**
+* Sets the VersionComment property
+* @param value long with the VersionComment
+*/
+    public void setVersionComment(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_versionComment, value);
     }
 
 /**
