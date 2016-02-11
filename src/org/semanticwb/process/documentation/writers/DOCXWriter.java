@@ -74,7 +74,7 @@ import org.semanticwb.process.model.ProcessSite;
  */
 public class DOCXWriter implements DocumentWriter {
     private static final Logger log = SWBUtils.getLogger(DOCXWriter.class);
-    private static ObjectFactory objectFactory = new ObjectFactory();
+    private static final ObjectFactory objectFactory = new ObjectFactory();
     private final DocumentationInstance di;
     private final org.semanticwb.process.model.Process p;
     private final ProcessSite model;
@@ -184,6 +184,7 @@ public class DOCXWriter implements DocumentWriter {
                                 }
                                 col.getContent().set(0, colContent);
                                 alignParagraph(colContent, JcEnumeration.BOTH);
+                                setStyle(colContent, "Normal");
                             }
                         }
                         
@@ -206,14 +207,21 @@ public class DOCXWriter implements DocumentWriter {
                                     if (o instanceof Tbl) setStyle((Tbl)o, "TableGrid");
                                     if (o instanceof P) {
                                         //Fix harcoded runProperties
-                                        /*List<Object> pChilds = ((P)o).getContent();
+                                        List<Object> pChilds = ((P)o).getContent();
                                         for (Object child: pChilds) {
                                             if (child instanceof R) {
-                                                ((R)child).setRPr(objectFactory.createRPr());
+                                                //((R)child).setRPr(objectFactory.createRPr());
+                                                RPr rpr = ((R)child).getRPr();
+                                                if (null != rpr) {
+                                                    rpr.getRFonts().setAsciiTheme(null);
+                                                    rpr.getRFonts().setAscii(null);
+                                                    rpr.getRFonts().setHAnsiTheme(null);
+                                                    rpr.getRFonts().setHAnsi(null);
+                                                }
                                             }
-                                        }*/
-                                        //setStyle((P)o, "Normal");
+                                        }
                                         alignParagraph((P)o, JcEnumeration.BOTH);
+                                        setStyle((P)o, "Normal");
                                     }
                                 }
                                 content.getContent().addAll(objects);
@@ -238,14 +246,21 @@ public class DOCXWriter implements DocumentWriter {
                                     if (o instanceof Tbl) setStyle((Tbl)o, "TableGrid");
                                     if (o instanceof P) {
                                         //Fix harcoded runProperties
-                                        /*List<Object> pChilds = ((P)o).getContent();
+                                        List<Object> pChilds = ((P)o).getContent();
                                         for (Object child: pChilds) {
                                             if (child instanceof R) {
-                                                ((R)child).setRPr(objectFactory.createRPr());
+                                                //((R)child).setRPr(null);
+                                                RPr rpr = ((R)child).getRPr();
+                                                if (null != rpr) {
+                                                    rpr.getRFonts().setAsciiTheme(null);
+                                                    rpr.getRFonts().setAscii(null);
+                                                    rpr.getRFonts().setHAnsiTheme(null);
+                                                    rpr.getRFonts().setHAnsi(null);
+                                                }
                                             }
-                                        }*/
-                                        //setStyle((P)o, "Normal");
+                                        }
                                         alignParagraph((P)o, JcEnumeration.BOTH);
+                                        setStyle((P)o, "Normal");
                                     }
                                 }
                                 content.getContent().addAll(objects);
@@ -385,7 +400,7 @@ public class DOCXWriter implements DocumentWriter {
      * @throws Docx4JException 
      */
     private void addPageBreak(MainDocumentPart content) throws Docx4JException {
-        Br breakObj = new Br();
+        Br breakObj = objectFactory.createBr();
         breakObj.setType(STBrType.PAGE);
  
         P paragraph = objectFactory.createP();
@@ -424,7 +439,7 @@ public class DOCXWriter implements DocumentWriter {
         
         //Add pageNumber field
         run = objectFactory.createR();
-        Text txt = new Text();
+        Text txt = objectFactory.createText();
         txt.setSpace("preserve");
         txt.setValue(" PAGE   \\* MERGEFORMAT ");
         run.getContent().add(objectFactory.createRInstrText(txt));
