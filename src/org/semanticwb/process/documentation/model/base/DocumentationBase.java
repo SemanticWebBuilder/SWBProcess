@@ -1,7 +1,7 @@
 package org.semanticwb.process.documentation.model.base;
 
 
-public abstract class DocumentationBase extends org.semanticwb.model.SWBClass implements org.semanticwb.model.Traceable,org.semanticwb.model.Descriptiveable
+public abstract class DocumentationBase extends org.semanticwb.model.SWBClass implements org.semanticwb.model.Traceable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.documentation.model.DocVersionable
 {
     public static final org.semanticwb.platform.SemanticProperty swpdoc_nameVersion=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#nameVersion");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_actualVersion=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#actualVersion");
@@ -186,6 +186,24 @@ public abstract class DocumentationBase extends org.semanticwb.model.SWBClass im
     }
 
 /**
+* Gets the VersionValue property
+* @return String with the VersionValue
+*/
+    public String getVersionValue()
+    {
+        return getSemanticObject().getProperty(swpdoc_versionValue);
+    }
+
+/**
+* Sets the VersionValue property
+* @param value long with the VersionValue
+*/
+    public void setVersionValue(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_versionValue, value);
+    }
+
+/**
 * Gets the Created property
 * @return java.util.Date with the Created
 */
@@ -219,6 +237,24 @@ public abstract class DocumentationBase extends org.semanticwb.model.SWBClass im
     public void setUpdated(java.util.Date value)
     {
         getSemanticObject().setDateProperty(swb_updated, value);
+    }
+
+/**
+* Gets the VersionComment property
+* @return String with the VersionComment
+*/
+    public String getVersionComment()
+    {
+        return getSemanticObject().getProperty(swpdoc_versionComment);
+    }
+
+/**
+* Sets the VersionComment property
+* @param value long with the VersionComment
+*/
+    public void setVersionComment(String value)
+    {
+        getSemanticObject().setProperty(swpdoc_versionComment, value);
     }
 
 /**
