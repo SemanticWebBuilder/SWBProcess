@@ -12,12 +12,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
+import org.semanticwb.process.documentation.model.DocumentTemplate;
 
 /**
  * Clase utilitaria para los componentes de documentación de procesos.
@@ -132,6 +135,31 @@ public class SWPUtils {
             os.close();
         } catch (Exception e) {
             log.error("Error on saveFile, " + e.getMessage() + ", " + e.getCause());
+        }
+    }
+    
+    /**
+     * Establece número de versiones para las plantillas de documentación asociadas a un contenedor.
+     * @param lastTemplate Última plantilla en la lista de versiones (fin de la lista).
+     */
+    public static void setVersionNumbers(DocumentTemplate lastTemplate) { // TO DEPRECATE in FUTURE VERSIONS
+        if (null != lastTemplate) {
+            if (null == lastTemplate.getVersionValue()) {
+                ArrayList<DocumentTemplate> templateList = new ArrayList<>();
+                templateList.add(lastTemplate);
+
+                while (lastTemplate.getPreviousTemplate() != null) {
+                    lastTemplate = lastTemplate.getPreviousTemplate();
+                    templateList.add(lastTemplate);
+                }
+
+                Collections.reverse(templateList);
+                String vvalue = "";
+                for (DocumentTemplate docT : templateList) {
+                    docT.setVersionValue(DocumentTemplate.getNextVersionValue(vvalue));
+                    vvalue = docT.getVersionValue();
+                }
+            }
         }
     }
 
