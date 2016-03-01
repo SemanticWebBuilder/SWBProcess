@@ -1,6 +1,8 @@
 package org.semanticwb.process.documentation.model;
 
+import java.text.NumberFormat;
 import java.util.Iterator;
+import org.semanticwb.SWBPortal;
 import org.semanticwb.model.SWBComparator;
 import org.semanticwb.process.model.Process;
 
@@ -10,6 +12,7 @@ import org.semanticwb.process.model.Process;
  */
 public class Documentation extends org.semanticwb.process.documentation.model.base.DocumentationBase 
 {
+    private static final NumberFormat numf = NumberFormat.getNumberInstance();
     /**
      * Constructor. Crea un nuevo objeto para administrar la documentación de un proceso.
      * @param base 
@@ -47,5 +50,38 @@ public class Documentation extends org.semanticwb.process.documentation.model.ba
             }
         }
         return null;
+    }
+    
+    /**
+     * Obtiene la ruta de trabajo del objeto de documentación
+     * @return 
+     */
+    public String getDocWorkPath() {
+        return SWBPortal.getWorkPath()+getProcess().getWorkPath()+"/docs/"+getId()+"/";
+    }
+    
+    /**
+     * Obtiene el valor de la siguiente versión, de acuerdo al valor proporcionado.
+     * @param prevValue Valor de versión tomado como punto de partida.
+     * @return Número de la siguiente versión.
+     */
+    public static String getNextVersionValue(String prevValue) {
+        String prev = prevValue;
+        if (null == prevValue || prevValue.isEmpty()) {
+            return "1.0";
+        }
+        
+        numf.setMaximumFractionDigits(1);
+
+        String sver = prev;
+        double f = Double.parseDouble(sver);
+        f = f + 0.10D;
+
+        String sfver = numf.format(f);
+        if (!sfver.contains(".")) {
+            sfver = "" + (float) f;
+        }
+        sver = sfver;
+        return sver;
     }
 }
