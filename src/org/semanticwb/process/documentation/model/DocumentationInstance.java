@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -746,5 +747,14 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
 //        }
         
         return doc;
+    }
+    
+    /**
+     * Crea una ruta temporal para las descargas de documentación.
+     * @return Ruta a la carpeta de trabajo de la instancia, con un modificador único para archivos temporales.
+     */
+    public String getDownloadTempPath() {
+        String uid = UUID.randomUUID().toString();
+        return SWBPortal.getWorkPath()+getProcessRef().getWorkPath()+"/docs/download/"+uid+"/";
     }
 }
