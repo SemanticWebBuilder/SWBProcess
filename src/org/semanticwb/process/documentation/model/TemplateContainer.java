@@ -64,4 +64,10 @@ public class TemplateContainer extends org.semanticwb.process.documentation.mode
         }
         return available;
     }
+
+    @Override
+    public void addTemplate(DocumentTemplate value) {
+        super.addTemplate(value);
+        if (null != value) value.setTemplateContainer(this);
+    }
 }
