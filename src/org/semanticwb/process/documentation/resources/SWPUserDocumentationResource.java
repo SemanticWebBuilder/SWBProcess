@@ -16,6 +16,7 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.semanticwb.Logger;
+import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.Descriptiveable;
 import org.semanticwb.portal.api.GenericAdmResource;
@@ -62,7 +63,7 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
     @Override
     public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         response.setContentType("text/html; charset=UTF-8");
-        String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/userDocumentation.jsp";
+        String path = SWBPlatform.getContextPath()+"/swbadmin/jsp/process/documentation/userDocumentation.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         String idpg = request.getParameter(PARAM_PROCESSGROUP) != null ? request.getParameter(PARAM_PROCESSGROUP) : "";
         
@@ -71,19 +72,19 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
             request.setAttribute(LIST_PROCESSES, getItems(ProcessGroup.ClassMgr.getProcessGroup(idpg, paramRequest.getWebPage().getWebSite())));
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doView, " + path + ", " + ex.getMessage());
+            log.error("Error on doView", ex);
         }
     }
 
     public void doViewDocumentation(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         response.setContentType("text/html; charset=UTF-8");
-        String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/userDocumentationView.jsp";
+        String path = SWBPlatform.getContextPath()+"/swbadmin/jsp/process/documentation/userDocumentationView.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doViewDocumentation, " + path + ", " + ex.getMessage());
+            log.error("Error on doViewDocumentation", ex);
         }
     }
 
