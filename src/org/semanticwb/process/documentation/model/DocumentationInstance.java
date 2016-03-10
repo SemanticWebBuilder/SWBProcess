@@ -202,7 +202,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
             Activity act = (Activity) se.getSemanticObject().createGenericInstance();
             if (act.getActivityRef().getProcessActivity() != null) {
                 act.setTitle(act.getActivityRef().getProcessActivity().getTitle());
-                act.setDescription(act.getActivityRef().getProcessActivity().getDescription());
+                //act.setDescription(act.getActivityRef().getProcessActivity().getDescription());
                 act.setIndex(act.getActivityRef().getProcessActivity().getIndex());
                 act.setParentSection(instance.getSecTypeDefinition());
                 listPa.add(act.getActivityRef().getProcessActivity());
