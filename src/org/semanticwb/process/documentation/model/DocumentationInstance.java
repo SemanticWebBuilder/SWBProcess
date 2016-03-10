@@ -73,153 +73,6 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
         return map;
     }
 
-//    public static DocumentationInstance createDocumentSectionInstance(ProcessSite model, DocumentTemplate template, org.semanticwb.process.model.Process process) {
-//        //Crea una nueva instancia de documentación
-//        DocumentationInstance di = DocumentationInstance.ClassMgr.createDocumentationInstance(model);
-//        di.setDocTypeDefinition(template);
-//        di.setProcessRef(process);
-//        Iterator<DocumentSection> itdsi = di.getDocTypeDefinition().listDocumentSections();
-//        while (itdsi.hasNext()) {
-//            DocumentSection ds = itdsi.next();
-//            DocumentSectionInstance dsi = DocumentSectionInstance.ClassMgr.createDocumentSectionInstance(model);
-//            dsi.setSecTypeDefinition(ds);
-//            dsi.setDocumentationInstance(di);
-//
-//            di.addDocumentSectionInstance(dsi);
-//            SemanticClass cls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(dsi.getSecTypeDefinition().getSectionType().getURI());
-//            if (FreeText.sclass.getClassId().equals(cls.getClassId())) {
-//                FreeText ft = FreeText.ClassMgr.createFreeText(model);
-//                ft.setText("");
-//                dsi.addDocuSectionElementInstance(ft);
-//                ft.setParentSection(ds);
-//                ft.setDocumentTemplate(template);
-//            }
-//            if (Activity.sclass.getClassId().equals(cls.getClassId())) {
-//                Iterator<GraphicalElement> itge = di.getProcessRef().listAllContaineds();
-//                while (itge.hasNext()) {
-//                    GraphicalElement ge = itge.next();
-//                    if (ge instanceof org.semanticwb.process.model.SubProcess || ge instanceof Task) {
-//                        String urige = ge.getURI();
-//                        org.semanticwb.process.model.Activity act = (org.semanticwb.process.model.Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urige);
-//
-//                        ActivityRef actRef = ActivityRef.ClassMgr.createActivityRef(model);
-//                        actRef.setProcessActivity(act);
-//                        Activity actFin = Activity.ClassMgr.createActivity(model);
-//                        actFin.setTitle(act.getTitle());
-//                        actFin.setDocumentTemplate(template);
-////                        actFin.setDescription(act.getDescription());
-//                        actFin.setActivityRef(actRef);
-//                        actFin.setIndex(ge.getIndex());
-//                        dsi.addDocuSectionElementInstance(actFin);
-//                        actFin.setParentSection(ds);
-//                    }
-//                }
-//            }
-//        }
-//        return di;
-//    }
-
-//    public static ArrayList listDocumentSections(DocumentTemplate dt, Map map, DocumentationInstance di, ProcessSite model, String clsuri) {
-//        Iterator<DocumentSection> itdst = SWBComparator.sortSemanticObjects(dt.listDocumentSections());
-//        ArrayList arr = new ArrayList();
-//        int i = 0;
-//        while (itdst.hasNext()) {
-//            DocumentSection dst = itdst.next();
-//            if (dst.isActive()) {
-//                SemanticClass semcls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(dst.getSectionType().getURI());
-//                if (!clsuri.contains(semcls.getClassId())) {
-//                    if (!map.containsKey(dst.getURI())) {
-//                        DocumentSectionInstance dsin = DocumentSectionInstance.ClassMgr.createDocumentSectionInstance(model);
-//                        dsin.setSecTypeDefinition(dst);
-//                        dsin.setDocumentationInstance(di);
-//                        di.addDocumentSectionInstance(dsin);
-//                        SemanticClass cls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(dsin.getSecTypeDefinition().getSectionType().getURI());
-//                        if (FreeText.sclass.getClassId().equals(cls.getClassId())) {
-//                            FreeText ft = FreeText.ClassMgr.createFreeText(model);
-//                            ft.setText("");
-//                            ft.setDocumentTemplate(dt);
-//                            SectionElement se = (SectionElement) ft.getSemanticObject().createGenericInstance();
-//                            dsin.addDocuSectionElementInstance(se);
-//                        }
-//                        if (Activity.sclass.getClassId().equals(cls.getClassId())) {
-//                            Iterator<GraphicalElement> itge = di.getProcessRef().listAllContaineds();
-//                            while (itge.hasNext()) {
-//                                GraphicalElement ge = itge.next();
-//                                if (ge instanceof org.semanticwb.process.model.SubProcess || ge instanceof Task) {
-//                                    String urige = ge.getURI();
-//                                    org.semanticwb.process.model.Activity act = (org.semanticwb.process.model.Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urige);
-//
-//                                    ActivityRef actRef = ActivityRef.ClassMgr.createActivityRef(model);
-//                                    actRef.setProcessActivity(act);
-//                                    Activity actFin = Activity.ClassMgr.createActivity(model);
-//                                    actFin.setTitle(act.getTitle());
-//                                    actFin.setDocumentTemplate(dt);
-////                                    actFin.setDescription(act.getDescription());
-//                                    actFin.setActivityRef(actRef);
-//                                    actFin.setIndex(ge.getIndex());
-//                                    dsin.addDocuSectionElementInstance(actFin);
-//                                    actFin.setParentSection(dst);
-//                                }
-//                            }
-//                        }
-//                        arr.add(i, dsin.getURI());
-//                    } else {
-//                        arr.add(i, map.get(dst.getURI()));
-//                    }
-//                    i++;
-//                }
-//            }
-//        }
-//        return arr;
-//    }
-
-//    public static ArrayList listDocumentSectionsForPE(DocumentTemplate dt, Map map, DocumentationInstance di, ProcessSite model, String clsuri) {
-//        Iterator<DocumentSection> itdst = SWBComparator.sortSortableObject(dt.listDocumentSections());
-//        ArrayList arr = new ArrayList();
-//        int i = 0;
-//        Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
-//        while (itdsi.hasNext()) {
-//            DocumentSectionInstance dsi = itdsi.next();
-//            SemanticClass semcls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(dsi.getSecTypeDefinition().getSectionType().getURI());
-//            if (!clsuri.contains(semcls.getClassId())) {
-//                if (dsi.listDocuSectionElementInstances().hasNext()) {
-//                    DocumentSection documentSection = dsi.getSecTypeDefinition();
-//                    if (!map.containsKey(documentSection.getURI())) {
-//                        arr.add(i, itdst);
-//                    } else {
-//                        arr.add(i, map.get(documentSection.getURI()));
-//                    }
-//                    i++;
-//                }
-//            }
-//        }
-//        return arr;
-//    }
-
-//    public static void verifyActivitiesOfProcess(List<GraphicalElement> list, WebSite model, DocumentSectionInstance dsi, org.semanticwb.process.model.Process process, DocumentTemplate dt) {
-//
-//        Iterator<GraphicalElement> itge = process.listAllContaineds();
-//        while (itge.hasNext()) {
-//            GraphicalElement ge = itge.next();
-//            if ((ge instanceof org.semanticwb.process.model.SubProcess || ge instanceof Task)) {
-//                if (!list.contains(ge)) {
-//                    String urige = ge.getURI();
-//                    org.semanticwb.process.model.Activity act = (org.semanticwb.process.model.Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urige);
-//                    ActivityRef actRef = ActivityRef.ClassMgr.createActivityRef(model);
-//                    actRef.setProcessActivity(act);
-//                    Activity actFin = Activity.ClassMgr.createActivity(model);
-//                    actFin.setDocumentTemplate(dt);
-//                    actFin.setTitle(act.getTitle());
-////                    actFin.setDescription(act.getDescription());
-//                    actFin.setActivityRef(actRef);
-//                    actFin.setIndex(ge.getIndex());
-//                    dsi.addDocuSectionElementInstance(actFin);
-//                    actFin.setParentSection(dsi.getSecTypeDefinition());
-//                }
-//            }
-//        }
-//    }
-
     /**
      * Obtiene la instancia de documentación asociada al proceso especificado.
      * @param process Proceso de interés
@@ -262,13 +115,14 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                 Iterator<GraphicalElement> itge = di.getProcessRef().listAllContaineds();
                                 while (itge.hasNext()) {
                                     GraphicalElement ge = itge.next();
-                                    if (ge instanceof org.semanticwb.process.model.SubProcess || ge instanceof Task) {
+                                    if (ge instanceof org.semanticwb.process.model.SubProcess || ge instanceof Task) {//TODO:Revisar esto para permitir editar otras actividades
                                         String urige = ge.getURI();
                                         org.semanticwb.process.model.Activity act = (org.semanticwb.process.model.Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urige);
                                         ActivityRef actRef = ActivityRef.ClassMgr.createActivityRef(model);
                                         actRef.setProcessActivity(act);
                                         Activity actFin = Activity.ClassMgr.createActivity(model);
                                         actFin.setTitle(act.getTitle());
+                                        actFin.setDescription(act.getDescription());
                                         actFin.setDocumentTemplate(dt);
                                         actFin.setActivityRef(actRef);
                                         actFin.setIndex(ge.getIndex());
@@ -311,7 +165,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                     Iterator<GraphicalElement> itge = di.getProcessRef().listAllContaineds();
                     while (itge.hasNext()) {
                         GraphicalElement ge = itge.next();
-                        if (ge instanceof org.semanticwb.process.model.SubProcess || ge instanceof Task) {
+                        if (ge instanceof org.semanticwb.process.model.SubProcess || ge instanceof Task) {//TODO:Revisar esto para permitir editar otras actividades
                             String urige = ge.getURI();
                             org.semanticwb.process.model.Activity act = (org.semanticwb.process.model.Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urige);
 
@@ -319,6 +173,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                             actRef.setProcessActivity(act);
                             Activity actFin = Activity.ClassMgr.createActivity(model);
                             actFin.setTitle(act.getTitle());
+                            actFin.setDescription(act.getDescription());
                             actFin.setDocumentTemplate(dt);
                             actFin.setActivityRef(actRef);
                             actFin.setIndex(ge.getIndex());
@@ -347,6 +202,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
             Activity act = (Activity) se.getSemanticObject().createGenericInstance();
             if (act.getActivityRef().getProcessActivity() != null) {
                 act.setTitle(act.getActivityRef().getProcessActivity().getTitle());
+                act.setDescription(act.getActivityRef().getProcessActivity().getDescription());
                 act.setIndex(act.getActivityRef().getProcessActivity().getIndex());
                 act.setParentSection(instance.getSecTypeDefinition());
                 listPa.add(act.getActivityRef().getProcessActivity());
