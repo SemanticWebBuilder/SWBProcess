@@ -22,6 +22,7 @@ import org.semanticwb.model.Descriptiveable;
 import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
+import org.semanticwb.process.documentation.model.TemplateContainer;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.ProcessGroup;
 
@@ -173,7 +174,8 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
             Iterator<Process> processes = root.listProcesses();
             while (processes.hasNext()) {
                 Process process = processes.next();
-                if (process.isValid()) {
+                Iterator<TemplateContainer> itTemplateCont = TemplateContainer.ClassMgr.listTemplateContainerByProcess(process);
+                if (process.isValid() && null != itTemplateCont && itTemplateCont.hasNext()) {//filter processes without template
                     ret.add(process);
                 }
             }
