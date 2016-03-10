@@ -232,14 +232,10 @@ public class SWPDocumentTemplateResource extends GenericResource {
                                             ((Rule) sectionElementNew).setPrefix(((Rule) se).getPrefix());
                                         }
                                         //Referable ok
-                                        else if (se instanceof Referable) {
-                                            ((Referable) sectionElementNew).setRefRepository(((Referable) se).getRefRepository());
-                                        }
                                         else if (se instanceof Definition) {
                                             ((Definition) sectionElementNew).setFile(((Definition) se).getFile());
                                             ((Definition) sectionElementNew).setNumber(((Definition) se).getNumber());
                                             ((Definition) sectionElementNew).setPrefix(((Definition) se).getPrefix());
-                                            ((Definition) sectionElementNew).setRefRepository(((Definition) se).getRefRepository());
                                         }
                                         else if (se instanceof ElementReference) {
                                             ((ElementReference) sectionElementNew).setElementRef(((ElementReference) se).getElementRef());
@@ -273,7 +269,6 @@ public class SWPDocumentTemplateResource extends GenericResource {
                                             ((Reference) sectionElementNew).setFile(((Reference) se).getFile());
                                             ((Reference) sectionElementNew).setNumber(((Reference) se).getNumber());
                                             ((Reference) sectionElementNew).setPrefix(((Reference) se).getPrefix());
-                                            ((Reference) sectionElementNew).setRefRepository(((Reference) se).getRefRepository());
                                             ((Reference) sectionElementNew).setTypeReference(((Reference) se).getTypeReference());
                                         }
                                         //Risk OK
