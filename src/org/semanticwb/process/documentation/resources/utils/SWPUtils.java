@@ -72,6 +72,7 @@ public class SWPUtils {
     }
 
     public static void generateImageModel(org.semanticwb.process.model.Process p, String path, String format, String data, double width, double height) {
+        //TODO: Cuando no hay datos del modelo, no debe hacerse nada
         try {
             //String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/rep_files/";
             File baseDir = new File(path);
