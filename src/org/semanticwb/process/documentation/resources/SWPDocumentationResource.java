@@ -764,7 +764,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doEdit, " + path + ", " + ex.getMessage());
+            log.error("Error on doEdit, " + path,ex);
         }
     }
 
