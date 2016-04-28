@@ -42,6 +42,7 @@ import org.semanticwb.model.WebPage;
 import org.semanticwb.model.WebSite;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
+import org.semanticwb.platform.SemanticOntology;
 import org.semanticwb.platform.SemanticProperty;
 import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBActionResponse;
@@ -96,6 +97,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public final static String MODE_RELATED = "m_rel";
     public final static String MODE_RELATED_ACTIVITY = "m_relact";
     public final static String MODE_TRACEABLE = "m_trac";
+    public final static String MODE_VIEW_REMOVE = "m_viewrem";
     public final static String MODE_VERSION = "m_nver";
     public final static String MODE_ADMIN_VERSION = "m_nadver";
     public final static String MODE_VIEW_DESCRIPTION = "m_nvdesc";
@@ -295,14 +297,24 @@ public class SWPDocumentationResource extends GenericAdmResource {
                 DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("uridsi"));
                 SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("urise"));
                 //TODO: checar si es referable y eliminar el elemento de repositorio correspondiente
-                dsi.removeDocuSectionElementInstance(se);
-                se.remove();
+                String optionRemove = params.containsKey("optionRemove") ? params.get("optionRemove").toString() : "";
                 
+                dsi.removeDocuSectionElementInstance(se);
+                se.remove();  
                 response.setRenderParameter("uridsi", (String)params.get("uridsi"));
                 response.setRenderParameter("urise", (String)params.get("urise"));
                 response.setRenderParameter("idp", request.getParameter("idp"));
                 response.setRenderParameter("wp", request.getParameter("wp"));
                 response.setRenderParameter("_rid", request.getParameter("_rid"));
+                
+                if(!optionRemove.equals("")){
+                    if(optionRemove.equals("2") && se instanceof Referable){
+                        RepositoryFile reps = (RepositoryFile) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("fileSe"));            
+                        reps.remove();
+                    }
+                    response.setRenderParameter("status", "ok");
+                    response.setMode(MODE_RESPONSE); 
+                }
                 break;
             }
             case ACTION_EDIT_TEXT: {
@@ -698,6 +710,9 @@ public class SWPDocumentationResource extends GenericAdmResource {
             case MODE_TRACEABLE:
                 doTrace(request, response, paramRequest);
                 break;
+             case MODE_VIEW_REMOVE:
+                doViewRemove(request, response, paramRequest);
+                break;
             case MODE_VERSION:
                 doVersion(request, response, paramRequest);
                 break;
@@ -735,7 +750,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doView, " + path + ", " + ex.getMessage());
+            log.error("Error on doView, " , ex);
         }
     }
     
@@ -795,6 +810,18 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public void doTrace(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         response.setContentType("text/html; charset=UTF-8");
         String path = SWBPlatform.getContextPath()+"/swbadmin/jsp/process/documentation/logView.jsp";
+        RequestDispatcher rd = request.getRequestDispatcher(path);
+        try {
+            request.setAttribute(PARAM_REQUEST, paramRequest);
+            rd.forward(request, response);
+        } catch (ServletException ex) {
+            log.error("Error on doTrace, " + path + ", " + ex.getMessage());
+        }
+    }
+    
+     public void doViewRemove(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
+        response.setContentType("text/html; charset=UTF-8");
+        String path = SWBPlatform.getContextPath()+"/swbadmin/jsp/process/documentation/viewRemove.jsp";
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
             request.setAttribute(PARAM_REQUEST, paramRequest);
