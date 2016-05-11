@@ -107,6 +107,10 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public final static String PARAM_REQUEST = "paramRequest";//Bean paramRequest
     public final static String FORMAT_HTML = "html";
     public final static String FORMAT_WORD = "word";
+    public final static String CONFIG_INCLUDEHF = "includeHeaderFooter";
+    public final static String CONFIG_ACTTABLE = "activityAsTable";
+    public final static String CONFIG_TPL = "template";
+    public final static String CONFIG_FIRSTPAGE = "includeFirstPage";
 
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
@@ -984,7 +988,13 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     response.setContentType("application/msword");
                     response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".docx\"");
 
-                    DOCXWriter docxw = new DOCXWriter(docInstance, basePath+"rep_files");
+                    HashMap<String, String> params = new HashMap<>();
+                    if (null != getResourceBase().getAttribute(CONFIG_INCLUDEHF)) params.put(CONFIG_INCLUDEHF,"true");
+                    if (null != getResourceBase().getAttribute(CONFIG_FIRSTPAGE)) params.put(CONFIG_FIRSTPAGE,"true");
+                    if (null != getResourceBase().getAttribute(CONFIG_ACTTABLE)) params.put(CONFIG_ACTTABLE,"true");
+                    if (null != getResourceBase().getAttribute(CONFIG_TPL)) params.put(CONFIG_TPL, SWBPortal.getWebWorkPath()+getResourceBase().getWorkPath()+"/"+getResourceBase().getAttribute("template"));
+                    
+                    DOCXWriter docxw = new DOCXWriter(docInstance, basePath+"rep_files", params);
                     docxw.write(response.getOutputStream());
                     response.flushBuffer();
                 }
