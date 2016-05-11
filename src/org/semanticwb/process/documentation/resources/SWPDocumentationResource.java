@@ -992,7 +992,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     if (null != getResourceBase().getAttribute(CONFIG_INCLUDEHF)) params.put(CONFIG_INCLUDEHF,"true");
                     if (null != getResourceBase().getAttribute(CONFIG_FIRSTPAGE)) params.put(CONFIG_FIRSTPAGE,"true");
                     if (null != getResourceBase().getAttribute(CONFIG_ACTTABLE)) params.put(CONFIG_ACTTABLE,"true");
-                    if (null != getResourceBase().getAttribute(CONFIG_TPL)) params.put(CONFIG_TPL, SWBPortal.getWebWorkPath()+getResourceBase().getWorkPath()+"/"+getResourceBase().getAttribute("template"));
+                    if (null != getResourceBase().getAttribute(CONFIG_TPL)) params.put(CONFIG_TPL, SWBPortal.getWorkPath()+getResourceBase().getWorkPath()+"/"+getResourceBase().getAttribute("template"));
                     
                     DOCXWriter docxw = new DOCXWriter(docInstance, basePath+"rep_files", params);
                     docxw.write(response.getOutputStream());
