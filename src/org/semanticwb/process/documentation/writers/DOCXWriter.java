@@ -7,14 +7,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
+import org.docx4j.model.datastorage.migration.VariablePrepare;
+import org.docx4j.model.fields.merge.DataFieldName;
+import org.docx4j.model.fields.merge.MailMerger;
 import org.docx4j.model.structure.SectionWrapper;
 import org.docx4j.model.table.TblFactory;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
+import org.docx4j.openpackaging.io.SaveToZipFile;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
@@ -79,6 +86,8 @@ public class DOCXWriter implements DocumentWriter {
     private final org.semanticwb.process.model.Process p;
     private final ProcessSite model;
     private final String assetsPath;
+    private final Map config;
+    private final HashMap<String, String> fieldValues;
     
     /**
      * Creates a new DOCXWriter for the specified DocumentationInstance object.
@@ -86,10 +95,44 @@ public class DOCXWriter implements DocumentWriter {
      * @param assetsPath Path to additional assets required in docx generation.
      */
     public DOCXWriter(DocumentationInstance di, String assetsPath) {
+//        this.di = di;
+//        this.p = di.getProcessRef();
+//        this.model = p.getProcessSite();
+//        this.assetsPath = assetsPath;
+//        this.config = new HashMap<String, String>();
+        this(di, assetsPath, null, null);
+    }
+    
+    /**
+     * Creates a new DOCXWriter for the specified DocumentationInstance object.
+     * @param di DocumentationInstance object
+     * @param assetsPath Path to additional assets required in docx generation.
+     * @param configParam Configuration parameters.
+     */
+    public DOCXWriter(DocumentationInstance di, String assetsPath, Map configParams) {
+        this(di, assetsPath, configParams, null);
+    }
+    
+    /**
+     * Creates a new DOCXWriter for the specified DocumentationInstance object.
+     * @param di DocumentationInstance object
+     * @param assetsPath Path to additional assets required in docx generation.
+     * @param configParams Configuration parameters.
+     */
+    public DOCXWriter(DocumentationInstance di, String assetsPath, Map configParams, HashMap<String, String> fieldValues) {
         this.di = di;
         this.p = di.getProcessRef();
         this.model = p.getProcessSite();
         this.assetsPath = assetsPath;
+        this.config = configParams;
+        if (null != fieldValues) {
+            this.fieldValues = fieldValues;
+        } else {
+            //Add default field value mappings
+            this.fieldValues = new HashMap<String, String>();
+            //System.out.println("-->processName:"+this.p.getTitle());
+            this.fieldValues.put("processName", this.p.getTitle());
+        }
     }
     
     @Override
@@ -100,14 +143,30 @@ public class DOCXWriter implements DocumentWriter {
             doc = WordprocessingMLPackage.createPackage();
             MainDocumentPart content = doc.getMainDocumentPart();
 
+            String tpl = null;
+            if (null != config && null != config.get("template")) {
+                tpl = (String) config.get("template");
+            }
+            
+            if (null != tpl && !tpl.isEmpty()) {
+                System.out.println("-->Opening template "+tpl);
+                WordprocessingMLPackage docTpl = WordprocessingMLPackage.load(new File(tpl));
+                System.out.println("-->Replacing fields");
+                replaceFields(doc, ous);
+            }
+            
             //Create header and footer
-            createHeader(doc);
-            createFooter(doc);
+            if (null != config && null != config.get("includeHeaderFooter") && config.get("includeHeaderFooter").equals("true")) {
+                createHeader(doc);
+                createFooter(doc);
+            }
             
             //Add first page
-            P docTitle = content.addStyledParagraphOfText("Heading1", p.getTitle());
-            alignParagraph(docTitle, JcEnumeration.CENTER);
-            addPageBreak(content);
+            if (null != config && null != config.get("includeFirstPage") && config.get("includeFirstPage").equals("true")) {
+                P docTitle = content.addStyledParagraphOfText("Heading1", p.getTitle());
+                alignParagraph(docTitle, JcEnumeration.CENTER);
+                addPageBreak(content);
+            }
             
             //Add sections
             Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
@@ -509,6 +568,18 @@ public class DOCXWriter implements DocumentWriter {
         headerReference.setId(rel.getId());
         headerReference.setType(HdrFtrRef.DEFAULT);
         sectPr.getEGHdrFtrReferences().add(headerReference);
+    }
+    
+    private void replaceFields(WordprocessingMLPackage doc, OutputStream ous) {
+        try {
+            VariablePrepare.prepare(doc);
+            doc.getMainDocumentPart().variableReplace(this.fieldValues);
+            SaveToZipFile saver = new SaveToZipFile(doc);
+            saver.save(new File("/Users/hasdai/Documents/GENERADO/out.docx"));
+            //doc.save(new File("/Users/hasdai/Documents/GENERADO/out.docx"));
+        } catch (Exception ex) {
+            log.error(ex);
+        }
     }
     
     @Override
