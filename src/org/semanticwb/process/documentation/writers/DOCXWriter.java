@@ -7,11 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.model.datastorage.migration.VariablePrepare;
@@ -135,38 +135,70 @@ public class DOCXWriter implements DocumentWriter {
         }
     }
     
+    /**
+     * Genera un documento a partir de una plantilla y reemplaza los valores correspondientes en los campos MergeField del documento.
+     * @param templatePath ruta al documento plantilla.
+     * @param includeHeaderFooterindica si se procesarán MergeFields en header y footer.
+     * @return WordprocessingMLPackage del documento.
+     */
+    private WordprocessingMLPackage writeTemplate (String templatePath, boolean includeHeaderFooter) {
+        //Open template
+        WordprocessingMLPackage doc = null;
+        WordprocessingMLPackage result = null;
+        try {
+            ObjectFactory objectFactory = new ObjectFactory();
+            doc = WordprocessingMLPackage.load(new FileInputStream(new File(templatePath)));
+            
+            //Replace mergeFields
+            List<Map<DataFieldName, String>> data = new ArrayList<Map<DataFieldName, String>>();
+
+            Map<DataFieldName, String> map = new HashMap<DataFieldName, String>();
+            map.put(new DataFieldName("processName"), p.getTitle());
+            map.put(new DataFieldName("processGroup"), p.getProcessGroup().getTitle());
+            map.put(new DataFieldName("currentDate"), (new Date()).toString());
+            data.add(map);
+
+            MailMerger.setMERGEFIELDInOutput(MailMerger.OutputField.DEFAULT);
+            result = MailMerger.getConsolidatedResultCrude(doc, data, includeHeaderFooter);
+        } catch (Docx4JException | FileNotFoundException ex) { 
+            log.error("Error writing template", ex);
+        }
+        return result;
+    }
+    
     @Override
     public void write(OutputStream ous) {
-        WordprocessingMLPackage doc;
+        WordprocessingMLPackage doc = null;
+        boolean fromTemplate = false;
         
         try {
-            doc = WordprocessingMLPackage.createPackage();
-            MainDocumentPart content = doc.getMainDocumentPart();
-
+            //Get template path from config
             String tpl = null;
             if (null != config && null != config.get("template")) {
                 tpl = (String) config.get("template");
             }
             
             if (null != tpl && !tpl.isEmpty()) {
-                System.out.println("-->Opening template "+tpl);
-                WordprocessingMLPackage docTpl = WordprocessingMLPackage.load(new File(tpl));
-                System.out.println("-->Replacing fields");
-                replaceFields(doc, ous);
+                fromTemplate = true;
+                doc = writeTemplate(tpl, true);
             }
             
+            if (null == doc) doc = WordprocessingMLPackage.createPackage();
+            MainDocumentPart content = doc.getMainDocumentPart();
+            
             //Create header and footer
-            if (null != config && null != config.get("includeHeaderFooter") && config.get("includeHeaderFooter").equals("true")) {
+            if (!fromTemplate && null != config && null != config.get("includeHeaderFooter") && config.get("includeHeaderFooter").equals("true")) {
                 createHeader(doc);
                 createFooter(doc);
             }
             
             //Add first page
-            if (null != config && null != config.get("includeFirstPage") && config.get("includeFirstPage").equals("true")) {
+            if (!fromTemplate && null != config && null != config.get("includeFirstPage") && config.get("includeFirstPage").equals("true")) {
                 P docTitle = content.addStyledParagraphOfText("Heading1", p.getTitle());
                 alignParagraph(docTitle, JcEnumeration.CENTER);
-                addPageBreak(content);
             }
+            
+            addPageBreak(content);
             
             //Add sections
             Iterator<DocumentSectionInstance> itdsi = SWBComparator.sortSortableObject(di.listDocumentSectionInstances());
@@ -217,8 +249,8 @@ public class DOCXWriter implements DocumentWriter {
 
                             colContent.getContent().add(colRun);
                             col.getContent().set(0, colContent);
-                            //alignParagraph(colContent, JcEnumeration.CENTER);
-                            //fillTableCell(col);
+                            alignParagraph(colContent, JcEnumeration.CENTER);
+                            fillTableCell(col, "#F2F2F2");
                         }
                         
                         //Add rows
@@ -241,9 +273,9 @@ public class DOCXWriter implements DocumentWriter {
                                         colContent = content.createParagraphOfText(se.getTitle());
                                     }
                                 }
-                                col.getContent().set(0, colContent);
-                                alignParagraph(colContent, JcEnumeration.BOTH);
                                 setStyle(colContent, "Normal");
+                                alignParagraph(colContent, JcEnumeration.BOTH);
+                                col.getContent().set(0, colContent);
                             }
                         }
                         
@@ -263,7 +295,30 @@ public class DOCXWriter implements DocumentWriter {
                                 //Override styles and alignment
                                 List<Object> objects = importer.convert(sContent,null);
                                 for (Object o : objects) {
-                                    if (o instanceof Tbl) setStyle((Tbl)o, "TableGrid");
+                                    if (o instanceof Tbl) {
+                                        setStyle((Tbl)o, "TableGrid");
+                                        
+                                        //Set table header background
+                                        /*if (null != config.get("forceTableStyles") && "true".equals(config.get("forceTableStyles"))) {
+                                            Tbl table = (Tbl)o;
+                                            Iterator<Object> rows = table.getContent().iterator();
+                                            Tr firstRow = null;
+                                            while (rows.hasNext()) {
+                                                Object next = rows.next();
+                                                if (next instanceof Tr) {
+                                                    firstRow = (Tr) next;
+                                                    break;
+                                                }
+                                            }
+                                            if (null != firstRow) {
+                                                Iterator<Object> cells = firstRow.getContent().iterator();
+                                                while (cells.hasNext()) {
+                                                    Object next = cells.next();
+                                                    fillTableCell((Tc)next, "#F2F2F2");
+                                                }
+                                            }
+                                        }*/
+                                    }
                                     if (o instanceof P) {
                                         //Fix harcoded runProperties
                                         List<Object> pChilds = ((P)o).getContent();
@@ -413,7 +468,7 @@ public class DOCXWriter implements DocumentWriter {
      * @param paragraph Párrafo a alinear
      * @param alignment Valor de alineamiento
      */
-    private void alignParagraph(P paragraph, JcEnumeration alignment) {
+        private void alignParagraph(P paragraph, JcEnumeration alignment) {
         PPr parProps = paragraph.getPPr();
         if (null == parProps) parProps = objectFactory.createPPr();
         Jc al = objectFactory.createJc();
@@ -568,18 +623,6 @@ public class DOCXWriter implements DocumentWriter {
         headerReference.setId(rel.getId());
         headerReference.setType(HdrFtrRef.DEFAULT);
         sectPr.getEGHdrFtrReferences().add(headerReference);
-    }
-    
-    private void replaceFields(WordprocessingMLPackage doc, OutputStream ous) {
-        try {
-            VariablePrepare.prepare(doc);
-            doc.getMainDocumentPart().variableReplace(this.fieldValues);
-            SaveToZipFile saver = new SaveToZipFile(doc);
-            saver.save(new File("/Users/hasdai/Documents/GENERADO/out.docx"));
-            //doc.save(new File("/Users/hasdai/Documents/GENERADO/out.docx"));
-        } catch (Exception ex) {
-            log.error(ex);
-        }
     }
     
     @Override
