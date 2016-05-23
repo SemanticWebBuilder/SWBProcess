@@ -42,7 +42,6 @@ import org.semanticwb.model.WebPage;
 import org.semanticwb.model.WebSite;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
-import org.semanticwb.platform.SemanticOntology;
 import org.semanticwb.platform.SemanticProperty;
 import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBActionResponse;
@@ -111,6 +110,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public final static String CONFIG_ACTTABLE = "activityAsTable";
     public final static String CONFIG_TPL = "template";
     public final static String CONFIG_FIRSTPAGE = "includeFirstPage";
+    public final static String CONFIG_FORCETBLSTYLES = "forceTableStyles";
 
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
@@ -993,6 +993,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     if (null != getResourceBase().getAttribute(CONFIG_FIRSTPAGE)) params.put(CONFIG_FIRSTPAGE,"true");
                     if (null != getResourceBase().getAttribute(CONFIG_ACTTABLE)) params.put(CONFIG_ACTTABLE,"true");
                     if (null != getResourceBase().getAttribute(CONFIG_TPL)) params.put(CONFIG_TPL, SWBPortal.getWorkPath()+getResourceBase().getWorkPath()+"/"+getResourceBase().getAttribute("template"));
+                    if (null != getResourceBase().getAttribute(CONFIG_FORCETBLSTYLES)) params.put(CONFIG_FORCETBLSTYLES, "true");
                     
                     DOCXWriter docxw = new DOCXWriter(docInstance, basePath+"rep_files", params);
                     docxw.write(response.getOutputStream());
