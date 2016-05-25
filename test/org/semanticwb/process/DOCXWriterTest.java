@@ -18,11 +18,14 @@ import org.docx4j.model.fields.merge.MailMerger;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
 import org.docx4j.wml.Br;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
 import org.docx4j.wml.STBrType;
+import org.docx4j.wml.Style;
+import org.docx4j.wml.Styles;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -54,12 +57,29 @@ public class DOCXWriterTest {
     @After
     public void tearDown() {
     }
-
-    private WordprocessingMLPackage openDocument(String path) {
-        WordprocessingMLPackage doc = null;
+    
+    @Test
+    public void runTests() {
         try {
-            doc = WordprocessingMLPackage.load(new FileInputStream(new File(path)));
-        } catch (Docx4JException | FileNotFoundException ex) {  }
+            WordprocessingMLPackage doc = getDocument("ProcessINFOTECTemplate.docx");//WordprocessingMLPackage.createPackage();
+            listDocumentStyles(doc);
+            
+            openSaveDocTemplate(getDocument("sampleinput.docx"));
+        } catch (Docx4JException ex) {}
+    }
+
+    private WordprocessingMLPackage getDocument(String path) {
+        WordprocessingMLPackage doc = null;
+        if (null == path) {
+            try {
+                doc = WordprocessingMLPackage.createPackage();
+            } catch (Docx4JException ex) {}
+        } else {
+            try {
+                doc = WordprocessingMLPackage.load(new FileInputStream(new File(path)));
+            } catch (Docx4JException | FileNotFoundException ex) {  }
+        }
+        
         return doc;
     }
     
@@ -83,9 +103,29 @@ public class DOCXWriterTest {
         }
     }
     
-    @Test
-    public void replaceFieldsDocTemplate() {
-        WordprocessingMLPackage doc = openDocument("/Users/hasdai/Documents/GENERADO/sampleinput_fields.docx");
+    private void listDocumentStyles(WordprocessingMLPackage doc) throws Docx4JException {
+        //WordprocessingMLPackage doc = WordprocessingMLPackage.createPackage();//openDocument("sampleinput_fields.docx");
+        MainDocumentPart mdp = doc.getMainDocumentPart();
+        
+        StyleDefinitionsPart styleDef = mdp.getStyleDefinitionsPart();
+        Map<String, Style> styles = styleDef.getKnownStyles();
+        
+        Styles _styles = styleDef.getContents();
+        
+        System.out.println("---Document known styles---");
+        for(String name : styles.keySet()) {
+            System.out.println("Name: "+name+" "+styles.get(name).isDefault());
+        }
+        
+        System.out.println("---Styles content---");
+        List<Style> st = _styles.getStyle();
+        for (Style s : st) {
+            System.out.println("name: "+s.getName().getVal()+" id: "+s.getStyleId()+" "+s.isDefault());
+        }
+    }
+    
+    private void replaceFieldsDocTemplate(WordprocessingMLPackage doc) {
+        //WordprocessingMLPackage doc = getDocument("sampleinput_fields.docx");
         List<Map<DataFieldName, String>> data = new ArrayList<Map<DataFieldName, String>>();
         
         Map<DataFieldName, String> map = new HashMap<DataFieldName, String>();
@@ -103,19 +143,15 @@ public class DOCXWriterTest {
             //addPageBreak(doc);
             mdp.addParagraphOfText("hello world");
             
-            result.save(new File("/Users/hasdai/Documents/GENERADO/sampleoutput_fields.docx"));
+            result.save(new File("sampleoutput_fields.docx"));
         } catch (Docx4JException ex) {  }
     }
     
-    //@Test
-    public void openSaveDocTemplate() {
+    private void openSaveDocTemplate(WordprocessingMLPackage doc) {
         try {
             ObjectFactory objectFactory = new ObjectFactory();
-            WordprocessingMLPackage doc = openDocument("/Users/hasdai/Documents/GENERADO/sampleinput.docx");
-            //System.out.println("------");
-            //System.out.println(doc.getMainDocumentPart().getXML());
-            //System.out.println("------");
             MainDocumentPart mainPart = doc.getMainDocumentPart();
+            
             R r = objectFactory.createR();
             
             Br breakObj = objectFactory.createBr();
@@ -127,9 +163,9 @@ public class DOCXWriterTest {
             paragraph.getContent().add(r);
             mainPart.getContents().getBody().getContent().add(paragraph);
             
-            mainPart.addParagraphOfText("hello world");
+            mainPart.addStyledParagraphOfText("Heading1","hello world");
             
-            doc.save(new File("/Users/hasdai/Documents/GENERADO/sampleoutput.docx"));
+            doc.save(new File("sampleoutput.docx"));
         } catch (Docx4JException d4jex) {
             
         }
