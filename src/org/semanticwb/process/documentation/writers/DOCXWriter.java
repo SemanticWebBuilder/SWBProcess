@@ -86,6 +86,7 @@ public class DOCXWriter implements DocumentWriter {
     private final String assetsPath;
     private final Map config;
     private final HashMap<String, String> fieldValues;
+    private HashMap<String, String> styleNameMappings;
     
     /**
      * Creates a new DOCXWriter for the specified DocumentationInstance object.
@@ -128,9 +129,18 @@ public class DOCXWriter implements DocumentWriter {
         } else {
             //Add default field value mappings
             this.fieldValues = new HashMap<String, String>();
-            //System.out.println("-->processName:"+this.p.getTitle());
             this.fieldValues.put("processName", this.p.getTitle());
         }
+        this.styleNameMappings = new HashMap<>();
+        //Push default Style Names
+        this.styleNameMappings.put("Heading1", "Heading1");
+        this.styleNameMappings.put("Heading2", "Heading2");
+        this.styleNameMappings.put("Heading3", "Heading3");
+        this.styleNameMappings.put("Heading4", "Heading4");
+        this.styleNameMappings.put("Normal", "Normal");
+        this.styleNameMappings.put("TableGrid", "TableGrid");
+        this.styleNameMappings.put("Header", "Header");
+        this.styleNameMappings.put("Footer", "footer");
     }
     
     /**
@@ -192,7 +202,10 @@ public class DOCXWriter implements DocumentWriter {
             
             //Add first page
             if (!fromTemplate && null != config && null != config.get("includeFirstPage") && config.get("includeFirstPage").equals("true")) {
-                P docTitle = content.addStyledParagraphOfText("Heading1", p.getTitle());
+                String h1Name = styleNameMappings.get("Heading1");
+                if (null == h1Name) h1Name = "Heading1";
+                
+                P docTitle = content.addStyledParagraphOfText(h1Name, p.getTitle());
                 alignParagraph(docTitle, JcEnumeration.CENTER);
             }
             
@@ -207,7 +220,9 @@ public class DOCXWriter implements DocumentWriter {
                 if (null == cls || !dsi.getSecTypeDefinition().isActive()) continue;
                 
                 //Add section title
-                content.addStyledParagraphOfText("Heading2", dsi.getSecTypeDefinition().getTitle());
+                String h2Name = styleNameMappings.get("Heading2");
+                if (null == h2Name) h2Name = "Heading2";
+                content.addStyledParagraphOfText(h2Name, dsi.getSecTypeDefinition().getTitle());
                 
                 //Gather sectionElement instances
                 Iterator<SectionElement> itse = SWBComparator.sortSortableObject(dsi.listDocuSectionElementInstances());
@@ -227,7 +242,9 @@ public class DOCXWriter implements DocumentWriter {
                         int cellWidthTwips = new Double(Math.floor((writableWidthTwips/props.length))).intValue();
                         
                         Tbl propsTable = TblFactory.createTable(sectionElementInstances.size()+1, props.length, cellWidthTwips);
-                        setStyle(propsTable, "TableGrid");
+                        String gridName = styleNameMappings.get("TableGrid");
+                        if (null == gridName) gridName = "TableGrid";
+                        setStyle(propsTable, gridName);
                         
                         //Add table header
                         Tr headerRow = (Tr) propsTable.getContent().get(0);
@@ -271,7 +288,9 @@ public class DOCXWriter implements DocumentWriter {
                                         colContent = content.createParagraphOfText(se.getTitle());
                                     }
                                 }
-                                setStyle(colContent, "Normal");
+                                String normalName = styleNameMappings.get("Normal");
+                                if (null == normalName) normalName = "Normal";
+                                setStyle(colContent, normalName);
                                 alignParagraph(colContent, JcEnumeration.BOTH);
                                 col.getContent().set(0, colContent);
                             }
@@ -294,7 +313,9 @@ public class DOCXWriter implements DocumentWriter {
                                 List<Object> objects = importer.convert(sContent,null);
                                 for (Object o : objects) {
                                     if (o instanceof Tbl) {
-                                        setStyle((Tbl)o, "TableGrid");
+                                        String gridName = styleNameMappings.get("TableGrid");
+                                        if (null == gridName) gridName = "TableGrid";
+                                        setStyle((Tbl)o, gridName);
                                         
                                         //Set table header background
                                         /*if (null != config.get("forceTableStyles") && "true".equals(config.get("forceTableStyles"))) {
@@ -333,7 +354,9 @@ public class DOCXWriter implements DocumentWriter {
                                             }
                                         }
                                         alignParagraph((P)o, JcEnumeration.BOTH);
-                                        setStyle((P)o, "Normal");
+                                        String normalName = styleNameMappings.get("Normal");
+                                        if (null == normalName) normalName = "Normal";
+                                        setStyle((P)o, normalName);
                                     }
                                 }
                                 content.getContent().addAll(objects);
@@ -345,7 +368,10 @@ public class DOCXWriter implements DocumentWriter {
                         Activity a = (Activity) se;
                         if (a.getDescription() != null && !a.getDescription().isEmpty()) {
                             XHTMLImporterImpl importer = new XHTMLImporterImpl(doc);
-                            content.addStyledParagraphOfText("Heading3", a.getTitle());
+                            
+                            String h3Name = styleNameMappings.get("Heading3");
+                            if (null == h3Name) h3Name = "Heading3";
+                            content.addStyledParagraphOfText(h3Name, a.getTitle());
                             
                             String sContent = a.getDescription();
                             if (null != sContent && !sContent.isEmpty()) {
@@ -355,7 +381,11 @@ public class DOCXWriter implements DocumentWriter {
                                 //Override styles and alignment
                                 List<Object> objects = importer.convert(sContent,null);
                                 for (Object o : objects) {
-                                    if (o instanceof Tbl) setStyle((Tbl)o, "TableGrid");
+                                    if (o instanceof Tbl) {
+                                        String gridName = styleNameMappings.get("TableGrid");
+                                        if (null == gridName) gridName = "TableGrid";
+                                        setStyle((Tbl)o, gridName);
+                                    }
                                     if (o instanceof P) {
                                         //Fix harcoded runProperties
                                         List<Object> pChilds = ((P)o).getContent();
@@ -372,7 +402,9 @@ public class DOCXWriter implements DocumentWriter {
                                             }
                                         }
                                         alignParagraph((P)o, JcEnumeration.BOTH);
-                                        setStyle((P)o, "Normal");
+                                        String normalName = styleNameMappings.get("Normal");
+                                        if (null == normalName) normalName = "Normal";
+                                        setStyle((P)o, normalName);
                                     }
                                 }
                                 content.getContent().addAll(objects);
@@ -534,7 +566,9 @@ public class DOCXWriter implements DocumentWriter {
         Ftr ftr = objectFactory.createFtr();
         P footerParagraph = objectFactory.createP();
         
-        setStyle(footerParagraph, "footer");
+        String footerlName = styleNameMappings.get("footer");
+        if (null == footerlName) footerlName = "footer";
+        setStyle(footerParagraph, footerlName);
         
         PPr parProps = objectFactory.createPPr();
         Jc al = objectFactory.createJc();
@@ -604,7 +638,9 @@ public class DOCXWriter implements DocumentWriter {
         hdr.getContent().add(headerParagraph);
         header.setJaxbElement(hdr);
         
-        setStyle(headerParagraph, "Header");
+        String headerName = styleNameMappings.get("Header");
+        if (null == headerName) headerName = "Header";
+        setStyle(headerParagraph, headerName);
         alignParagraph(headerParagraph, JcEnumeration.CENTER);
         
         //Relate to document
@@ -621,6 +657,14 @@ public class DOCXWriter implements DocumentWriter {
         headerReference.setId(rel.getId());
         headerReference.setType(HdrFtrRef.DEFAULT);
         sectPr.getEGHdrFtrReferences().add(headerReference);
+    }
+    
+    /**
+     * Actualiza la tabla de mapeo de nombres de estilos.
+     * @param mappings 
+     */
+    public void setStyleNameMappings(HashMap<String, String> mappings) {
+        this.styleNameMappings = mappings;
     }
     
     @Override
