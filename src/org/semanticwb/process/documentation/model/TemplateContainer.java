@@ -58,7 +58,7 @@ public class TemplateContainer extends org.semanticwb.process.documentation.mode
         Iterator<Process> all = Process.ClassMgr.listProcesses(model);
         while(all.hasNext()) {
             Process p = all.next();
-            if (p.isValid() && !assigned.contains(p)) {
+            if (p.isActive() && !p.isDeleted() && !assigned.contains(p)) { //all remaining processes must be available, but deleted ones
                 available.add(p);
             }
         }
