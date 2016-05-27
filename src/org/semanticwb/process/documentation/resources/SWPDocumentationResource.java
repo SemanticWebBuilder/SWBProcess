@@ -300,8 +300,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
             case SWBResourceURL.Action_REMOVE: {
                 DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("uridsi"));
                 SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("urise"));
-                //TODO: checar si es referable y eliminar el elemento de repositorio correspondiente
-                String optionRemove = params.containsKey("optionRemove") ? params.get("optionRemove").toString() : "";
                 
                 dsi.removeDocuSectionElementInstance(se);
                 se.remove();  
@@ -310,15 +308,13 @@ public class SWPDocumentationResource extends GenericAdmResource {
                 response.setRenderParameter("idp", request.getParameter("idp"));
                 response.setRenderParameter("wp", request.getParameter("wp"));
                 response.setRenderParameter("_rid", request.getParameter("_rid"));
-                
-                if(!optionRemove.equals("")){
-                    if(optionRemove.equals("2") && se instanceof Referable){
-                        RepositoryFile reps = (RepositoryFile) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("fileSe"));            
-                        reps.remove();
-                    }
-                    response.setRenderParameter("status", "ok");
-                    response.setMode(MODE_RESPONSE); 
+
+                if(params.containsKey("optionRemove") && se instanceof Referable) {
+                    RepositoryElement ele = (RepositoryElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("fileSe"));
+                    if (null != ele) ele.remove();
                 }
+                response.setRenderParameter("status", "ok");
+                response.setMode(MODE_RESPONSE); 
                 break;
             }
             case ACTION_EDIT_TEXT: {
