@@ -449,7 +449,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     File index = new File(base + "/index.html");
                     FileOutputStream out = new FileOutputStream(index);
                     try {
-                        Document dom = docInstance.getXMLDocument(request, false);
+                        Document dom = docInstance.getXMLDocument(request, null, false);
                         if (dom != null) {
                             String tlpPath = SWBPlatform.getContextPath()+"/swbadmin/jsp/process/documentation/documentation.xsl";
                             javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
@@ -960,7 +960,8 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     SWBUtils.IO.copyStructure(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/images/", basePath + "/css/images/");
                     File index = new File(basePath + "/index.html");
                     FileOutputStream out = new FileOutputStream(index);
-                    Document dom = docInstance.getXMLDocument(request, true);//SWPUtils.getDocument(docInstance, request, true);
+
+                    Document dom = docInstance.getXMLDocument(request, basePath, true);//SWPUtils.getDocument(docInstance, request, true);
                     if (dom != null) {
                         String tlpPath = SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/documentation/documentation.xsl";
                         javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(tlpPath));
