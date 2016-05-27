@@ -238,10 +238,11 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
     /**
      * Obtiene un documento XML con la información de la instancia de la documentación.
      * @param request Obheto HTTPServletRequest para construir URLS
+     * @param basePath ruta base para la exportación de archivos.
      * @param export Indica si la información en el documento XML estará procesada para exportación estática.
      * @return Documento XML con la información de la instancia de la documentación.
      */
-    public Document getXMLDocument(HttpServletRequest request, boolean export) {
+    public Document getXMLDocument(HttpServletRequest request, String basePath, boolean export) {
         Document doc = SWBUtils.XML.getNewDocument();
         Process p = getProcessRef();
         Element root = doc.createElement("root");
@@ -331,13 +332,16 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                     urld.setParameter("verNum", vi.getVersionNumber() + "");
                                     String urlDownload = urld.toString();
                                     if (export) { // add file to zip
-                                        String basePath = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/";
-                                        File baseDir = new File(basePath);
-                                        String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/";
+                                        String basePathRepo = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/";
+                                        File baseDir = new File(basePathRepo);
+                                        String basePathDest = basePath;
+                                        
                                         File repFile = new File(basePathDest + "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/");
+                                        
                                         if (!repFile.exists()) {
                                             repFile.mkdirs();
                                         }
+
                                         if (baseDir.isDirectory()) {
                                             File[] files = baseDir.listFiles();
                                             for (File file : files) {
@@ -378,7 +382,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                         }
                                         if (export && !attr.contains("http")) {
                                             File file = new File(SWBPortal.getWorkPath() + "/" + src.attr("src").substring(5));
-                                            String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/";
+                                            String basePathDest = basePath;
                                             File repFile = new File(basePathDest + "rep_files/" + se.getId() + "/");
                                             if (!repFile.exists()) {
                                                 repFile.mkdirs();
@@ -416,7 +420,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                         }
                                         if (export && !attr.contains("http")) {
                                             File file = new File(SWBPortal.getWorkPath() + "/" + src.attr("src").substring(5));
-                                            String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/";
+                                            String basePathDest = basePath;
                                             File repFile = new File(basePathDest + "rep_files/" + se.getId() + "/");
                                             if (!repFile.exists()) {
                                                 repFile.mkdirs();
@@ -513,9 +517,9 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
 
                                                 String urlDownload = urld.toString();
                                                 if (export) { // add file to zip
-                                                    String basePath = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/";
-                                                    File baseDir = new File(basePath);
-                                                    String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/";
+                                                    String basePathRep = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/";
+                                                    File baseDir = new File(basePathRep);
+                                                    String basePathDest = basePath;
                                                     File repFile = new File(basePathDest + "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/");
                                                     if (!repFile.exists()) {
                                                         repFile.mkdirs();
