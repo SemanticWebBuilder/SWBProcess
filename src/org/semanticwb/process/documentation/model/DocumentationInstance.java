@@ -365,14 +365,11 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                         } else if (cls.equals(FreeText.sclass)) {//FreeText
                             //Validar el export
                             FreeText ft = (FreeText) se;
-                            String html = ft.getText().replace("&ldquo;", "&quot;");
-                            html = html.replace("&rdquo;", "&quot;");
-                            html = html.replace("&ndash;", "-");
-                            html = html.replace("&mdash;", "-");
-                            html = html.replace("&bull;", "<li>");
+                            String html = ft.getText();
                             org.jsoup.nodes.Document d = null;
                             if (html != null) {
                                 d = Jsoup.parse(html);
+                                //Fix relative path in src attrs
                                 Elements elements = d.select("[src]");
                                 for (org.jsoup.nodes.Element src : elements) {
                                     if (src.tagName().equals("img") || src.tagName().equals("iframe")) {
@@ -393,7 +390,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                     }
                                 }
                             }
-                            instance.appendChild(doc.createTextNode((d != null ? d.html() : "")));
+                            instance.appendChild(doc.createTextNode((d != null ? d.body().html() : "")));
                         } else if (cls.equals(Activity.sclass)) {//Activity
                             Activity a = (Activity) se;
                             Element property = doc.createElement("property");
@@ -431,7 +428,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                     }
                                 }
                             }
-                            propertyd.appendChild(doc.createTextNode(d != null ? d.html() : ""));
+                            propertyd.appendChild(doc.createTextNode(d != null ? d.body().html() : ""));
 
                             instance.setAttribute("fill", a.getFill());
                             instance.setAttribute("id", a.getActivityRef().getProcessActivity().getId());
