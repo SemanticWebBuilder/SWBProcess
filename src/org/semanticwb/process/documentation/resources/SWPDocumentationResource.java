@@ -791,7 +791,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doActualizaTab, " + path + ", " + ex.getMessage());
+            log.error("Error on doActualizaTab, " + path, ex);
         }
     }
 
@@ -803,7 +803,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doRelated, " + path + ", " + ex.getMessage());
+            log.error("Error on doRelated, " + path, ex);
         }
     }
 
@@ -815,7 +815,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doTrace, " + path + ", " + ex.getMessage());
+            log.error("Error on doTrace, " + path, ex);
         }
     }
     
@@ -827,7 +827,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doTrace, " + path + ", " + ex.getMessage());
+            log.error("Error on doRemove, " + path, ex);
         }
     }
 
@@ -839,7 +839,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doVersion, " + path + ", " + ex.getMessage());
+            log.error("Error on doVersion, " + path, ex);
         }
     }
     
@@ -851,7 +851,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doVersion, " + path + ", " + ex.getMessage());
+            log.error("Error on doVersion, " + path, ex);
         }
     }
     
@@ -863,7 +863,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doVersion, " + path + ", " + ex.getMessage());
+            log.error("Error on doVersion, " + path, ex);
         }
     }
 
@@ -875,7 +875,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doRelateActivity, " + path + ", " + ex.getMessage());
+            log.error("Error on doRelateActivity, " + path, ex);
         }
     }
 
@@ -887,7 +887,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
             request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.forward(request, response);
         } catch (ServletException ex) {
-            log.error("Error on doEditDescription(" + paramRequest.getMode() + "), " + path + ", " + ex.getMessage());
+            log.error("Error on doEditDescription, " + path, ex);
         }
     }
     
@@ -997,7 +997,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     response.flushBuffer();
                 }
             } catch (IOException | TransformerException ex) {
-                log.error("Error on doDownload, " + ex.getMessage());
+                log.error("Error on doDownload", ex);
             }
         }
     }
