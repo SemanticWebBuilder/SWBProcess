@@ -312,9 +312,9 @@ public class SWPDocumentationResource extends GenericAdmResource {
                 if(params.containsKey("optionRemove") && se instanceof Referable) {
                     RepositoryElement ele = (RepositoryElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("fileSe"));
                     if (null != ele) ele.remove();
+                    response.setRenderParameter("status", "ok");
+                    response.setMode(MODE_RESPONSE); 
                 }
-                response.setRenderParameter("status", "ok");
-                response.setMode(MODE_RESPONSE); 
                 break;
             }
             case ACTION_EDIT_TEXT: {
