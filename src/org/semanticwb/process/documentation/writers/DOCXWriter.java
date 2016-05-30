@@ -57,8 +57,12 @@ import org.docx4j.wml.Tc;
 import org.docx4j.wml.TcPr;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
+import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
+import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBComparator;
 import org.semanticwb.platform.SemanticClass;
@@ -71,6 +75,7 @@ import org.semanticwb.process.documentation.model.Instantiable;
 import org.semanticwb.process.documentation.model.Model;
 import org.semanticwb.process.documentation.model.Referable;
 import org.semanticwb.process.documentation.model.SectionElement;
+import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import org.semanticwb.process.model.ProcessSite;
 
 /**
@@ -82,7 +87,6 @@ public class DOCXWriter implements DocumentWriter {
     private static final ObjectFactory objectFactory = new ObjectFactory();
     private final DocumentationInstance di;
     private final org.semanticwb.process.model.Process p;
-    private final ProcessSite model;
     private final String assetsPath;
     private final Map config;
     private final HashMap<String, String> fieldValues;
@@ -121,7 +125,6 @@ public class DOCXWriter implements DocumentWriter {
     public DOCXWriter(DocumentationInstance di, String assetsPath, Map configParams, HashMap<String, String> fieldValues) {
         this.di = di;
         this.p = di.getProcessRef();
-        this.model = p.getProcessSite();
         this.assetsPath = assetsPath;
         this.config = configParams;
         if (null != fieldValues) {
@@ -308,6 +311,8 @@ public class DOCXWriter implements DocumentWriter {
                             if (null != sContent && !sContent.isEmpty()) {
                                 sContent = sContent.replace("<!DOCTYPE html>","<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
                                 sContent = sContent.replace("<html>","<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+                                
+                                if (sContent != null) sContent = replaceImageRelativePath(sContent);
                                 
                                 //Override styles and alignment
                                 List<Object> objects = importer.convert(sContent,null);
@@ -670,5 +675,27 @@ public class DOCXWriter implements DocumentWriter {
     @Override
     public void write(String path) throws FileNotFoundException {
         write(new FileOutputStream(path));
+    }
+    
+        /**
+     * Cambia las rutas relativas en el HTML de las imágenes, para .
+     * @param inputHTML HTML a procesar.
+     * @return HTML con rutas de imagen procesadas.
+     */
+    private String replaceImageRelativePath(String inputHTML) {
+        org.jsoup.nodes.Document d = null;
+        if (inputHTML != null) {
+            d = Jsoup.parse(inputHTML, "", Parser.xmlParser());
+            Elements elements = d.select("[src]");
+            for (org.jsoup.nodes.Element src : elements) {
+                if (src.tagName().equals("img") || src.tagName().equals("iframe")) {
+                    String attr = src.attr("src");
+                    if (attr.contains("../..")) {
+                        src.attr("src", src.attr("src").substring(5));
+                    }
+                }
+            }
+        }
+        return null != d ? d.html() : "";
     }
 }
