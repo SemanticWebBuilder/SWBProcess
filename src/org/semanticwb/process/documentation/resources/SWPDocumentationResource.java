@@ -22,8 +22,10 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -424,24 +426,14 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     }
                     
                     if (!versions.isEmpty()) lastVersion = versions.get(0);
-                    if (null != actual) {
-                        actual.setActualVersion(false);
-                        if (null == actual.getVersionValue()) {
-                            fixVersionNumbers(versions); //TO REMOVE CALL IN FUTURE VERSIONS
-                        }
-                    }
-                    
-                    //Create new documentation object
+                    //Crear objeto de documentación
                     Documentation doc = Documentation.ClassMgr.createDocumentation(model);
                     doc.setProcess(docInstance.getProcessRef());
                     doc.setVersionComment(vComment);
-                    doc.setActualVersion(true);
-                    
-                    if (null != lastVersion) lastVValue = lastVersion.getVersionValue();
-                    doc.setVersionValue(Documentation.getNextVersionValue(lastVValue));
-                    
+
+                    //Tratar de generar la salida
                     //Check for previous documentation
-                    String path = doc.getDocWorkPath();//SWBPortal.getWorkPath()+docInstance.getProcessRef().getWorkPath()+"/docs/"+doc.getId()+"/";
+                    String path = doc.getDocWorkPath(); //TODO: Eliminar workpath y archivos relacionados si falla procesamiento del XSL, procesar en memoria y después escribir
                     File base = new File(path);
                     if (!base.exists()) {
                         base.mkdirs();
@@ -469,7 +461,23 @@ public class SWPDocumentationResource extends GenericAdmResource {
                         response.setRenderParameter("wp", (String)params.get("wp"));
                         response.setRenderParameter("status", "ok");
                     } catch (IOException | TransformerException e) {
-                        log.error("Error on write file " + index.getAbsolutePath() + ", " + e.getMessage());
+                        log.error("Error on write file " + index.getAbsolutePath(), e);
+                        doc.remove();
+                        doc = null;
+                    }
+                    
+                    //Si todo salió bien, ajustar versiones
+                    if (null != doc) {
+                        doc.setActualVersion(true);
+                        if (null != lastVersion) lastVValue = lastVersion.getVersionValue();
+                        doc.setVersionValue(Documentation.getNextVersionValue(lastVValue));
+
+                        if (null != actual) {
+                            actual.setActualVersion(false);
+                            if (null == actual.getVersionValue()) {
+                                fixVersionNumbers(versions); //TO REMOVE CALL IN FUTURE VERSIONS
+                            }
+                        }
                     }
                 }
                 response.setMode(MODE_RESPONSE);
