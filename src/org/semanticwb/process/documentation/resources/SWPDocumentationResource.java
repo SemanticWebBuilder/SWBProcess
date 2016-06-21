@@ -22,10 +22,8 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -303,20 +301,22 @@ public class SWPDocumentationResource extends GenericAdmResource {
                 DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("uridsi"));
                 SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("urise"));
                 
-                dsi.removeDocuSectionElementInstance(se);
-                se.remove();  
+                if (null != dsi && null != se) {
+                    dsi.removeDocuSectionElementInstance(se);
+                    se.remove();  
+
+                    if(params.containsKey("optionRemove") && se instanceof Referable) {
+                        RepositoryElement ele = (RepositoryElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("fileSe"));
+                        if (null != ele) ele.remove();
+                    }
+                    response.setRenderParameter("status", "ok");
+                }
                 response.setRenderParameter("uridsi", (String)params.get("uridsi"));
                 response.setRenderParameter("urise", (String)params.get("urise"));
                 response.setRenderParameter("idp", request.getParameter("idp"));
                 response.setRenderParameter("wp", request.getParameter("wp"));
                 response.setRenderParameter("_rid", request.getParameter("_rid"));
-
-                if(params.containsKey("optionRemove") && se instanceof Referable) {
-                    RepositoryElement ele = (RepositoryElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject((String)params.get("fileSe"));
-                    if (null != ele) ele.remove();
-                    response.setRenderParameter("status", "ok");
-                    response.setMode(MODE_RESPONSE); 
-                }
+                response.setMode(MODE_RESPONSE); 
                 break;
             }
             case ACTION_EDIT_TEXT: {
