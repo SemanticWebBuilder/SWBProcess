@@ -368,6 +368,7 @@ html, body{
     @import "_modals.scss";
     @import "_breadcrumbs.scss";
     @import "_forms.scss";
+    @import "_tables.scss";
     /*---------------Button styling----------------*/
     @import "_buttons.scss";
 }
@@ -2049,8 +2050,4 @@ footer {
 .checkbox-inline input[type=checkbox] {
     width: auto;
     height: auto;
-}
-
-div.table-responsive-vertical.shadow-z-1.swbp-table-responsive {
-   overflow: auto; 
 }
