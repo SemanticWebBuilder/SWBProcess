@@ -92,7 +92,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
     public final static String ACTION_UPLOAD_PICTURE = "a_upp";
     public final static String MODE_EDIT_INSTANTIABLE = "m_ein";
     public final static String MODE_EDIT_DESCRIPTION = "m_edes";
-    public final static String MODE_ACTUALIZA_TAB = "m_act";
     public final static String MODE_RELATED = "m_rel";
     public final static String MODE_RELATED_ACTIVITY = "m_relact";
     public final static String MODE_TRACEABLE = "m_trac";
@@ -708,9 +707,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
         switch (mode) {
             case MODE_EDIT_INSTANTIABLE:
                 doEdit(request, response, paramRequest);
-                break;
-            case MODE_ACTUALIZA_TAB:
-                doActualizaTab(request, response, paramRequest);
                 break;
             case MODE_RELATED:
                 doRelated(request, response, paramRequest);
