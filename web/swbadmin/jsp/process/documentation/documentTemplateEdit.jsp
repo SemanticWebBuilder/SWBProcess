@@ -43,7 +43,7 @@ if (null != docTemplate) {
     TemplateContainer container = docTemplate.getTemplateContainer();
     SWBResourceURL viewVersion = paramRequest.getRenderUrl().setMode(SWPDocumentTemplateResource.MODE_VIEW_VERSION);
     %>
-    <script src="<%= SWBPlatform.getContextPath()%>/swbadmin/jsp/process/documentation/js/jquery.bootstrap-duallistbox.min.js"></script>
+    <script src="<%= SWBPlatform.getContextPath()%>/swbadmin/jsp/process/utils/jquery.bootstrap-duallistbox.min.js"></script>
     <div class="row no-margin swbp-button-ribbon text-right">
         <a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW) %>" class="btn btn-swbp-action" >Volver a la lista</a>
         <a href="<%= viewVersion.setParameter("uritc", container.getURI()) %>" class="btn btn-swbp-action">Versiones</a>
