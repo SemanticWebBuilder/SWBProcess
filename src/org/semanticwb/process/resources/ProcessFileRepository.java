@@ -728,43 +728,33 @@ public class ProcessFileRepository extends GenericResource {
      */
     public static String getFileIcon(String fileName) {
         if (fileName == null) return null;
-        String path = SWBPlatform.getContextPath()+"/swbadmin/jsp/process/repository/css/images/";
-        String ret = "";
+        //String path = SWBPlatform.getContextPath()+"/swbadmin/jsp/process/repository/css/images/";
+        String ret = "fa fa-file-o";
         String type = fileName.toLowerCase();
-        if (type.endsWith(".bmp")) {
-            ret = path+"bmp.png";
+        if (type.endsWith(".bmp") || type.endsWith(".jpg") || type.endsWith(".jpeg") || type.endsWith(".png") || type.endsWith(".svg") || type.endsWith(".gif")) {
+            ret = "fa fa-picture-o";
         } else if (type.endsWith(".pdf")) {
-            ret = path+"pdf.png";
-        } else if (type.endsWith(".png")) {
-            ret = path+"png.png";
+            ret = "fa fa-file-pdf-o";
         } else if (type.endsWith(".xls") || type.endsWith(".xlsx")) {
-            ret = path+"xlsx_win.png";
+            ret = "fa fa-file-excel-o";
         } else if (type.endsWith(".html") || type.endsWith(".htm")) {
-            ret = path+"css.png";
-        } else if (type.endsWith(".jpg") || type.endsWith(".jpeg")) {
-            ret = path+"jpeg.png";
+            ret = "fa fa-globe";
         } else if (type.endsWith(".ppt") || type.endsWith(".pptx")) {
-            ret = path+"pptx_win.png";
+            ret = "fa fa-file-powerpoint-o";
         } else if (type.endsWith(".exe")) {
-            ret = path+"ini.png";
+            ret = "fa fa-file";
         } else if (type.endsWith(".txt") || type.endsWith(".properties")) {
-            ret = path+"text.png";
+            ret = "fa fa-file-text-o";
         } else if (type.endsWith(".doc") || type.endsWith(".docx")) {
-            ret = path+"docx_win.png";
+            ret = "fa fa-file-word-o";
         } else if (type.endsWith(".xml") || type.endsWith(".xsl")) {
-            ret = SWBPlatform.getContextPath()+"/swbadmin/images/repositoryfile/ico_xml.gif";
+            ret = "fa fa-file-code-o";
         } else if (type.endsWith(".mmap")) {
-            ret = SWBPlatform.getContextPath()+"/swbadmin/images/repositoryfile/ico_mindmanager.GIF";
-        } else if (type.endsWith(".gif")) {
-            ret = path+"gif.png";
-        } else if (type.endsWith(".avi")) {
-            ret = path+"avi.png";
-        } else if (type.endsWith(".mp3")) {
-            ret = path+"mp3.png";
-        } else if (type.endsWith(".wav")) {
-            ret = "wav.png";
-        } else {
-            ret = path+"unknown.png";
+            ret = "fa fa-share-alt";
+        } else if (type.endsWith(".avi") || type.endsWith(".wmv")) {
+            ret = "fa fa-file-video-o";
+        } else if (type.endsWith(".mp3") || type.endsWith(".wav")) {
+            ret = "fa fa-file-audio-o";
         }
         return ret;
     }
