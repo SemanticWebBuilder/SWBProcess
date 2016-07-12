@@ -720,44 +720,6 @@ public class ProcessFileRepository extends GenericResource {
         }
         return file;
     }
-
-    /**
-     * Obtiene la ruta al archivo de ícono para un archivo con base en su extensión.
-     * @param fileName Nombre del archivo.
-     * @return Cadena con la ruta al icono del archivo.
-     */
-    public static String getFileIcon(String fileName) {
-        if (fileName == null) return null;
-        //String path = SWBPlatform.getContextPath()+"/swbadmin/jsp/process/repository/css/images/";
-        String ret = "fa fa-file-o";
-        String type = fileName.toLowerCase();
-        if (type.endsWith(".bmp") || type.endsWith(".jpg") || type.endsWith(".jpeg") || type.endsWith(".png") || type.endsWith(".svg") || type.endsWith(".gif")) {
-            ret = "fa fa-picture-o";
-        } else if (type.endsWith(".pdf")) {
-            ret = "fa fa-file-pdf-o";
-        } else if (type.endsWith(".xls") || type.endsWith(".xlsx")) {
-            ret = "fa fa-file-excel-o";
-        } else if (type.endsWith(".html") || type.endsWith(".htm")) {
-            ret = "fa fa-globe";
-        } else if (type.endsWith(".ppt") || type.endsWith(".pptx")) {
-            ret = "fa fa-file-powerpoint-o";
-        } else if (type.endsWith(".exe")) {
-            ret = "fa fa-file";
-        } else if (type.endsWith(".txt") || type.endsWith(".properties")) {
-            ret = "fa fa-file-text-o";
-        } else if (type.endsWith(".doc") || type.endsWith(".docx")) {
-            ret = "fa fa-file-word-o";
-        } else if (type.endsWith(".xml") || type.endsWith(".xsl")) {
-            ret = "fa fa-file-code-o";
-        } else if (type.endsWith(".mmap")) {
-            ret = "fa fa-share-alt";
-        } else if (type.endsWith(".avi") || type.endsWith(".wmv")) {
-            ret = "fa fa-file-video-o";
-        } else if (type.endsWith(".mp3") || type.endsWith(".wav")) {
-            ret = "fa fa-file-audio-o";
-        }
-        return ret;
-    }
     
     private String getFolderPath (RepositoryDirectory root) {
         String ret = root.getId();
