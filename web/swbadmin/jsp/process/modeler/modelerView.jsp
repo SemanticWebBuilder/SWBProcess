@@ -38,13 +38,13 @@
         <head>
             <script type="text/javascript" src="<%=SWBPortal.getContextPath()%>/swbadmin/js/dojo/dojo/dojo.js" data-dojo-config="async: true"></script>
             <script type="text/javascript" src="<%=SWBPortal.getContextPath()%>/swbadmin/js/jquery/jquery.js" ></script>
+            <link href="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/commons/css/modeler.css" rel="stylesheet" type="text/css">
         </head>
         <%
     }
 %>
 <script type="text/javascript" src="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/modeler/toolkit.js?v=<%= Math.floor(Math.random() * 100) %>" charset="utf-8"></script>
 <script type="text/javascript" src="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/modeler/modeler.js?v=<%= Math.floor(Math.random() * 100) %>" charset="utf-8"></script>
-<link href="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/modeler/images/modelerFrame.css" rel="stylesheet" type="text/css">
 
 <body style="margin: 0px;" onload="Modeler.init('modeler', {mode: '<%=  !isViewMode ? "edit" : "view" %>'}, loadProcess);">
     <%
