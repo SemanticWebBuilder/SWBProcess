@@ -51,7 +51,7 @@
 
     if (null != report) {
         %>
-        <script src="<%= SWBPlatform.getContextPath()%>/swbadmin/jsp/process/documentation/js/jquery.bootstrap-duallistbox.min.js"></script>
+        <script src="<%= SWBPlatform.getContextPath()%>/swbadmin/jsp/process/utils/jquery.bootstrap-duallistbox.min.js"></script>
         <div class="row no-margin swbp-button-ribbon text-right">
             <a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW) %>" class="btn btn-swbp-action">Regresar</a>
         </div>
