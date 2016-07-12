@@ -116,7 +116,7 @@
     top:-25px;
     
     a {
-        background: url(#{$imgPath}/cerrar1.png) no-repeat;
+        background: url(#{$imgPath}/modeler/cerrar1.png) no-repeat;
         display:block;
         text-decoration:none;
         font-size:0px;
@@ -244,7 +244,7 @@ ul.breadcrumbs {
             font-size:0.9em;
             zoom:1;
             margin:0;
-            background:url(#{$imgPath}/icon-arrow-right.png) no-repeat right center;
+            background:url(#{$imgPath}/modeler/icon-arrow-right.png) no-repeat right center;
         }
     }
     
@@ -303,55 +303,55 @@ ul.breadcrumbs.alt1 {
 }
 
 .startEventItem {
-    background: url(#{$imgPath}/start_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/start_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_2.png) top center no-repeat;
     }
 }
 
 .fileItem {
-    background: url(#{$imgPath}/file1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/file1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/file2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/file2.png) top center no-repeat;
     }
 }
 
 .intereventItem {
-    background: url(#{$imgPath}/inter_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_2.png) top center no-repeat;
     }
 }
 
 .endeventItem {
-    background: url(#{$imgPath}/end_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/end_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_2.png) top center no-repeat;
     }
 }
 
 .toolbarSeparator {
-    background: url(#{$imgPath}/barra_division.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/barra_division.png) top center no-repeat;
     position: relative;
     float: left;
     height:12px;
@@ -359,7 +359,7 @@ ul.breadcrumbs.alt1 {
 }
 
 .toolbarFooter {
-    background: url(#{$imgPath}/barra_bottom.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/barra_bottom.png) top center no-repeat;
     position: relative;
     float: left;
     height:8px;
@@ -367,1094 +367,1094 @@ ul.breadcrumbs.alt1 {
 }
 
 .taskItem {
-    background: url(#{$imgPath}/task_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/task_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_2.png) top center no-repeat;
     }
 }
 
 .taskcallItem {
-    background: url(#{$imgPath}/task_call_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_call_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/task_call_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_call_2.png) top center no-repeat;
     }
 }
 
 .subtaskItem {
-    background: url(#{$imgPath}/subtask_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/subtask_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/subtask_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/subtask_2.png) top center no-repeat;
     }
 }
 
 .gatewayItem {
-    background: url(#{$imgPath}/if_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/if_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/if_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/if_2.png) top center no-repeat;
     }
 }
 
 .artifactItem {
-    background: url(#{$imgPath}/anota_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/anota_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/anota_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/anota_2.png) top center no-repeat;
     }
 }
 
 .dataobjectItem {
-    background: url(#{$imgPath}/doc_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_2.png) top center no-repeat;
     }
 }
 
 .poolItem {
-    background: url(#{$imgPath}/pool_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/pool_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/pool_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/pool_2.png) top center no-repeat;
     }
 }
 
 .flowItem {
-    background: url(#{$imgPath}/flow_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/flow_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:49px;
     
     &:hover {
-        background: url(#{$imgPath}/flow_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/flow_2.png) top center no-repeat;
     }
 }
 
 .newProcess {
-    background: url(#{$imgPath}/file_nuevo1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/file_nuevo1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/file_nuevo2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/file_nuevo2.png) top center no-repeat;
     }
 }
 
 .saveProcess {
-    background: url(#{$imgPath}/file_saveas1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/file_saveas1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/file_saveas2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/file_saveas2.png) top center no-repeat;
     }
 }
 
 .openProcess {
-    background: url(#{$imgPath}/file_abrir1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/file_abrir1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/file_abrir2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/file_abrir2.png) top center no-repeat;
     }
 }
 
 .storeProcess {
-    background: url(#{$imgPath}/file_enviar1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/file_enviar1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/file_enviar2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/file_enviar2.png) top center no-repeat;
     }
 }
 
 .saveAsImage {
-    background: url(#{$imgPath}/file_saveasimage1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/file_saveasimage1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/file_saveasimage2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/file_saveasimage2.png) top center no-repeat;
     }
 }
 
 .saveAsSVG {
-    background: url(#{$imgPath}/file_saveassvg1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/file_saveassvg1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/file_saveassvg2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/file_saveassvg2.png) top center no-repeat;
     }
 }
 
 .normalStartEvent {
-    background: url(#{$imgPath}/start_normal1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_normal1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_normal2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_normal2.png) top center no-repeat;
     }
 }
 
 .signalStartEvent {
-    background: url(#{$imgPath}/start_senal1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_senal1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_senal2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_senal2.png) top center no-repeat;
     }
 }
 
 .timerStartEvent {
-    background: url(#{$imgPath}/start_tmp1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_tmp1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_tmp2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_tmp2.png) top center no-repeat;
     }
 }
 
 .compensaStartEvent {
-    background: url(#{$imgPath}/start_compensa1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_compensa1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_compensa2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_compensa2.png) top center no-repeat;
     }
 }
 
 .ruleStartEvent {
-    background: url(#{$imgPath}/start_cond1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_cond1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_cond2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_cond2.png) top center no-repeat;
     }
 }
 
 .errorStartEvent {
-    background: url(#{$imgPath}/start_error1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_error1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_error2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_error2.png) top center no-repeat;
     }
 }
 
 .scalaStartEvent {
-    background: url(#{$imgPath}/start_escala1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_escala1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_escala2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_escala2.png) top center no-repeat;
     }
 }
 
 .messageStartEvent {
-    background: url(#{$imgPath}/start_msj1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_msj1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_msj2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_msj2.png) top center no-repeat;
     }
 }
 
 .multiStartEvent {
-    background: url(#{$imgPath}/start_multi1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_multi1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_multi2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_multi2.png) top center no-repeat;
     }
 }
 
 .parallelStartEvent {
-    background: url(#{$imgPath}/start_paralelo1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/start_paralelo1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/start_paralelo2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/start_paralelo2.png) top center no-repeat;
     }
 }
 
 .normalInterEvent {
-    background: url(#{$imgPath}/inter_normal1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_normal1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_normal2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_normal2.png) top center no-repeat;
     }
 }
 
 .cancelInterEvent {
-    background: url(#{$imgPath}/inter_cancel_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_cancel_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_cancel_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_cancel_2.png) top center no-repeat;
     }
 }
 
 .compensaInterCatchEvent {
-    background: url(#{$imgPath}/inter_compensa_b_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_compensa_b_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_compensa_b_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_compensa_b_2.png) top center no-repeat;
     }
 }
 
 .compensaInterThrowEvent {
-    background: url(#{$imgPath}/inter_compensa_n_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_compensa_n_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_compensa_n_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_compensa_n_2.png) top center no-repeat;
     }
 }
 
 .ruleInterEvent {
-    background: url(#{$imgPath}/inter_cond1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_cond1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_cond2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_cond2.png) top center no-repeat;
     }
 }
 
 .linkInterCatchEvent {
-    background: url(#{$imgPath}/inter_enlace_b_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_enlace_b_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_enlace_b_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_enlace_b_2.png) top center no-repeat;
     }
 }
 
 .linkInterThrowEvent {
-    background: url(#{$imgPath}/inter_enlace_n_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_enlace_n_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_enlace_n_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_enlace_n_2.png) top center no-repeat;
     }
 }
 
 .errorInterEvent {
-    background: url(#{$imgPath}/inter_error1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_error1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_error2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_error2.png) top center no-repeat;
     }
 }
 
 .scalaInterCatchEvent {
-    background: url(#{$imgPath}/inter_escala_b_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_escala_b_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_escala_b_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_escala_b_2.png) top center no-repeat;
     }
 }
 
 .scalaInterThrowEvent {
-    background: url(#{$imgPath}/inter_escala_n_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_escala_n_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_escala_n_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_escala_n_2.png) top center no-repeat;
     }
 }
 
 .messageInterCatchEvent {
-    background: url(#{$imgPath}/inter_msj_b_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_msj_b_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_msj_b_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_msj_b_2.png) top center no-repeat;
     }
 }
 
 .messageInterThrowEvent {
-    background: url(#{$imgPath}/inter_msj_n_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_msj_n_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_msj_n_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_msj_n_2.png) top center no-repeat;
     }
 }
 
 .multipleInterCatchEvent {
-    background: url(#{$imgPath}/inter_multi_b_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_multi_b_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_multi_b_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_multi_b_2.png) top center no-repeat;
     }
 }
 
 .multipleInterThrowEvent {
-    background: url(#{$imgPath}/inter_multi_n_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_multi_n_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_multi_n_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_multi_n_2.png) top center no-repeat;
     }
 }
 
 .parallelInterEvent {
-    background: url(#{$imgPath}/inter_paralelo1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_paralelo1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_paralelo2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_paralelo2.png) top center no-repeat;
     }
 }
 
 .signalInterCatchEvent {
-    background: url(#{$imgPath}/inter_senal_b_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_senal_b_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_senal_b_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_senal_b_2.png) top center no-repeat;
     }
 }
 
 .signalInterThrowEvent {
-    background: url(#{$imgPath}/inter_senal_n_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_senal_n_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_senal_n_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_senal_n_2.png) top center no-repeat;
     }
 }
 
 .timerInterEvent {
-    background: url(#{$imgPath}/inter_tmp1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/inter_tmp1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/inter_tmp2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/inter_tmp2.png) top center no-repeat;
     }
 }
 
 .normalEndEvent {
-    background: url(#{$imgPath}/end_normal1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_normal1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_normal2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_normal2.png) top center no-repeat;
     }
 }
 
 .cancelEndEvent {
-    background: url(#{$imgPath}/end_cancel1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_cancel1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_cancel2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_cancel2.png) top center no-repeat;
     }
 }
 
 .compensaEndEvent {
-    background: url(#{$imgPath}/end_compensa1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_compensa1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_compensa2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_compensa2.png) top center no-repeat;
     }
 }
 
 .errorEndEvent {
-    background: url(#{$imgPath}/end_error1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_error1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_error2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_error2.png) top center no-repeat;
     }
 }
 
 .escalaEndEvent {
-    background: url(#{$imgPath}/end_escala1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_escala1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_escala2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_escala2.png) top center no-repeat;
     }
 }
 
 .messageEndEvent {
-    background: url(#{$imgPath}/end_msj1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_msj1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_msj2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_msj2.png) top center no-repeat;
     }
 }
 
 .multiEndEvent {
-    background: url(#{$imgPath}/end_multi1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_multi1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_multi2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_multi2.png) top center no-repeat;
     }
 }
 
 .signalEndEvent {
-    background: url(#{$imgPath}/end_senal1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_senal1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_senal2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_senal2.png) top center no-repeat;
     }
 }
 
 .terminalEndEvent {
-    background: url(#{$imgPath}/end_termina1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/end_termina1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/end_termina2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/end_termina2.png) top center no-repeat;
     }
 }
 
 .abstractTask {
-    background: url(#{$imgPath}/task_normal1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_normal1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_normal2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_normal2.png) top center no-repeat;
     }
 }
 
 .userTask {
-    background: url(#{$imgPath}/task_usr1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_usr1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_usr2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_usr2.png) top center no-repeat;
     }
 }
 
 .scriptTask {
-    background: url(#{$imgPath}/task_script1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_script1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_script2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_script2.png) top center no-repeat;
     }
 }
 
 .serviceTask {
-    background: url(#{$imgPath}/task_servicio1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_servicio1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_servicio2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_servicio2.png) top center no-repeat;
     }
 }
 
 .sendTask {
-    background: url(#{$imgPath}/task_envio1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_envio1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_envio2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_envio2.png) top center no-repeat;
     }
 }
 
 .receiveTask {
-    background: url(#{$imgPath}/task_recive1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_recive1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_recive2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_recive2.png) top center no-repeat;
     }
 }
 
 .ruleTask {
-    background: url(#{$imgPath}/task_rule1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_rule1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_rule2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_rule2.png) top center no-repeat;
     }
 }
 
 .manualTask {
-    background: url(#{$imgPath}/task_manual1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_manual1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_manual2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_manual2.png) top center no-repeat;
     }
 }
 
 .subProcess {
-    background: url(#{$imgPath}/subtask_colapsado1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/subtask_colapsado1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/subtask_colapsado2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/subtask_colapsado2.png) top center no-repeat;
     }
 }
 
 .adhocsubProcess {
-    background: url(#{$imgPath}/subtask_adhoc1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/subtask_adhoc1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/subtask_adhoc2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/subtask_adhoc2.png) top center no-repeat;
     }
 }
 
 .eventsubProcess {
-    background: url(#{$imgPath}/subtask_evento1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/subtask_evento1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/subtask_evento2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/subtask_evento2.png) top center no-repeat;
     }
 }
 
 .transactionsubProcess {
-    background: url(#{$imgPath}/subtask_transaccion1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/subtask_transaccion1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/subtask_transaccion2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/subtask_transaccion2.png) top center no-repeat;
     }
 }
 
 .callTask {
-    background: url(#{$imgPath}/task_llamada1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_llamada1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_llamada2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_llamada2.png) top center no-repeat;
     }
 }
 
 .callmanualTask {
-    background: url(#{$imgPath}/task_call_manual1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_call_manual1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_call_manual2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_call_manual2.png) top center no-repeat;
     }
 }
 
 .callruleTask {
-    background: url(#{$imgPath}/task_call_rule1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_call_rule1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_call_rule2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_call_rule2.png) top center no-repeat;
     }
 }
 
 .callscriptTask {
-    background: url(#{$imgPath}/task_call_script1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_call_script1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_call_script2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_call_script2.png) top center no-repeat;
     }
 }
 
 .calluserTask {
-    background: url(#{$imgPath}/task_call_usr1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/task_call_usr1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/task_call_usr2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/task_call_usr2.png) top center no-repeat;
     }
 }
 
 .callsubProcess {
-    background: url(#{$imgPath}/subtask_llamada1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/subtask_llamada1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/subtask_llamada2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/subtask_llamada2.png) top center no-repeat;
     }
 }
 
 .exclusiveDataGateway {
-    background: url(#{$imgPath}/gate_datos1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/gate_datos1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/gate_datos2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/gate_datos2.png) top center no-repeat;
     }
 }
 
 .inclusiveDataGateway {
-    background: url(#{$imgPath}/gate_inclusiva_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/gate_inclusiva_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/gate_inclusiva_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/gate_inclusiva_2.png) top center no-repeat;
     }
 }
 
 .exclusiveStartEventGateway {
-    background: url(#{$imgPath}/gate_eventos_str_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/gate_eventos_str_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/gate_eventos_str_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/gate_eventos_str_2.png) top center no-repeat;
     }
 }
 
 .parallelGateway {
-    background: url(#{$imgPath}/gate_paralela_n_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/gate_paralela_n_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/gate_paralela_n_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/gate_paralela_n_2.png) top center no-repeat;
     }
 }
 
 .exclusiveEventGateway {
-    background: url(#{$imgPath}/gate_eventos_int_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/gate_eventos_int_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/gate_eventos_int_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/gate_eventos_int_2.png) top center no-repeat;
     }
 }
 
 .parallelStartGateway {
-    background: url(#{$imgPath}/gate_paralela_b_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/gate_paralela_b_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/gate_paralela_b_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/gate_paralela_b_2.png) top center no-repeat;
     }
 }
 
 .complexGateway {
-    background: url(#{$imgPath}/gate_compleja_1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/gate_compleja_1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/gate_compleja_2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/gate_compleja_2.png) top center no-repeat;
     }
 }
 
 .sequenceFlow {
-    background: url(#{$imgPath}/flow_normal1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/flow_normal1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/flow_normal2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/flow_normal2.png) top center no-repeat;
     }
 }
 
 .conditionalFlow {
-    background: url(#{$imgPath}/flow_condicion1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/flow_condicion1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/flow_condicion2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/flow_condicion2.png) top center no-repeat;
     }
 }
 
 .defaultFlow {
-    background: url(#{$imgPath}/flow_defecto1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/flow_defecto1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/flow_defecto2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/flow_defecto2.png) top center no-repeat;
     }
 }
 
 .messageFlow {
-    background: url(#{$imgPath}/flow_msj1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/flow_msj1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/flow_msj2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/flow_msj2.png) top center no-repeat;
     }
 }
 
 .associationFlow {
-    background: url(#{$imgPath}/doc_dir_asocia1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_dir_asocia1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_dir_asocia2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_dir_asocia2.png) top center no-repeat;
     }
 }
 
 .directionalassociationFlow {
-    background: url(#{$imgPath}/doc_asocia1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_asocia1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_asocia2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_asocia2.png) top center no-repeat;
     }
 }
 
 .annotation {
-    background: url(#{$imgPath}/doc_anota1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_anota1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_anota2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_anota2.png) top center no-repeat;
     }
 }
 
 ._group {
-    background: url(#{$imgPath}/doc_grupo1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_grupo1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_grupo2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_grupo2.png) top center no-repeat;
     }
 }
 
 .dataObject {
-    background: url(#{$imgPath}/doc_normal1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_normal1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_normal2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_normal2.png) top center no-repeat;
     }
 }
 
 .dataInput {
-    background: url(#{$imgPath}/doc_entrada1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_entrada1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_entrada2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_entrada2.png) top center no-repeat;
     }
 }
 
 .dataOutput {
-    background: url(#{$imgPath}/doc_salida1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_salida1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_salida2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_salida2.png) top center no-repeat;
     }
 }
 
 .dataStore {
-    background: url(#{$imgPath}/doc_base1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/doc_base1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/doc_base2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/doc_base2.png) top center no-repeat;
     }
 }
 
 .pool {
-    background: url(#{$imgPath}/pool_pool1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/pool_pool1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/pool_pool2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/pool_pool2.png) top center no-repeat;
     }
 }
 
 .lane {
-    background: url(#{$imgPath}/pool_lane1.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/pool_lane1.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
     width:37px;
     
     &:hover {
-        background: url(#{$imgPath}/pool_lane2.png) top center no-repeat;
+        background: url(#{$imgPath}/modeler/pool_lane2.png) top center no-repeat;
     }
 }
 
 .toolbarHeader {
-    background: url(#{$imgPath}/barra_top.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/barra_top.png) top center no-repeat;
     float: left;
     height:8px;
     width:49px;
 }
 
 .subbarStart {
-    background: url(#{$imgPath}/submenu_inicio.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/submenu_inicio.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
@@ -1462,7 +1462,7 @@ ul.breadcrumbs.alt1 {
 }
 
 .subbarEnd {
-    background: url(#{$imgPath}/submenu_fin.png) top center no-repeat;
+    background: url(#{$imgPath}/modeler/submenu_fin.png) top center no-repeat;
     position: relative;
     float: left;
     height:43px;
