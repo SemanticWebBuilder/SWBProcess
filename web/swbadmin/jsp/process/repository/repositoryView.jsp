@@ -104,10 +104,12 @@
                 String type = "directory";
                 String lastUpdated = "--";
                 VersionInfo vi = null;
+                String itemClass = "fa fa-file-text";
 
                 if (go instanceof RepositoryElement) {
                     type = go instanceof RepositoryURL ? "url" : "file";
-                    
+                    itemClass = ((RepositoryElement) go).getIconClass();
+
                     vi = ((RepositoryElement) go).getLastVersion();
                     if (vi != null && vi.getUpdated() != null) {
                         lastUpdated = format.format(vi.getUpdated());
@@ -128,7 +130,6 @@
                 }
                 fileUrl = actUrl.toString();
 
-                String itemClass = "fa fa-file-text";
                 String colsActions = "";
                 if (type.equals("directory")) {
                     itemClass = "fa fa-folder-open";
@@ -154,7 +155,7 @@
                     }
                 }
                 if (type.equals("url")) {
-                    itemClass = "fa fa-link";
+
                     fileUrl = null != vi ? vi.getVersionFile() : "";
                 }
 
