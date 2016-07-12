@@ -14,7 +14,6 @@
                     <link href="css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"></link>
                     <link href="css/fontawesome/font-awesome.css" rel="stylesheet" type="text/css"></link>
                     <link href="css/swbp.css" rel="stylesheet" type="text/css"></link>
-                    <link href="css/modeler/modelerFrame.css" rel="stylesheet" type="text/css"></link>
                     <title>
                         <xsl:value-of select="root/@title"/>
                     </title>
@@ -247,17 +246,17 @@
                                 </xsl:for-each>
                                 </tr>
                             </thead>
-                            <xsl:for-each select="instance">
-                                <tbody>
-                                <tr>
-                                    <xsl:for-each select="property">
-                                        <td data-title="{@title}">
-                                            <xsl:value-of select="." disable-output-escaping="yes"/>
-                                        </td>
-                                    </xsl:for-each>
-                                </tr>
-                                </tbody>
-                            </xsl:for-each>
+                            <tbody>
+                                <xsl:for-each select="instance">
+                                    <tr>
+                                        <xsl:for-each select="property">
+                                            <td data-title="{@title}">
+                                                <xsl:value-of select="." disable-output-escaping="yes"/>
+                                            </td>
+                                        </xsl:for-each>
+                                    </tr>
+                                </xsl:for-each>
+                            </tbody>
                         </table>
                     </div>
                 </xsl:if>
