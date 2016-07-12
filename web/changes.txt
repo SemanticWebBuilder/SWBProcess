@@ -1,3 +1,80 @@
+    -(12/07/2016) - SWBProcess - Se descontinúa recurso de documentación en pestaña de la administración de procesos
+    -(12/07/2016) - Modeler - Se reorganizan imagenes de barra de herramientas para su porterior inclusión en sprites
+    -(12/07/2016) - SWBProcess - Eliminadas referencias a hoja de estilo de modelerFrame en componentes de SWBProcess
+    -(12/07/2016) - SWBProcess - Integrados estilos de modeler en archivos SASS fuente
+    -(11/07/2016) - FileRepository - Cambiado método para obtener icono de tipo de archivo
+    -(11/07/2016) - SWBProcess - Eliminados archivos innecesarios en ruta de JSPs
+    -(28/06/2016) - Documenter - Se agrega validación de presencia de instancias de secciones al generar el HTML en documentation.xsl
+    -(23/06/2016) - BUG: Documenter - Se actualiza inicialización de tinymce en captura de descripción de actividades para corregir issue SEMANTICWEBPROCESS-68
+    -(23/06/2016) - FileRepository - Refactor de código para mejor mantenimiento
+    -(23/06/2016) - FileRepository - Modificado código de validación de accesos de usuario
+    -(21/06/2016) - Documenter - Modificada eliminación de instancias de sección para evitar que el diálogo se cuelgue
+    -(21/06/2016) - Modeler - Agregadas clases css para evitar colisiones con otros estilos
+    -(20/06/2016) - BUG: Documenter - Se evita propagación de evento en envío de formulario (relacionar actividad) para solucionar issue SEMANTICWEBPROCESS-181
+    -(20/06/2016) - BUG: Monitor - Agregada validación en los grupos para solucionar issue SEMANTICWEBPROCESS-181
+    -(20/06/2016) - Documenter - Cambiado manejo de colores en tareas al desplegar la vista
+    -(09/06/2016) - SWBProcess - Refactor de markup HTML y estilos para menu principal, encabezado y contenido principal
+    -(31/05/2016) - Documenter - Se eliminan versiones de documentación creadas al fallar publicación para evitar ceración de versiones con errores
+    -(31/05/2016) - Documenter - Archivo documentation.xsl organizado en distintos templates para mejorar mantenimiento
+    -(30/05/2016) - BUG: Documenter - Corregido modo de retorno al eliminar un elemento tras llamar a processAction
+    -(30/05/2016) - Documenter - Se exporta sólo contenido de los FreeText para evitar inserción de múltiples tasg <HTML> y <body>
+    -(30/05/2016) - Documenter - Corregidas rutas relativas en exportación a MSWord
+    -(30/05/2016) - Documenter - Corregidos parámetros en URL para mantener la navegación
+    -(30/05/2016) - Documenter - Ajustes a estilos y markup para nueva imagen de producto
+    -(30/05/2016) - TaskInbox - Agregada configuración para mostrat/ocultar tareas creadas en automático
+    -(27/05/2016) - Documenter - Estandarizado comportamiento de botón de información de los elementos
+    -(27/05/2016) - Documenter - Agregados estilos para evitar overflow de contenido en editores de texto
+    -(25/05/2016) - BUG: TaskInbox - Corregido despliegue de grupos y procesos en los filtros de la bandeja
+    -(25/05/2016) - Documenter - Corregidos números de versión en lista de versiones publicadas
+    -(25/05/2016) - BUG: Documenter - Corregido issue de visualización de la lista de procesos cuando no hay procesos disponibles en la plantilla
+    -(25/05/2016) - Documenter - Agregado manejo de archivos con nombres que contienen caracteres especiales
+    -(23/05/2016) - Documenter - Se agrega soporte para incluir un documento de MSWord como plantilla de documentación exportada, usando mergeFields
+    -(11/05/2016) - Documenter - Agregada configuración adicional de exportación a MSWord
+    -(02/04/2016) - SWBProcess - Forzada carga de clase X509Certificate para corregir issue SEMANTICWEBPROCESS-169
+    -(28/04/2016) - Documenter - Agregada opción para eliminar archivo de repositorio al eliminar una referencia en la documentación
+    -(27/04/2016) - SWBProcess - Agregado codemirror como editor de scripts en tareas
+    -(22/04/2016) - BUG: TaskInbox - Modificada validación de filtrado de instancias para corregir issue SEMANTICWEBPROCESS-165
+    -(20/04/2016) - BUG: Engine - Modificado ItemAwareMappingElement para corregir issue SEMANTICWEBPROCESS-150
+    -(20/04/2016) - BUG: Documenter - Validación de tags <style> que provocaba error al publicar versión
+    -(19/04/2016) - Documenter - Agregadas validaciones para elementos con referencia a documentos del repositorio
+    -(15/04/2016) - BUG: ProcessForm - Corregido almacenamiento de valores en la base del recurso para corregir issue SEMANTICWEBPROCESS-164
+    -(14/04/2016) - SWBProcess - Se aisla la vista de la lista de instancias de procesos en el sitio de administración
+    -(06/04/2016) - Documenter - Se elimina buscador de archivos en diálogo de insertar enlace de tinymce
+    -(31/03/2016) - BUG: Documenter - Corregido issue con rutas relativas en la captura de documentación
+    -(29/03/2016) - Modeler - Agregado indice de ordenamiento al procesar lanes y pools
+    -(28/03/2016) - BUG: Documenter - Agregada validación de fuente SVG para evitar errores al publicar versión de documentación
+    -(23/03/2016) - Documenter - Agregada variable de configuración para mostrar herramientas de edición avanzadas
+    -(17/03/2016) - Modeler - Modificado tamaño de elementos "use" para evitar bug de firefox en getBBox
+    -(17/03/2016) - TaskInbox - Agregada verificación de procesos ejecutables mediante propiedad
+    -(17/03/2016) - Engine - Se agrega propiedad "ejecutable" en procesos conforme a especificación
+    -(16/03/2016) - SWBProcess - Se hace fijo el nombre de los recursos "ProcessForm" en actividades para evitar errores
+    -(14/03/2016) - Modeler - Agregadas verificaciones en procesamiento de archivos XPDL
+    -(11/03/2016) - SWBProcess - Modificada ontología para hacer activables los grupos de procesos
+    -(11/03/2016) - SWBProcess - Sobreescritos estilos de swb.css para agregar iconos de grupos de procesos
+    -(10/03/2016) - BUG: Modeler - Cambiado itdentificador de objetos de datos para evitar colisiones con otros scripts
+    -(10/03/2016) - Modeler - Agregado manejo de marcadores no válidos en XML para mejorar importación de procesos desde XPDL
+    -(10/03/2016) - Engine - Agregado método para serializar modelos de procesos en formato JSON
+    -(10/03/2016) - BUG: Modeler - Corregido issue en creación y presentación de elemento CallSubProcess
+    -(10/03/2016) - Documenter - Modificada selección de ruta a repositorio en elementos de referencia a archivo
+    -(09/03/2016) - BUG: ProcessForm - Cerrado comentario en HTML que evitaba que se mostraran los contenidos
+    -(08/03/2016) - Documenter - Adecuaciones a markup y funciones javascript de los componentes
+    -(08/03/2016) - SWBProcess - Sitio plantilla demo actualizado con la nueva imagen y componentes del producto
+    -(08/03/2016) - SWBProcess - Actualizada paginación a nueva imagen de producto
+    -(07/03/2016) - SWBProcess - Modularizados archivos fuente de estilos
+    -(07/03/2016) - Reports - Refactor completo del recurso
+    -(04/03/2016) - Reports - Actualizado componente a nueva imagen de producto
+    -(03/03/2016) - SWBProcess - Agregados archivos fuente para estilos generales, agregado procesamiento con SASS en configuración de proyecto
+    -(02/03/2016) - Documenter - Refactor completo del recurso de documentación
+    -(01/03/2016) - Documenter - Se agregan vistas para blog y foro con nueva imagen de producto
+    -(01/03/2016) - Monitor - Se usa c3 como motor de gráficas
+    -(01/03/2016) - TaskInbox - Actualizado componente a nueva imagen de producto
+    -(01/03/2016) - FileRepository - Agregada sanitización de nombres de archivo
+    -(01/03/2016) - FileRepository - Actualizado componente a nueva imagen de producto
+    -(01/03/2016) - Monitor - Actualizado componente a nueva imagen de producto
+    -(01/03/2016) - ProcessForm - Se aisla en JSP la vista de formulario
+    -(01/03/2016) - SWBProcess - Integrados assets de nueva imagen de SWBProcess a proyecto web swbp
+    -(01/03/2016) - SWBProcess - Modificada imagen de páginas de error en carpeta config
+    -(01/03/2016) - BUG: Modeler - Corregido bug al leer anotaciones desde XPDL
 4.5.11.2
     -(08/02/2016) - Documenter - Actualizada versión de tinymce
     -(08/02/2016) - Modeler - Agregado polyfill para corregir errores en líneas de conexión por depreciación de los métodos de SVGPathElement
@@ -5,7 +82,7 @@
     -(12/01/2016) - BUG: Repository - Agregada validación para evitar nombres vacíos en carpetas
     -(07/01/2016) - BUG: Modeler - Cambiados nombres de propiedades en css para evitar colisiones con otros estilos
     -(06/01/2016) - SWBProcess - Cambiada versión de compilación del JDK
-    -(28/12/2015) - Repository - Eliminada confguración para mostrar barra de navegación, la barra de muestra por defecto
+    -(28/12/2015) - Repository - Eliminada confguración para mostrar barra de navegación, la barra se muestra por defecto
     -(23/12/2015) - Modeler - Agregado iframe con scroll al desplegar modelo en modo vista
     -(30/11/2015) - SWBProcess - SWPDocumentation es ahora una dependencia 
     -(24/11/2015) - Documenter - Agregadas bibliotecas para exportación de documentación en formato docx
@@ -79,7 +156,7 @@
     - (24/09/2013) - Repositorio - Modificado para usar Twitter bootstrap.
     - (24/09/2013) - Modificadas páginas Web de error para usar Twitter bootstrap.
     - (18/09/2013) - Sitio Demo - Modificadas plantillas del sitio para usar Twitter bootstrap.
-    - (18/09/2013) - Reportes - Agregada internacionalización a ES/EN/PT.
+    - (18/09/2013) - Reports - Agregada internacionalización a ES/EN/PT.
     - (18/09/2013) - Repositorio - Completada internacionalización a ES/EN/PT.
     - (09/09/2013) - Monitor - Agregadas opciones de ordenamiento.
     - (09/09/2013) - Monitor - Agregada internacionalización a ES/EN/PT.
