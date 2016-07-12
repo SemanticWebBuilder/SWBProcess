@@ -953,8 +953,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     }
                     copyFile(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/modeler/toolkit.js", basePath + "/js/modeler/toolkit.js");
                     copyFile(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/modeler/modeler.js", basePath + "/js/modeler/modeler.js");
-                    copyFile(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/modeler/images/modelerFrame.css", basePath + "/css/modeler/modelerFrame.css");
-
                     copyFile(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/swbp.css", basePath + "/css/swbp.css");
                     //Add images
                     File images = new File(basePath + "css/images/");
