@@ -61,7 +61,7 @@
             errorMsg = paramRequest.getLocaleString("msgAssigned");
         }
     }
-    
+
     if (isAssigned || isClosed || noInstance) {
         %>
         <script>
@@ -184,7 +184,7 @@
                                                         }
                                                     %>
                                                 </div>
-                                                <div class="col-lg-7 col-md-7 col-sm-9 col-xs-12">
+                                                <div class="col-lg-7 col-md-7 col-sm-9 col-xs-12 form-control-static">
                                                     <%
                                                     if (null != sofe) {
                                                         FormElement frme = (FormElement) sofe.createGenericInstance();
@@ -205,34 +205,38 @@
                     <%
                     if (btnSave || btnAccept || btnReject || btnCancel) {
                         %>
-                        <div class="panel-footer swbp-mup">
-                            <!--haxdai14032014: Changed submit to onClick events and actions as hidden parameters as a workaround for dojo uploader-->
-                            <%
-                            if (btnSave) {
-                                %>
-                                <button dojoType="dijit.form.Button" type="submit" onclick="dojo.byId('<%= foi.getId()%>/form').submit();"><%=base.getAttribute("btnSaveLabel",paramRequest.getLocaleString("btnSaveTask"))%></button>
-                                <%
-                            }
-                            if (btnAccept) {
-                            %>
-                                <input type="hidden" name="accept" />
-                                <button dojoType="dijit.form.Button" type="submit" onclick="sendProcessForm<%=foi.getId()%>('accept');"><%=base.getAttribute("btnAcceptLabel",paramRequest.getLocaleString("btnCloseTask"))%></button>
-                            <%
-                            }
-                            if (btnReject) {
-                                %>
-                                <input type="hidden" name="reject" />
-                                <button dojoType="dijit.form.Button" type="submit" onclick="sendProcessForm<%=foi.getId()%>('reject');"><%=base.getAttribute("btnRejectLabel",paramRequest.getLocaleString("btnRejectTask"))%></button>
-                                <%
-                            }
-                            if (btnCancel) {
-                                %>
-                                <input type="hidden" name="cancel" />
-                                <button dojoType="dijit.form.Button" onclick="window.location='<%= foi.getUserTaskInboxUrl() + "?suri=" + foi.getURI() %>';"><%=base.getAttribute("btnCancelLabel",paramRequest.getLocaleString("btnBack"))%></button>
-                                <%
-                            }
-                            %>
-                            <!--haxdai14032014-->
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!--haxdai14032014: Changed submit to onClick events and actions as hidden parameters as a workaround for dojo uploader-->
+                                    <%
+                                    if (btnSave) {
+                                        %>
+                                        <button dojoType="dijit.form.Button" name="save" type="submit" onclick="sendProcessForm<%=foi.getId()%>('save');"><%=base.getAttribute("btnSaveLabel",paramRequest.getLocaleString("btnSaveTask"))%></button>
+                                        <%
+                                    }
+                                    if (btnAccept) {
+                                    %>
+                                        <input type="hidden" name="accept" />
+                                        <button dojoType="dijit.form.Button" type="submit" onclick="sendProcessForm<%=foi.getId()%>('accept');"><%=base.getAttribute("btnAcceptLabel",paramRequest.getLocaleString("btnCloseTask"))%></button>
+                                    <%
+                                    }
+                                    if (btnReject) {
+                                        %>
+                                        <input type="hidden" name="reject" />
+                                        <button dojoType="dijit.form.Button" type="submit" onclick="sendProcessForm<%=foi.getId()%>('reject');"><%=base.getAttribute("btnRejectLabel",paramRequest.getLocaleString("btnRejectTask"))%></button>
+                                        <%
+                                    }
+                                    if (btnCancel) {
+                                        %>
+                                        <input type="hidden" name="cancel" />
+                                        <button dojoType="dijit.form.Button" onclick="window.location='<%= foi.getUserTaskInboxUrl() + "?suri=" + foi.getURI() %>';"><%=base.getAttribute("btnCancelLabel",paramRequest.getLocaleString("btnBack"))%></button>
+                                        <%
+                                    }
+                                    %>
+                                    <!--haxdai14032014-->
+                                </div>
+                            </div>
                         </div>
                         <%
                     }
@@ -241,19 +245,48 @@
             </div>
             <script>
                 function validateForm<%= foi.getId() %>(form) {
-                    var frm = dijit.byId(form); 
+                    if (window.toastr) {
+                        toastr.options.closeButton = true;
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.info("Enviando datos, por favor espere...");
+                    }
+                    /*var objd = dijit.byId(form);
+                    if (!objd || objd.isValid()) {
+                        
+                        dojo.xhrPost({
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            url: objd.action,
+                            form: objd.id,
+                            load: function(data) {
+                                console.log("Se enviaron los datos");
+                            },
+                            error: function(error) {
+                                console.log("Ocurrió un error al enviar los datos");
+                            }
+                        });
+                    } else
+                    {
+                        alert('<%=paramRequest.getLocaleString("cancel")%>');
+                    }*/
+                    return false;
+                    
+                    
+                    
+                    
+                    /*var frm = dijit.byId(form); 
                     if (frm.isValid()) {
                         return true;
                     } else {
                         alert('<%=paramRequest.getLocaleString("cancel")%>'); return false;
-                    }
+                    }*/
                 }
             </script>
             <!--haxdai14032014: Added as workaround for dojo uploader-->
             <script>
                 function sendProcessForm<%= foi.getId() %>(_action) {
-                    var frm = dojo.byId('<%= foi.getId() %>/form');
-                    if (_action && _action !== '') {
+                    var frm = document.getElementById('<%= foi.getId() %>/form');
+                    //var frm = dojo.byId('<%= foi.getId() %>/form');
+                    if (frm && _action && _action !== '') {
                         frm[_action].value=_action;
                     }
                     frm.submit();
