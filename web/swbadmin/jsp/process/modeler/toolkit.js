@@ -1115,9 +1115,8 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
                 return false;
             };
 
-            _this.svg.onmousemove=function(evt)
-            {
-                var resizeObj = _this.svg.resizeObject,
+            _this.svg.mousemove = function(evt) {
+                var resizeObj = _this.svg.resizeObject || null,
                     dragObj = _this.svg.dragObject,
                     selectBox = _this.selectBox,
                     evtX = _this.getEventX(evt),
@@ -1239,7 +1238,20 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
                 _this.loaded = true;
             };
             
-            _this.svg.onmousedown=function(evt)
+            
+            _this.svg.addEventListener("mousemove", (evt) => {
+                _this.svg.mousemove(evt);
+            });
+            
+            _this.svg.addEventListener("mousedown", (evt) => {
+                _this.svg.mousedown(evt);
+            });
+            
+            _this.svg.addEventListener("mouseup", (evt) => {
+                _this.svg.mouseup(evt);
+            });
+            
+            _this.svg.mousedown=function(evt)
             {
                 if(!_this.onmousedown(evt))return;
                 _this.removeLineHandlers();
@@ -1265,7 +1277,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
                 evt.preventDefault();
             };                         
 
-            _this.svg.onmouseup=function(evt)
+            _this.svg.mouseup=function(evt)
             {
                 if(!_this.onmouseup(evt))return;
                 
@@ -2430,10 +2442,10 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
                 {
                     obj.onmousemove(evt);
                 };
-                iobj.ondblclick=function(evt)
+                /*iobj.ondblclick=function(evt)
                 {
                     obj.ondblclick(evt);
-                };                
+                };*/                
                 var icon={obj:iobj,posx:posx,posy:posy,offx:offx,offy:offy};
                 obj.icons.push(icon);
                 return icon;
