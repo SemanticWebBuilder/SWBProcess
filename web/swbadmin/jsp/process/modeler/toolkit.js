@@ -1434,7 +1434,6 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
                     };
                     
                     handler.move = function(x, y) {
-                        console.log("moving to: "+x+","+y);
                         var _x, _y;
                         try {
                             _x = parseFloat(""+x);
@@ -1952,6 +1951,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
             obj.canSelect=true;
             obj.hidden=false;
             obj.layer=_this.layer;
+            obj.clicks=0;
 
             if(id && id!==null)obj.setAttributeNS(null,"id",id);       
             
@@ -2529,6 +2529,21 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
                 }
             };
             
+            obj.addEventListener("click", (evt) => {
+                obj.clicks++;
+                setTimeout(() => {
+                    if (obj.clicks > 1) {
+                        let event = new Event('textEdit');
+                        obj.dispatchEvent(event);
+                    }
+                    obj.clicks = 0;
+                }, 300)
+            });
+            
+            obj.addEventListener("textEdit", (evt) => {
+                obj.text && obj.text.dblclick(evt);
+            });
+            
             obj.setParent(parent);
             if(_this.svg)
             {
@@ -2684,11 +2699,11 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
                 parent.onmousemove && parent.onmousemove(evt);
             };              
 
-            parent.ondblclick=function(evt) {
+            /*parent.ondblclick=function(evt) {
                 obj.ondblclick(evt);
-            };
-
-            obj.ondblclick=function(evt) {
+            };*/
+            
+            obj.dblclick=function(evt) {
                 var txt = prompt("Texto:",obj.value);                  
                 if(txt && txt!==null)
                 {

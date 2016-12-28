@@ -2793,7 +2793,7 @@ var _GraphicalElement = function(obj) {
             
             obj.ondblclick = function(evt) {
                 if (obj.elementType==="ConditionalFlow" || obj.elementType==="DefaultFlow") {
-                    var txt = prompt("Título:",obj.title);
+                    var txt = prompt("Texto:",obj.title);
                     if (txt !== null) {
                         if (txt.length) {
                             obj.title = txt;
