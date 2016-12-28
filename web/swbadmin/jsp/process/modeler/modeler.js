@@ -2322,7 +2322,7 @@ var _GraphicalElement = function(obj) {
             }*/
             
             //Sobreescritura de mousemove en SVG padre para manejar redimensionamiento de Lanes
-            ToolKit.svg.onmousemove=function(evt)
+            ToolKit.svg.mousemove=function(evt)
             {
                 var _this = ToolKit,
                     resizeObj = _this.svg.resizeObject || null,
@@ -2430,7 +2430,7 @@ var _GraphicalElement = function(obj) {
                     var i, nodes = _this.svg.childNodes, length = nodes.length;
                     for(i = 0; i < length; i++) {
                         var obj = nodes.item(i), ox, oy, bb, owidth, oheight;
-                        if(obj.contents && obj.canSelect && !obj.hidden) {    //Es un objeto grafico
+                        if(obj && obj.contents && obj.canSelect && !obj.hidden) {    //Es un objeto grafico
                             ox = obj.getX();
                             oy = obj.getY();
                             bb = _this.selectBox.getBBox();
@@ -3529,11 +3529,22 @@ var _GraphicalElement = function(obj) {
                 options = Modeler.options || {};
         
             obj.subLayer={parent:obj};
+            icon.clicks = 0;
             
             if (options.layerNavigation) {
-                icon.obj.ondblclick=function(evt) {
+                icon.obj.addEventListener("click", (evt) => {
+                    ToolKit.stopPropagation(evt);
+                    icon.clicks++;
+                    setTimeout(() => {
+                        if (icon.clicks > 1) {
+                            ToolKit.setLayer(obj.subLayer);
+                        }
+                        icon.clicks = 0;
+                    }, 300)
+                });
+                /*icon.obj.ondblclick=function(evt) {
                     ToolKit.setLayer(obj.subLayer);
-                };
+                };*/
             }
             
             switch(type) {
@@ -3983,7 +3994,7 @@ var _GraphicalElement = function(obj) {
                 } else if (obj !== null && cont === null) {
                     ToolKit.svg.dragObject = obj;
                     ToolKit.selectObj(obj, false);
-                    ToolKit.svg.onmouseup();
+                    ToolKit.svg.mouseup();
                 }
             }
             ToolKit.unSelectAll();
