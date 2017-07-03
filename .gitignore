@@ -25,4 +25,6 @@ buildNumber.properties
 .idea/
 *.iml
 
+#Eclipse IDS
+.project
 .DS_Store
