@@ -150,6 +150,7 @@
 </form>
 <script src="/swbadmin/jsp/process/modeler/toolkit.js"></script>
 <script src="/swbadmin/jsp/process/modeler/modeler.js"></script>
+<link href="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/modeler/images/modelerFrame.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
     var downloadVersion = function (format) {
         var size = getDiagramSize();
@@ -651,6 +652,8 @@
             relative_urls: true,
             remove_script_host: false,
             height: 500,
+            branding:false,
+            statusbar: false,
             plugins: [
                 " fullpage save advlist table contextmenu link image textcolor code paste"
             ],

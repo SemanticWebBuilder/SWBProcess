@@ -60,6 +60,8 @@
             language: '<%=paramRequest.getUser().getLanguage()%>',
             toolbar: "save | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | undo redo code | forecolor backcolor emoticons ",
             menubar: false,
+            statusbar:false,
+            branding:false,
             save_enablewhendirty: false,
             force_br_newlines: true,
             paste_data_images: true,
