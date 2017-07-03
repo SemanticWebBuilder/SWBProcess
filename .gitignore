@@ -25,3 +25,8 @@ target/
 hs_err_pid*
 
 .DS_Store
+
+#EclipseIDE
+.classpath
+.project
+.settings/
