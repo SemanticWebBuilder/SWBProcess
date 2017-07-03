@@ -5,12 +5,13 @@
         <admdbconnmgr defconn="true"/>
         <fieldset legend="General">
             <input type="TEXT" name="labelRelations" label="Etiqueta elementos relacionados(default Relacionados):"/>
-            <input type="CHECKBOX" name="allowEditText" label="Habilitar edición de texto avanzada" value="true"/>
+            <input type="CHECKBOX" name="allowEditText" label="Habilitar ediciÃ³n de texto avanzada" value="true"/>
         </fieldset>
-        <fieldset legend="Opciones de exportación a MSWord">
+        <fieldset legend="Opciones de exportaciÃ³n a MSWord">
             <input type="CHECKBOX" name="allowWord" label="Habilitar descarga en MSWord" value="true"/>
             <input type="CHECKBOX" name="includeFirstPage" label="Incluir portada" value="true"/>
-            <input type="CHECKBOX" name="includeHeaderFooter" label="Incluir encabezado y pié" value="true"/>
+            <input type="CHECKBOX" name="includeHeaderFooter" label="Incluir encabezado y piÃ©" value="true"/>
+            <input type="CHECKBOX" name="addPageBreaks" label="Salto de pÃ¡gina entre secciones" value="true"/>
             <input type="CHECKBOX" name="activityAsTable" label="Mostrar actividades como tabla" value="true"/>
             <input type="file" name="template" showfile="true" filetype="docx" isshowfiletype="true" isremovefile="true" removemsg="Eliminar plantilla" label="Plantilla base"/>
         </fieldset>
