@@ -1,6 +1,6 @@
 /************************* PROPIEDADES SASS *************************/
-$imgPath: "./images";
-$fontsPath: "./fonts";
+$imgPath: "../css/images";
+$fontsPath: "../css/fonts";
 $font-main-url: url('#{$fontsPath}/Roboto/Roboto-Regular'), url('#{$fontsPath}/Roboto/Roboto-Regular.woff2') format('woff2'), url('#{$fontsPath}/Roboto/Roboto-Regular.woff') format('woff'), url('#{$fontsPath}/Roboto/Roboto-Regular.ttf') format('truetype');
 $font-main-family: 'Roboto', sans-serif;
 

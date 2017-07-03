@@ -3,10 +3,10 @@
 @import "_table-responsive.scss";
 
 //Roboto font face
-@import url($font-main-url);
+//@import url($font-main-url);
 @font-face {
     font-family: $font-main-family;
-    //src: $font-main-url; //use local font url
+    src: $font-main-url; //use local font url
 }
 
 html, body{
@@ -402,21 +402,25 @@ html, body{
 }
 
 #swbp-fondo-400{
+    min-height: 100%;
     @include fullBackground($color-background-main-active, "400-img.png");
 }
 #swbp-fondo-403{
+    min-height: 100%;
     @include fullBackground($color-background-main-active, "403-img.png");
 }
 #swbp-fondo-404{
+    min-height: 100%;
     @include fullBackground($color-background-main-active, "404-img.png");
 }
 #swbp-fondo-500{
+    min-height: 100%;
     @include fullBackground($color-background-main-active, "500-img.png");
 }
 
 .swbp-logo-400 {
     text-align: center;
-    margin: 100px 0px;
+    margin: 50px 0px;
     
     img{
         width: 300px;
@@ -467,7 +471,9 @@ html, body{
 
 /* Escritorio pequeño o tablet - MD en Boostrap del 992 al 1199px *********************************************/
 @media (min-width:992px) and (max-width:1199px){
-    
+    .swbp-logo-400 {
+        margin: 30px 0;
+    }
     
     .swbp-align-icon{
         width: 14% !important;
@@ -490,6 +496,10 @@ html, body{
     
 /* Tablet o smartphone - SM en Bootstrap del 768 al 991px *****************************************************/
 @media (min-width:768px) and (max-width:991px){
+    .swbp-logo-400 {
+        margin: 30px 0px;
+    }
+    
     .swbp-menu-icon {
         font-size: 36px !important;
     }
@@ -503,7 +513,7 @@ html, body{
     .swbp-button-tool {
         width: 11.11% !important;
     }
-    
+        
     .swbp-table-responsive .table tbody tr {
         td[data-title]:before{
             color: $color-primary;
@@ -580,7 +590,7 @@ html, body{
         font-size: 12px !important;
     }
     .swbp-logo-400 {
-        margin: 30px 0px;
+        margin: 10px 0px;
     }
     .swbp-paqua {
         padding: 16px 0px !important;
@@ -787,17 +797,22 @@ input[type=checkbox].css-checkbox:checked + label.css-label{
     position: relative; 
     padding: 24px 0px;
     
-    H3 {
+    h3 {
+        color: $white-color;
         padding: 0px;
         margin: 0px;
     }   
-    p{
+    p {
         margin: 24px 0px 0px 0px;
     }     
 }
-#swbp-fondo-400 .swbp-paqua p{
-    margin: 0px;
+
+#swbp-fondo-400 {
+    &.swbp-paqua p{
+        margin: 0px;
+    }
 }
+
 .swbp-input-group {
     padding: 2px 0px;
     margin: 24px 0px 0px 0px;
@@ -831,7 +846,7 @@ input[type=checkbox].css-checkbox:checked + label.css-label{
 
 .swbp-espacio {
     padding-top: 36px;
-    padding-bottom: 72px;
+    margin-bottom:20px;
 }
 
 /************************* MENU PRINCIPAL *************************/
@@ -2035,7 +2050,23 @@ ul.swbp-btn-dropdown li a{
 
 //General hack for other styles
 footer {
-    margin-top:30px;
+    //margin-top:30px;
+    
+    &.swbp-footer {
+        width: 100%;
+        height: 36px;
+        position: absolute;
+        bottom:0;
+        text-align: center;
+        background-color: #1c2b36;
+        line-height: 36px;
+        
+        p {
+            color: #979797;
+            font-size: 10px;
+            margin: 0px;
+        }
+    }
 }
 
 .swbp-free-text {
