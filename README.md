@@ -29,3 +29,6 @@ Provides a global or particular view of process execution performance based on r
 
 ### SWBProcess Reports
 Provides a mechanism to define custom reports on process execution and performance data, allowing business analysts and stakeholders to gain business knowledge and help decision making.
+
+## Documentation
+Further documentation can be accesed on the [docs site](https://haxdai.github.io/SWBProcess-docs/)(spanish)
