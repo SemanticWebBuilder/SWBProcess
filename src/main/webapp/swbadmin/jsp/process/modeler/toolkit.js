@@ -168,13 +168,8 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
       // Source/core/svg/SVGParserUtilities.cpp.
       // Spec: http://www.w3.org/TR/SVG11/single-page.html#paths-PathDataBNF
       _parseNumber: function() {
-        var exponent = 0;
-        var integer = 0;
-        var frac = 1;
-        var decimal = 0;
-        var sign = 1;
-        var expsign = 1;
-        var startIndex = this._currentIndex;
+        var exponent = 0, integer = 0, frac = 1, decimal = 0,
+            sign = 1, expsign = 1, startIndex = this._currentIndex;
 
         this._skipOptionalSpaces();
 
@@ -210,8 +205,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         if (this._currentIndex !== startIntPartIndex) {
-          var scanIntPartIndex = this._currentIndex - 1;
-          var multiplier = 1;
+          var scanIntPartIndex = this._currentIndex - 1, multiplier = 1;
 
           while (scanIntPartIndex >= startIntPartIndex) {
             integer += multiplier * (this._string[scanIntPartIndex] - "0");
@@ -302,8 +296,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
           return null;
         }
 
-        var flag = false;
-        var flagChar = this._string[this._currentIndex];
+        var flag = false, flagChar = this._string[this._currentIndex];
 
         this._currentIndex += 1;
 
@@ -325,8 +318,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
     var parsePathDataString = function(string) {
       if (!string || string.length === 0) return [];
 
-      var source = new Source(string);
-      var pathData = [];
+      var source = new Source(string), pathData = [];
 
       if (source.initialCommandIsMoveTo()) {
         while (source.hasMoreData()) {
@@ -344,9 +336,9 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
       return pathData;
     }
 
-    var setAttribute = SVGPathElement.prototype.setAttribute;
-    var removeAttribute = SVGPathElement.prototype.removeAttribute;
-    var symbols;
+    var setAttribute = SVGPathElement.prototype.setAttribute,
+        removeAttribute = SVGPathElement.prototype.removeAttribute,
+        symbols;
 
     if (window.Symbol) {
       symbols = {cachedPathData: Symbol(), cachedNormalizedPathData: Symbol()};
@@ -368,9 +360,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         return {x: X, y: Y};
       };
 
-      var angleRad = degToRad(angle);
-      var params = [];
-      var f1, f2, cx, cy;
+      var angleRad = degToRad(angle), params = [], f1, f2, cx, cy;
 
       if (_recursive) {
         f1 = _recursive[0];
@@ -463,18 +453,18 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
 
       df = f2 - f1;
 
-      var c1 = Math.cos(f1);
-      var s1 = Math.sin(f1);
-      var c2 = Math.cos(f2);
-      var s2 = Math.sin(f2);
-      var t = Math.tan(df / 4);
-      var hx = 4 / 3 * r1 * t;
-      var hy = 4 / 3 * r2 * t;
+      var c1 = Math.cos(f1),
+          s1 = Math.sin(f1),
+          c2 = Math.cos(f2),
+          s2 = Math.sin(f2),
+          t = Math.tan(df / 4),
+          hx = 4 / 3 * r1 * t,
+          hy = 4 / 3 * r2 * t;
 
-      var m1 = [x1, y1];
-      var m2 = [x1 + hx * s1, y1 - hy * c1];
-      var m3 = [x2 + hx * s2, y2 - hy * c2];
-      var m4 = [x2, y2];
+      var m1 = [x1, y1],
+          m2 = [x1 + hx * s1, y1 - hy * c1],
+          m3 = [x2 + hx * s2, y2 - hy * c2],
+          m4 = [x2, y2];
 
       m2[0] = 2 * m1[0] - m2[0];
       m2[1] = 2 * m1[1] - m2[1];
@@ -485,8 +475,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
       else {
         params = [m2, m3, m4].concat(params).join().split(",");
 
-        var curves = [];
-        var curveParams = [];
+        var curves = [], curveParams = [];
 
         params.forEach( function(param, i) {
           if (i % 2) {
@@ -515,20 +504,14 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
     // @info
     //   Takes any path data, returns path data that consists only from absolute commands.
     var absolutizePathData = function(pathData) {
-      var absolutizedPathData = [];
-
-      var currentX = null;
-      var currentY = null;
-
-      var subpathX = null;
-      var subpathY = null;
+      var absolutizedPathData = [], currentX = null, currentY = null,
+          subpathX = null, subpathY = null;
 
       pathData.forEach( function(seg) {
         var type = seg.type;
 
         if (type === "M") {
-          var x = seg.values[0];
-          var y = seg.values[1];
+          var x = seg.values[0], y = seg.values[1];
 
           absolutizedPathData.push({type: "M", values: [x, y]});
 
@@ -540,8 +523,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "m") {
-          var x = currentX + seg.values[0];
-          var y = currentY + seg.values[1];
+          var x = currentX + seg.values[0], y = currentY + seg.values[1];
 
           absolutizedPathData.push({type: "M", values: [x, y]});
 
@@ -553,8 +535,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "L") {
-          var x = seg.values[0];
-          var y = seg.values[1];
+          var x = seg.values[0], y = seg.values[1];
 
           absolutizedPathData.push({type: "L", values: [x, y]});
 
@@ -563,8 +544,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "l") {
-          var x = currentX + seg.values[0];
-          var y = currentY + seg.values[1];
+          var x = currentX + seg.values[0], y = currentY + seg.values[1];
 
           absolutizedPathData.push({type: "L", values: [x, y]});
 
@@ -573,12 +553,9 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "C") {
-          var x1 = seg.values[0];
-          var y1 = seg.values[1];
-          var x2 = seg.values[2];
-          var y2 = seg.values[3];
-          var x = seg.values[4];
-          var y = seg.values[5];
+          var x1 = seg.values[0], y1 = seg.values[1],
+              x2 = seg.values[2], y2 = seg.values[3],
+              x = seg.values[4], y = seg.values[5];
 
           absolutizedPathData.push({type: "C", values: [x1, y1, x2, y2, x, y]});
 
@@ -587,12 +564,9 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "c") {
-          var x1 = currentX + seg.values[0];
-          var y1 = currentY + seg.values[1];
-          var x2 = currentX + seg.values[2];
-          var y2 = currentY + seg.values[3];
-          var x = currentX + seg.values[4];
-          var y = currentY + seg.values[5];
+          var x1 = currentX + seg.values[0], y1 = currentY + seg.values[1],
+              x2 = currentX + seg.values[2], y2 = currentY + seg.values[3],
+              x = currentX + seg.values[4], y = currentY + seg.values[5];
 
           absolutizedPathData.push({type: "C", values: [x1, y1, x2, y2, x, y]});
 
@@ -601,10 +575,8 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "Q") {
-          var x1 = seg.values[0];
-          var y1 = seg.values[1];
-          var x = seg.values[2];
-          var y = seg.values[3];
+          var x1 = seg.values[0], y1 = seg.values[1],
+              x = seg.values[2], y = seg.values[3];
 
           absolutizedPathData.push({type: "Q", values: [x1, y1, x, y]});
 
@@ -613,10 +585,8 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "q") {
-          var x1 = currentX + seg.values[0];
-          var y1 = currentY + seg.values[1];
-          var x = currentX + seg.values[2];
-          var y = currentY + seg.values[3];
+          var x1 = currentX + seg.values[0], y1 = currentY + seg.values[1],
+              x = currentX + seg.values[2], y = currentY + seg.values[3];
 
           absolutizedPathData.push({type: "Q", values: [x1, y1, x, y]});
 
@@ -625,8 +595,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "A") {
-          var x = seg.values[5];
-          var y = seg.values[6];
+          var x = seg.values[5], y = seg.values[6];
 
           absolutizedPathData.push({
             type: "A",
@@ -638,8 +607,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "a") {
-          var x = currentX + seg.values[5];
-          var y = currentY + seg.values[6];
+          var x = currentX + seg.values[5], y = currentY + seg.values[6];
 
           absolutizedPathData.push({
             type: "A",
@@ -675,10 +643,8 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "S") {
-          var x2 = seg.values[0];
-          var y2 = seg.values[1];
-          var x = seg.values[2];
-          var y = seg.values[3];
+          var x2 = seg.values[0], y2 = seg.values[1],
+              x = seg.values[2], y = seg.values[3];
 
           absolutizedPathData.push({type: "S", values: [x2, y2, x, y]});
 
@@ -687,10 +653,8 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "s") {
-          var x2 = currentX + seg.values[0];
-          var y2 = currentY + seg.values[1];
-          var x = currentX + seg.values[2];
-          var y = currentY + seg.values[3];
+          var x2 = currentX + seg.values[0], y2 = currentY + seg.values[1],
+              x = currentX + seg.values[2], y = currentY + seg.values[3];
 
           absolutizedPathData.push({type: "S", values: [x2, y2, x, y]});
 
@@ -699,8 +663,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "T") {
-          var x = seg.values[0];
-          var y = seg.values[1]
+          var x = seg.values[0], y = seg.values[1]
 
           absolutizedPathData.push({type: "T", values: [x, y]});
 
@@ -709,8 +672,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (type === "t") {
-          var x = currentX + seg.values[0];
-          var y = currentY + seg.values[1]
+          var x = currentX + seg.values[0], y = currentY + seg.values[1]
 
           absolutizedPathData.push({type: "T", values: [x, y]});
 
@@ -733,22 +695,12 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
     //   Takes path data that consists only from absolute commands, returns path data that consists only from
     //   "M", "L", "C" and "Z" commands.
     var reducePathData = function(pathData) {
-      var reducedPathData = [];
-      var lastType = null;
-
-      var lastControlX = null;
-      var lastControlY = null;
-
-      var currentX = null;
-      var currentY = null;
-
-      var subpathX = null;
-      var subpathY = null;
+      var reducedPathData = [], lastType = null, lastControlX = null, lastControlY = null,
+          currentX = null, currentY = null, subpathX = null, subpathY = null;
 
       pathData.forEach( function(seg) {
         if (seg.type === "M") {
-          var x = seg.values[0];
-          var y = seg.values[1];
+          var x = seg.values[0], y = seg.values[1];
 
           reducedPathData.push({type: "M", values: [x, y]});
 
@@ -760,12 +712,9 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (seg.type === "C") {
-          var x1 = seg.values[0];
-          var y1 = seg.values[1];
-          var x2 = seg.values[2];
-          var y2 = seg.values[3];
-          var x = seg.values[4];
-          var y = seg.values[5];
+          var x1 = seg.values[0], y1 = seg.values[1],
+              x2 = seg.values[2], y2 = seg.values[3],
+              x = seg.values[4], y = seg.values[5];
 
           reducedPathData.push({type: "C", values: [x1, y1, x2, y2, x, y]});
 
@@ -777,8 +726,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (seg.type === "L") {
-          var x = seg.values[0];
-          var y = seg.values[1];
+          var x = seg.values[0], y = seg.values[1];
 
           reducedPathData.push({type: "L", values: [x, y]});
 
@@ -803,10 +751,8 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (seg.type === "S") {
-          var x2 = seg.values[0];
-          var y2 = seg.values[1];
-          var x = seg.values[2];
-          var y = seg.values[3];
+          var x2 = seg.values[0], y2 = seg.values[1],
+              x = seg.values[2], y = seg.values[3];
 
           var cx1, cy1;
 
@@ -829,9 +775,7 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (seg.type === "T") {
-          var x = seg.values[0];
-          var y = seg.values[1];
-
+          var x = seg.values[0], y = seg.values[1];
           var x1, y1;
 
           if (lastType === "Q" || lastType === "T") {
@@ -843,10 +787,10 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
             y1 = currentY;
           }
 
-          var cx1 = currentX + 2 * (x1 - currentX) / 3;
-          var cy1 = currentY + 2 * (y1 - currentY) / 3;
-          var cx2 = x + 2 * (x1 - x) / 3;
-          var cy2 = y + 2 * (y1 - y) / 3;
+          var cx1 = currentX + 2 * (x1 - currentX) / 3,
+              cy1 = currentY + 2 * (y1 - currentY) / 3,
+              cx2 = x + 2 * (x1 - x) / 3,
+              cy2 = y + 2 * (y1 - y) / 3;
 
           reducedPathData.push({type: "C", values: [cx1, cy1, cx2, cy2, x, y]});
 
@@ -858,15 +802,14 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (seg.type === "Q") {
-          var x1 = seg.values[0];
-          var y1 = seg.values[1];
-          var x = seg.values[2];
-          var y = seg.values[3];
+          var x1 = seg.values[0], y1 = seg.values[1],
+              x = seg.values[2],
+              y = seg.values[3];
 
-          var cx1 = currentX + 2 * (x1 - currentX) / 3;
-          var cy1 = currentY + 2 * (y1 - currentY) / 3;
-          var cx2 = x + 2 * (x1 - x) / 3;
-          var cy2 = y + 2 * (y1 - y) / 3;
+          var cx1 = currentX + 2 * (x1 - currentX) / 3,
+              cy1 = currentY + 2 * (y1 - currentY) / 3,
+              cx2 = x + 2 * (x1 - x) / 3,
+              cy2 = y + 2 * (y1 - y) / 3;
 
           reducedPathData.push({type: "C", values: [cx1, cy1, cx2, cy2, x, y]});
 
@@ -878,13 +821,11 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
         }
 
         else if (seg.type === "A") {
-          var r1 = seg.values[0];
-          var r2 = seg.values[1];
-          var angle = seg.values[2];
-          var largeArcFlag = seg.values[3];
-          var sweepFlag = seg.values[4];
-          var x = seg.values[5];
-          var y = seg.values[6];
+          var r1 = seg.values[0], r2 = seg.values[1], angle = seg.values[2],
+              largeArcFlag = seg.values[3],
+              sweepFlag = seg.values[4],
+              x = seg.values[5],
+              y = seg.values[6];
 
           if (r1 === 0 || r2 === 0) {
             reducedPathData.push({type: "C", values: [currentX, currentY, x, y, x, y]});
@@ -1039,17 +980,17 @@ var ToolKit = {
   version: "0.2.1",
 
   setLayer:function(layer) {
-    let _this = ToolKit,
+    var _this = ToolKit,
         _contents = _this.contents || [];
 
     _this.layer = layer;
-    _contents.forEach((item) => {
+    _contents.forEach(function(item) {
       item.layer===layer ? item.show() : item.hide();
     });
   },
 
   removeLayer:function(layer) {
-    let _this=ToolKit,
+    var _this=ToolKit,
         _contents = _this.contents || [],
         i = _contents.length;
 
@@ -1085,26 +1026,26 @@ var ToolKit = {
   },
 
   getEventX:function(evt) {
-    let offLeft = ToolKit.svg.offsetLeft;
+    var offLeft = ToolKit.svg.offsetLeft;
     return offLeft ? evt.pageX - offLeft : evt.pageX - 60;
   },
 
   getEventY:function(evt) {
-    let offTop = ToolKit.svg.offsetTop;
+    var offTop = ToolKit.svg.offsetTop;
     return offTop ? evt.pageY - offTop : evt.pageY - 10;
   },
 
   init:function(svgid, options) {
-    let _this=this;
+    var _this=this;
     _this.svg=document.getElementById(svgid);
     _this.options = options || {};
 
-    _this.svg.addEventListener("contextmenu", (evt) => {
+    _this.svg.addEventListener("contextmenu", function(evt) {
       return false;
     });
 
     _this.svg.mousemove = function(evt) {
-      let resizeObj = _this.svg.resizeObject || null,
+      var resizeObj = _this.svg.resizeObject || null,
           dragObj = _this.svg.dragObject,
           selectBox = _this.selectBox,
           evtX = _this.getEventX(evt),
@@ -1119,7 +1060,7 @@ var ToolKit = {
       _this.svg.mouseY = evtY;
 
       if(resizeObj !== null) {
-        let p = resizeObj.parent,
+        var p = resizeObj.parent,
             sW = resizeObj.startW,
             sH = resizeObj.startH,
             ix = resizeObj.ix,
@@ -1143,7 +1084,7 @@ var ToolKit = {
         _this.updateResizeBox();
       } else if(dragObj!==null)  {//dragObjects
         _this.selected.unselect=false; //si hace drag no deselecciona
-        let x= evtX - dragOffX,
+        var x= evtX - dragOffX,
             y= evtY - dragOffY;
 
         //                    if(_this.snap2Grid)
@@ -1156,17 +1097,17 @@ var ToolKit = {
           dragObj.move(x,y);
           _this.updateResizeBox();
         } else { //drag selecteds
-          let tx = x - dragObj.getX(),
+          var tx = x - dragObj.getX(),
               ty = y - dragObj.getY(),
               _selected = _this.selected || [];
 
-          _selected.forEach((item) => {
+          _selected.forEach(function(item) {
             item.traslate(tx, ty);
           });
           _this.updateResizeBox();
         }
       } else if(selectBox!==null) {//SelectBox
-        let w = evtX - dragOffX,
+        var w = evtX - dragOffX,
             h = evtY - dragOffY,
             x = dragOffX,
             y = dragOffY;
@@ -1185,13 +1126,13 @@ var ToolKit = {
         selectBox.setAttributeNS(null,"y",y);
         selectBox.setAttributeNS(null,"height",h);
 
-        let nodes=_this.svg.childNodes;
+        var nodes=_this.svg.childNodes;
         for(i=0 ; i < nodes.length ; i++) {
-          let obj = nodes.item(i),
+          var obj = nodes.item(i),
               isObj = obj.contents && obj.canSelect===true && !obj.hidden;
 
           if(isObj) {//Es un objeto grafico
-            let ox = obj.getX(),
+            var ox = obj.getX(),
                 oy = obj.getY(),
                 bb = selectBox.getBBox();
 
@@ -1212,15 +1153,15 @@ var ToolKit = {
       _this.loaded = true;
     };
 
-    _this.svg.addEventListener("mousemove", (evt) => {
+    _this.svg.addEventListener("mousemove", function(evt) {
       _this.svg.mousemove(evt);
     });
 
-    _this.svg.addEventListener("mousedown", (evt) => {
+    _this.svg.addEventListener("mousedown", function(evt) {
       _this.svg.mousedown(evt);
     });
 
-    _this.svg.addEventListener("mouseup", (evt) => {
+    _this.svg.addEventListener("mouseup", function(evt) {
       _this.svg.mouseup(evt);
     });
 
@@ -1229,7 +1170,7 @@ var ToolKit = {
       _this.removeLineHandlers();
       //SelectBox
       if(_this.svg.dragObject===null) {
-        let evtX = _this.getEventX(evt),
+        var evtX = _this.getEventX(evt),
             evtY = _this.getEventY(evt);
 
         if(!_this.cmdkey)_this.unSelectAll();
@@ -1251,7 +1192,7 @@ var ToolKit = {
     _this.svg.mouseup=function(evt) {
       if(!_this.onmouseup(evt))return;
 
-      let dragObject = _this.svg.dragObject,
+      var dragObject = _this.svg.dragObject,
           ah = _this.svg.activeHandler || null;
 
       if (ah !== null) {
@@ -1261,12 +1202,12 @@ var ToolKit = {
 
       //Drop
       if(dragObject!==null) {
-        let droped=false,
+        var droped=false,
             selected = _this.selected || [],
             i, nodes = _this.svg.childNodes;
 
         for (i = nodes.length; i-- && i>=0;) {
-          let obj = nodes[i];
+          var obj = nodes[i];
           if(obj && obj.contents && obj===dragObject) {
             for (;i-- && i>=0;) {
               obj = nodes[i];
@@ -1282,7 +1223,7 @@ var ToolKit = {
         }
 
         if(!droped) {
-          selected.forEach((item) => {
+          selected.forEach(function(item) {
             if (selected.indexOf(item.parent) < 0) {
               item.setParent(null);
             }
@@ -1290,7 +1231,7 @@ var ToolKit = {
         }
 
         if(_this.snap2Grid) {
-          selected.forEach((item) => {
+          selected.forEach(function(item) {
             item.snap2Grid();
           });
           _this.updateResizeBox();
@@ -1343,21 +1284,21 @@ var ToolKit = {
   },
 
   updateResizeBox:function() {
-    let resizeBox = ToolKit.resizeBox || [];
-    resizeBox.forEach((item) => {
+    var resizeBox = ToolKit.resizeBox || [];
+    resizeBox.forEach(function(item) {
       item.update();
     });
   },
 
   createLineHandlers:function(obj) {
-    let _this = ToolKit,
+    var _this = ToolKit,
         segments = obj.getPathData(),
         i, items = segments.length;
 
     _this.removeLineHandlers();
     if (items >= 4 ) {
       for (i = 1; i < items - 1; i++) {
-        let segment = segments[i],//segments.getItem(i),
+        var segment = segments[i],//segments.getItem(i),
         handler = document.createElementNS(_this.svgNS, "use");
 
         handler.setAttributeNS(_this.xlink,"href","#lineHandler");
@@ -1375,7 +1316,7 @@ var ToolKit = {
         };
 
         handler.move = function(x, y) {
-          let _x, _y;
+          var _x, _y;
           try {
             _x = parseFloat(""+x);
             _y = parseFloat(""+y);
@@ -1391,7 +1332,7 @@ var ToolKit = {
         handler.updateSegment=function(x, y) {
           this.segment.values[0] = x;
           this.segment.values[1] = y;
-          let pData = obj.getPathData();
+          var pData = obj.getPathData();
           pData[this.segmentIndex].values[0] = this.segment.values[0] = x;
           pData[this.segmentIndex].values[1] = this.segment.values[1] = y;
           obj.setPathData(pData);
@@ -1399,7 +1340,7 @@ var ToolKit = {
 
         handler.snap2Grid=function() {
           if(_this.snap2Grid) {
-            let sx = this.segment.values[0], sy = this.segment.values[1];
+            var sx = this.segment.values[0], sy = this.segment.values[1];
             this.updateSegment(Math.round(sx/_this.snap2GridSize)*_this.snap2GridSize, Math.round(sy/_this.snap2GridSize)*_this.snap2GridSize);
             this.move(this.segment.values[0], this.segment.values[1]);
           }
@@ -1419,10 +1360,10 @@ var ToolKit = {
   },
 
   removeLineHandlers:function() {
-    let _this = ToolKit;
+    var _this = ToolKit;
     if (_this.lineHandlers && _this.lineHandlers.length) {
-      let handlers = _this.lineHandlers;
-      handlers.forEach((item) => {
+      var handlers = _this.lineHandlers;
+      handlers.forEach(function(item) {
         _this.svg.removeChild(item);
       });
       _this.lineHandlers = [];
@@ -1430,7 +1371,7 @@ var ToolKit = {
   },
 
   createResizeBox:function(obj, ix, iy, cursor) {
-    let _this = ToolKit,
+    var _this = ToolKit,
         b = document.createElementNS(_this.svgNS,"use");
 
     b.setAttributeNS(_this.xlink,"href","#resizeBox");
@@ -1449,8 +1390,8 @@ var ToolKit = {
         b.setAttributeNS(null,"y",b.parent.getY()+(b.parent.getHeight()/2)*b.iy);
       }
     };
-    b.addEventListener("mousedown", (evt) => {
-      let _this = ToolKit;
+    b.addEventListener("mousedown", function(evt) {
+      var _this = ToolKit;
       b.startW=b.parent.getWidth();
       b.startH=b.parent.getHeight();
       _this.svg.dragOffsetX=_this.svg.mouseX-obj.getAttributeNS(null,"x");
@@ -1468,7 +1409,7 @@ var ToolKit = {
   },
 
   createToolTip:function() {
-    let _this = ToolKit,
+    var _this = ToolKit,
         msgBox = document.createElement("div");
 
     msgBox.style.display="none";
@@ -1479,7 +1420,7 @@ var ToolKit = {
   },
 
   showTooltip:function(pos, tooltipText, width, tooltipType) {
-    let _this = ToolKit,
+    var _this = ToolKit,
         classNames;
 
     _this.tmHandler && clearTimeout(_this.tmHandler);
@@ -1488,14 +1429,14 @@ var ToolKit = {
     classNames = _this.tooltip.className.split(" ") || [];
 
     if (tooltipType === "Error") {
-      let index = classNames.indexOf("warningToolTip");
+      var index = classNames.indexOf("warningToolTip");
       (index > -1) && classNames.splice(index,1);
 
       if (classNames.indexOf("errorToolTip") === -1) {
         classNames.push("errorToolTip");
       }
     } else if (tooltipType === "Warning") {
-      let index = classNames.indexOf("errorToolTip");
+      var index = classNames.indexOf("errorToolTip");
       (index > -1) && classNames.splice(index,1);
 
       if (classNames.indexOf("warningToolTip") === -1) {
@@ -1515,9 +1456,9 @@ var ToolKit = {
   },
 
   showResizeBoxes:function() {
-    let _this=ToolKit;
+    var _this=ToolKit;
     if (_this.selected.length === 1) {
-      let obj = _this.selected[0].resizeable && _this.selected[0];
+      var obj = _this.selected[0].resizeable && _this.selected[0];
       if (obj) {
         _this.createResizeBox(obj,-1,-1,"nw-resize");
         _this.createResizeBox(obj,0,-1,"n-resize");
@@ -1532,20 +1473,20 @@ var ToolKit = {
   },
 
   hideResizeBoxes:function() {
-    let _this=ToolKit;
+    var _this=ToolKit;
     while((o=_this.resizeBox.pop())!=null) {
       _this.svg.removeChild(o);
     }
   },
 
   selectObj:function(obj,noShowResize) {
-    let _this=ToolKit;
+    var _this=ToolKit;
 
     _this.selected.push(obj);
     obj.selected=true;
     obj.setOverClass();
     if(!noShowResize) {
-      setTimeout(() => {
+      setTimeout(function() {
         obj.moveFirst();
         _this.showResizeBoxes();
       },10); //Se invoca en un timeout para evitar problema de chrome
@@ -1553,7 +1494,7 @@ var ToolKit = {
   },
 
   unSelectObj:function(obj) {
-    let _this=ToolKit, i=_this.selected.indexOf(obj);
+    var _this=ToolKit, i=_this.selected.indexOf(obj);
     _this.selected.splice(i, 1);
     obj.selected=false;
     obj.setBaseClass();
@@ -1563,7 +1504,7 @@ var ToolKit = {
   },
 
   unSelectAll:function() {
-    let _this=ToolKit;
+    var _this=ToolKit;
     while((o=_this.selected.pop())!=null) {
       o.setBaseClass();
       o.selected=false;
@@ -1573,10 +1514,10 @@ var ToolKit = {
 
   keydown:function(evt) {
     //desc(evt,true);
-    let _this=ToolKit;
+    var _this=ToolKit;
     if((evt.keyCode===8 && evt.which===8) || evt.keyCode===46 && evt.which===46) {//Remove
       try {
-        let i, selected = _this.selected;
+        var i, selected = _this.selected;
         for (i = selected.length; i--;) {
           selected[i].remove();
         }
@@ -1606,8 +1547,8 @@ var ToolKit = {
       _this.stopPropagation(evt);
     } else if(evt.keyCode===65 && evt.which===65) {
       if(_this.cmdkey) {
-        let contents = _this.contents;
-        contents.forEach((item) => {
+        var contents = _this.contents;
+        contents.forEach(function(item) {
           if(!item.hidden && item.canSelect) {
             _this.selectObj(item);
           }
@@ -1620,7 +1561,7 @@ var ToolKit = {
   },
 
   keyup:function(evt) {
-    let _this=ToolKit;
+    var _this=ToolKit;
     if((evt.keyCode===91 && evt.which===91) || (evt.keyCode===224 && evt.which===224)) {
       _this.cmdkey=false;
       _this.stopPropagation(evt);
@@ -1639,7 +1580,7 @@ var ToolKit = {
   },
 
   createConnectionPath:function(x1, y1, x2, y2, marker_start=null, marker_mid=null, marker_end=null, dash_array=null, styleClass=null) {
-    let _this = ToolKit,
+    var _this = ToolKit,
         obj = document.createElementNS(_this.svgNS,"path");
 
     obj.autoAdjust = false;
@@ -1666,7 +1607,7 @@ var ToolKit = {
     }
 
     obj.addPoint = function (x,y) {
-      let pData = obj.getPathData(), point = [], _type=pData.length?"L":"M";
+      var pData = obj.getPathData(), point = [], _type=pData.length?"L":"M";
       point.push(x);
       point.push(y);
 
@@ -1683,7 +1624,7 @@ var ToolKit = {
     };
 
     obj.setPoint = function(p,x,y) {
-      let pData = obj.getPathData(), point = [];
+      var pData = obj.getPathData(), point = [];
       point.push(x);
       point.push(y);
 
@@ -1697,10 +1638,10 @@ var ToolKit = {
     };
 
     obj.translate=function(x,y) {
-      let segments = obj.getPathData(), i, l = segments.length;
+      var segments = obj.getPathData(), i, l = segments.length;
 
       for(i = 1; i < segments.length - 1; i++) {//Ignore start and end points
-        let point = [];
+        var point = [];
         point.push(segments[i].values[0]+x);
         point.push(segments[i].values[1]+y);
         segments[i].values = point;
@@ -1710,7 +1651,7 @@ var ToolKit = {
 
     obj.remove=function() {
       //remove fromObject
-      let outConns = (obj.fromObject && obj.fromObject.outConnections) || [],
+      var outConns = (obj.fromObject && obj.fromObject.outConnections) || [],
           inConns = (obj.toObject && obj.toObject.inConnections) || [],
           ax = outConns.indexOf(obj);
 
@@ -1755,25 +1696,25 @@ var ToolKit = {
   },
 
   createResizeObject:function(id, parent) {
-    let _this=ToolKit;
-      return _this.createObject(() => {
-        let obj = document.createElementNS(_this.svgNS,"rect");
+    var _this=ToolKit;
+      return _this.createObject(function() {
+        var obj = document.createElementNS(_this.svgNS,"rect");
         obj.resizeable=true;
         return obj;
       }, id, parent);
   },
 
   createUseObject:function(type, id, parent) {
-    let _this=ToolKit,
-        ret = _this.createObject(() => {
-          let obj = document.createElementNS(_this.svgNS,"use"); //to create a circle, for rectangle use rectangle
+    var _this=ToolKit,
+        ret = _this.createObject(function() {
+          var obj = document.createElementNS(_this.svgNS,"use"); //to create a circle, for rectangle use rectangle
           obj.setAttributeNS(_this.xlink,"href",type);
           return obj;
         }, id, parent);
 
     //Trata de establecer los valores de acuerdo al BBOX
     if(ret.getWidth()===0 && ret.getHeight()===0) {
-      let bb = {x:0, y:0, width:0, height:0};
+      var bb = {x:0, y:0, width:0, height:0};
       try {
         bb = ret.getBBox && ret.getBBox();
         if (bb) {
@@ -1786,16 +1727,16 @@ var ToolKit = {
   },
 
   createUseBaseObject:function(type, id, parent) {
-    let _this=ToolKit;
-    return _this.createBaseObject(() => {
-      let obj = document.createElementNS(_this.svgNS,"use"); //to create a circle, for rectangle use rectangle
+    var _this=ToolKit;
+    return _this.createBaseObject(function() {
+      var obj = document.createElementNS(_this.svgNS,"use"); //to create a circle, for rectangle use rectangle
       obj.setAttributeNS(_this.xlink,"href",type);
       return obj;
     }, id, parent);
   },
 
   createBaseObject:function(constr, id, parent) {
-    let _this = ToolKit,
+    var _this = ToolKit,
         obj = constr();
 
     obj.elementType="BaseObject";
@@ -1819,17 +1760,17 @@ var ToolKit = {
     obj.setOverClass=function() { obj.setParamClass("oclass"); };
     obj.setBaseClass=function() { obj.setParamClass("bclass"); };
     obj.setParamClass=function(param) {
-      let l = obj.getAttributeNS(_this.xlink,"href") || null;
+      var l = obj.getAttributeNS(_this.xlink,"href") || null;
       if(l!==null) {
-        let o = document.getElementById(l.substring(1));
+        var o = document.getElementById(l.substring(1));
         if(o !== null) {
-          let s = o.getAttributeNS(null, param) || null;
+          var s = o.getAttributeNS(null, param) || null;
           if(s !== null) {
             obj.setAttributeNS(null, "class", s);
           }
         }
       } else {
-        let s = obj.getAttributeNS(null, param);
+        var s = obj.getAttributeNS(null, param);
         if(s !== null) {
           obj.setAttributeNS(null,"class",s);
         }
@@ -1870,7 +1811,7 @@ var ToolKit = {
     };
 
     obj.traslate=function(dx, dy) {
-      let ox=obj.getX(), oy=obj.getY();
+      var ox=obj.getX(), oy=obj.getY();
       obj.move(ox+dx, oy+dy);
     };
 
@@ -1880,14 +1821,14 @@ var ToolKit = {
       obj.setHeight(h);
 
       //Move Icons
-      let icons = obj.icons,
+      var icons = obj.icons,
           newX = obj.getX(),
           newY = obj.getY(),
           inConnections = obj.inConnections,
           outConnections = obj.outConnections;;
 
-      icons.forEach((icon) => {
-        let pw = w / 2 * icon.posx, ph = h / 2 * icon.posy;
+      icons.forEach(function(icon) {
+        var pw = w / 2 * icon.posx, ph = h / 2 * icon.posy;
         icon.obj.move(newX + pw + icon.offx, newY + ph + icon.offy);
       });
 
@@ -1895,18 +1836,18 @@ var ToolKit = {
       if(obj.text && obj.text!==null)obj.text.update();
 
       //Move InConnections
-      inConnections.forEach((con) => {
+      inConnections.forEach(function(con) {
           con.updatePoints();
       });
 
       //Move OutConnections
-      outConnections.forEach((con) => {
+      outConnections.forEach(function(con) {
           con.updatePoints();
       });
     };
 
     obj.move=function(x,y) {
-      let objW = obj.getWidth(),
+      var objW = obj.getWidth(),
           objH = obj.getHeight(),
           thisW = _this.getWidth(),
           thisH = _this.getHeight(),
@@ -1939,12 +1880,12 @@ var ToolKit = {
       obj.setY(y);
 
       //Move Childs
-      contents.forEach((item) => {
+      contents.forEach(function(item) {
         item.traslate(offx,offy);
       });
 
       //Move Icons
-      icons.forEach((icon) => {
+      icons.forEach(function (icon) {
         icon.obj.traslate(offx,offy);
       });
 
@@ -1954,20 +1895,20 @@ var ToolKit = {
         obj.text.PY=offy;
         obj.text.update();
 
-        let spans = obj.text.childNodes,
+        var spans = obj.text.childNodes,
             _text = obj.text;
 
-        spans.forEach((span) => {
+        spans.forEach(function(span) {
           span.setAttributeNS(null,"x",_text.getX());
         });
       }
 
-      let segments, segment, l = inConnections.length;
+      var segments, segment, l = inConnections.length;
       //Recalculate endPoint of inconnections
-      inConnections.forEach((con) => {
-        let segments = con.getPathData();
+      inConnections.forEach(function(con) {
+        var segments = con.getPathData();
         if (con.fixed && segments.length === 4) { //Modeler fixed connections have always 4 points
-          let point = [];
+          var point = [];
           point.push(segments[2].values[0]+offx);
           point.push(segments[2].values[1]+offy);
           segments[2].values = point;
@@ -1977,10 +1918,10 @@ var ToolKit = {
       });
 
       //Recalculate endPoint of outConnections and translate points acoordingly
-      outConnections.forEach((con) => {
-        let segments = con.getPathData();
+      outConnections.forEach(function(con) {
+        var segments = con.getPathData();
         if (con.fixed && segments.length===4) { //Modeler fixed connections have always 4 points
-          let point = [];
+          var point = [];
           point.push(segments[1].values[0]+offx);
           point.push(segments[1].values[1]+offy);
           segments[1].values = point;
@@ -1993,7 +1934,7 @@ var ToolKit = {
     obj.remove = function(all) {
       if(!all) {
         //En algunos casos, el parent es nulo, es decir, el canvas
-        let parent = obj.parent || null, ax;
+        var parent = obj.parent || null, ax;
         if (parent !== null) {
           while ((ax = parent.contents.indexOf(obj)) !== -1) {
             parent.contents.splice(ax, 1);
@@ -2005,7 +1946,7 @@ var ToolKit = {
         }
       }
 
-      let contents = obj.contents || [],
+      var contents = obj.contents || [],
           icons = obj.icons || [],
           inConnections = obj.inConnections || [],
           outConnections = obj.outConnections || [],
@@ -2049,17 +1990,17 @@ var ToolKit = {
       obj.style.display="none";
       obj.hidden=true;
 
-      let contents = obj.contents || [],
+      var contents = obj.contents || [],
           icons = obj.icons || [],
           inConnections = obj.inConnections || [],
           outConnections = obj.outConnections || [];
 
-      contents.forEach((item) => {
+      contents.forEach(function(item) {
         item.hide();
       });
 
       //Oculta Iconos
-      icons.forEach((icon) => {
+      icons.forEach(function(icon) {
         icon.obj.hide();
       });
 
@@ -2067,12 +2008,12 @@ var ToolKit = {
       if(obj.text && obj.text!==null)obj.text.hide();
 
       //Oculta InConnections
-      inConnections.forEach((con) => {
+      inConnections.forEach(function(con) {
         con.hide();
       });
 
       //Oculta OutConnections
-      outConnections.forEach((con) => {
+      outConnections.forEach(function(con) {
         con.hide();
       });
 
@@ -2086,17 +2027,17 @@ var ToolKit = {
       obj.style.display="";
       obj.hidden=false;
 
-      let contents = obj.contents || [],
+      var contents = obj.contents || [],
           icons = obj.icons || [],
           inConnections = obj.inConnections || [],
           outConnections = obj.outConnections || [];
 
-      contents.forEach((item) => {
+      contents.forEach(function(item) {
         item.show();
       });
 
       //Muestra Iconos
-      icons.forEach((icon) => {
+      icons.forEach(function(icon) {
         icon.obj.show();
       });
 
@@ -2104,12 +2045,12 @@ var ToolKit = {
       if(obj.text && obj.text!==null)obj.text.show();
 
       //Muestra InConnections
-      inConnections.forEach((con) => {
+      inConnections.forEach(function(con) {
         con.show();
       });
 
       //Muestra OutConnections
-      outConnections.forEach((con) => {
+      outConnections.forEach(function (con) {
         con.show();
       });
       return this;
@@ -2118,13 +2059,13 @@ var ToolKit = {
     //Mueve el elemento al primer plano
     obj.moveFirst = function() {
       _this.svg.appendChild(obj);
-      let icons = obj.icons || [],
+      var icons = obj.icons || [],
           contents = obj.contents || [],
           inConnections = obj.inConnections || [],
           outConnections = obj.outConnections || [];
 
       //mueve Iconos
-      icons.forEach((icon) => {
+      icons.forEach(function(icon) {
         icon.obj.moveFirst();
       });
 
@@ -2132,22 +2073,22 @@ var ToolKit = {
       if(obj.text && obj.text!==null)obj.text.moveFirst();
 
       //mueve contenidos
-      contents.forEach((con) => {
+      contents.forEach(function(con) {
         con.moveFirst();
       });
 
       //mueve conexiones
-      inConnections.forEach((con) => {
+      inConnections.forEach(function(con) {
         con.moveFirst();
       });
-      outConnections.forEach((con) => {
+      outConnections.forEach(function(con) {
         con.moveFirst();
       });
     };
 
     obj.setParent = function(newParent) {
       if(obj.parent) {
-        let ax;
+        var ax;
         while ((ax = obj.parent.contents.indexOf(obj)) !== -1) {
           obj.parent.contents.splice(ax, 1);
         }
@@ -2167,7 +2108,7 @@ var ToolKit = {
     };
 
     obj.isChild = function(parent) {
-      let p = obj.parent;
+      var p = obj.parent;
       if(p !== null) {
         if(p === parent) return true;
         if(p.isChild) {
@@ -2180,23 +2121,23 @@ var ToolKit = {
 
     //pos validas del 1 al 9, 1=esquina superior izquierda, 5=centro, 9=esquina inferior derecha
     obj.addIcon=function(type,posx,posy,offx,offy) {
-      let iobj=_this.createUseBaseObject(type,null,null);
+      var iobj=_this.createUseBaseObject(type,null,null);
       iobj.canSelect=false;
 
-      iobj.addEventListener("mousedown", (evt) => {
+      iobj.addEventListener("mousedown", function(evt) {
         obj.onmousedown(evt);
       });
       /*iobj.onmousedown=function(evt) {
         obj.onmousedown(evt);
       };*/
-      iobj.addEventListener("mouseup", (evt) => {
+      iobj.addEventListener("mouseup", function(evt) {
         obj.onmouseup(evt);
       });
       /*iobj.onmouseup=function(evt)
       {
         obj.onmouseup(evt);
       };*/
-      iobj.addEventListener("mousemove", (evt) => {
+      iobj.addEventListener("mousemove", function(evt) {
         obj.onmousemove(evt);
       });
       /*iobj.onmousemove=function(evt)
@@ -2207,7 +2148,7 @@ var ToolKit = {
 {
 obj.ondblclick(evt);
 };*/
-      let icon={obj:iobj,posx,posy,offx,offy};
+      var icon={obj:iobj,posx,posy,offx,offy};
       obj.icons.push(icon);
       return icon;
     };
@@ -2224,7 +2165,7 @@ obj.ondblclick(evt);
       };
 
     obj.onDropObjects=function(objs) {
-      objs.forEach((o) => {
+      objs.forEach(function(o) {
         if(objs.indexOf(o.parent) < 0 && o.canAttach(obj)) {
           o.setParent(obj);
         }
@@ -2236,7 +2177,7 @@ obj.ondblclick(evt);
     };
 
     obj.addInConnection=function(connectionPath) {
-      let conns = obj.inConnections;
+      var conns = obj.inConnections;
       if (conns.indexOf(connectionPath) === -1) {
         connectionPath.layer = obj.layer;
         conns.push(connectionPath);
@@ -2246,7 +2187,7 @@ obj.ondblclick(evt);
     };
 
     obj.removeInConnection=function(connectionPath) {
-      let conns = obj.inConnections,
+      var conns = obj.inConnections,
           idx = conns.indexOf(connectionPath);
 
       if (idx > -1) {
@@ -2256,7 +2197,7 @@ obj.ondblclick(evt);
     };
 
     obj.addOutConnection=function(connectionPath) {
-      let conns = obj.outConnections;
+      var conns = obj.outConnections;
       if (conns.indexOf(connectionPath) === -1) {
         connectionPath.layer = obj.layer;
         conns.push(connectionPath);
@@ -2266,7 +2207,7 @@ obj.ondblclick(evt);
     };
 
     obj.removeOutConnection=function(connectionPath) {
-      let conns = obj.outConnections,
+      var conns = obj.outConnections,
           idx = conns.indexOf(connectionPath);
 
       if (idx !== -1) {
@@ -2281,18 +2222,18 @@ obj.ondblclick(evt);
       }
     };
 
-    obj.addEventListener("click", (evt) => {
+    obj.addEventListener("click", function (evt) {
       obj.clicks++;
-      setTimeout(() => {
+      setTimeout(function() {
         if (obj.clicks > 1) {
-          let event = new Event('textEdit');
+          var event = new Event('textEdit');
           obj.dispatchEvent(event);
         }
         obj.clicks = 0;
       }, 300)
     });
 
-    obj.addEventListener("textEdit", (evt) => {
+    obj.addEventListener("textEdit", function (evt) {
       obj.text && obj.text.dblclick(evt);
     });
 
@@ -2304,7 +2245,7 @@ obj.ondblclick(evt);
   },
 
   createObject:function(constr, id, parent) {
-    let _this=ToolKit,
+    var _this=ToolKit,
         obj=_this.createBaseObject(constr, id, parent);
 
     //TODO: Cambiar a eventListener
@@ -2320,11 +2261,11 @@ obj.ondblclick(evt);
     };
 
     obj.select=function(down) {
-      let _this=ToolKit,
+      var _this=ToolKit,
           selected = _this.selected;
 
       if(down) {
-        let i = selected.indexOf(obj);
+        var i = selected.indexOf(obj);
         if(i < 0) {
           if(!_this.cmdkey) {//deselect all
             _this.unSelectAll();
@@ -2373,9 +2314,9 @@ obj.ondblclick(evt);
   },
 
   createText:function(text,parent) {
-    let _this = ToolKit,
-        obj = _this.createBaseObject(() => {
-          let tx = document.createElementNS(_this.svgNS,"text"); //to create a circle, for rectangle use rectangle
+    var _this = ToolKit,
+        obj = _this.createBaseObject(function() {
+          var tx = document.createElementNS(_this.svgNS,"text"); //to create a circle, for rectangle use rectangle
           tx.setAttributeNS(null,"text-anchor","middle");
           tx.setAttributeNS(null,"font-size","11");
           tx.setAttributeNS(null,"font-family","Verdana, Geneva, sans-serif");
@@ -2402,7 +2343,7 @@ obj.ondblclick(evt);
     };
 
     obj.dblclick=function(evt) {
-      let txt = prompt("Texto:",obj.value);
+      var txt = prompt("Texto:",obj.value);
       if(txt && txt!==null) {
         obj.value=txt;
         obj.update();
@@ -2410,7 +2351,7 @@ obj.ondblclick(evt);
     };
 
     obj.update=function() {
-      let text_element = obj,
+      var text_element = obj,
           dy=10,
           words = text_element.value.split(' '),
           start_x = text_element.getX(),
