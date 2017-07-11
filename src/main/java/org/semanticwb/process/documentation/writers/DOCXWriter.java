@@ -97,7 +97,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Creates a new DOCXWriter for the specified DocumentationInstance object.
-	 * 
+	 *
 	 * @param di
 	 *            DocumentationInstance object
 	 * @param assetsPath
@@ -114,7 +114,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Creates a new DOCXWriter for the specified DocumentationInstance object.
-	 * 
+	 *
 	 * @param di
 	 *            DocumentationInstance object
 	 * @param assetsPath
@@ -128,7 +128,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Creates a new DOCXWriter for the specified DocumentationInstance object.
-	 * 
+	 *
 	 * @param di
 	 *            DocumentationInstance object
 	 * @param assetsPath
@@ -163,7 +163,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Creates a new document from a template and replaces MergeFields.
-	 * 
+	 *
 	 * @param templatePath
 	 *            path to document template
 	 * @param includeHeaderFooterindica
@@ -183,9 +183,12 @@ public class DOCXWriter implements DocumentWriter {
 			List<Map<DataFieldName, String>> data = new ArrayList<Map<DataFieldName, String>>();
 
 			Map<DataFieldName, String> map = new HashMap<DataFieldName, String>();
+			String ownerName = "";
+			if (null != p.getCreator() && null != p.getCreator().getFullName()) ownerName = p.getCreator().getFullName();
+
 			map.put(new DataFieldName("processName"), p.getTitle());
 			map.put(new DataFieldName("processGroup"), p.getProcessGroup().getTitle());
-			map.put(new DataFieldName("processOwner"), p.getCreator().getFullName());
+			map.put(new DataFieldName("processOwner"), ownerName);
 			map.put(new DataFieldName("currentDate"), (sdf.format(new Date())));
 			data.add(map);
 
@@ -473,7 +476,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Removes run fonts from an element
-	 * 
+	 *
 	 * @param ca
 	 *            Starting element
 	 */
@@ -492,7 +495,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Sets style of paragraph
-	 * 
+	 *
 	 * @param paragraph
 	 *            Paragraph to style
 	 * @param styleName
@@ -527,7 +530,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Sets paragraph alignment
-	 * 
+	 *
 	 * @param paragraph
 	 *            P to set alignment to
 	 * @param alignment
@@ -546,7 +549,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Sets font style (bold/italic) for a paragraph run
-	 * 
+	 *
 	 * @param runElement
 	 *            Run
 	 * @param italic
@@ -568,7 +571,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Fills table cell with given hex color
-	 * 
+	 *
 	 * @param cell
 	 * @param hexColor
 	 */
@@ -585,7 +588,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Adds page break to document
-	 * 
+	 *
 	 * @param content
 	 *            Document's main part
 	 * @throws Docx4JException
@@ -601,7 +604,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Creates document footer including page number
-	 * 
+	 *
 	 * @param doc
 	 *            WordprocessingMLPackage for the document.
 	 * @throws InvalidFormatException
@@ -672,7 +675,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Creates document header including process name
-	 * 
+	 *
 	 * @param doc
 	 *            WordprocessingMLPackage for the document.
 	 * @throws InvalidFormatException
@@ -714,7 +717,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Updates style mapping table
-	 * 
+	 *
 	 * @param mappings
 	 */
 	public void setStyleNameMappings(HashMap<String, String> mappings) {
@@ -728,7 +731,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Searches for spanish style names in style definition and map them in style table.
-	 * 
+	 *
 	 * @param doc
 	 *            MainDocumentPart
 	 * @param styleTable
@@ -756,7 +759,7 @@ public class DOCXWriter implements DocumentWriter {
 
 	/**
 	 * Changes image relative paths in section contents.
-	 * 
+	 *
 	 * @param inputHTML
 	 *            HTML content from section.
 	 * @return Processed HTML with replaced relative image paths
