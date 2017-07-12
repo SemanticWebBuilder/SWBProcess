@@ -1,4 +1,4 @@
-[![Build Status](https://hasdaipacheco.com/buildStatus/icon?job=swbprocess)](https://hasdaipacheco.com/job/swbprocess/)
+[![Build Status](https://jenkins.hasdaipacheco.com/buildStatus/icon?job=swbprocess)](https://hasdaipacheco.com/job/swbprocess/)
 
 ## SWBProcess
 SWB Process is the Business Process Management System (BPMS) part of the SemanticWebBuilder (SWB) products suite. The main focus of SWB Process is to provide an agile platform for business process automation, business process monitoring and tracking through the application of the Semantic Web technologies and standards. In this sense, SWB Process allows to model, configure, execute and track business process cases as defined in the Business Process Management (BPM) approach, while keeping all execution data in an standard and interoperable format such as RDF.
