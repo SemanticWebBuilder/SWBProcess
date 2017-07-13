@@ -27,4 +27,7 @@ buildNumber.properties
 
 #Eclipse IDS
 .project
+.classpath
+.settings/
+
 .DS_Store
