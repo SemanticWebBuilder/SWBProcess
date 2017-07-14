@@ -72,7 +72,7 @@
         </dependency>
         <dependency>
           <groupId>${project.groupId}</groupId>
-          <artifactId>SWBXMRPCServer</artifactId>
+          <artifactId>SWBXMLRPCServer</artifactId>
           <version>${project.version}</version>
         </dependency>
         <dependency>
