@@ -7,20 +7,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBComparator;
+import org.semanticwb.model.Traceable;
 import org.semanticwb.model.User;
 import org.semanticwb.model.WebSite;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticProperty;
-import org.semanticwb.portal.SWBFormMgr;
 import org.semanticwb.portal.api.GenericResource;
 import org.semanticwb.portal.api.SWBActionResponse;
 import org.semanticwb.portal.api.SWBParamRequest;
@@ -37,8 +39,8 @@ import org.semanticwb.process.documentation.model.ElementReference;
 import org.semanticwb.process.documentation.model.Format;
 import org.semanticwb.process.documentation.model.FreeText;
 import org.semanticwb.process.documentation.model.Indicator;
+import org.semanticwb.process.documentation.model.Instantiable;
 import org.semanticwb.process.documentation.model.Policy;
-import org.semanticwb.process.documentation.model.Referable;
 import org.semanticwb.process.documentation.model.Reference;
 import org.semanticwb.process.documentation.model.Rule;
 import org.semanticwb.process.documentation.model.SectionElement;
@@ -85,6 +87,11 @@ public class SWPDocumentTemplateResource extends GenericResource {
         TemplateContainer templateCont = null;
         DocumentationInstance docInstance = null;
         DocumentSection docSection = null;
+        String lang = "es";
+        User user = response.getUser();
+        if (user != null && user.getLanguage() != null) {
+            lang = user.getLanguage();
+        }
         
         response.setRenderParameter("action", action);
         
@@ -165,7 +172,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
             if (docTemplate != null && templateCont != null) {
                 DocumentTemplate docTemplateNew = DocumentTemplate.ClassMgr.createDocumentTemplate(model);
                 Iterator<DocumentSection> itds = docTemplate.listDocumentSections();
-                Map map = new HashMap();
+                Map<String, DocumentSection> map = new HashMap<String, DocumentSection>();
                 while (itds.hasNext()) {
                     docSection = itds.next();
                     if (request.getParameter(docSection.getURI()) != null) {
@@ -206,7 +213,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
                                     docInstanceNew.addDocumentSectionInstance(docSectionInstanceNew);
                                     docSectionInstanceNew.setDocumentationInstance(docInstanceNew);
 
-                                    Map replySe = new HashMap();//Almacenar elementos relacionados
+                                    Map<SectionElement, SectionElement> replySe = new HashMap<SectionElement, SectionElement>();//Almacenar elementos relacionados
                                     docSection = (DocumentSection) map.get(docSectionInstance.getSecTypeDefinition().getURI());
                                     docSectionInstanceNew.setSecTypeDefinition(docSection);
                                     docSectionInstance.setIndex(docSection.getIndex());
@@ -360,6 +367,14 @@ public class SWPDocumentTemplateResource extends GenericResource {
             String titleSection = request.getParameter("titleSection");
             
             if (null != docTemplate && null != semCls && null != titleSection && !titleSection.isEmpty()) {
+            	String ignoreProps = "";
+            	
+            	Iterator<SemanticProperty> props = Traceable.swb_Traceable.listProperties();
+            	while(props.hasNext()) {
+            		SemanticProperty prop = props.next();
+            		ignoreProps += prop.getPropId() + "|";
+            	}
+
                 docSection = DocumentSection.ClassMgr.createDocumentSection(model);
                 docSection.setTitle(titleSection);
                 //docSection.setParentTemplate(docTemplate);
@@ -368,6 +383,25 @@ public class SWPDocumentTemplateResource extends GenericResource {
                 docSection.setSectionType(semCls.getSemanticObject());
                 docSection.setActive(true);
                 docTemplate.addDocumentSection(docSection);
+                
+                //Set properties configuration
+                if (semCls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {
+                    Iterator<SemanticProperty> itSemanticProperty = semCls.listProperties();
+                    String newprop = "";
+                    while (itSemanticProperty.hasNext()) {
+                        SemanticProperty sp = itSemanticProperty.next();
+                        SemanticObject dp = sp.getDisplayProperty();
+                        
+                        if (!ignoreProps.contains(sp.getPropId())) {
+                        	if (dp != null) {
+                            	String label = dp.getLabel(lang);
+                            	if (null == label || label.isEmpty()) label = sp.getDisplayName(lang);
+                                newprop += label + ";" + sp.getPropId() + "|";
+                            }
+                        }
+                    }
+                    docSection.setVisibleProperties(newprop);
+                }
                 
                 response.setRenderParameter("status", "ok");
                 response.setRenderParameter("urids", docSection.getURI());
@@ -436,20 +470,19 @@ public class SWPDocumentTemplateResource extends GenericResource {
                 //Get sectiontype properties
                 SemanticObject st = ds.getSectionType();
                 SemanticClass semCls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(st.getURI());
-                SWBFormMgr formMgr = new SWBFormMgr(semCls, response.getWebPage().getWebSite().getSemanticObject(), SWBFormMgr.MODE_EDIT);
-                formMgr.clearProperties();
+                ArrayList<SemanticProperty> properties = new ArrayList<>();
                 Iterator<SemanticProperty> itSemanticProperty = semCls.listProperties();
                 while (itSemanticProperty.hasNext()) {
                     SemanticProperty sp = itSemanticProperty.next();
                     if (sp.getDisplayProperty() != null) {
-                        formMgr.addProperty(sp);
+                    	properties.add(sp);
                     }
                 }
                 
                 //Get properties from request and add them accordingly to configuration
                 ds.setVisibleProperties("");
                 String newprop = "";
-                itSemanticProperty = formMgr.getProperties().iterator();
+                itSemanticProperty = properties.iterator();
                 while (itSemanticProperty.hasNext()) {
                     SemanticProperty sp = itSemanticProperty.next();
                     if (request.getParameter(sp.getPropId()) != null) {
