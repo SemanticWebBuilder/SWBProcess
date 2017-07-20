@@ -1,4 +1,4 @@
-/* 
+/*
     Created on : 15/03/2013, 01:39:38 PM
     Author     : hasdai
     Description:
@@ -25,14 +25,14 @@
 .resizeBox {
     stroke:#2c5aa0;
     fill:#FFFFFF;
-    stroke-width:1.5;  
+    stroke-width:1.5;
 }
 
 .selectBox {
     fill:#f0f0f0;
     fill-opacity:.5;
     stroke-width:1;
-    stroke:#2c5aa0                        
+    stroke:#2c5aa0
 }
 
 .toolTip {
@@ -77,15 +77,15 @@
     moz-box-shadow: 10 0 3px 6px #888;
     -webkit-box-shadow: 10 0 3px 6px #888;
     box-shadow: 10 0 3px 6px #888;
-    
+
     .titleBar {
         background: none repeat scroll 0 0 lightgray;
-        color: #0000;
+        color: #000000;
         font-weight: bold;
         padding: 8px 10px;
         margin:0px;
     }
-    
+
     form {
         margin: 0px;
     }
@@ -93,14 +93,14 @@
 
 .loadDialogContent {
     padding: 5px 10px;
-    
+
     .dropArea {
         border: 2px dashed lightgray;
         margin:5px;
         padding: 5px;
         color:gray;
     }
-    
+
     .dropAreaOver {
         border: 2px dashed lightblue;
         margin:5px;
@@ -114,7 +114,7 @@
     left:430px;
     position:relative;
     top:-25px;
-    
+
     a {
         background: url(#{$imgPath}/modeler/cerrar1.png) no-repeat;
         display:block;
@@ -139,13 +139,13 @@
 .navPath li {
     float:left;
     background-color: #e7e7e7;
-    
+
     a {
         font-family: Verdana, sans-serif;
         font-size: 0.7em;
         cursor: pointer;
     }
-    
+
     a, a:hover {
         text-decoration: none;
         padding: 5px 0 5px 40px;
@@ -153,7 +153,7 @@
         display: block;
         float: left;
     }
-    
+
     a:after {
         content: " ";
         display: block;
@@ -168,7 +168,7 @@
         left: 100%;
         z-index: 2;
     }
-    
+
     a:before {
         content: " ";
         display: block;
@@ -182,9 +182,9 @@
         margin-top: -50px;
         margin-left: 1px;
         left: 100%;
-        z-index: 1; 
+        z-index: 1;
     }
-    
+
     a.selected {
         font-weight: bold;
         -webkit-user-select: none;
@@ -224,7 +224,7 @@ ul.breadcrumbs {
     padding:0;
     line-height:0%;
     font-size:0;
-    
+
     li {
         list-style-type:none;
         margin:0;
@@ -235,7 +235,7 @@ ul.breadcrumbs {
         zoom:1;
         line-height:100%;
         font-size:14px; /* 0.8em default to override font-size:0; on parent*/
-        
+
         a {
             display:inline-block;
             /*display:inline; /* IE ONLY*/
@@ -247,14 +247,14 @@ ul.breadcrumbs {
             background:url(#{$imgPath}/modeler/icon-arrow-right.png) no-repeat right center;
         }
     }
-    
+
     li.last a {
         color:#333;
         cursor: default;
         text-decoration:none;
         background:none;
     }
-    
+
     li.last a:hover {
         text-decoration:none;
     }
@@ -264,7 +264,7 @@ ul.breadcrumbs {
 ul.breadcrumbs.alt1 {
     border:1px solid transparent;
     font-size:0;
-    
+
     li a {
         padding:10px 25px 10px 15px;
         background:url(#{$imgPath}breadcrumbs-bg.gif) no-repeat right center;
@@ -273,15 +273,15 @@ ul.breadcrumbs.alt1 {
         border-bottom:1px solid #efefef;
         font-size:12px;
     }
-    
+
     a:hover {
         text-decoration:underline;
     }
-    
+
     li.first a {
         border-left:1px solid #efefef;
     }
-    
+
     li.last a {
         background:none;
         border-right:1px solid #efefef;
@@ -294,7 +294,7 @@ ul.breadcrumbs.alt1 {
     overflow-y: scroll;
     top:23px;
     left:0;
-    height: 100%;    
+    height: 100%;
 }
 
 .toolbarItem {
@@ -308,7 +308,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_2.png) top center no-repeat;
     }
@@ -320,7 +320,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/file2.png) top center no-repeat;
     }
@@ -332,7 +332,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_2.png) top center no-repeat;
     }
@@ -344,7 +344,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_2.png) top center no-repeat;
     }
@@ -372,7 +372,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_2.png) top center no-repeat;
     }
@@ -384,7 +384,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_call_2.png) top center no-repeat;
     }
@@ -396,7 +396,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/subtask_2.png) top center no-repeat;
     }
@@ -408,7 +408,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/if_2.png) top center no-repeat;
     }
@@ -420,7 +420,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/anota_2.png) top center no-repeat;
     }
@@ -432,7 +432,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_2.png) top center no-repeat;
     }
@@ -444,7 +444,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/pool_2.png) top center no-repeat;
     }
@@ -456,7 +456,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:49px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/flow_2.png) top center no-repeat;
     }
@@ -468,7 +468,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/file_nuevo2.png) top center no-repeat;
     }
@@ -480,7 +480,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/file_saveas2.png) top center no-repeat;
     }
@@ -492,7 +492,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/file_abrir2.png) top center no-repeat;
     }
@@ -504,7 +504,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/file_enviar2.png) top center no-repeat;
     }
@@ -516,7 +516,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/file_saveasimage2.png) top center no-repeat;
     }
@@ -528,7 +528,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/file_saveassvg2.png) top center no-repeat;
     }
@@ -540,7 +540,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_normal2.png) top center no-repeat;
     }
@@ -552,7 +552,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_senal2.png) top center no-repeat;
     }
@@ -564,7 +564,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_tmp2.png) top center no-repeat;
     }
@@ -576,7 +576,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_compensa2.png) top center no-repeat;
     }
@@ -588,7 +588,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_cond2.png) top center no-repeat;
     }
@@ -600,7 +600,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_error2.png) top center no-repeat;
     }
@@ -612,7 +612,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_escala2.png) top center no-repeat;
     }
@@ -624,7 +624,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_msj2.png) top center no-repeat;
     }
@@ -636,7 +636,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_multi2.png) top center no-repeat;
     }
@@ -648,7 +648,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/start_paralelo2.png) top center no-repeat;
     }
@@ -660,7 +660,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_normal2.png) top center no-repeat;
     }
@@ -672,7 +672,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_cancel_2.png) top center no-repeat;
     }
@@ -684,7 +684,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_compensa_b_2.png) top center no-repeat;
     }
@@ -696,7 +696,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_compensa_n_2.png) top center no-repeat;
     }
@@ -708,7 +708,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_cond2.png) top center no-repeat;
     }
@@ -720,7 +720,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_enlace_b_2.png) top center no-repeat;
     }
@@ -732,7 +732,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_enlace_n_2.png) top center no-repeat;
     }
@@ -744,7 +744,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_error2.png) top center no-repeat;
     }
@@ -756,7 +756,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_escala_b_2.png) top center no-repeat;
     }
@@ -768,7 +768,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_escala_n_2.png) top center no-repeat;
     }
@@ -780,7 +780,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_msj_b_2.png) top center no-repeat;
     }
@@ -792,7 +792,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_msj_n_2.png) top center no-repeat;
     }
@@ -804,7 +804,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_multi_b_2.png) top center no-repeat;
     }
@@ -816,7 +816,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_multi_n_2.png) top center no-repeat;
     }
@@ -828,7 +828,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_paralelo2.png) top center no-repeat;
     }
@@ -840,7 +840,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_senal_b_2.png) top center no-repeat;
     }
@@ -852,7 +852,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_senal_n_2.png) top center no-repeat;
     }
@@ -864,7 +864,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/inter_tmp2.png) top center no-repeat;
     }
@@ -876,7 +876,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_normal2.png) top center no-repeat;
     }
@@ -888,7 +888,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_cancel2.png) top center no-repeat;
     }
@@ -900,7 +900,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_compensa2.png) top center no-repeat;
     }
@@ -912,7 +912,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_error2.png) top center no-repeat;
     }
@@ -924,7 +924,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_escala2.png) top center no-repeat;
     }
@@ -936,7 +936,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_msj2.png) top center no-repeat;
     }
@@ -948,7 +948,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_multi2.png) top center no-repeat;
     }
@@ -960,7 +960,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_senal2.png) top center no-repeat;
     }
@@ -972,7 +972,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/end_termina2.png) top center no-repeat;
     }
@@ -984,7 +984,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_normal2.png) top center no-repeat;
     }
@@ -996,7 +996,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_usr2.png) top center no-repeat;
     }
@@ -1008,7 +1008,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_script2.png) top center no-repeat;
     }
@@ -1020,7 +1020,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_servicio2.png) top center no-repeat;
     }
@@ -1032,7 +1032,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_envio2.png) top center no-repeat;
     }
@@ -1044,7 +1044,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_recive2.png) top center no-repeat;
     }
@@ -1056,7 +1056,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_rule2.png) top center no-repeat;
     }
@@ -1068,7 +1068,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_manual2.png) top center no-repeat;
     }
@@ -1080,7 +1080,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/subtask_colapsado2.png) top center no-repeat;
     }
@@ -1092,7 +1092,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/subtask_adhoc2.png) top center no-repeat;
     }
@@ -1104,7 +1104,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/subtask_evento2.png) top center no-repeat;
     }
@@ -1116,7 +1116,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/subtask_transaccion2.png) top center no-repeat;
     }
@@ -1128,7 +1128,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_llamada2.png) top center no-repeat;
     }
@@ -1140,7 +1140,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_call_manual2.png) top center no-repeat;
     }
@@ -1152,7 +1152,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_call_rule2.png) top center no-repeat;
     }
@@ -1164,7 +1164,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_call_script2.png) top center no-repeat;
     }
@@ -1176,7 +1176,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/task_call_usr2.png) top center no-repeat;
     }
@@ -1188,7 +1188,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/subtask_llamada2.png) top center no-repeat;
     }
@@ -1200,7 +1200,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/gate_datos2.png) top center no-repeat;
     }
@@ -1212,7 +1212,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/gate_inclusiva_2.png) top center no-repeat;
     }
@@ -1224,7 +1224,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/gate_eventos_str_2.png) top center no-repeat;
     }
@@ -1236,7 +1236,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/gate_paralela_n_2.png) top center no-repeat;
     }
@@ -1248,7 +1248,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/gate_eventos_int_2.png) top center no-repeat;
     }
@@ -1260,7 +1260,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/gate_paralela_b_2.png) top center no-repeat;
     }
@@ -1272,7 +1272,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/gate_compleja_2.png) top center no-repeat;
     }
@@ -1284,7 +1284,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/flow_normal2.png) top center no-repeat;
     }
@@ -1296,7 +1296,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/flow_condicion2.png) top center no-repeat;
     }
@@ -1308,7 +1308,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/flow_defecto2.png) top center no-repeat;
     }
@@ -1320,7 +1320,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/flow_msj2.png) top center no-repeat;
     }
@@ -1332,7 +1332,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_dir_asocia2.png) top center no-repeat;
     }
@@ -1344,7 +1344,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_asocia2.png) top center no-repeat;
     }
@@ -1356,7 +1356,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_anota2.png) top center no-repeat;
     }
@@ -1368,7 +1368,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_grupo2.png) top center no-repeat;
     }
@@ -1380,7 +1380,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_normal2.png) top center no-repeat;
     }
@@ -1392,7 +1392,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_entrada2.png) top center no-repeat;
     }
@@ -1404,7 +1404,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_salida2.png) top center no-repeat;
     }
@@ -1416,7 +1416,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/doc_base2.png) top center no-repeat;
     }
@@ -1428,7 +1428,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/pool_pool2.png) top center no-repeat;
     }
@@ -1440,7 +1440,7 @@ ul.breadcrumbs.alt1 {
     float: left;
     height:43px;
     width:37px;
-    
+
     &:hover {
         background: url(#{$imgPath}/modeler/pool_lane2.png) top center no-repeat;
     }

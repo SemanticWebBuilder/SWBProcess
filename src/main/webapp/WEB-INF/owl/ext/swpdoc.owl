@@ -344,9 +344,6 @@
     <rdfs:domain rdf:resource="#SectionElement"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="refRepository">
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_docRef"/>
-    </swb:displayProperty>
     <rdfs:label xml:lang="en">Repository document</rdfs:label>
     <rdfs:label xml:lang="es">Documento del repositorio</rdfs:label>
     <rdfs:domain rdf:resource="#Referable"/>
