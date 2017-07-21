@@ -103,29 +103,31 @@
                                                     label = map.get(idSemProp).toString();
                                                 }
                                                 boolean checked = visibleProps.contains(idSemProp) || idSemProp.equals("swpdoc:file");
-                                                %>
-                                                <tr>
-                                                    <td data-title="<%=paramRequest.getLocaleString("lblSecActive")%>" class="text-center">
-                                                      <%
-                                                      if (idSemProp.equals("swpdoc:file")) {
-                                                        %>
-                                                        <input type = "hidden" name="<%=idSemProp%>" id="<%=idSemProp%>" value="on">
-                                                        <input checked disabled type="checkbox" class="css-checkbox">
+                                                if (!idSemProp.equals("swpdoc:refRepository")) {
+                                                  %>
+                                                  <tr>
+                                                      <td data-title="<%=paramRequest.getLocaleString("lblSecActive")%>" class="text-center">
                                                         <%
-                                                      } else {
+                                                        if (idSemProp.equals("swpdoc:file")) {
+                                                          %>
+                                                          <input type = "hidden" name="<%=idSemProp%>" id="<%=idSemProp%>" value="on">
+                                                          <input checked disabled type="checkbox" class="css-checkbox">
+                                                          <%
+                                                        } else {
+                                                          %>
+                                                          <input <%=checked?"checked":""%> name="<%=idSemProp%>" id="<%=idSemProp%>" type="checkbox" class="css-checkbox">
+                                                          <%
+                                                        }
                                                         %>
-                                                        <input <%=checked?"checked":""%> name="<%=idSemProp%>" id="<%=idSemProp%>" type="checkbox" class="css-checkbox">
-                                                        <%
-                                                      }
-                                                      %>
-                                                      <label class="css-label" for="<%= idSemProp%>"></label>
-                                                    </td>
-                                                    <td data-title="<%=paramRequest.getLocaleString("lblProperty")%>"><%=titleSemProp%></td>
-                                                    <td data-title="<%=paramRequest.getLocaleString("lblLabel")%>">
-                                                        <input type="text" name="label<%=idSemProp%>" value="<%=label%>" class="form-control">
-                                                    </td>
-                                                </tr>
-                                                <%
+                                                        <label class="css-label" for="<%= idSemProp%>"></label>
+                                                      </td>
+                                                      <td data-title="<%=paramRequest.getLocaleString("lblProperty")%>"><%=titleSemProp%></td>
+                                                      <td data-title="<%=paramRequest.getLocaleString("lblLabel")%>">
+                                                          <input type="text" name="label<%=idSemProp%>" value="<%=label%>" class="form-control">
+                                                      </td>
+                                                  </tr>
+                                                  <%
+                                                }
                                             }
                                         }
                                         %>

@@ -53,7 +53,7 @@
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
   SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentationResource.PARAM_REQUEST);
   User user = paramRequest.getUser();
