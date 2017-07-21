@@ -115,10 +115,10 @@
     height: 48px;
     background-color: $color-primary;
     position: absolute;
-    z-index: 11; 
-    top: 196px; 
-    left: 1; 
-    right: 20px; 
+    z-index: 11;
+    top: 196px;
+    left: 1;
+    right: 20px;
     bottom: 0;
     border-radius: 99px;
     text-align: center;
@@ -197,7 +197,7 @@
   display: inline-block;
   line-height: 18px;
   background-repeat: no-repeat;
-  background-position: 0px 4px;
+  background-position: 0px 5px;
   vertical-align: middle;
   cursor: pointer;
 }
@@ -270,7 +270,7 @@
     @include fontLink;
 }
 @mixin fullBackground($color, $image) {
-    background: $color url($image) no-repeat center center fixed; 
+    background: $color url($image) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

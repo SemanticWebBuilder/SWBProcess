@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : editSectionDialog
     Created on : 19/11/2013, 01:28:47 PM
     Author     : carlos.alvarez
@@ -6,12 +6,13 @@
 
 <%@page import="org.semanticwb.platform.SemanticProperty"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="org.semanticwb.process.documentation.model.Instantiable"%>
 <%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.model.Traceable"%>
 <%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
 <%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
@@ -29,7 +30,7 @@
     if (documentSection != null) {
         SWBResourceURL viewUrl = paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_EDIT);
         viewUrl.setParameter("uridt", documentSection.getParentTemplate().getURI());
-        
+
         SemanticClass sectionType = documentSection.getSectionType().transformToSemanticClass();
         title = documentSection.getTitle();
         urlSave = paramRequest.getActionUrl().setAction(SWPDocumentTemplateResource.ACTION_EDIT_DOCUMENT_SECTION);
@@ -75,15 +76,23 @@
                                     </thead>
                                     <tbody>
                                         <%
-                                        SWBFormMgr mgr = new SWBFormMgr(sectionType, paramRequest.getWebPage().getWebSite().getSemanticObject(), SWBFormMgr.MODE_EDIT);
-                                        mgr.clearProperties();
+                                        String ignoreProps = "";
+                                      	Iterator<SemanticProperty> props = Traceable.swb_Traceable.listProperties();
+                                      	while(props.hasNext()) {
+                                      		SemanticProperty prop = props.next();
+                                      		ignoreProps += prop.getPropId() + "|";
+                                      	}
+
+                                        ArrayList<SemanticProperty> semProperties = new ArrayList<>();
                                         Iterator<SemanticProperty> properties = sectionType.listProperties();
                                         while (properties.hasNext()) {
                                             SemanticProperty prop = properties.next();
-                                            if (prop.getDisplayProperty() != null) mgr.addProperty(prop);
+                                            if (!ignoreProps.contains(prop.getPropId()) && prop.getDisplayProperty() != null) {
+                                                semProperties.add(prop);
+                                            }
                                         }
 
-                                        properties = mgr.getProperties().iterator();
+                                        properties = semProperties.iterator();
                                         if (properties.hasNext()) {
                                             while (properties.hasNext()) {
                                                 SemanticProperty prop = properties.next();
@@ -93,18 +102,32 @@
                                                 if (map.containsKey(idSemProp)) {
                                                     label = map.get(idSemProp).toString();
                                                 }
-                                                %>
-                                                <tr>
-                                                    <td data-title="<%=paramRequest.getLocaleString("lblSecActive")%>" class="text-center">
-                                                        <input <%=(visibleProps.contains(idSemProp))?"checked":""%> name="<%=idSemProp%>" id="<%=idSemProp%>" type="checkbox" class="css-checkbox">
+                                                boolean checked = visibleProps.contains(idSemProp) || idSemProp.equals("swpdoc:file");
+                                                if (!idSemProp.equals("swpdoc:refRepository")) {
+                                                  %>
+                                                  <tr>
+                                                      <td data-title="<%=paramRequest.getLocaleString("lblSecActive")%>" class="text-center">
+                                                        <%
+                                                        if (idSemProp.equals("swpdoc:file")) {
+                                                          %>
+                                                          <input type = "hidden" name="<%=idSemProp%>" id="<%=idSemProp%>" value="on">
+                                                          <input checked disabled type="checkbox" class="css-checkbox">
+                                                          <%
+                                                        } else {
+                                                          %>
+                                                          <input <%=checked?"checked":""%> name="<%=idSemProp%>" id="<%=idSemProp%>" type="checkbox" class="css-checkbox">
+                                                          <%
+                                                        }
+                                                        %>
                                                         <label class="css-label" for="<%= idSemProp%>"></label>
-                                                    </td>
-                                                    <td data-title="<%=paramRequest.getLocaleString("lblProperty")%>"><%=titleSemProp%></td>
-                                                    <td data-title="<%=paramRequest.getLocaleString("lblLabel")%>">
-                                                        <input type="text" name="label<%=idSemProp%>" value="<%=label%>" class="form-control">
-                                                    </td>
-                                                </tr>
-                                                <%
+                                                      </td>
+                                                      <td data-title="<%=paramRequest.getLocaleString("lblProperty")%>"><%=titleSemProp%></td>
+                                                      <td data-title="<%=paramRequest.getLocaleString("lblLabel")%>">
+                                                          <input type="text" name="label<%=idSemProp%>" value="<%=label%>" class="form-control">
+                                                      </td>
+                                                  </tr>
+                                                  <%
+                                                }
                                             }
                                         }
                                         %>

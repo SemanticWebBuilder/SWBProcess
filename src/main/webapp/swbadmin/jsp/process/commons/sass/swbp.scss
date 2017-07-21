@@ -1,3 +1,4 @@
+// compileCompressed: ../css/swbp.css
 @import "_mixins.scss";
 @import "_swbptheme.scss";
 @import "_table-responsive.scss";
@@ -77,7 +78,7 @@ html, body{
 
         @media (max-width: $breakpoint-small - 1) {
             font-size: 1.4em;
-            padding: 6px 24px 0px 24px !important; 
+            padding: 6px 24px 0px 24px !important;
             height: 36px !important;
             padding: 5px 16px 0px 16px !important;
         }
@@ -92,7 +93,7 @@ html, body{
         @media (min-width:$breakpoint-small) and (max-width:$breakpoint-medium - 1) {
             padding: 0px 24px 24px !important;
         }
-        
+
         @media (max-width:$breakpoint-medium - 1) {
             padding: 0px 16px 16px !important;
         }
@@ -105,7 +106,7 @@ html, body{
         .swbp-menu-text {
             text-align: left;
             padding: 15px 15px 0px 0px;
-            
+
             @media (min-width: $breakpoint-small) and (max-width: $breakpoint-medium) {
                 text-align: center;
                 padding-left: 15px;
@@ -121,7 +122,7 @@ html, body{
 
         button.navbar-toggle { //hamburger button
             border: none;
-            
+
             &:hover, &:active, &:focus {
                 background-color: transparent !important;
             }
@@ -173,7 +174,7 @@ html, body{
                 bottom: 0;
                 left: 0;
                 right: 0;
-                
+
                 text-align:center;
                 font: 0/0 a;
 
@@ -193,7 +194,7 @@ html, body{
                         height:100%;
                         max-height: 100%;
                         max-width: 100%;
-                    
+
                         @media (max-width:$breakpoint-small - 1) {
                             height:80%;
                         }
@@ -204,7 +205,7 @@ html, body{
 
         .collapse {
             padding: 0px;
-            
+
             ul {
                 width: 100%;
                 li {
@@ -216,7 +217,7 @@ html, body{
                         padding: 0px;
                         background-color: $color-background-main;
                         color: $color-text-highlight !important;
-                        
+
                         &:hover {
                             background-color: $color-background-main-active !important;
                             color: $white-color !important;
@@ -243,7 +244,7 @@ html, body{
             position: fixed;
             bottom: 0;
             left: 0;
-            
+
             p {
                 @include fontMinimum;
             }
@@ -254,13 +255,13 @@ html, body{
     .swbp-main-menu-xs {
         height: 48px;
         padding: 0px;
-        
+
         .navbar { border: 0px; }
-        
+
         ul {
             margin: 0px;
             background-color: $color-background-main;
-            
+
             li {
                 padding: 0px;
                  a {
@@ -268,19 +269,19 @@ html, body{
                     font-size: 1.3em;
                     color: $color-text-highlight;
                     line-height: 1.7em;
-                     
+
                     &:hover, &:focus, &:active:focus {
                         background-color: $color-background-main-active;
                         color: $white-color !important;
                     }
-                }           
+                }
             }
-            
+
             li.active a {
                 background-color: $color-background-main-active !important;
                 color: $white-color !important;
-            }   
-        }    
+            }
+        }
     }
 
     /*-------Tables------*/
@@ -296,7 +297,7 @@ html, body{
             font-weight: bold;
         }
     }
-    
+
     .table {
         .btn-default {
             background-color: $white-color !important;
@@ -345,7 +346,7 @@ html, body{
         color: $color-text-highlight;
         background-color: $color-background-main;
     }
-    
+
     /*-------task highlight colors-----------*/
     .task-highlight-428bca {
         fill: #428bca !important;
@@ -421,22 +422,22 @@ html, body{
 .swbp-logo-400 {
     text-align: center;
     margin: 50px 0px;
-    
+
     img{
         width: 300px;
         height: 300px;
-    } 
-    
+    }
+
     img.swbp-img-400{
         width: 500px;
         height: 300px;
-    }    
+    }
 }
 .hidden-margin{
- margin: 0px !important;   
+ margin: 0px !important;
 }
 .hidden-padding{
- padding: 0px !important;   
+ padding: 0px !important;
 }
 .swbp-mup{
     margin-bottom: 100px;
@@ -449,12 +450,12 @@ html, body{
 
 /*Escritorio grande - LG en Boostrap mayor a 1200px ***********************************************************/
 @media (min-width: 1200px){
-    
+
     .swbp-align-icon{
         width: 14% !important;
     }
     .swbp-align-text{
-        width: 86%; 
+        width: 86%;
         padding-left: 10px !important;
     }
     .swbp-list-text {
@@ -466,7 +467,7 @@ html, body{
         overflow: hidden;
         line-height: 1.8;
     }
-    
+
 }
 
 /* Escritorio pequeño o tablet - MD en Boostrap del 992 al 1199px *********************************************/
@@ -474,12 +475,12 @@ html, body{
     .swbp-logo-400 {
         margin: 30px 0;
     }
-    
+
     .swbp-align-icon{
         width: 14% !important;
     }
     .swbp-align-text{
-        width: 86%; 
+        width: 86%;
         padding-left: 10px !important;
     }
     .swbp-list-text {
@@ -491,15 +492,15 @@ html, body{
         overflow: hidden;
         line-height: 1.8;
     }
-    
+
 }
-    
+
 /* Tablet o smartphone - SM en Bootstrap del 768 al 991px *****************************************************/
 @media (min-width:768px) and (max-width:991px){
     .swbp-logo-400 {
         margin: 30px 0px;
     }
-    
+
     .swbp-menu-icon {
         font-size: 36px !important;
     }
@@ -513,7 +514,7 @@ html, body{
     .swbp-button-tool {
         width: 11.11% !important;
     }
-        
+
     .swbp-table-responsive .table tbody tr {
         td[data-title]:before{
             color: $color-primary;
@@ -525,9 +526,9 @@ html, body{
         td.swbp-action-table[data-title]:before{
             padding-left: 16px;
             padding-top: 8px;
-        }  
+        }
     }
-    
+
     .swbp-table-responsive tbody tr{
 
         td {
@@ -539,24 +540,24 @@ html, body{
 
                 textarea.swbp-form-control{
                         width: 70%;
-                    }        
+                    }
             }
 
         td.swbp-button-table a.btn {
                 width: 70%;
-            }  
+            }
         td.swbp-action-table a{
                 width: 22%; margin: 8px 0px;
-            }    
+            }
     }
-    
+
     .swbp-align-icon{
         width: 11% !important;
     }
     .swbp-align-text{
         width: 89%;
     }
-    .swbp-collaboration-p{ 
+    .swbp-collaboration-p{
         margin: 16px 0px !important;
     }
     .swbp-comment-user{
@@ -565,7 +566,7 @@ html, body{
     .swbp-captcha input{
         margin-bottom: 16px;
     }
-    
+
     /*.swbp-modal .swbp-table-responsive tbody tr td textarea.swbp-form-control {
         text-align: right !important;
     }*/
@@ -580,8 +581,8 @@ html, body{
         max-height: 36px;
         overflow: hidden;
         line-height: 1.8;
-    }   
-    
+    }
+
 }
 
 /* Smartphone - XS en Bootstrap del 0 al 767px *****************************************************************/
@@ -594,33 +595,33 @@ html, body{
     }
     .swbp-paqua {
         padding: 16px 0px !important;
-        
+
         p{
             margin: 16px 0px 0px 0px !important;
-        }        
+        }
     }
-    
+
     .swbp-input-group {
         margin: 16px 0px 0px 0px !important;
     }
     .swbp-espacio {
         padding-top: 24px !important;
     }
-    
+
     .swbp-logo-400{
         img{
             width: 170px; height: 170px;
-        }   
-        img.swbp-img-400{ 
+        }
+        img.swbp-img-400{
         width: 260px; height: 100px;
         }
     }
 
     .swbp-bars{
-        margin: 0px !important; 
+        margin: 0px !important;
         padding: 14px !important;
     }
-    
+
     .swbp-pad{
         padding: 0px !important;
     }
@@ -634,7 +635,7 @@ html, body{
     .swbp-panel-body{
         padding: 0px 16px 60px !important;
     }
-    
+
     .swbp-table-responsive {
         .table tbody tr{
              td[data-title]:before{
@@ -646,7 +647,7 @@ html, body{
              td.swbp-action-table[data-title]:before{
                 padding-left: 16px;
                 padding-top: 8px;
-            }  
+            }
             td{
                 text-align: left;
                 min-height: 36px;
@@ -654,8 +655,8 @@ html, body{
                 @include fontPrimary;
                 line-height: 24px;
             }
-        } 
-        
+        }
+
         tbody tr td.swbp-action-table a{
             width: 32%; margin-bottom: 8px;
         }
@@ -665,7 +666,7 @@ html, body{
         width: 17% !important;
     }
     .swbp-align-text{
-        width: 83%; 
+        width: 83%;
         padding-left: 5px !important;
     }
     .swbp-title-xs{
@@ -674,17 +675,17 @@ html, body{
     .swbp-list-action{
         margin-bottom: 6px;
     }
-    .swbp-collaboration-p{ 
+    .swbp-collaboration-p{
         margin: 10px 0px !important;
     }
     .swbp-comment-user{
         text-align: left;
     }
-    
+
     .swbp-panel-foro {
         .panel-heading {
             padding: 16px 0px 0px 0px !important;
-        }  
+        }
         .swbp-comment-user {
             padding: 0px 0px 0px 16px !important;
         }
@@ -697,28 +698,28 @@ html, body{
         .swbp-comment-user-foro{
             padding: 0px !important;
         }
-        .prouser-xs{ 
+        .prouser-xs{
             padding: 0px!important;
         }
     }
-    
+
     .swbp-captcha{
         img{
-            width: 260px !important; 
-            height: 60px !important; 
+            width: 260px !important;
+            height: 60px !important;
         }
         input{
             margin: 16px 0px;
-        }  
+        }
     }
-    
+
     .accion1 {
         border-top: solid 1px $color-border-main !important;
     }
     .swbp-row-table{
         margin-bottom:0px ;
     }
-    
+
     .swbp-modal-property{
         text-align: left !important;
     }
@@ -732,7 +733,7 @@ html, body{
         margin-top: 10px;
     }
     /*.modal .modal-body .swbp-captcha img {
-        width: 100% !important; 
+        width: 100% !important;
         height: 60px !important;
     }*/
 
@@ -745,7 +746,7 @@ p{
 
 hr {
     @include hr;
-    
+
 }
 
 .swbp-height {
@@ -777,7 +778,10 @@ input[type=radio].css-checkbox + label.css-label{
 	@include selectionControls;
 }
 input[type=radio].css-checkbox:checked + label.css-label{
-	background-position: 0 -24px;
+	background-position: 0 -25px;
+}
+input[type=checkbox].css-checkbox:checked:disabled+label.css-label {
+    background-position: 0px -54px;
 }
 
 input[type=checkbox].css-checkbox{
@@ -794,17 +798,17 @@ input[type=checkbox].css-checkbox:checked + label.css-label{
 .swbp-paqua {
     color: $white-color;
     background-color: $color-primary;
-    position: relative; 
+    position: relative;
     padding: 24px 0px;
-    
+
     h3 {
         color: $white-color;
         padding: 0px;
         margin: 0px;
-    }   
+    }
     p {
         margin: 24px 0px 0px 0px;
-    }     
+    }
 }
 
 #swbp-fondo-400 {
@@ -816,19 +820,19 @@ input[type=checkbox].css-checkbox:checked + label.css-label{
 .swbp-input-group {
     padding: 2px 0px;
     margin: 24px 0px 0px 0px;
-    
+
     span{
     background-color: $color-panel-head;
     color: $white-color;
     @include border;
     }
-   
+
     input {
         @include border;
         background-color: $color-background-content;
         height: 36px;
         color: $color-panel-head;
-    }    
+    }
 }
 .swbp-icon-fa {
     display: table-ceLl;
@@ -837,7 +841,7 @@ input[type=checkbox].css-checkbox:checked + label.css-label{
 /*.swbp-raised-button {
     height: $button-default-height;
     //background-color: $color-background-window;
-    padding: 0px;   
+    padding: 0px;
 }*/
 /************************* BOTONES EN BLOQUE *************************/
 
@@ -873,10 +877,10 @@ input[type=checkbox].css-checkbox:checked + label.css-label{
     box-shadow: none;
     background-color: transparent;
     margin-top: 16px !important;
-    
+
     .panel-heading{
         @include panel-Title;
-    }        
+    }
 }
 /************************* MODELO DEL PROCESO *************************/
 .btn-toolbar {
@@ -920,31 +924,31 @@ input[type=checkbox].css-checkbox:checked + label.css-label{
         min-height: 36px;
         padding: 8px 32px;
         text-transform: uppercase;
-        
+
         &:hover, &:active, &:focus   {
             background-color: $white-color;
             color: $color-primary;
             outline: 0px;
-        }        
-    }  
-    
+        }
+    }
+
     a.active {
         background-color: $white-color;
         color: $color-primary;
-    }    
+    }
 }
 /************************* PANEL BODY - INFORMACIÓN DEL PROCESO *************************/
 .swbp-panel-body{
     padding: 0px 32px 60px;
     background-color: $color-background-content;
     margin-top: 16px;
-    
+
     p{
         @include fontPrimary;
         line-height: 1.5;
         text-align: justify;
     }
-    
+
 }
 .swbp-panel-body-card{
     padding: 16px 32px;
@@ -953,41 +957,41 @@ input[type=checkbox].css-checkbox:checked + label.css-label{
 /************************* PANEL ELEMENTOS RELACIONADOS *************************/
 .swbp-panel-related{
     margin-bottom: 16px;
-    
+
     .panel-heading{
         background-color: $color-background-content;
         @include fontLink;
         text-transform: uppercase;
         min-height: 36px;
         padding: 8px 16px;
-        
+
         .pull-right a.accordion-toggle{
             color: $color-link;
             text-decoration: none;
-            
+
             &:focus{
                 outline: 0px;
-            }            
-        }        
-    } 
-    
+            }
+        }
+    }
+
     .list-group a{
         background-color: $white-color;
         @include fontSecundary;
         text-decoration: none;
         border: 0px;
         padding: 9px 16px;
-        
+
         &:hover, &:active{
             background-color: $white-color;
             color: $color-link;
             text-decoration: underline;
-        }   
-        
+        }
+
         &:focus{
             outline: 0px;
         }
-    }    
+    }
 }
 /************************* ELEMENTOS RELACIONADOS TABLA *************************/
 
@@ -997,7 +1001,7 @@ ul#relatedTab {
 
 .swbp-related{
     margin: 0px;
-    
+
     ul li a{
         background-color: $color-background-content;
         @include fontLink;
@@ -1005,7 +1009,7 @@ ul#relatedTab {
         min-height: 36px;
         padding: 8px 16px;
         @include border;
-        
+
         &:hover, &:active, &:focus{
             background-color: $color-link !important;
             color: $color-background-content;
@@ -1015,10 +1019,10 @@ ul#relatedTab {
             padding: 8px 16px;
             outline: 0px;
             @include border;
-            
-        }        
-    }  
-    
+
+        }
+    }
+
     ul li.active a{
         background-color: $color-link;
         color: $color-background-content;
@@ -1027,7 +1031,7 @@ ul#relatedTab {
         min-height: 36px;
         padding: 8px 16px;
         @include border;
-        
+
         &:hover{
             background-color: $color-link;
             color: $color-background-content;
@@ -1036,8 +1040,8 @@ ul#relatedTab {
             min-height: 36px;
             padding: 8px 16px;
             @include border;
-        }        
-    }    
+        }
+    }
 }
 
 /*.swbp-contenido .swbp-panel-body h6{
@@ -1058,71 +1062,71 @@ ul#relatedTab {
         padding: 8px 16px;
         vertical-align: text-top;
         border: solid 1px $color-border-main !important;
-    }    
-    
+    }
+
     tbody tr {
-        
+
         td {
             border: solid 1px $color-border-main;
             @include fontPrimary;
             padding: 8px 16px;
             vertical-align: middle;
-            
+
             textarea.swbp-form-control{
                 text-align: center;
             }
-        }  
-        
+        }
+
         td.text-center{
             text-align: center;
-        }      
-        
+        }
+
         td.swbp-button-table a{
             width: 100%;
-        }  
-        
+        }
+
         td.swbp-button-table a.btn{
             padding: 0px;
             border: 0px;
             line-height: 36px;
             color: $color-text-highlight;
-            
+
             &:hover, &:focus, &:active{
                 background-color: $white-color;
                 color: $color-primary;
                 outline: 0px;
                 -webkit-box-shadow: inset 0 0px 0px rgba(0,0,0,0);
                 box-shadow: inset 0 3px 5px rgba(0,0,0,0);
-            }            
-            
+            }
+
             span{
                 font-family: $font-main-family;
-            }           
-            
-        } 
-        
+            }
+
+        }
+
         td.swbp-action-table{
             padding: 0px;
             vertical-align: middle;
             text-align: center;
-            
+
             a{
                 color: $color-text-highlight;
                 border: 0px;
                 font-size: 14px;
-                
+
                 &:hover, &:active, &:focus, &:active:focus{
                     background-color: $white-color;
                     color: $color-primary;
                     outline: 0px;
                     box-shadow: none;
-                }                
-                
-            }            
-        }        
-        
+                }
+
+            }
+        }
+
     }
-    
+
 }
 
 
@@ -1167,7 +1171,7 @@ ul#relatedTab {
 .swbp-list-action{
     padding: 0px;
     border: solid 1px $color-border-main;
-    
+
     a{
         color: $color-text-highlight;
         background-color: $color-background-content;
@@ -1176,17 +1180,17 @@ ul#relatedTab {
         border-radius: 0px;
         border-right: solid 1px $color-border-main;
         padding: 0px;
-        
+
         &:hover, &:active, &:focus, &:active:focus{
             background-color: $white-color;
             color: $color-primary;
             outline: 0px;
-        }        
-    } 
-    
+        }
+    }
+
     .fa {
         padding: 10px 0px 0px 0px;
-    }    
+    }
 }
 .swbp-list-action-text {
     text-align: left;
@@ -1219,7 +1223,7 @@ ul#relatedTab {
 }
 .swbp-block-action{
     padding: 0px;
-    
+
     a{
         color: $color-text-highlight;
         background-color: $color-background-content;
@@ -1227,18 +1231,18 @@ ul#relatedTab {
         min-height: 36px;
         border-radius: 0px;
         padding: 0px;
-        
+
         &:hover, &:active, &:focus, &:active:focus{
             background-color: $white-color;
             color: $color-primary;
             outline: 0px;
-        }        
-    } 
-    
+        }
+    }
+
     .fa {
         padding: 10px 0px 0px 0px;
-    }    
-    
+    }
+
 }
 .swbp-block-action-text {
     text-align: left;
@@ -1285,13 +1289,13 @@ ul#relatedTab {
 }
 .swbp-pagination-number {
     padding: 0px;
-    
+
     ul.pagination {
         padding: 0px;
         margin: 16px 0px 90px 0px;
         border-radius: 0px;
         width: 100%;
-        
+
         li a{
             height: 32px;
             @include panelContainer;
@@ -1299,7 +1303,7 @@ ul#relatedTab {
             text-align: center;
             width: 11.11%;
             margin-left: 0.01px;
-            
+
             &:hover, &:focus{
                 background-color: $color-primary;
                 color: $white-color;
@@ -1307,24 +1311,24 @@ ul#relatedTab {
                 border: solid 1px $color-border-main;
             }
 
-        }    
+        }
 
         li.active a{
             background-color: $color-primary;
             color: $white-color;
             outline: 0px;
             border: solid 1px $color-border-main;
-            
+
             &:focus{
                 background-color: $color-primary;
                 color: $white-color;
                 outline: 0px;
                 border: solid 1px $color-border-main;
-            }            
+            }
         }
-            
-                
-    }    
+
+
+    }
 }
 /************************* COLABORACIÓN  *************************/
 .swbp-collaboration-p{
@@ -1344,32 +1348,32 @@ ul#relatedTab {
     height: 222px;
 }
 .swbp-card-fondo{
-    background-color: $black-color; 
-    position: absolute; 
-    z-index:9; 
-    top:222; 
-    left:0; 
-    right:0; 
-    bottom:0; 
-    opacity:0.5; 
+    background-color: $black-color;
+    position: absolute;
+    z-index:9;
+    top:222;
+    left:0;
+    right:0;
+    bottom:0;
+    opacity:0.5;
     height:48px;
 }
 .swbp-card-texto{
-    position: absolute; 
-    z-index: 10; 
-    color: $white-color;  
-    padding: 10px 16px; 
-    font-size: 18px; 
-    height:48px;   
+    position: absolute;
+    z-index: 10;
+    color: $white-color;
+    padding: 10px 16px;
+    font-size: 18px;
+    height:48px;
 }
 .swbp-card-boton{
     @include buttonFloatAction-Card;
-    
+
     &:hover, &:active, &:focus, &:active:focus{
         background-color: $color-primary-active;
         color: $white-color;
         outline: 0px;
-    }    
+    }
 }
 /******************** BLOG ********************/
 /*.swbp-panel-blog{
@@ -1379,22 +1383,22 @@ ul#relatedTab {
         @include fontTitle;
         padding: 13px 16px;
     }
-    
+
     .panel-heading{
         padding: 0px;
         background-color: $color-background-content;
         border-radius: 0px;
         border-bottom: solid 1px $color-border-main;
-    }    
-    
+    }
+
     .property-user{
         min-height: 24px;
         @include fontCaption;
         line-height: 2;
         padding: 0px 16px;
         font-style: italic;
-    }   
-    
+    }
+
     .property{
         min-height: 24px;
         @include fontCaption;
@@ -1408,17 +1412,17 @@ ul#relatedTab {
             line-height: 2;
             font-family: $font-main-family;
         }
-    
+
     }
-    
+
     .panel-body{
         padding: 16px;
 
         p{
             @include fontPrimary;
-        }      
+        }
     }
-    
+
     .panel-footer{
         //height: 36px;
         padding: 0PX;
@@ -1430,7 +1434,7 @@ ul#relatedTab {
 
 .swbp-panel-blog-button{
     padding: 0px;
-    
+
      a {
         @include buttonFlat;
 
@@ -1439,41 +1443,41 @@ ul#relatedTab {
                 color: $color-primary;
                 outline: 0px;
                 border: solid 1px $color-border-main;
-            }         
-         
+            }
+
             .icon{
                 padding: 11px 0px 0px 0px;
-            } 
-         
+            }
+
             .text{
                 padding: 0px;
                 text-align: left;
                 text-transform: uppercase;
-            }         
-        }   
-    
+            }
+        }
+
     button{
         @include buttonFlat;
-        
+
             &:hover, &:active, &:focus, &:hover:active:focus{
                 background-color: $white-color;
                 color: $color-primary;
                 outline: 0px;
                 border: solid 1px $color-border-main;
-            }        
-    }    
+            }
+    }
 }
 
 /*textarea.swbp-form-control{
     border-radius: 0px;
     padding: 8px 16px;
     @include textarea;
-    
+
     &:focus{
         border-bottom: 0px;
         -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
         box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
-    }    
+    }
 }*/
 
 .swbp-comment{
@@ -1501,23 +1505,23 @@ ul#relatedTab {
 
 .swbp-comment-user{
     padding: 4px 0px;
-    
+
     img{
         @include img-Usercomment;
-    }   
+    }
 }
 /******************** FORO ********************/
 .swbp-panel-foro{
     @include panelCollaboration;
-    
+
     h2{
         @include fontTitle;
         padding: 0px 0px 10px;
-    }  
+    }
     h1{
     margin: 8px 0px;
     }
-    
+
     .panel-heading{
         padding: 16px 0px 0px 16px;
         background-color: $color-background-content;
@@ -1528,7 +1532,7 @@ ul#relatedTab {
     .swbp-comment-user{
         padding: 0px;
     }
-    
+
     .swbp-comment-user-foro{
         text-align: center;
     }
@@ -1547,40 +1551,40 @@ ul#relatedTab {
         line-height: 2;
         padding: 0px;
         font-style: italic;
-        
+
         span{
         min-height: 24px;
         @include fontCaption;
         line-height: 2;
         font-family: $font-main-family;
-        }    
+        }
     }
-    
+
     .panel-body{
         padding: 16px;
-        
+
          p{
             @include fontPrimary;
-          } 
-        
+          }
+
          .swbp-comment{
             border: solid 1px $color-border-main;
-          } 
-    }  
-    
+          }
+    }
+
     .panel-footer{
         //height: 36px;
         padding: 0PX;
         background-color: $color-background-content;
         border-top: solid 1px $color-border-main;
         border-radius: 0px;
-    }    
+    }
 }
 
 
 .swbp-panel-foro-button{
     padding: 0px;
-    
+
     a {
         @include buttonFlat;
 
@@ -1589,77 +1593,77 @@ ul#relatedTab {
             color: $color-primary;
             outline: 0px;
             border: solid 1px $color-border-main;
-        }        
-        
+        }
+
         .icon{
             padding: 11px 0px 0px 0px;
-            }        
-        
+            }
+
         .text{
             padding: 0px;
-            text-align: left;  
+            text-align: left;
             text-transform: uppercase;
-        }        
-      }   
-    
+        }
+      }
+
     button{
         @include buttonFlat;
-        
+
         &:hover, &:active, &:focus, &:hover:active:focus{
             background-color: $white-color;
             color: $color-primary;
             outline: 0px;
             border: solid 1px $color-border-main;
-        }       
-    }    
+        }
+    }
 }
 
 
 .swbp-captcha {
     padding: 0px;
-    
+
     img{
         @include img-Captcha;
-    }  
-    
+    }
+
     input{
         @include input;
 
         &:focus{
             @include inputFocus;
         }
-    }    
+    }
 }
 
 
 .swbp-foro-post-comment{
     padding: 16px;
     @include panelContainer;
-    
+
     form{
 
         .form-group{
             margin-bottom: 16px;
-        }     
-        
+        }
+
         label {
             margin-bottom: 0px;
-            
+
             h6{
                 padding: 9px 0px;
                 margin: 0px 10px 7px 0px;
-            }            
-        }       
-    } 
-    
+            }
+        }
+    }
+
 }
 
 .swbp-panel-body input {
     @include input;
-    
+
     &:focus{
         @include inputFocus;
-    }    
+    }
 }
 /******************** TEXTOS LARGOS ********************/
 .swbp-row-table {
@@ -1669,19 +1673,19 @@ ul#relatedTab {
     width: 100%;
     margin: 0;
     margin-bottom: 6px;
-    
+
     .swbp-list-icon{
         padding: 0px;
         color: $color-highlight;
         font-size: 20px;
         @include panelContainer;
-    }  
-    
+    }
+
     .swbp-list-text{
          padding: 8px;
          @include fontPrimary;
          @include panelContainer;
-    }    
+    }
 }
 
 .swbp-row-table>[class*=col-] {
@@ -1695,7 +1699,7 @@ ul#relatedTab {
 .accion1 {
     @include panelContainer;
     color: $color-text-highlight;
-    
+
     &:hover, &:active, &:focus, &:active:focus {
         background-color: $white-color;
         color: $color-primary;
@@ -1703,13 +1707,13 @@ ul#relatedTab {
         box-shadow: none;
         border: solid 1px $color-border-main;
         margin-left: 1px;
-    }   
-    
+    }
+
     label {
         padding: 0px;
         background-position: 0px 0px !important;
-    }  
-    
+    }
+
     input[type=radio].css-checkbox + label.css-label {
         padding-left: 18px;
         height: 20px;
@@ -1719,16 +1723,16 @@ ul#relatedTab {
         background-position: 0px -1px !important;
         vertical-align: middle;
         cursor: pointer;
-    }    
-    
+    }
+
     input[type=radio].css-checkbox:checked + label.css-label {
         background-position: 0 -29px !important;
-    }    
+    }
 }
 /******************** PLANTILLAS ********************/
 .swbp-panel-body-card input :not(.dijitInputInner) {
     @include input;
-    
+
     &:focus{
         @include inputFocus;
     }
@@ -1740,10 +1744,10 @@ ul#relatedTab {
     @include border;
     @include fontCaption-Button;
     height: 36px;
-    
+
     span{
         font-size: 14px;
-    }  
+    }
 
     &:hover, &:active, &:focus, &:active:focus{
         background-color: $white-color;
@@ -1755,7 +1759,7 @@ ul#relatedTab {
 
 .swbp-btn-inter2{
     @include buttonRaised-Secundary;
-    
+
     &:hover, &:active, &:focus, &:active:focus{
         background-color: $color-primary-active;
         border: solid 1px $color-background-window;
@@ -1769,10 +1773,10 @@ ul#relatedTab {
     background-color: $color-background-content;
     @include border;
     font-size: 13px;
-    
+
     option{
         color: $color-panel-head;
-    }    
+    }
 }
 .swbp-badge-in{
     @include badge;
@@ -1793,27 +1797,27 @@ ul#relatedTab {
 
 .swbp-panel-button{
     padding: 0px;
-    
+
     a {
         @include buttonFlat;
-        
+
         &:hover, &:active, &:focus, &:active:focus {
             background-color: $white-color;
             color: $color-primary;
             outline: 0px;
             border: solid 1px $color-border-main;
-        } 
-        
+        }
+
         .icon{
             padding: 11px 0px 0px 0px;
-        }  
-        
+        }
+
         .text{
             padding: 0px;
             text-align: left;
             text-transform: uppercase;
-        }        
-    }    
+        }
+    }
 }
 
 /******************** VENTANAS MODALES ********************/
@@ -1842,13 +1846,13 @@ ul#relatedTab {
     height: 36px;
     text-transform: uppercase;
     font-size: 12px;
-    
+
     &:hover, &:active, &:focus, &:active:focus{
         @include panelContainer;
         color: $color-link;
         outline: 0px;
         box-shadow: none;
-    }    
+    }
 }
 
 ul.swbp-btn-dropdown li a{
@@ -1857,35 +1861,35 @@ ul.swbp-btn-dropdown li a{
     white-space: pre;
     min-height: 1.2em;
     padding: 0px 20px;
-    
+
     &:hover{
         background-color: $color-link;
         color: $white-color;
-    }    
+    }
 }
 
 /*.swbp-filters ul{
     background-color: $color-background-content;
-    
+
     li.dropdown-header {
-        color: $color-link; 
-    }   
-    
+        color: $color-link;
+    }
+
     li a{
         background-color: $color-background-content;
         color: $color-text-highlight;
         min-height: 32px;
         line-height: 1.8;
-        
+
         &:hover{
             color: $color-link;
             background-color: $white-color;
-        } 
-        
+        }
+
         strong{
             font-weight: normal;
-        }        
-    }    
+        }
+    }
 }*/
 
 .swbp-input-tray{
@@ -1894,7 +1898,7 @@ ul.swbp-btn-dropdown li a{
 }
 .swbp-tray-state-green{
     height: 3px;
-    background-color: $color-status-ok; 
+    background-color: $color-status-ok;
 }
 .swbp-tray-state-red{
     height: 3px;
@@ -1929,20 +1933,20 @@ ul.swbp-btn-dropdown li a{
         color: $color-text-highlight;
         min-height: 36px;
         padding: 10px 0px 0px 0px;
-        
+
         &:hover, &:active, &:focus, &:active:focus{
             background-color: $white-color;
             color: $color-primary;
             border: solid 1px $color-border-main;
             outline: 0px;
-        }        
-        
+        }
+
     }
 
     .fa{
         padding: 0px;
         font-size: 14px;
-    }    
+    }
 }
 .swbp-tray-text{
     font-family: $font-main-family;
@@ -1953,10 +1957,10 @@ ul.swbp-btn-dropdown li a{
 }
 /*select.form-control{
     @include select;
-    
+
     &:focus{
         @include inputFocus;
-    }    
+    }
 }*/
 .panel.swbp-tray-chart{
     padding: 16px;
@@ -1964,7 +1968,7 @@ ul.swbp-btn-dropdown li a{
     border: 0px;
     box-shadow: none;
     margin-bottom: 4px;
-    
+
     .panel-footer{
         @include panelContainer;
         border-top: 0px;
@@ -1974,8 +1978,8 @@ ul.swbp-btn-dropdown li a{
             padding: 12px 16px;
             margin: 0px;
             color: $color-primary;
-        }    
-    }    
+        }
+    }
 }
 
 .swbp-tray-body{
@@ -1984,12 +1988,12 @@ ul.swbp-btn-dropdown li a{
     text-align: center;
     height: 200px;
     overflow: scroll;
-    
+
     .img-thumbnail{
         background-color: transparent;
         border: 0px;
         padding: 0px;
-    }    
+    }
 }
 
 .swbp-tray-body-panel{
@@ -1999,10 +2003,10 @@ ul.swbp-btn-dropdown li a{
 .swbp-footer-pagination{
     background-color: transparent;
     border-top: 0px;
-    
+
     .swbp-pagination-title, .swbp-pagination-number ul.pagination{
-        margin-top: 0px;   
-    }    
+        margin-top: 0px;
+    }
 }
 
 /** MONITOREO V2 **/
@@ -2051,7 +2055,7 @@ ul.swbp-btn-dropdown li a{
 //General hack for other styles
 footer {
     //margin-top:30px;
-    
+
     &.swbp-footer {
         width: 100%;
         height: 36px;
@@ -2060,7 +2064,7 @@ footer {
         text-align: center;
         background-color: #1c2b36;
         line-height: 36px;
-        
+
         p {
             color: #979797;
             font-size: 10px;
@@ -2073,7 +2077,7 @@ footer {
     * {
         max-width: 100%;
     }
-    
+
     img {
         width: 100%;
         height: auto;
