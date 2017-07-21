@@ -4,7 +4,6 @@
  */
 package org.semanticwb.process.resources;
 
-import com.lowagie.text.DocumentException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,26 +18,19 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.zip.ZipOutputStream;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBComparator;
-import org.semanticwb.portal.SWBFormMgr;
 import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBActionResponse;
 import org.semanticwb.portal.api.SWBParamRequest;
@@ -56,6 +48,8 @@ import org.semanticwb.process.model.ProcessElement;
 import org.semanticwb.process.model.SubProcess;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.lowagie.text.DocumentException;
 
 /**
  *
@@ -248,7 +242,7 @@ public class DocumentationResource extends GenericAdmResource {
                 }
                 copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/modeler/toolkit.js", basePath + "/js/modeler/toolkit.js");
                 copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/modeler/modeler.js", basePath + "/js/modeler/modeler.js");
-                copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/modeler/images/modelerFrame.css", basePath + "/css/modeler/modelerFrame.css");
+                copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/commons/css/modeler.css", basePath + "/css/modeler/modeler.css");
                 copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/commons/css/swbp.css", basePath + "/css/swbp.css");
                 copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/documentation/css/style.css", basePath + "/css/style.css");
                 //Add images
@@ -373,7 +367,7 @@ public class DocumentationResource extends GenericAdmResource {
                 + "<script type=\"text/javascript\" src=\"js/modeler/toolkit.js\"></script>\n"
                 + "<script type=\"text/javascript\" src=\"js/modeler/modeler.js\"></script>\n"
                 + "<link href=\"documentation/style.css\" rel=\"stylesheet\">\n"
-                + "<link href=\"css/modeler/modelerFrame.css\" rel=\"stylesheet\">"
+                + "<link href=\"css/modeler/modeler.css\" rel=\"stylesheet\">"
                 + "<script type=\'text/javascript\'> //Activate tooltips\n"
                 + "    $(document).ready(function() {\n"
                 + "        if ($(\"[data-toggle=tooltip]\").length) {\n"
@@ -1313,7 +1307,7 @@ public class DocumentationResource extends GenericAdmResource {
                                 + "        <link href=\"css/fontawesome/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
                                 + "        <link href=\"css/swbp.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
                                 + "        <link href=\"css/style.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-                                + "        <link href=\"css/modeler/modelerFrame.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+                                + "        <link href=\"css/modeler/modeler.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
                                 + "        <script src=\"js/jquery/jquery.js\"></script>\n"
                                 + "        <script type=\"text/javascript\" src=\"js/modeler/toolkit.js\"></script>\n"
                                 + "        <script type=\"text/javascript\" src=\"js/modeler/modeler.js\"></script>\n"
@@ -1329,7 +1323,7 @@ public class DocumentationResource extends GenericAdmResource {
                                 + "        <link href=\"" + SWBPortal.getContextPath() + "/swbadmin/css/fontawesome/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
                                 + "        <link href=\"" + SWBPortal.getContextPath() + "/swbadmin/jsp/process/commons/css/swbp.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
                                 + "        <link href=\"" + SWBPortal.getContextPath() + "/swbadmin/jsp/process/documentation/css/style.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-                                + "        <link href=\"" + SWBPortal.getContextPath() + "/swbadmin/jsp/process/modeler/images/modelerFrame.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+                                + "        <link href=\"" + SWBPortal.getContextPath() + "/swbadmin/jsp/process/commons/css/modeler.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
                                 + "        <script src=\"" + SWBPortal.getContextPath() + "/swbadmin/js/jquery/jquery.js\"></script>\n"
                                 + "        <script type=\"text/javascript\" src=\"" + SWBPortal.getContextPath() + "/swbadmin/jsp/process/modeler/toolkit.js\"></script>\n"
                                 + "        <script type=\"text/javascript\" src=\"" + SWBPortal.getContextPath() + "/swbadmin/jsp/process/modeler/modeler.js\"></script>\n"
