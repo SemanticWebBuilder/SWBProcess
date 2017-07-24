@@ -1640,7 +1640,7 @@ var ToolKit = {
     obj.translate=function(x,y) {
       var segments = obj.getPathData(), i, l = segments.length;
 
-      for(i = 1; i < segments.length - 1; i++) {//Ignore start and end points
+      for(i = 1; i < l - 1; i++) {//Ignore start and end points
         var point = [];
         point.push(segments[i].values[0]+x);
         point.push(segments[i].values[1]+y);
@@ -1750,7 +1750,7 @@ var ToolKit = {
     obj.layer=_this.layer;
     obj.clicks=0;
 
-    if(id && id!==null)obj.setAttributeNS(null,"id",id);
+    if(id && id!=null)obj.setAttributeNS(null,"id",id);
 
     obj.canAddToDiagram=function() { return true; };
     obj.canStartLink=function(link) { return true; };
@@ -1903,7 +1903,7 @@ var ToolKit = {
         });
       }
 
-      var segments, segment, l = inConnections.length;
+      //var segments, segment, l = inConnections.length;
       //Recalculate endPoint of inconnections
       inConnections.forEach(function(con) {
         var segments = con.getPathData();
@@ -2094,8 +2094,8 @@ var ToolKit = {
         }
       }
 
-      if(newParent && newParent!==null) {
-        if (newParent.contents.indexOf(obj) === -1) {
+      if(newParent && newParent!=null) {
+        if (newParent.contents.indexOf(obj) == -1) {
           newParent.contents.push(obj);
           obj.parent=newParent;
         }
@@ -2343,8 +2343,8 @@ obj.ondblclick(evt);
     };
 
     obj.dblclick=function(evt) {
-      var txt = prompt("Texto:",obj.value);
-      if(txt && txt!==null) {
+      var txt = prompt("Texto:",obj.value) || null;
+      if(txt && txt!=null) {
         obj.value=txt;
         obj.update();
       }

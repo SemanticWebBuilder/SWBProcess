@@ -326,21 +326,20 @@ var _GraphicalElement = function(obj) {
         _this.setElementType("MessageStartEvent");
 
         _this.canEndLink=function(link) {
-            var ret = fCanEnd(link);
+            fCanEnd(link);
 
             if (link.elementType==="MessageFlow") {
                 if (_this.inConnections.length===0) {
                     ToolKit.hideToolTip();
-                    ret = true;
+                    return true;
                 } else {
                     ToolKit.showTooltip(0, "Un evento inicial de mensage no puede tener más de un flujo entrante", 200, "Error");
-                    ret = false;
+                    return false;
                 }
             } else {
                 ToolKit.showTooltip(0, "Un evento inicial de mensage sólo puede tener flujos de mensaje entrantes", 200, "Error");
-                ret = false;
+                return false;
             }
-            return ret;
         };
 
         _this.canAddToDiagram=function() {
@@ -524,12 +523,12 @@ var _GraphicalElement = function(obj) {
         _this.canAddToDiagram = function () {
             var ret = fcanAdd(),
                 msg = null,
-                layer = ToolKit.layer;
+                layer = ToolKit.layer || null;
 
-            if (layer === null) {
+            if (layer == null) {
                 msg = "Este evento no puede usarse en un proceso de nivel superior";
                 ret = false;
-            } else if (ret && layer !== null) {
+            } else if (ret && layer != null) {
                 if (layer.parent.elementType==="SubProcess") {
                     ret = false;
                     msg = "Un subproceso debe iniciar con un evento normal";
@@ -557,12 +556,12 @@ var _GraphicalElement = function(obj) {
         _this.canAddToDiagram = function () {
             var ret = fcanAdd(),
                 msg = null,
-                layer = ToolKit.layer;
+                layer = ToolKit.layer || null;
 
-            if (layer === null) {
+            if (layer == null) {
                 msg = "Este evento no puede usarse en un proceso de nivel superior";
                 ret = false;
-            } else if (ret && layer !== null) {
+            } else if (ret && layer != null) {
                 if (layer.parent.elementType==="SubProcess") {
                     ret = false;
                     msg = "Un subproceso debe iniciar con un evento normal";
@@ -590,12 +589,12 @@ var _GraphicalElement = function(obj) {
         _this.canAddToDiagram = function () {
             var ret = fcanAdd(),
                 msg = null,
-                layer = ToolKit.layer;
+                layer = ToolKit.layer | null;
 
-            if (layer === null) {
+            if (layer == null) {
                 msg = "Este evento no puede usarse en un proceso de nivel superior";
                 ret = false;
-            } else if (ret && layer !== null) {
+            } else if (ret && layer != null) {
                 if (layer.parent.elementType==="SubProcess") {
                     ret = false;
                     msg = "Un subproceso debe iniciar con un evento normal";
@@ -665,7 +664,7 @@ var _GraphicalElement = function(obj) {
             var ret = fCanEnd(link),
                 msg = null,
                 etype = link.elementType,
-                p = _this.parent;
+                p = _this.parent | null;
 
             if (ret && link.typeOf("AssociationFlow") && link.fromObject.typeOf("DataObject")) {
                 ret = false;
@@ -675,7 +674,7 @@ var _GraphicalElement = function(obj) {
             }
 
             if (ret && etype==="SequenceFlow") {
-                if (ret && p && p !== null && p.typeOf("Activity")) {
+                if (ret && p != null && p.typeOf("Activity")) {
                     msg = "Un evento adherido no puede tener flujos de secuencia entrantes";
                     ret = false;
                 } else {
@@ -939,9 +938,9 @@ var _GraphicalElement = function(obj) {
         _this.canStartLink = function(link) {
             var ret = fCanStart(link),
                 msg = null,
-                p = _this.parent;
+                p = _this.parent || null;
 
-            if (ret && p && p !== null && p.typeOf("Activity") && link.elementType !== "DirectionalAssociation") {
+            if (ret && p != null && p.typeOf("Activity") && link.elementType !== "DirectionalAssociation") {
                 msg = "Este evento adherido sólo puede conectarse mediante asociaciones direccionales";
                 ret = false;
             }
@@ -1845,8 +1844,8 @@ var _GraphicalElement = function(obj) {
             fUpdateText = _this.text.update;
 
             _this.text.ondblclick = function(evt) {
-                var txt = prompt("Titulo:",_this.text.value);
-                if(txt && txt!==null)
+                var txt = prompt("Titulo:",_this.text.value) || null;
+                if(txt && txt!=null)
                 {
                     _this.text.value=txt;
                     _this.text.update();
@@ -2212,9 +2211,9 @@ var _GraphicalElement = function(obj) {
             };
 
             //Override passed options
-            if (options && options !== null) {
-                var mode = options.mode;
-                if (mode && mode !== null && mode.length > 0) {
+            if (options && options != null) {
+                var mode = options.mode || null;
+                if (mode && mode != null && mode.length > 0) {
                     Modeler.options.mode = mode;
                 }
 
@@ -2337,7 +2336,7 @@ var _GraphicalElement = function(obj) {
                 _this.svg.mouseX = evtX;
                 _this.svg.mouseY = evtY;
 
-                if (currentHandler !== null) {
+                if (currentHandler != null) {
                     x = evtX - offX;
                     y = evtY - offY;
                     //ah.segment.x = x;
@@ -2347,7 +2346,7 @@ var _GraphicalElement = function(obj) {
                     currentHandler.parent.updateStartPoint();
                     currentHandler.parent.updateEndPoint();
                     currentHandler.parent.updateSubLine();
-                } else if(resizeObj && resizeObj !== null) {
+                } else if(resizeObj && resizeObj != null) {
                     var parent = resizeObj.parent,
                         objix = resizeObj.ix,
                         objiy = resizeObj.iy;
@@ -2455,7 +2454,7 @@ var _GraphicalElement = function(obj) {
 
             };
 
-            if (callbackHandler && callbackHandler !== null) {
+            if (callbackHandler && typeof callbackHandler == "function") {
                 callbackHandler();
             }
         },
@@ -2573,11 +2572,11 @@ var _GraphicalElement = function(obj) {
                 return false;
             }
 
-            if(dragCon !== null) {
+            if(dragCon != null) {
                 toObj === null ? dragCon.remove() :
                         toObj.canEndLink(dragCon) ? toObj.addInConnection(dragCon) : dragCon.remove();
 
-                dragCon = Modeler.dragConnection = null;
+                Modeler.dragConnection = null;
             }
 
             if (resizeObj !== null && p.elementType==="Lane") {
@@ -2905,6 +2904,8 @@ var _GraphicalElement = function(obj) {
                     to = this.toObject || null, ini, end, dx, dy,
                     fw, tw, fh, th, segments = this.getPathData();//this.pathSegList;
 
+                if (null == from || null == to) return;
+
                 if (segments.length >= 4) {
                     pini = segments[0];//segments.getItem(0);
                     pend = segments[segments.length - 1];//segments.getItem(segments.numberOfItems - 1);
@@ -2930,10 +2931,10 @@ var _GraphicalElement = function(obj) {
                     dx = end.x - ini.x;
                     dy = end.y - ini.y;
 
-                    fw = from !== null ? from.getWidth() / 2 : 0;
-                    tw = to !== null ? to.getWidth() / 2 : 0;
-                    fh = from !== null ? from.getHeight() / 2 : 0;
-                    th = to !== null ? to.getHeight() / 2 : 0;
+                    fw = from != null ? from.getWidth() / 2 : 0;
+                    tw = to != null ? to.getWidth() / 2 : 0;
+                    fh = from != null ? from.getHeight() / 2 : 0;
+                    th = to != null ? to.getHeight() / 2 : 0;
 
                     if((Math.abs(dx) - fw - tw) >= (Math.abs(dy) - fh - th))  {//Caso X
                         if(dx > 0) {
@@ -3012,10 +3013,10 @@ var _GraphicalElement = function(obj) {
                     dx = end.x - ini.x;
                     dy = end.y - ini.y;
 
-                    fw = from !== null ? from.getWidth() / 2 : 0;
-                    tw = to !== null ? to.getWidth() / 2 : 0;
-                    fh = from !== null ? from.getHeight() / 2 : 0;
-                    th = to !== null ? to.getHeight() / 2 : 0;
+                    fw = from != null ? from.getWidth() / 2 : 0;
+                    tw = to != null ? to.getWidth() / 2 : 0;
+                    fh = from != null ? from.getHeight() / 2 : 0;
+                    th = to != null ? to.getHeight() / 2 : 0;
 
                     if((Math.abs(dx) - fw - tw) >= (Math.abs(dy) - fh - th))  {//Caso X
                         if(dx > 0) {
@@ -3060,10 +3061,10 @@ var _GraphicalElement = function(obj) {
                     to = obj.toObject, dx = obj.xe - from.getX(),
                     dy = obj.ye - from.getY();
 
-                    fw = from !== null ? from.getWidth() / 2 : 0;
-                    fh = from !== null ? from.getHeight() / 2 : 0;
-                    tw = to !== null ? to.getWidth() / 2 : 0;
-                    th = to !== null ? to.getHeight() / 2 : 0;
+                    fw = from != null ? from.getWidth() / 2 : 0;
+                    fh = from != null ? from.getHeight() / 2 : 0;
+                    tw = to != null ? to.getWidth() / 2 : 0;
+                    th = to != null ? to.getHeight() / 2 : 0;
 
 
                     if((Math.abs(dx) - fw - tw) >= (Math.abs(dy) - fh - th))  {//Caso X
@@ -3196,8 +3197,8 @@ var _GraphicalElement = function(obj) {
                 };
 
                 obj.text.ondblclick = function(evt) {
-                    var txt = prompt("Titulo:",obj.text.value);
-                    if(txt && txt!==null)
+                    var txt = prompt("Titulo:",obj.text.value) || null;
+                    if(txt && txt!=null)
                     {
                         obj.text.value=txt;
                         obj.text.update();
@@ -4084,7 +4085,7 @@ var _GraphicalElement = function(obj) {
         },
 
         submitCommand:function(url, data, callbackHandler) {
-            var xhqr = $.post(url, {jsonString:data})
+            $.post(url, {jsonString:data})
                 .done(function(data) {
                     ToolKit.hideToolTip();
                     callbackHandler(data);
