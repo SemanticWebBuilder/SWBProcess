@@ -50,6 +50,8 @@ public class SWPUtils {
             while ((len = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, len);
             }
+            inputStream.close();
+            outputStream.close();
         } catch (IOException ioex) {
         		log.error(ioex);
         } finally {
@@ -77,6 +79,8 @@ public class SWPUtils {
             while ((length = inStream.read(buffer)) > 0) {
                 outStream.write(buffer, 0, length);
             }
+            inStream.close();
+            outStream.close();
         } catch (IOException e) {
             System.err.println("Error to copy file " + sourceFile + ", " + e.getMessage());
         } finally {
@@ -157,6 +161,8 @@ public class SWPUtils {
             while ((length = is.read(b)) != -1) {
                 os.write(b, 0, length);
             }
+            is.close();
+            os.close();
         } catch (Exception e) {
             log.error("Error on saveFile, " + e.getMessage() + ", " + e.getCause());
         } finally {

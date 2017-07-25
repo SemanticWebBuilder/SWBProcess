@@ -982,11 +982,12 @@ public class SWPDocumentationResource extends GenericAdmResource {
                                 zos.flush();
                             }
                             SWBUtils.IO.removeDirectory(basePath);
-                            
                             out.flush();
                             out.close();
 	                    } catch (IOException ioex) {
 	                    		throw new IOException(ioex);
+	                    } finally {
+	                    		if (null != out) out.close();
 	                    }
                     }
                 } else if (format.equals(FORMAT_WORD)) {
