@@ -46,7 +46,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
     private static final Logger log = SWBUtils.getLogger(DocumentationInstance.class);
     /**
      * Constructor.
-     * @param base 
+     * @param base
      */
     public DocumentationInstance(org.semanticwb.platform.SemanticObject base) {
         super(base);
@@ -234,7 +234,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
             }
         }
     }
-    
+
     /**
      * Obtiene un documento XML con la información de la instancia de la documentación.
      * @param request Obheto HTTPServletRequest para construir URLS
@@ -321,7 +321,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                     if (!ref.hasRepositoryReference()) addInstance = false;
 //                                    System.out.println("addInstance: "+addInstance);
                                     if (!addInstance) continue;
-                                    
+
 //                                    System.out.println("  ...Continue adding element");
                                     RepositoryDirectory rd = ref.getRefRepository().getRepositoryDirectory();
                                     SWBResourceURL urld = new SWBResourceURLImp(request, rd.getResource(), rd, SWBResourceModes.UrlType_RENDER);
@@ -335,19 +335,19 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                         String basePathRepo = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/";
                                         File baseDir = new File(basePathRepo);
                                         String basePathDest = basePath;
-                                        
+
                                         File repFile = new File(basePathDest + "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/");
-                                        
+
                                         if (!repFile.exists()) {
                                             repFile.mkdirs();
                                         }
 
                                         if (baseDir.isDirectory()) {
                                             File[] files = baseDir.listFiles();
-                                            for (File file : files) {
-                                                urlDownload = "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/" + file.getName();
-                                                SWPUtils.copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
-                                                break;
+                                            if (null != files && files.length > 0) {
+                                              File file = files[0];
+                                              urlDownload = "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/" + file.getName();
+                                              SWPUtils.copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
                                             }
                                         }
                                     }
@@ -523,10 +523,10 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                                     }
                                                     if (baseDir.isDirectory()) {
                                                         File[] files = baseDir.listFiles();
-                                                        for (File file : files) {
-                                                            urlDownload = "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/" + file.getName();
-                                                            SWPUtils.copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
-                                                            break;
+                                                        if (null != files && files.length > 0) {
+                                                        	File file = files[0];
+                                                        	urlDownload = "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/" + file.getName();
+                                                        SWPUtils.copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
                                                         }
                                                     }
                                                 }
@@ -581,7 +581,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
         } catch (IOException ioe) {
             log.error("Error on getDocument, IOEXception" + ioe);
         }
-        
+
 //        try {
 //            // Use a Transformer for output
 //            TransformerFactory tFactory = TransformerFactory.newInstance();
@@ -591,12 +591,12 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
 //            StreamResult result = new StreamResult(new FileOutputStream(new File("/Users/hasdai/Documents/xmlDocumentation.xml")));
 //            transformer.transform(source, result);
 //        } catch (Exception ex) {
-//            
+//
 //        }
-        
+
         return doc;
     }
-    
+
     /**
      * Crea una ruta temporal para las descargas de documentación.
      * @return Ruta a la carpeta de trabajo de la instancia, con un modificador único para archivos temporales.

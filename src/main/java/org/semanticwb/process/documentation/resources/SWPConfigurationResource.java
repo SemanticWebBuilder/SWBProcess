@@ -26,18 +26,6 @@ public class SWPConfigurationResource extends GenericResource {
     private final Logger log = SWBUtils.getLogger(SWPConfigurationResource.class);
 
     @Override
-    public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
-        String action = response.getAction();
-        super.processAction(request, response);
-    }
-
-    @Override
-    public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-        String mode = paramRequest.getMode();
-        super.processRequest(request, response, paramRequest);
-    }
-
-    @Override
     public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         response.setContentType("text/html; charset=UTF-8");
         String path = "/work/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/documentation/configuration.jsp";

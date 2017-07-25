@@ -961,28 +961,34 @@ public class SWPDocumentationResource extends GenericAdmResource {
                     }
                     SWBUtils.IO.copyStructure(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/images/", basePath + "/css/images/");
                     File index = new File(basePath + "/index.html");
-                    FileOutputStream out = new FileOutputStream(index);
-
+                    FileOutputStream out = null;//new FileOutputStream(index);
+                    
                     Document dom = docInstance.getXMLDocument(request, basePath, true);//SWPUtils.getDocument(docInstance, request, true);
                     if (dom != null) {
-                        String tlpPath = SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/documentation/documentation.xsl";
-                        javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(tlpPath));
-                        out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes());
+	                    	try {
+	                    		out = new FileOutputStream(index);
+	                    		String tlpPath = SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/documentation/documentation.xsl";
+                            javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(tlpPath));
+                            out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes());
 
-                        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-                        Result output = new StreamResult(new File(basePath + "/documentation.xml"));
-                        Source input = new DOMSource(dom);
-                        transformer.transform(input, output);
+                            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                            Result output = new StreamResult(new File(basePath + "/documentation.xml"));
+                            Source input = new DOMSource(dom);
+                            transformer.transform(input, output);
+                            
+                            //ZIP content and remove temp dir
+                            try (OutputStream ou = response.getOutputStream(); ZipOutputStream zos = new ZipOutputStream(ou)) {
+                                SWBUtils.IO.zip(dest, new File(basePath), zos);
+                                zos.flush();
+                            }
+                            SWBUtils.IO.removeDirectory(basePath);
+                            
+                            out.flush();
+                            out.close();
+	                    } catch (IOException ioex) {
+	                    		throw new IOException(ioex);
+	                    }
                     }
-                    out.flush();
-                    out.close();
-                    
-                    //ZIP content and remove temp dir
-                    try (OutputStream ou = response.getOutputStream(); ZipOutputStream zos = new ZipOutputStream(ou)) {
-                        SWBUtils.IO.zip(dest, new File(basePath), zos);
-                        zos.flush();
-                    }
-                    SWBUtils.IO.removeDirectory(basePath);
                 } else if (format.equals(FORMAT_WORD)) {
                     response.setContentType("application/msword");
                     response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".docx\"");

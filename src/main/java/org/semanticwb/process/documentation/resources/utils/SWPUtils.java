@@ -30,29 +30,42 @@ public class SWPUtils {
     public final static String FORMAT_PNG = "png";
     public final static String FORMAT_SVG = "svg";
     private final static Logger log = SWBUtils.getLogger(SWPUtils.class);
-    public static final SimpleDateFormat DateFormatter = new SimpleDateFormat("dd/MMM/yyyy - hh:mm:ss");
+    public final SimpleDateFormat DateFormatter = new SimpleDateFormat("dd/MMM/yyyy - hh:mm:ss");
 
     public static void copyFileFromSWBAdmin(String source, String destination, String fileName) throws FileNotFoundException, IOException {
-        InputStream inputStream = SWBPortal.getAdminFileStream(source);
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
         File css = new File(destination);
         if (!css.exists()) {
             css.mkdirs();
         }
 
         File file = new File(css.getAbsolutePath() + fileName);
-        OutputStream outputStream = new FileOutputStream(file);
-        byte[] buffer = new byte[1024];
-        int len;
-        while ((len = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, len);
+        
+        try {
+        		inputStream = SWBPortal.getAdminFileStream(source);
+        		outputStream = new FileOutputStream(file);
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, len);
+            }
+        } catch (IOException ioex) {
+        		log.error(ioex);
+        } finally {
+        		if (null != inputStream) {
+        			inputStream.close();
+        		}
+        		if (null != outputStream) {
+        			outputStream.close();
+        		}
         }
-        outputStream.close();
-        inputStream.close();
     }
 
     public static void copyFile(String sourceFile, String destFile) throws IOException {//TODO: Revisar por qué es necesario esto en lugar de SWBUtils.IO.copyStream
         InputStream inStream = null;
         OutputStream outStream = null;
+        
         try {
             File afile = new File(sourceFile);
             File bfile = new File(destFile);
@@ -64,22 +77,30 @@ public class SWPUtils {
             while ((length = inStream.read(buffer)) > 0) {
                 outStream.write(buffer, 0, length);
             }
-            inStream.close();
-            outStream.close();
         } catch (IOException e) {
             System.err.println("Error to copy file " + sourceFile + ", " + e.getMessage());
-        }
+        } finally {
+	    		if (null != inStream) {
+	    			inStream.close();
+	    		}
+	    		if (null != outStream) {
+	    			outStream.close();
+	    		}
+	    }
     }
 
-    public static void generateImageModel(org.semanticwb.process.model.Process p, String path, String format, String data, double width, double height) {
+    public static void generateImageModel(org.semanticwb.process.model.Process p, String path, String format, String data, double width, double height) throws IOException {
         //TODO: Cuando no hay datos del modelo, no debe hacerse nada
+    		FileOutputStream out = null;
+    		
         try {
             //String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/rep_files/";
             File baseDir = new File(path);
             if (!baseDir.exists()) {
                 baseDir.mkdirs();
             }
-            FileOutputStream out = new FileOutputStream(baseDir + "/" + p.getId() + "." + format);
+            
+            out = new FileOutputStream(baseDir + "/" + p.getId() + "." + format);
             if (format.equals(FORMAT_SVG)) {
                 String svg = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
                         + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n";
@@ -114,17 +135,21 @@ public class SWPUtils {
                 t.transcode(ti, to);
             }
             out.flush();
-            out.close();
-
         } catch (Exception e) {
+        } finally {
+        		if (null != out) {
+        			out.close();
+        		}
         }
     }
 
-    public static void saveFile(String src, String dest) {
+    public static void saveFile(String src, String dest) throws IOException {
+    		InputStream is = null;
+    		OutputStream os = null;
         try {
             URL url = new URL(src);
-            InputStream is = url.openStream();
-            OutputStream os = new FileOutputStream(dest);
+            is = url.openStream();
+            os = new FileOutputStream(dest);
 
             byte[] b = new byte[2048];
             int length;
@@ -132,10 +157,11 @@ public class SWPUtils {
             while ((length = is.read(b)) != -1) {
                 os.write(b, 0, length);
             }
-            is.close();
-            os.close();
         } catch (Exception e) {
             log.error("Error on saveFile, " + e.getMessage() + ", " + e.getCause());
+        } finally {
+        		if (null != is) is.close();
+        		if (null != os) os.close();
         }
     }
     

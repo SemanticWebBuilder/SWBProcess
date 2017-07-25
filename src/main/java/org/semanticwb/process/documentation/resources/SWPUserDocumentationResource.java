@@ -161,11 +161,15 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
         while (allGroups.hasNext()) {
             ProcessGroup group = allGroups.next();
             if (group.isValid()) {
-                if (null != root) {
+            		if (null != root || null == group.getParentGroup()) {
+            			ret.add(group);
+            		}
+            		
+                /*if (null != root) {
                     ret.add(group);
                 } else if (null == group.getParentGroup()) {
                     ret.add(group);
-                }
+                }*/
             }
         }
         

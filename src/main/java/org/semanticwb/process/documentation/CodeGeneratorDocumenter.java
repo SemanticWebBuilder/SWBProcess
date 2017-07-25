@@ -9,7 +9,7 @@ package org.semanticwb.process.documentation;
  * forma que pueda ser interpretada y procesada por personas y/o sistemas, es
  * una creación original del Fondo de Información y Documentación para la
  * Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
- * 
+ *
 * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de
  * su licenciamiento abierto al público (‘open source’), en virtud del cual,
  * usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y
@@ -18,12 +18,12 @@ package org.semanticwb.process.documentation;
  * todo ello de conformidad con los términos y condiciones de la LICENCIA
  * ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización del
  * SemanticWebBuilder 4.0.
- * 
+ *
 * INFOTEC no otorga garantía sobre SemanticWebBuilder, de ninguna especie y
  * naturaleza, ni implícita ni explícita, siendo usted completamente responsable
  * de la utilización que le dé y asumiendo la totalidad de los riesgos que
  * puedan derivar de la misma.
- * 
+ *
 * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC
  * pone a su disposición la siguiente dirección electrónica:
  * http://www.semanticwebbuilder.org
@@ -48,7 +48,7 @@ public class CodeGeneratorDocumenter {
     public void codeGen(String[] args) {
         String base = SWBUtils.getApplicationPath();
         SWBPlatform.createInstance();
-        File f = new File(base + "/../../");
+        //File f = new File(base + "/../../");
 //        SWBPlatform.getSemanticMgr().addBaseOntology(base + "/../../../../SWB4/swb/web/WEB-INF/owl/swb.owl");
 //        SWBPlatform.getSemanticMgr().addBaseOntology(base + "/../../../../SWB4/swbp/WEB-INF/owl/ext/swp.owl");
 //        SWBPlatform.getSemanticMgr().addBaseOntology(base + "/../../src/org/semanticwb/process/documentation/swpdoc.owl");
