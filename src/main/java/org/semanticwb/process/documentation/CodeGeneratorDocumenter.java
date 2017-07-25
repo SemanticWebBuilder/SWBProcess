@@ -43,6 +43,7 @@ import org.semanticwb.codegen.CodeGeneratorException;
  */
 public class CodeGeneratorDocumenter {
 	private static final Logger LOG = SWBUtils.getLogger(CodeGeneratorDocumenter.class);
+	private static final String genPath = "D:\\Infotec\\swbproys\\SWPDocumentation\\src\\";
 
     public static void main(String[] args) {
         new CodeGeneratorDocumenter().codeGen();
@@ -57,8 +58,7 @@ public class CodeGeneratorDocumenter {
         SWBPlatform.getSemanticMgr().getOntology().rebind();
 
         try {
-            //String path = getClass().getResource("/").getPath().replaceAll("%20", " ");
-            File dir = new File("D:\\Infotec\\swbproys\\SWPDocumentation\\src\\");
+            File dir = new File(genPath);
             CodeGenerator codeGeneration = new CodeGenerator();
             codeGeneration.generateCode("swpdoc", false, dir);
             LOG.info("Generación de clases completa");
