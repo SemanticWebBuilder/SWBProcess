@@ -22,6 +22,7 @@
  */
 package org.semanticwb.process.model;
 
+import java.util.Iterator;
 import java.util.List;
 
 public interface Containerable extends org.semanticwb.process.model.base.ContainerableBase
@@ -31,5 +32,7 @@ public interface Containerable extends org.semanticwb.process.model.base.Contain
     public List<ItemAware> listRelatedItemAware();
     
     public List<ItemAware> listHerarquicalRelatedItemAware();
+    
+    public Iterator<GraphicalElement> listAllContaineds();
 
 }
