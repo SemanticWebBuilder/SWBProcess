@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,21 +18,28 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.model;
 
 import java.util.Iterator;
-import org.semanticwb.Logger;
-import org.semanticwb.SWBUtils;
+
 import org.semanticwb.model.User;
+import org.semanticwb.platform.SemanticObject;
 
-
+/**
+ * Clase que encapsula las propiedades y comportamiento de un evento intermedio receptor de de regla de negocio.
+ * @author Javier Solís
+ * @author Hasdai Pacheco
+ *
+ */
 public class RuleIntermediateCatchEvent extends org.semanticwb.process.model.base.RuleIntermediateCatchEventBase 
 {
-    public static Logger log=SWBUtils.getLogger(RuleIntermediateCatchEvent.class);
-
-    public RuleIntermediateCatchEvent(org.semanticwb.platform.SemanticObject base)
+	/**
+	 * Constructor.
+	 * @param base
+	 */
+    public RuleIntermediateCatchEvent(SemanticObject base)
     {
         super(base);
     }
@@ -85,6 +92,4 @@ public class RuleIntermediateCatchEvent extends org.semanticwb.process.model.bas
         ProcessObserver obs=instance.getProcessSite().getProcessObserver();
         obs.removeRuleObserverInstance(instance);
     }
-
-
 }

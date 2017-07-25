@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,15 +17,13 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.resources;
 
 import java.io.*;
 import java.util.Date;
 import java.util.Enumeration;
-//import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +37,6 @@ import org.semanticwb.platform.SemanticProperty;
 import org.semanticwb.portal.api.*;
 import org.w3c.dom.*;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class SWBAScheduleProcess.
  * 
@@ -48,10 +45,10 @@ import org.w3c.dom.*;
 public class SWBAScheduleProcess extends GenericResource {
 
     /** Nombre del recurso. */
-    private Logger log = SWBUtils.getLogger(SWBAScheduleProcess.class);
+    private static final Logger LOG = SWBUtils.getLogger(SWBAScheduleProcess.class);
     
     /** The str rsc type. */
-    public String strRscType;
+    private String strRscType;
 
     /* (non-Javadoc)
      * @see org.semanticwb.portal.api.GenericResource#init()
@@ -228,7 +225,7 @@ public class SWBAScheduleProcess extends GenericResource {
                 endhour = SWBUtils.XML.getAttribute(doc, "endhour");
                 interval = SWBUtils.XML.getAttribute(doc, "inter");
 
-                log.debug("start hour:"+starthour);
+                LOG.debug("start hour:"+starthour);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -487,7 +484,7 @@ public class SWBAScheduleProcess extends GenericResource {
             endselectd = "disabled";
         }
         
-        log.debug("Cal-end-date-active=" + endselectd);
+        LOG.debug("Cal-end-date-active=" + endselectd);
 
         out.println("  <tr>");
         out.println("    <td>");
@@ -976,11 +973,11 @@ public class SWBAScheduleProcess extends GenericResource {
         String strUserMod = response.getUser().getId();
         String strActive = request.getParameter(id + "/active");
 
-        log.debug("SWBASchedule.processAction()--------------------------------------");
+        LOG.debug("SWBASchedule.processAction()--------------------------------------");
         Enumeration<String> enup = request.getParameterNames();
         while (enup.hasMoreElements()) {
             String param = enup.nextElement();
-            log.debug(param + ": " + request.getParameter(param));
+            LOG.debug(param + ": " + request.getParameter(param));
         }
 
         String rid = request.getParameter("rsuri");
@@ -1002,7 +999,7 @@ public class SWBAScheduleProcess extends GenericResource {
                 SemanticProperty prop = it.next();
                 if (prop.isDataTypeProperty()) {
                     String value = request.getParameter(id + "/" + prop.getName());
-                    log.debug("SWBASchedule: ProcessAction(update): " + prop.getName() + " -- >" + value);
+                    LOG.debug("SWBASchedule: ProcessAction(update): " + prop.getName() + " -- >" + value);
                     if (value != null) {
                         if (value.length() > 0) {
                             if (prop.isBoolean()) {
@@ -1055,7 +1052,7 @@ public class SWBAScheduleProcess extends GenericResource {
             response.setMode(response.Mode_VIEW);
         }
         if ("update".equals(action) && null != idCalendar) {
-            log.debug("Id Calendario: " + idCalendar);
+            LOG.debug("Id Calendario: " + idCalendar);
             String xmlOrig = null;
             Document doc = null;
             SemanticObject so = ont.getSemanticObject(idCalendar);
@@ -1099,7 +1096,7 @@ public class SWBAScheduleProcess extends GenericResource {
                     {
                         String timer = request.getParameter(id + "/timer");
                         if (timer != null) {
-                            log.debug("Temporizador:" + timer);
+                            LOG.debug("Temporizador:" + timer);
                             addElem(doc, interval, "timer", timer);
                         }
                     }
@@ -1107,16 +1104,16 @@ public class SWBAScheduleProcess extends GenericResource {
                     {       // tiempo ejecucion e intervalo
                         String starthour = request.getParameter(id + "/exechour");
                         if (starthour != null) {
-                            log.debug("Hora ejecucion:" + starthour);
+                            LOG.debug("Hora ejecucion:" + starthour);
                             starthour = starthour.substring(1, 6);
                             addElem(doc, interval, "exechour", starthour);
                         }
                         if (request.getParameter(id + "/time") != null) {
                             String intervalo = request.getParameter(id + "/inter");
-                            log.debug("Intervalo:" + intervalo);
+                            LOG.debug("Intervalo:" + intervalo);
                             addElem(doc, interval, "inter", intervalo);
                             String endhour = request.getParameter(id + "/endhour");
-                            log.debug("Hora final:" + endhour);
+                            LOG.debug("Hora final:" + endhour);
                             endhour = endhour.substring(1, 6);
                             addElem(doc, interval, "endhour", endhour);
                         }
@@ -1199,15 +1196,15 @@ public class SWBAScheduleProcess extends GenericResource {
                             }
                         }
                         if (period.equals("yearly")) {
-                            log.debug("Entro a YEARLY");
+                            LOG.debug("Entro a YEARLY");
                             String syear = request.getParameter(id + "/syear");
                             if (syear != null && syear.equals("day")) {
                                 if (request.getParameter(id + "/yyday") != null) {
-                                    log.debug("YYDAY:" + request.getParameter(id + "/yyday"));
+                                    LOG.debug("YYDAY:" + request.getParameter(id + "/yyday"));
                                     addElem(doc, eleperiod, "day", request.getParameter(id + "/yyday"));
                                 }
                                 if (request.getParameter(id + "/yydayTo") != null) {
-                                    log.debug("YYDAYTO:" + request.getParameter(id + "/yydayTo"));
+                                    LOG.debug("YYDAYTO:" + request.getParameter(id + "/yydayTo"));
                                     addElem(doc, eleperiod, "today", request.getParameter(id + "/yydayTo"));
                                 }
                                 if (request.getParameter(id + "/ymonth1") != null) {
@@ -1254,11 +1251,11 @@ public class SWBAScheduleProcess extends GenericResource {
                     }
                 }
                 String strXml = SWBUtils.XML.domToXml(doc);
-                log.debug(strXml);
+                LOG.debug(strXml);
                 so.setProperty(XMLable.swb_xml, strXml);
 
             } catch (Exception e) {
-                log.error("The XML schedule can't be generated", e);
+                LOG.error("The XML schedule can't be generated", e);
                 // No se actualiza y conserva el XML original
                 so.setProperty(XMLable.swb_xml, xmlOrig);
             }
@@ -1319,7 +1316,7 @@ public class SWBAScheduleProcess extends GenericResource {
         String ret = "";
         try {
             if (prop.isDataTypeProperty()) {
-                log.debug("getValueSemProp..." + obj.getProperty(prop));
+                LOG.debug("getValueSemProp..." + obj.getProperty(prop));
                 if (prop.isBoolean()) {
                     ret = "" + obj.getBooleanProperty(prop);
                 }

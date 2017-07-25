@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,8 +17,7 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.resources;
 
@@ -31,8 +30,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONObject;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
@@ -50,7 +51,6 @@ import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
 import org.semanticwb.portal.api.SWBResourceURL;
 import org.semanticwb.process.model.ItemAware;
-import org.semanticwb.process.model.ProcessService;
 import org.semanticwb.process.model.ServiceTask;
 import org.semanticwb.process.model.WebService;
 import org.semanticwb.process.model.WebServiceInvoker;
@@ -61,12 +61,12 @@ import org.semanticwb.webservices.Service;
 import org.semanticwb.webservices.ServiceInfo;
 
 /**
- *
+ * Componente que permite realizar la configuración de las operaciones en un servicio Web asociado a una tarea de Servicio.
  * @author juan.fernandez
  */
 public class WSOperationParameterConfig extends GenericResource {
 
-    private Logger log = SWBUtils.getLogger(WSOperationParameterConfig.class);
+    private static final Logger LOG = SWBUtils.getLogger(WSOperationParameterConfig.class);
 
     @Override
     public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
@@ -182,14 +182,14 @@ public class WSOperationParameterConfig extends GenericResource {
                             out.println("</ul>");
 
                         } else {
-                            log.error("Configuración de URL del WebService inválido.");
+                            LOG.error("Configuración de URL del WebService inválido.");
                             out.println("<fieldset>");
                             out.println("<h2>URL del WebService inválido.</h2>");
                             out.println("</fieldset>");
                         }
 
                     } catch (Exception e) {
-                        log.debug(e);
+                        LOG.debug(e);
                     }
                     out.println("</fieldset>");
                     out.println("<fieldset>");
@@ -198,14 +198,13 @@ public class WSOperationParameterConfig extends GenericResource {
                     out.println("</form>");
                     out.println("</div>");
                 } else {
-                    log.error("Falta definir URL del WebService");
+                    LOG.error("Falta definir URL del WebService");
                     out.println("<fieldset>");
                     out.println("<h2>Falta configurar el URL del WebService.</h2>");
                     out.println("</fieldset>");
                 }
             } else {
-
-                log.error("Falta seleccionar el WebService");
+                LOG.error("Falta seleccionar el WebService");
                 out.println("<fieldset>");
                 out.println("<h2>Falta seleccionar el WebService.</h2>");
                 out.println("</fieldset>");
@@ -469,7 +468,7 @@ public class WSOperationParameterConfig extends GenericResource {
                             out.println("</div>");
 
                         } catch (Exception e) {
-                            log.debug(e);
+                            LOG.debug(e);
                         }
 
                         // parámetros de salida
@@ -681,11 +680,11 @@ public class WSOperationParameterConfig extends GenericResource {
                             out.println("</div>");
 
                         } catch (Exception e) {
-                            log.debug(e);
+                            LOG.debug(e);
                         }
                     }
                 } else {
-                    log.error("Falta seleccionar el WebService");
+                    LOG.error("Falta seleccionar el WebService");
                     out.println("<fieldset>");
                     out.println("<h2>Falta seleccionar el WebService.</h2>");
                     out.println("</fieldset>");
@@ -829,13 +828,13 @@ public class WSOperationParameterConfig extends GenericResource {
                                             wsp.remove();
                                         }
                                     } catch (Exception ein) {
-                                        log.error("Error al crear WebServiceInputParameter", ein);
+                                        LOG.error("Error al crear WebServiceInputParameter", ein);
                                     }
                                 }
                             }
                         }
                     } catch (Exception e) {
-                        log.error(e);
+                        LOG.error(e);
                     }
 
                     // Para parámetros de salida
@@ -871,13 +870,13 @@ public class WSOperationParameterConfig extends GenericResource {
                                             wsp.remove();
                                         }
                                     } catch (Exception ein) {
-                                        log.error("Error al crear WebServiceOutputParameter", ein);
+                                        LOG.error("Error al crear WebServiceOutputParameter", ein);
                                     }
                                 }
                             }
                         }
                     } catch (Exception e) {
-                        log.error(e);
+                        LOG.error(e);
                     }
                 }
             }
@@ -1035,7 +1034,7 @@ public class WSOperationParameterConfig extends GenericResource {
                 //System.out.println("JSON:" + response_ws.toString());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error(e);
             }
 
             doView(request, response, paramRequest);

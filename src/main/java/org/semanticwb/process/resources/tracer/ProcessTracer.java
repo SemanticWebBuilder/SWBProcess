@@ -38,7 +38,7 @@ import org.semanticwb.process.model.WrapperProcessWebPage;
 
 public class ProcessTracer extends org.semanticwb.process.resources.tracer.base.ProcessTracerBase 
 {
-    public static Logger log = SWBUtils.getLogger(ProcessTracer.class);
+    private static final Logger LOG = SWBUtils.getLogger(ProcessTracer.class);
     public static final int MODE_OVERVIEW = 1;
     public static final int MODE_TRACKING = 2;
     
@@ -71,7 +71,7 @@ public class ProcessTracer extends org.semanticwb.process.resources.tracer.base.
             request.setAttribute("viewMode", getViewMode());
             rd.include(request, response);
         } catch (Exception e) {
-            log.error("ProcessTracer: Error including view JSP", e);
+            LOG.error("ProcessTracer: Error including view JSP", e);
         }
     }
     

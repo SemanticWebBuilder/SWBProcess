@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,26 +18,40 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.model;
 
-import bsh.Interpreter;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.vocabulary.RDF;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
-import org.semanticwb.model.*;
+import org.semanticwb.model.GenericObject;
+import org.semanticwb.model.Resource;
+import org.semanticwb.model.ResourceType;
+import org.semanticwb.model.Resourceable;
+import org.semanticwb.model.SWBClass;
+import org.semanticwb.model.SWBModel;
+import org.semanticwb.model.User;
+import org.semanticwb.model.WebPage;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
-import static org.semanticwb.process.model.Instance.ACTION_CANCEL;
-import static org.semanticwb.process.model.Instance.STATUS_ABORTED;
 
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.vocabulary.RDF;
+
+import bsh.Interpreter;
+
+/**
+ * Clase que encapsula las propiedades y comportamiento de una instancia de un nodo en la ejecución de un flujo de procesos.
+ * @author Javier Solís
+ * @author Hasdai Pacheco
+ *
+ */
 public class FlowNodeInstance extends org.semanticwb.process.model.base.FlowNodeInstanceBase 
 {
-    public static Logger log=SWBUtils.getLogger(ProcessRule.class);
+    private static final Logger LOG = SWBUtils.getLogger(FlowNodeInstance.class);
 
     public FlowNodeInstance(org.semanticwb.platform.SemanticObject base)
     {
@@ -226,7 +240,7 @@ public class FlowNodeInstance extends org.semanticwb.process.model.base.FlowNode
                         Object ret=i.eval(taskAction.getCode());
                     }catch(Exception e)
                     {
-                        log.error(e);
+                        LOG.error(e);
                     }
                 }
             }
@@ -370,7 +384,7 @@ public class FlowNodeInstance extends org.semanticwb.process.model.base.FlowNode
                                 }
                             } catch (Exception e)
                             {
-                                log.error(e);
+                                LOG.error(e);
                             }
                         }
 

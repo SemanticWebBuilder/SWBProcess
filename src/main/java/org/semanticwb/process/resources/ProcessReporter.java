@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,7 +18,7 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.resources;
 
@@ -31,16 +31,6 @@ import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.User;
 import org.semanticwb.SWBException;
-
-/*import org.semanticwb.process.Process;
-import org.semanticwb.process.Activity;
-import org.semanticwb.process.ProcessSite;
-import org.semanticwb.process.SWBClass;
-import org.semanticwb.process.ProcessInstance;
-import org.semanticwb.process.FlowObjectInstance;
-import org.semanticwb.process.bpms.CaseCountSys;
-import org.semanticwb.process.bpms.BPMSProcessInstance;
-import org.semanticwb.process.bpms.CaseProcessInstance;*/
 
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.Instance;
@@ -90,7 +80,7 @@ import org.semanticwb.process.model.ItemAwareReference;
 public class ProcessReporter extends GenericResource {
 
     /** Log */
-    static Logger log = SWBUtils.getLogger(ProcessReporter.class);
+    static Logger LOG = SWBUtils.getLogger(ProcessReporter.class);
 
     /**
      * Process request.
@@ -221,7 +211,7 @@ public class ProcessReporter extends GenericResource {
         try {
             jobj.put("label", "cases");
             jobj.put("items", jarr);
-        }catch (JSONException jse) { jse.printStackTrace(); }
+        }catch (JSONException jse) { LOG.error(jse); }
         try {
             Iterator<HashMap> it = results();
             while (it.hasNext()) {
@@ -234,7 +224,7 @@ public class ProcessReporter extends GenericResource {
                 }
                 jarr.put(obj);
             }
-        }catch (JSONException jsone) { jsone.printStackTrace(); }
+        }catch (JSONException jsone) { LOG.error(jsone); }
         response.getOutputStream().println(jobj.toString());
     }
 
@@ -340,7 +330,7 @@ public class ProcessReporter extends GenericResource {
             jrResource.prepareReport();
             jrResource.exportReport(response);
         }catch (Exception e){
-            log.error("Error on method doFilterCasesPdf with id" + " " + getResourceBase().getId(), e);
+            LOG.error("Error on method doFilterCasesPdf with id" + " " + getResourceBase().getId(), e);
         }
     }
 
@@ -367,7 +357,7 @@ public class ProcessReporter extends GenericResource {
             jrResource.prepareReport();
             jrResource.exportReport(response);
         }catch (Exception e){
-            log.error("Error on method doFilterCasesRtf with id" + " " + getResourceBase().getId(), e);
+            LOG.error("Error on method doFilterCasesRtf with id" + " " + getResourceBase().getId(), e);
         }
     }
 
@@ -789,7 +779,7 @@ public class ProcessReporter extends GenericResource {
             }
             getResourceBase().updateAttributesToDB();
         }catch (SWBException swbe) {
-            swbe.printStackTrace();
+            LOG.error(swbe);
         }
     }
 
@@ -800,7 +790,7 @@ public class ProcessReporter extends GenericResource {
                 User user = itusers.next();
                 out.print("                      <option value=\"" + user.getLogin() + "\"" + (getResourceBase().getAttribute("permission_value","").equalsIgnoreCase(user.getLogin()) ? " selected" : "") + ">" + user.getFullName() + "</option>\n");
             }
-        }catch (Exception e){ e.printStackTrace(); }
+        }catch (Exception e){ LOG.error(e); }
     }
 
     private Process getProcess(String processId) {
@@ -874,7 +864,7 @@ public class ProcessReporter extends GenericResource {
         try {
             usrName = ProcessSite.ClassMgr.getProcessSite(processSiteId).getUserRepository().getUserByLogin(usrLogin).getFullName();
         }catch (Exception e) {
-            log.debug("User " + usrLogin + " is not found in " + ProcessSite.ClassMgr.getProcessSite(processSiteId).getUserRepository().getTitle(),e);
+            LOG.debug("User " + usrLogin + " is not found in " + ProcessSite.ClassMgr.getProcessSite(processSiteId).getUserRepository().getTitle(),e);
         }
         return usrName;
     }

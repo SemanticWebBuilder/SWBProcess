@@ -24,6 +24,10 @@ package org.semanticwb.process.kpi;
 
 import java.util.Iterator;
 import java.util.ArrayList;
+
+import org.jfree.util.Log;
+import org.semanticwb.Logger;
+import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBClass;
 
 import org.semanticwb.model.User;
@@ -42,6 +46,7 @@ import org.semanticwb.process.model.SubProcessInstance;
  * @author Sergio Téllez
  */
 public class KProcessInstance {
+	private static final Logger LOG = SWBUtils.getLogger(KProcessInstance.class);
 
     /**
      * Genera un ArrayList con todas las instancias de proceso de todos
@@ -70,7 +75,7 @@ public class KProcessInstance {
                 }
             }
         }catch(Exception e) {
-             e.printStackTrace();
+             Log.error(e);
         }
         return processInstances;
     }
@@ -100,7 +105,7 @@ public class KProcessInstance {
                 }
             }
         }catch(Exception e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return processInstances;
     }
@@ -124,7 +129,7 @@ public class KProcessInstance {
                     processInstances.add(actins);
             }
         }catch(Exception e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return processInstances;
     }
@@ -148,7 +153,7 @@ public class KProcessInstance {
                     processInstances.add(actins);
             }
         }catch(Exception e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return processInstances;
     }
@@ -172,7 +177,7 @@ public class KProcessInstance {
                     processInstances.add(actins);
             }
         }catch(Exception e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return processInstances;
     }
@@ -269,9 +274,9 @@ public class KProcessInstance {
                    strValue = sobject.getDisplayName();
            }
        }catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre) {
-           rre.printStackTrace();
+           Log.error(rre);
        }catch(Exception e) {
-           e.printStackTrace();
+           Log.error(e);
        }
        return strValue;
     }

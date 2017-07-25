@@ -24,6 +24,10 @@ package org.semanticwb.process.kpi;
 
 import java.util.Iterator;
 import java.util.ArrayList;
+
+import org.jfree.util.Log;
+import org.semanticwb.Logger;
+import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBClass;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.ProcessInstance;
@@ -39,6 +43,7 @@ import org.semanticwb.process.model.ItemAwareReference;
  * @author Sergio Téllez
  */
 public class CaseProcessObject {
+	private static Logger LOG = SWBUtils.getLogger(CaseProcessObject.class);
 
     public static Object sum(Process process, String processObjectURI, String propertyName) {
         Object sum = null;
@@ -319,9 +324,9 @@ public class CaseProcessObject {
                 value = (Object)lvalue;
             }
         }catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre) {
-            rre.printStackTrace();
+            Log.error(rre);
         }catch(Exception e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return value;
     }
@@ -363,9 +368,9 @@ public class CaseProcessObject {
                     value = new Long(sob.getLongProperty(property));
             }
         } catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre){
-            rre.printStackTrace();
+            Log.error(rre);
         } catch(Exception e){
-            e.printStackTrace();
+            Log.error(e);
         }return value;
     }
 
@@ -409,9 +414,9 @@ public class CaseProcessObject {
                     value = new Long(sob.getLongProperty(property));
             }
         } catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre) {
-            rre.printStackTrace();
+            Log.error(rre);
         } catch(Exception e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return value;
     }
@@ -443,9 +448,9 @@ public class CaseProcessObject {
                     distincts.add(lvalue);
             }
         }catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre) {
-            rre.printStackTrace();
+            Log.error(rre);
         }catch(Exception e) {
-            e.printStackTrace();
+            Log.error(e);
         }
     }
 
