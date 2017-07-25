@@ -30,6 +30,8 @@ package org.semanticwb.process.documentation;
  *
  */
 import java.io.File;
+
+import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.codegen.CodeGenerator;
@@ -40,18 +42,14 @@ import org.semanticwb.codegen.CodeGeneratorException;
  * @author serch
  */
 public class CodeGeneratorDocumenter {
+	private static final Logger LOG = SWBUtils.getLogger(CodeGeneratorDocumenter.class);
 
     public static void main(String[] args) {
-        new CodeGeneratorDocumenter().codeGen(args);
+        new CodeGeneratorDocumenter().codeGen();
     }
 
-    public void codeGen(String[] args) {
-        String base = SWBUtils.getApplicationPath();
+    public void codeGen() {
         SWBPlatform.createInstance();
-        //File f = new File(base + "/../../");
-//        SWBPlatform.getSemanticMgr().addBaseOntology(base + "/../../../../SWB4/swb/web/WEB-INF/owl/swb.owl");
-//        SWBPlatform.getSemanticMgr().addBaseOntology(base + "/../../../../SWB4/swbp/WEB-INF/owl/ext/swp.owl");
-//        SWBPlatform.getSemanticMgr().addBaseOntology(base + "/../../src/org/semanticwb/process/documentation/swpdoc.owl");
         SWBPlatform.getSemanticMgr().addBaseOntology("D:\\Infotec\\SWB4\\swb\\web\\WEB-INF\\owl\\swb.owl");
         SWBPlatform.getSemanticMgr().addBaseOntology("D:\\Infotec\\SWB4\\swbp\\WEB-INF\\owl\\ext\\swp.owl");
         SWBPlatform.getSemanticMgr().addBaseOntology("D:\\Infotec\\swbproys\\SWPDocumentation\\src\\org\\semanticwb\\process\\documentation\\swpdoc.owl");
@@ -59,14 +57,13 @@ public class CodeGeneratorDocumenter {
         SWBPlatform.getSemanticMgr().getOntology().rebind();
 
         try {
-            String path = getClass().getResource("/").getPath().replaceAll("%20", " ");
-            System.out.println("the path : " + path);
+            //String path = getClass().getResource("/").getPath().replaceAll("%20", " ");
             File dir = new File("D:\\Infotec\\swbproys\\SWPDocumentation\\src\\");
             CodeGenerator codeGeneration = new CodeGenerator();
             codeGeneration.generateCode("swpdoc", false, dir);
-            System.out.println("Generación de clases completa");
+            LOG.info("Generación de clases completa");
         } catch (CodeGeneratorException cge) {
-            cge.printStackTrace();
+           LOG.error(cge);
         }
     }
 }
