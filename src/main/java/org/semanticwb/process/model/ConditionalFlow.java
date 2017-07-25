@@ -23,8 +23,7 @@
 package org.semanticwb.process.model;
 
 import java.util.Iterator;
-import org.semanticwb.Logger;
-import org.semanticwb.SWBUtils;
+
 import org.semanticwb.model.User;
 
 /**
@@ -64,11 +63,4 @@ public class ConditionalFlow extends org.semanticwb.process.model.base.Condition
         }
         return cond;
     }
-
-    @Override
-    public void execute(FlowNodeInstance source, User user)
-    {
-        super.execute(source,user);
-    }
-
 }
