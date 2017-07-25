@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,8 +17,7 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.model;
 
@@ -26,18 +25,24 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.User;
+import org.semanticwb.platform.SemanticObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class SQLQuery extends org.semanticwb.process.model.base.SQLQueryBase {
 
-    private Logger log = SWBUtils.getLogger(SQLQuery.class);
+    private static final Logger LOG = SWBUtils.getLogger(SQLQuery.class);
 
-    public SQLQuery(org.semanticwb.platform.SemanticObject base) {
+    /**
+     * Constructor.
+     * @param base
+     */
+    public SQLQuery(SemanticObject base) {
         super(base);
     }
 
@@ -52,10 +57,12 @@ public class SQLQuery extends org.semanticwb.process.model.base.SQLQueryBase {
         Element node = dom.createElement("resultset");
         dom.appendChild(node);
         if (query != null && query.trim().length() > 0 && dbconn != null) {
+	        	Connection con = null;
+	        	Statement st = null;
+	        	
             try {
-                Connection con = DriverManager.getConnection(dbconn.getUrl(), dbconn.getUser(), dbconn.getPassword());
-
-                Statement st = con.createStatement();
+                con = DriverManager.getConnection(dbconn.getUrl(), dbconn.getUser(), dbconn.getPassword());
+                st = con.createStatement();
                 int affectedRows = 0;
                 if (query.toLowerCase().startsWith("delete") || query.toLowerCase().startsWith("insert") || query.toLowerCase().startsWith("update") || query.toLowerCase().startsWith("drop") || query.toLowerCase().startsWith("alter") || query.toLowerCase().startsWith("create")) //
                 {
@@ -90,19 +97,27 @@ public class SQLQuery extends org.semanticwb.process.model.base.SQLQueryBase {
                                 nodeRow.appendChild(nodeColumn);
                             }
                         }
+                        rs.close();
                     } catch (Exception e) {
-                        log.error("Error en expresion SQL.", e);
+                        LOG.error("Error en expresion SQL.", e);
+                    } finally {
+                    		if (null != rs) rs.close();
                     }
-                    rs.close();
                 }
                 st.close();
                 con.close();
             } catch (Exception e) {
-                log.error("Error al generar la conección a la Base de Datos.", e);
+                LOG.error("Error al generar la conección a la Base de Datos.", e);
+            } finally {
+	            	try {
+	            		if (null != st) st.close();
+	            		if (null != con) con.close();
+	            	} catch (SQLException sqex) {
+	            		LOG.error(sqex);
+	            	}
             }
         } else {
-
-            log.error("Error de configuración, falta definir query ó configuración de conección a la Base de Datos.");
+            LOG.error("Error de configuración, falta definir query ó configuración de conección a la Base de Datos.");
         }
         if (dom != null) {
             System.out.println("XML: --------");

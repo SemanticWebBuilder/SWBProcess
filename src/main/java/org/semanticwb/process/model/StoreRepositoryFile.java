@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,26 +17,31 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.model;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBClass;
 import org.semanticwb.model.User;
+import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.process.utils.SWBScriptParser;
 
 
 public class StoreRepositoryFile extends org.semanticwb.process.model.base.StoreRepositoryFileBase 
 {
-    private static Logger log=SWBUtils.getLogger(StoreRepositoryFile.class);        
+    private static final Logger LOG = SWBUtils.getLogger(StoreRepositoryFile.class);        
     
-    public StoreRepositoryFile(org.semanticwb.platform.SemanticObject base)
+    /**
+     * Constructor.
+     * @param base
+     */
+    public StoreRepositoryFile(SemanticObject base)
     {
         super(base);
     }
@@ -107,7 +112,7 @@ public class StoreRepositoryFile extends org.semanticwb.process.model.base.Store
                     file.storeFile(new FileInputStream(filePath), filename, comments, getNodeStatus()!=null?getNodeStatus().getId():null, false);
                 }catch(Exception e)
                 {
-                    log.error(e);
+                    LOG.error(e);
                 }
             }
         }if(obj!=null && obj instanceof org.semanticwb.process.schema.FileCollection)
@@ -156,12 +161,20 @@ public class StoreRepositoryFile extends org.semanticwb.process.model.base.Store
                 }
                 String comments = this.getNodeComment();
                 if(comments!=null)comments=SWBScriptParser.parser(instance, user, comments);
-                try
-                {
-                    file.storeFile(new FileInputStream(filePath), filename, comments, getNodeStatus()!=null?getNodeStatus().getId():"Indefinido", false);
-                }catch(Exception e)
-                {
-                    log.error(e);
+                FileInputStream fis = null;
+                try {
+                		fis = new FileInputStream(filePath);
+                		file.storeFile(fis, filename, comments, getNodeStatus()!=null?getNodeStatus().getId():"Indefinido", false);
+                } catch(Exception e) {
+                    LOG.error(e);
+                } finally {
+                		if (null != fis) {
+                			try {
+                				fis.close();
+                			} catch (IOException ioex) {
+                				LOG.error(ioex);
+                			}
+                		}
                 }
             }
             
@@ -199,7 +212,7 @@ public class StoreRepositoryFile extends org.semanticwb.process.model.base.Store
                 rurl.storeFile(f.getValue(), "Created by process:"+instance.getProcessInstance().getProcessType().getId()+", processInstance:"+instance.getProcessInstance().getId(), false,getNodeStatus()!=null?getNodeStatus().getId():null);
             }catch(Exception e)
             {
-                log.error(e);
+                LOG.error(e);
             }
             
         }
