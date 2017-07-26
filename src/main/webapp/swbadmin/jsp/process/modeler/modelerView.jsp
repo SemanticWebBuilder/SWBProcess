@@ -1,8 +1,9 @@
-<%-- 
+<%--
     Document   : modelerView
     Created on : 7/05/2013, 12:09:42 PM
     Author     : Hasdai Pacheco <ebenezer.sanchez@infotec.com.mx>
 --%>
+<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.process.model.ProcessInstance"%>
 <%@page import="org.semanticwb.model.GenericObject"%>
 <%@page import="org.semanticwb.SWBPortal"%>
@@ -21,7 +22,7 @@
     SWBResourceURL exportUrl = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT);
     exportUrl.setMode(SVGModeler.MODE_EXPORT);
     Process p = null;
-    
+
     GenericObject go = SWBPlatform.getSemanticMgr().getOntology().getGenericObject(suri);
     if (go.getSemanticObject().instanceOf(Process.sclass)) {
         p = (Process) go;
@@ -32,7 +33,14 @@
     commandUrl.setParameter("suri", p.getURI());
     commandUrl.setMode(SVGModeler.MODE_GATEWAY);
     commandUrl.setAction(SVGModeler.ACT_GETPROCESSJSON);
+    WebSite adminSite = SWBContext.getAdminWebSite();
+    WebSite site = paramRequest.getWebPage().getWebSite();
     
+    String loginUrl = "";
+    if (site.getURI().equals(adminSite.getURI())) {
+    		loginUrl = SWBPlatform.getContextPath()+"/swbadmin/jsp/login.jsp";
+    }
+
     if (!isViewMode) {
         %>
         <head>
@@ -46,7 +54,7 @@
 <script type="text/javascript" src="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/modeler/toolkit.js?v=<%= Math.floor(Math.random() * 100) %>" charset="utf-8"></script>
 <script type="text/javascript" src="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/modeler/modeler.js?v=<%= Math.floor(Math.random() * 100) %>" charset="utf-8"></script>
 
-<body style="margin: 0px;" onload="Modeler.init('modeler', {mode: '<%=  !isViewMode ? "edit" : "view" %>'}, loadProcess);">
+<body style="margin: 0px;" onload="Modeler.init('modeler', {mode: '<%=  !isViewMode ? "edit" : "view" %>', loginUrl:'<%= loginUrl %>'}, loadProcess);">
     <%
     if (null != p) {
         if (!isViewMode) {

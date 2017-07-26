@@ -2217,6 +2217,8 @@ var _GraphicalElement = function(obj) {
                     Modeler.options.mode = mode;
                 }
 
+                Modeler.options.loginUrl = options.loginUrl || "";
+
                 if (options.layerNavigation && options.layerNavigation !== null) {
                     Modeler.options.layerNavigation = options.layerNavigation;
                 }
@@ -4091,8 +4093,14 @@ var _GraphicalElement = function(obj) {
                     callbackHandler(data);
                     return data;
                 }).fail(function(error) {
+                  if (error.status == 403 && Modeler.options.loginUrl.length) {
+                    ToolKit.hideToolTip();
+                    alert ('La operación no se ha podido completar, su sesión ha caducado. Inicie sesión e intente nuevamente.');
+                    window.parent.showDialog && window.parent.showDialog(Modeler.options.loginUrl,'Login');
+                  } else {
                     ToolKit.showTooltip(0,"Ocurrió un problema al ejecutar la operación: ", 200, "Error");
-                    return error;
+                  }
+                  return error;
                 });
         },
 
