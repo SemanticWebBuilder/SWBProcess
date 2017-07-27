@@ -10,7 +10,6 @@
 <%@page import="org.semanticwb.process.model.Process"%>
 <%@page import="org.semanticwb.process.model.ProcessGroup"%>
 <%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.process.model.ProcessWebPage"%>
 <%@page import="org.semanticwb.model.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Iterator"%>
@@ -23,8 +22,6 @@ public static final int ALERT_DAYS=30;
 
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
-//String iStatus = (String) request.getAttribute("iStatus");
-//String pGroup = (String) request.getAttribute("pGroup");
 User user = paramRequest.getUser();
 Map args = (Map) request.getAttribute("args");
 String iStatus = "STATUS_UNDEFINED";
