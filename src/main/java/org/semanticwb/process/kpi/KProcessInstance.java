@@ -23,6 +23,7 @@
 package org.semanticwb.process.kpi;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ArrayList;
 
 import org.jfree.util.Log;
@@ -119,9 +120,9 @@ public class KProcessInstance {
      * @return      		ArrayList
      * @see
     */
-    public static ArrayList listProcessInstancesByStatus(ArrayList instances, String status) {
-        ArrayList aux = instances;
-        ArrayList processInstances = new ArrayList();
+    public static ArrayList<ProcessInstance> listProcessInstancesByStatus(List<ProcessInstance> instances, String status) {
+        List<ProcessInstance> aux = instances;
+        ArrayList<ProcessInstance> processInstances = new ArrayList<>();
         try {
             for (int i=0; i<aux.size(); i++) {
                 ProcessInstance actins = (ProcessInstance)aux.get(i);
@@ -143,9 +144,9 @@ public class KProcessInstance {
      * @return      		ArrayList
      * @see
     */
-    public static ArrayList listProcessInstancesByUser(ArrayList instances, User user) {
-        ArrayList aux = instances;
-        ArrayList processInstances = new ArrayList();
+    public static ArrayList listProcessInstancesByUser(List<ProcessInstance> instances, User user) {
+        List<ProcessInstance> aux = instances;
+        ArrayList<ProcessInstance> processInstances = new ArrayList();
         try {
             for(int i=0; i<aux.size(); i++) {
                 ProcessInstance actins = (ProcessInstance)aux.get(i);
