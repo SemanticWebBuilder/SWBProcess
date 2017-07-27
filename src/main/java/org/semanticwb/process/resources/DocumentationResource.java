@@ -22,12 +22,14 @@
  */
 package org.semanticwb.process.resources;
 
+import static org.semanticwb.process.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.utils.SWPUtils.copyFileFromSWBAdmin;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -67,8 +69,6 @@ import org.semanticwb.process.model.ProcessElement;
 import org.semanticwb.process.model.SubProcess;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.lowagie.text.DocumentException;
 
 /**
  * Recurso que gestiona la documentación de un proceso.
@@ -329,61 +329,7 @@ public class DocumentationResource extends GenericAdmResource {
 		}
 		return output;
 	}
-
-	public static void copyFileFromSWBAdmin(String source, String destination, String fileName)
-			throws FileNotFoundException, IOException {
-		InputStream inputStream = null;//SWBPortal.getAdminFileStream(source);
-		OutputStream outputStream = null;
-		
-		try {
-			inputStream = SWBPortal.getAdminFileStream(source);
-			File css = new File(destination);
-			if (!css.exists()) {
-				css.mkdirs();
-			}
-
-			File file = new File(css.getAbsolutePath() + fileName);
-			outputStream = new FileOutputStream(file);
-			byte[] buffer = new byte[1024];
-			int len;
-			while ((len = inputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, len);
-			}
-			// outputStream.write(SWBUtils.IO.readInputStream(inputStream).getBytes());
-			outputStream.close();
-			inputStream.close();
-		} catch (IOException ioex) {
-			LOG.error(ioex);
-		} finally {
-			if (null != inputStream) inputStream.close();
-			if (null != outputStream) outputStream.close();
-		}
-	}
-
-	public static void copyFile(String sourceFile, String destFile) throws IOException {
-		InputStream inStream = null;
-		OutputStream outStream = null;
-		try {
-			File afile = new File(sourceFile);
-			File bfile = new File(destFile);
-			inStream = new FileInputStream(afile);
-			outStream = new FileOutputStream(bfile);
-			byte[] buffer = new byte[1024];
-			int length;
-			// copy the file content in bytes
-			while ((length = inStream.read(buffer)) > 0) {
-				outStream.write(buffer, 0, length);
-			}
-			inStream.close();
-			outStream.close();
-		} catch (IOException e) {
-			LOG.error("Error to copy file " + sourceFile + ", " + e.getMessage());
-		} finally {
-			if (null != inStream) inStream.close();
-			if (null != outStream) outStream.close();
-		}
-	}
-
+	
 	public static boolean deleteDerectory(File dir) {
 		boolean ret = false;
 		File[] files = dir.listFiles();
