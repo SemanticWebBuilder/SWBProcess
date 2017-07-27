@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,27 +18,27 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.resources;
 
-import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.semanticwb.process.model.Process;
 
 import org.semanticwb.Logger;
-import org.semanticwb.SWBUtils;
 import org.semanticwb.SWBException;
+import org.semanticwb.SWBUtils;
 import org.semanticwb.platform.SemanticObject;
-import org.semanticwb.portal.api.SWBResourceURL;
-import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.GenericResource;
+import org.semanticwb.portal.api.SWBParamRequest;
 
-//import org.semanticwb.process.utils.Ajax;
 import org.semanticwb.portal.api.SWBResourceException;
+import org.semanticwb.portal.api.SWBResourceURL;
+import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.ProcessInstance;
 
 /**
@@ -56,10 +56,8 @@ public class ResponseCase extends GenericResource {
     @Override
     public void doEdit(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         if (SWBParamRequest.Action_EDIT.equals(paramRequest.getAction())) {
-//            System.out.println("action: " + paramRequest.getAction() + "LLendose a admin");
             doAdminCase(request, response, paramRequest);
         } else {
-//          System.out.println("action: " + paramRequest.getAction() + "LLendose a adminResume");
             doAdminResume(request, response, paramRequest);
         }
     }
@@ -74,11 +72,6 @@ public class ResponseCase extends GenericResource {
         String suri = request.getParameter("suri");
         SWBResourceURL edit = paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_EDIT);
         edit.setParameter("suri",suri );
-//        Enumeration enuparam = request.getParameterNames();
-//        while (enuparam.hasMoreElements()) {
-//            String sparam = (String)enuparam.nextElement();
-//            System.out.println("param: "+sparam+" ("+request.getParameter(sparam)+")");
-//        }
         out.println("<div id=\"properties\" class=\"swbform\">");
         out.println("  <fieldset>");
         out.println("    <legend>" + paramRequest.getLocaleString("title") + "</legend>");
@@ -106,26 +99,6 @@ public class ResponseCase extends GenericResource {
         out.print("  </fieldset>\n");
         long fid = System.currentTimeMillis();
         out.print("  <form id=\""+fid+"/Rescase\" name=\"Rescase\" action=" + url.toString() + " method=\"post\" onSubmit=\"submitForm('"+fid+"/Rescase');return false;\">\n");
-        /*out.print("      <fieldset>\n");
-        out.print("          <legend>" + paramRequest.getLocaleString("process") + "</legend>\n");
-        out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>\n");
-        out.print("                      <select id=\"process\" name=\"process\">\n");
-        //out.print("                          <option value=\"\">&nbsp;</option>\n");
-        Iterator isites = ProcessSite.ClassMgr.listProcessSites();
-        while (isites.hasNext()) {
-            ProcessSite site = (ProcessSite)isites.next();
-            Iterator<Process> itprocess = site.listProcesses();
-            while (itprocess.hasNext()) {
-                Process process = itprocess.next();
-                out.print("                  <option value=\"" +  process.getId() + "\"" + (getResourceBase().getAttribute("process","").equalsIgnoreCase(process.getId()) ? " selected" : "") + " >" + process.getTitle() +  "</option>\n");
-            }
-        }
-        out.print("                  </td>");
-        out.print("              </tr>\n");
-        out.print("         </table>\n");
-        out.print("     </fieldset>\n");*/
         out.print("      <fieldset>\n");
         out.print("          <legend>" + paramRequest.getLocaleString("PLOT_TYPE") + "</legend>\n");
         out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
@@ -173,36 +146,9 @@ public class ResponseCase extends GenericResource {
         out.print("     </fieldset>\n");
         out.print("      <fieldset>\n");
         out.print("      </fieldset>\n");
-//        out.print("      <fieldset>\n");
-//        out.print("          <legend>" + paramRequest.getLocaleString("labels") + "</legend>\n");
-//        out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
-//        out.print("              <tr>\n");
-//        out.print("                  <td><input id=\"display_totals\" type=\"checkbox\" name=\"display_totals\" value=\"1\"" + ("1".equalsIgnoreCase(getAttribute(pid,"display_totals")) ? " checked" : "") + "> " + paramRequest.getLocaleString("DISPLAY_TOTALS") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("         </table>\n");
-//        out.print("     </fieldset>\n");
-        
-//        out.print("      <fieldset>\n");
-//        out.print("          <legend>" + paramRequest.getLocaleString("LOG") + "</legend>\n");
-//        out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
-//        out.print("              <tr>\n");
-//        out.print("                  <td><input id=\"show_log\" type=\"checkbox\" name=\"show_log\" value=\"1\"" + ("1".equalsIgnoreCase(getAttribute(pid,"show_log")) ? " checked" : "") + "> " + paramRequest.getLocaleString("showLog") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("              <tr>\n");
-//        out.print("                  <td><input id=\"last_date\" type=\"radio\" name=\"last_date\" value=\"1\"" + ("1".equalsIgnoreCase(getAttribute(pid,"last_date")) ? " checked" : "") + "> " + paramRequest.getLocaleString("lastWeek") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("              <tr>\n");
-//        out.print("                  <td><input id=\"last_date\" type=\"radio\" name=\"last_date\" value=\"2\"" + ("2".equalsIgnoreCase(getAttribute(pid,"last_date")) ? " checked" : "") + "> " + paramRequest.getLocaleString("lastMonth") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("              <tr>\n");
-//        out.print("                  <td><input id=\"last_date\" type=\"radio\" name=\"last_date\" value=\"3\"" + ("3".equalsIgnoreCase(getAttribute(pid,"last_date")) ? " checked" : "") + "> " + paramRequest.getLocaleString("lastYear") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("         </table>\n");
-//        out.print("     </fieldset>\n");
-        
         out.print("     <fieldset>\n");
         out.print("         <button  dojoType=\"dijit.form.Button\" type=\"submit\" >"+paramRequest.getLocaleString("apply")+"</button>");
-        url = paramRequest.getRenderUrl().setMode(paramRequest.Mode_VIEW);
+        url = paramRequest.getRenderUrl().setMode(SWBParamRequest.Mode_VIEW);
         url.setParameter("suri", suri);
         out.print("         <button dojoType=\"dijit.form.Button\" onClick=\"submitUrl('" + url + "',this.domNode); return false;\">"+paramRequest.getLocaleString("return")+"</button>");
         out.print("     </fieldset>\n");
@@ -214,7 +160,7 @@ public class ResponseCase extends GenericResource {
         PrintWriter out = response.getWriter();
         String suri = request.getParameter("suri");
         SWBResourceURL url = paramRequest.getRenderUrl();
-        url.setMode(paramRequest.Mode_EDIT);
+        url.setMode(SWBParamRequest.Mode_EDIT);
         url.setParameter("suri", suri);
         Process process = getProcess(suri);
         updateAttributes(request);
@@ -274,34 +220,7 @@ public class ResponseCase extends GenericResource {
         out.print("                  <td>" + ("4".equalsIgnoreCase(getAttribute(suri,"time_unit")) ? paramRequest.getLocaleString("days") : "") + "</td>\n");
         out.print("              </tr>\n");
         out.print("         </table>\n");
-        out.print("     </fieldset>\n");
-//        out.print("      <fieldset>\n");
-//        out.print("          <legend>" + paramRequest.getLocaleString("labels") + "</legend>\n");
-//        out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
-//        out.print("              <tr>\n");
-//        if ("1".equalsIgnoreCase(getAttribute(suri,"display_totals")))
-//            out.print("                  <td>" + paramRequest.getLocaleString("DISPLAY_TOTALS") + "</td>\n");
-//        else
-//            out.print("                  <td>" + paramRequest.getLocaleString("DEFAULT_VIEW") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("         </table>\n");
-//        out.print("     </fieldset>\n");
-        
-//        out.print("      <fieldset>\n");
-//        out.print("          <legend>" + paramRequest.getLocaleString("LOG") + "</legend>\n");
-//        out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
-//        out.print("              <tr>\n");
-//        out.print("                  <td>" + ("1".equalsIgnoreCase(getAttribute(suri,"last_date")) ? paramRequest.getLocaleString("lastWeek") : "") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("              <tr>\n");
-//        out.print("                  <td>" + ("2".equalsIgnoreCase(getAttribute(suri,"last_date")) ? paramRequest.getLocaleString("lastMonth") : "") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("              <tr>\n");
-//        out.print("                  <td>" + ("3".equalsIgnoreCase(getAttribute(suri,"last_date")) ? paramRequest.getLocaleString("lastYear") : "") + "</td>\n");
-//        out.print("              </tr>\n");
-//        out.print("         </table>\n");
-//        out.print("     </fieldset>\n");
-        
+        out.print("     </fieldset>\n");        
         out.print("     <fieldset>\n");
         out.print("         <button dojoType=\"dijit.form.Button\" onClick=\"submitUrl('" + url + "',this.domNode); return false;\">"+paramRequest.getLocaleString("config")+"</button>");
         url = paramRequest.getRenderUrl();
@@ -312,96 +231,11 @@ public class ResponseCase extends GenericResource {
         out.print("</div>\n");
     }
 
-    /*private void doAdminResume(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-        PrintWriter out = response.getWriter();
-        SWBResourceURL url = paramRequest.getRenderUrl().setMode(paramRequest.Mode_EDIT);
-        updateAttributes(request);
-        out.print("<div class=\"swbform\">\n");
-        out.print("  <fieldset>\n");
-        out.print(paramRequest.getLocaleString("title"));
-        out.print("  </fieldset>\n");
-        out.print("  <fieldset>\n");
-        out.print("     <legend>" + paramRequest.getLocaleString("process") + "</legend>\n");
-        out.print("     <table border=\"0\" width=\"70%\" align=\"center\">\n");
-        out.print("         <tr>\n");
-        out.print("             <td>" + (!"".equalsIgnoreCase(getResourceBase().getAttribute("process","")) ? getProcessTitle(getResourceBase().getAttribute("process")) : paramRequest.getLocaleString("DEFAULT_VIEW")) + "</td>\n");
-        out.print("         </tr>\n");
-        out.print("     </table>\n");
-        out.print("  </fieldset>\n");
-        out.print("  <fieldset>\n");
-        out.print("     <legend>" + paramRequest.getLocaleString("PLOT_TYPE") + "</legend>\n");
-        out.print("     <table border=\"0\" width=\"70%\" align=\"center\">\n");
-        out.print("         <tr>\n");
-        out.print("             <td>" + ("1".equalsIgnoreCase(getResourceBase().getAttribute("plot","")) ? paramRequest.getLocaleString("bars") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("2".equalsIgnoreCase(getResourceBase().getAttribute("plot","")) ? paramRequest.getLocaleString("pie") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("3".equalsIgnoreCase(getResourceBase().getAttribute("plot","")) ? paramRequest.getLocaleString("area") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("         </table>\n");
-        out.print("     </fieldset>\n");
-        out.print("      <fieldset>\n");
-        out.print("          <legend>" + paramRequest.getLocaleString("PLOT_THEME") + "</legend>\n");
-        out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("1".equalsIgnoreCase(getResourceBase().getAttribute("plot_theme","")) ? paramRequest.getLocaleString("blue") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("2".equalsIgnoreCase(getResourceBase().getAttribute("plot_theme","")) ? paramRequest.getLocaleString("green") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("3".equalsIgnoreCase(getResourceBase().getAttribute("plot_theme","")) ? paramRequest.getLocaleString("red") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("         </table>\n");
-        out.print("     </fieldset>\n");
-        out.print("      <fieldset>\n");
-        out.print("          <legend>" + paramRequest.getLocaleString("TIME_UNIT") + "</legend>\n");
-        out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("1".equalsIgnoreCase(getResourceBase().getAttribute("time_unit","")) ? paramRequest.getLocaleString("seconds") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("2".equalsIgnoreCase(getResourceBase().getAttribute("time_unit","")) ? paramRequest.getLocaleString("minutes") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("3".equalsIgnoreCase(getResourceBase().getAttribute("time_unit","")) ? paramRequest.getLocaleString("hours") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("              <tr>\n");
-        out.print("                  <td>" + ("4".equalsIgnoreCase(getResourceBase().getAttribute("time_unit","")) ? paramRequest.getLocaleString("days") : "") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("         </table>\n");
-        out.print("     </fieldset>\n");
-        out.print("      <fieldset>\n");
-        out.print("          <legend>" + paramRequest.getLocaleString("labels") + "</legend>\n");
-        out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
-        out.print("              <tr>\n");
-        if (!"".equalsIgnoreCase(getResourceBase().getAttribute("display_totals","")))
-            out.print("                  <td>" + (!"".equalsIgnoreCase(getResourceBase().getAttribute("display_totals","")) ? paramRequest.getLocaleString("DISPLAY_TOTALS") : "") + "</td>\n");
-        else
-            out.print("                  <td>" + paramRequest.getLocaleString("DEFAULT_VIEW") + "</td>\n");
-        out.print("              </tr>\n");
-        out.print("         </table>\n");
-        out.print("     </fieldset>\n");
-        out.print("     <fieldset>\n");
-        out.print("         <button dojoType=\"dijit.form.Button\" onClick=location='" + url + "'>"+paramRequest.getLocaleString("config")+"</button>");
-        url = paramRequest.getRenderUrl().setMode(paramRequest.Mode_VIEW);
-        out.print("         <button dojoType=\"dijit.form.Button\" onClick=location='" + url + "'>"+paramRequest.getLocaleString("return")+"</button>");
-        out.print("     </fieldset>\n");
-        out.print("</div>\n");
-    }*/
-
     private void updateAttributes(HttpServletRequest request) {
         String suri = request.getParameter("suri");
         Process process = getProcess(suri);
         try {
             getResourceBase().setAttribute("process_"+process.getId(),getConfig(request.getParameter("plot"), request.getParameter("plot_theme"), request.getParameter("time_unit"), request.getParameter("show_log"), request.getParameter("last_date")));
-            /*getResourceBase().setAttribute("process", request.getParameter("process"));
-            getResourceBase().setAttribute("plot", request.getParameter("plot"));
-            getResourceBase().setAttribute("plot_theme", request.getParameter("plot_theme"));
-            getResourceBase().setAttribute("time_unit", request.getParameter("time_unit"));
-            getResourceBase().setAttribute("display_totals", request.getParameter("display_totals"));*/
             getResourceBase().updateAttributesToDB();
         }catch (SWBException swbe) {
             log.error(swbe);
@@ -446,7 +280,6 @@ public class ResponseCase extends GenericResource {
         out.println("           " + getDataPie(process, paramRequest));
         out.println("       ]);");
         out.println("       var a = new dojox.charting.action2d.MoveSlice(chart, \"default\");");
-        //out.println("       var b = new dojox.charting.action2d.Highlight(chart, \"default\", {highlight: \"#6698FF\"});");
         out.println("       var c = new dojox.charting.action2d.Tooltip(chart, \"default\");");
         out.println("       chart.render();");
         out.println("   };");
@@ -662,11 +495,6 @@ public class ResponseCase extends GenericResource {
         }else if ("time_unit".equals(title)) {
             if (config.length() > 2) attribute = config.substring(2, 3); else attribute = "1";
         }
-//        else if ("show_log".equals(title)) {
-//            if (config.length() > 4) attribute = config.substring(3, 4); else attribute = "0";
-//        } else if ("last_date".equals(title)) {
-//            if (config.length() > 5) attribute = config.substring(4, 5); else attribute = "1";
-//        }
         return attribute;
     }
 }

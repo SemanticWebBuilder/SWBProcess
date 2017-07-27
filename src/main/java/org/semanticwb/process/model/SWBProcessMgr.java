@@ -180,7 +180,7 @@ public class SWBProcessMgr
      */
     public static List<FlowNodeInstance> getActiveUserTaskInstances(ProcessInstance pint, User user)
     {
-        ArrayList ret=new ArrayList();
+        ArrayList<FlowNodeInstance> ret=new ArrayList<>();
         //Obtener todos los nodos de flujo activos del proceso
         Iterator<FlowNodeInstance> it = getActiveUserTaskInstances(pint.getProcessSite(), pint.getProcessType()).iterator();
                 
