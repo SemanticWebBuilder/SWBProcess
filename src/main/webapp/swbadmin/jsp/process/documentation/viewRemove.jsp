@@ -1,6 +1,5 @@
 <%@page import="org.semanticwb.process.documentation.model.DocumentSectionInstance"%>
 <%@page import="org.semanticwb.process.documentation.model.Referable"%>
-<%@page import="org.semanticwb.process.documentation.resources.utils.SWPUtils"%>
 <%@page import="org.semanticwb.model.RepositoryFile"%>
 <%@page import="org.semanticwb.platform.SemanticObject"%>
 <%@page import="org.semanticwb.platform.SemanticClass"%>

@@ -12,7 +12,7 @@
 <%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
 <%@page import="org.semanticwb.process.documentation.model.Referable"%>
 <%@page import="org.semanticwb.process.model.RepositoryElement"%>
-<%@page import="org.semanticwb.process.documentation.resources.utils.SWPUtils"%>
+<%@page import="org.semanticwb.process.utils.SWPUtils"%>
 <%@page import="org.semanticwb.model.Descriptiveable"%>
 <%@page import="org.semanticwb.model.Traceable"%>
 <%@page import="org.semanticwb.platform.SemanticObject"%>

@@ -3,8 +3,9 @@
     Created on : 30/09/2014, 09:32:20 AM
     Author     : carlos.alvarez
 --%>
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="org.semanticwb.process.documentation.resources.SWPUserDocumentationResource"%>
-<%@page import="org.semanticwb.process.documentation.resources.utils.SWPUtils"%>
 <%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
 <%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.SWBUtils"%>
@@ -16,6 +17,28 @@
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%!
+private static void setVersionNumbers(DocumentTemplate lastTemplate) { // TO DEPRECATE in FUTURE VERSIONS
+	if (null != lastTemplate) {
+		if (null == lastTemplate.getVersionValue()) {
+			ArrayList<DocumentTemplate> templateList = new ArrayList<>();
+			templateList.add(lastTemplate);
+
+			while (lastTemplate.getPreviousTemplate() != null) {
+				lastTemplate = lastTemplate.getPreviousTemplate();
+				templateList.add(lastTemplate);
+			}
+
+			Collections.reverse(templateList);
+			String vvalue = "";
+			for (DocumentTemplate docT : templateList) {
+				docT.setVersionValue(DocumentTemplate.getNextVersionValue(vvalue));
+				vvalue = docT.getVersionValue();
+			}
+		}
+	}
+}
+%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentTemplateResource.PARAM_REQUEST);
     SWBResourceURL url = paramRequest.getRenderUrl();//.setCallMethod(SWBResourceURL.Call_DIRECT);
@@ -59,7 +82,7 @@
                 DocumentTemplate actualTemplate = tc.getActualTemplate();
                 
                 if (null == tc.getLastTemplate().getVersionValue()) { //TODO: TO REMOVE METHOD CALL IN FUTURE VERSIONS
-                    SWPUtils.setVersionNumbers(tc.getLastTemplate());
+                    setVersionNumbers(tc.getLastTemplate());
                 }
                 SWBResourceURL viewLog = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setMode(SWPDocumentTemplateResource.MODE_VIEW_LOG).setParameter("uritc", tc.getURI());
                 SWBResourceURL action = paramRequest.getActionUrl();

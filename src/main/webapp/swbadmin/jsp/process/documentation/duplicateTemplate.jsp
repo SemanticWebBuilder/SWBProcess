@@ -5,7 +5,6 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.process.documentation.resources.utils.SWPUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="java.util.Locale"%>

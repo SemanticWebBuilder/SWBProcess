@@ -4,7 +4,7 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.process.documentation.resources.utils.SWPUtils"%>
+<%@page import="org.semanticwb.process.utils.SWPUtils"%>
 <%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
 <%@page import="java.util.Iterator"%>

@@ -10,7 +10,6 @@
 <%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
 <%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.process.documentation.resources.utils.SWPUtils"%>
 <%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
 <%@page import="java.util.Iterator"%>
