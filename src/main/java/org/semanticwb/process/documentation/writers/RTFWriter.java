@@ -1,6 +1,7 @@
 package org.semanticwb.process.documentation.writers;
 
-import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.utils.SWPUtils.saveFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +31,6 @@ import org.semanticwb.process.documentation.model.Instantiable;
 import org.semanticwb.process.documentation.model.Model;
 import org.semanticwb.process.documentation.model.Referable;
 import org.semanticwb.process.documentation.model.SectionElement;
-import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.RepositoryElement;
 import org.semanticwb.process.model.RepositoryFile;
@@ -42,6 +42,7 @@ import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
@@ -52,9 +53,10 @@ import com.lowagie.text.Utilities;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.lowagie.text.rtf.field.RtfPageNumber;
 import com.lowagie.text.rtf.headerfooter.RtfHeaderFooter;
+import com.lowagie.text.rtf.style.RtfFont;
 
 /**
- *
+ * Impmenents a RTF Writer for process documentation.
  * @author Hasdai Pacheco
  */
 public class RTFWriter implements DocumentWriter {
@@ -62,6 +64,10 @@ public class RTFWriter implements DocumentWriter {
 	private final DocumentationInstance di;
 	private final Process p;
 
+	/**
+	 * Constructor.
+	 * @param di {@link DocumentationInstance} object.
+	 */
 	public RTFWriter(DocumentationInstance di) {
 		this.di = di;
 		this.p = di.getProcessRef();
@@ -69,22 +75,24 @@ public class RTFWriter implements DocumentWriter {
 
 	@Override
 	public void write(String basePath) {
-		HeaderFooter header = new HeaderFooter(new Phrase(p.getTitle(), SWPUtils.FONTS.h), false);
+		HeaderFooter header = new HeaderFooter(new Phrase(p.getTitle(), FONTS.h), false);
 		header.setAlignment(Element.ALIGN_CENTER);
 		Paragraph pFooter = new Paragraph(new RtfPageNumber());
 		pFooter.setAlignment(Element.ALIGN_RIGHT);
-		pFooter.setFont(SWPUtils.FONTS.h);
+		pFooter.setFont(FONTS.h);
 		RtfHeaderFooter footer = new RtfHeaderFooter(pFooter);
 
 		try {
 			// Create document
-			Document doc = new Document(PageSize.LETTER, Utilities.millimetersToPoints(25f), Utilities.millimetersToPoints(25f), Utilities.millimetersToPoints(20f), Utilities.millimetersToPoints(20f));
+			Document doc = new Document(PageSize.LETTER, Utilities.millimetersToPoints(25f),
+					Utilities.millimetersToPoints(25f), Utilities.millimetersToPoints(20f),
+					Utilities.millimetersToPoints(20f));
 			RtfWriter2.getInstance(doc, new FileOutputStream(basePath + p.getId() + ".rtf"));
 			doc.addTitle(p.getId());
 			doc.open();
 
 			// Write document title page
-			Paragraph pTitle = new Paragraph(p.getTitle(), SWPUtils.FONTS.h1);// Title
+			Paragraph pTitle = new Paragraph(p.getTitle(), FONTS.h1);// Title
 			pTitle.setAlignment(Element.ALIGN_CENTER);
 			doc.add(Chunk.NEWLINE);
 			doc.add(Chunk.NEWLINE);
@@ -110,7 +118,7 @@ public class RTFWriter implements DocumentWriter {
 					continue;
 
 				// Add section header
-				doc.add(new Paragraph(dsi.getSecTypeDefinition().getTitle(), SWPUtils.FONTS.h2));
+				doc.add(new Paragraph(dsi.getSecTypeDefinition().getTitle(), FONTS.h2));
 				doc.add(Chunk.NEWLINE);
 
 				// Gather sectionElement instances
@@ -132,7 +140,7 @@ public class RTFWriter implements DocumentWriter {
 						// Add table header
 						for (String propt : props) {// Header
 							String titleprop = propt.substring(0, propt.indexOf(';'));
-							Cell thead = new Cell(new Paragraph(titleprop, SWPUtils.FONTS.th));
+							Cell thead = new Cell(new Paragraph(titleprop, FONTS.th));
 							thead.setHorizontalAlignment(Element.ALIGN_CENTER);
 							thead.setVerticalAlignment(Element.ALIGN_MIDDLE);
 							thead.setGrayFill(0.9f);
@@ -143,24 +151,29 @@ public class RTFWriter implements DocumentWriter {
 						for (SectionElement se : sectionElementInstances) {// Instances
 							for (String propt : props) {
 								String idProperty = propt.substring(propt.indexOf(';') + 1, propt.length());
-								SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idProperty);
+								SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary()
+										.getSemanticPropertyById(idProperty);
 								Element content;
 
 								if (prop != null && !prop.getPropId().equals(Referable.swpdoc_file.getPropId())) { // Not a reference
 									content = new Paragraph((se.getSemanticObject().getProperty(prop) != null
 											? se.getSemanticObject().getProperty(prop)
-											: ""), SWPUtils.FONTS.td);
+											: ""), FONTS.td);
 								} else { // Reference
-									Anchor anchor = new Anchor(se.getTitle(), SWPUtils.FONTS.td);
+									Anchor anchor = new Anchor(se.getTitle(), FONTS.td);
 									Referable ref = (Referable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
 									RepositoryElement re = (RepositoryElement) ref.getRefRepository();
 									VersionInfo versionInfo = ref.getVersion() != null ? ref.getVersion()
 											: re.getLastVersion();
 
 									if (re instanceof RepositoryFile) {
-										String basePathE = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/swp_RepositoryFile/" + ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber() + "/";
+										String basePathE = SWBPortal.getWorkPath() + "/models/"
+												+ p.getProcessSite().getId() + "/swp_RepositoryFile/"
+												+ ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber()
+												+ "/";
 										File baseDir = new File(basePathE);
-										String basePathDest = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/";
+										String basePathDest = SWBPortal.getWorkPath() + "/models/"
+												+ p.getProcessSite().getId() + "/Resource/" + p.getId() + "/download/";
 										File repFile = new File(basePathDest + "rep_files/" + ref.getRefRepository().getId() + "/" + versionInfo.getVersionNumber() + "/");
 										if (!repFile.exists()) {
 											repFile.mkdirs();
@@ -200,7 +213,7 @@ public class RTFWriter implements DocumentWriter {
 					for (SectionElement se : sectionElementInstances) {
 						Activity a = (Activity) se;
 						if (a.getDescription() != null && !a.getDescription().isEmpty()) {
-							doc.add(new Paragraph(a.getTitle(), SWPUtils.FONTS.h3));
+							doc.add(new Paragraph(a.getTitle(), FONTS.h3));
 							doc.add(Chunk.NEWLINE);
 							addTextHtmlToRtf(a.getDescription(), basePath, doc, se);
 							doc.add(Chunk.NEWLINE);
@@ -208,7 +221,8 @@ public class RTFWriter implements DocumentWriter {
 					}
 				} else if (cls.equals(Model.sclass)) {
 					Image image2 = Image.getInstance(basePath + "rep_files/" + p.getId() + ".png");// Model Image
-					image2.scaleAbsolute(doc.getPageSize().getWidth() - doc.leftMargin() - doc.rightMargin(), doc.getPageSize().getHeight() - doc.topMargin() - doc.bottomMargin());
+					image2.scaleAbsolute(doc.getPageSize().getWidth() - doc.leftMargin() - doc.rightMargin(),
+							doc.getPageSize().getHeight() - doc.topMargin() - doc.bottomMargin());
 					doc.add(image2);
 				}
 				doc.newPage();
@@ -233,7 +247,7 @@ public class RTFWriter implements DocumentWriter {
 			html = d.html();
 			int i = 1;
 			org.jsoup.nodes.Document d1 = Jsoup.parse(html.substring(0));
-			Paragraph content = new Paragraph(d1.text(), SWPUtils.FONTS.body);
+			Paragraph content = new Paragraph(d1.text(), FONTS.body);
 			content.setAlignment(Element.ALIGN_JUSTIFIED_ALL);
 			doc.add(content);
 			for (org.jsoup.nodes.Element element : elements) {
@@ -260,13 +274,12 @@ public class RTFWriter implements DocumentWriter {
 							stream.write(data);
 							// Insertar la imagen en el documento
 							image = Image.getInstance(dir.getAbsolutePath() + "/" + se.getId() + i + ".png");
-
 						} catch (IOException ioe) {
 							log.error("Error on getDocument, " + ioe.getLocalizedMessage());
 						}
 
 					} else {
-						SWPUtils.saveFile(src, dir.getAbsolutePath() + "/" + se.getId() + i + "." + src.substring(src.lastIndexOf('.') + 1));
+						saveFile(src, dir.getAbsolutePath() + "/" + se.getId() + i + "." + src.substring(src.lastIndexOf('.') + 1));
 						image = Image.getInstance(dir.getAbsolutePath() + "/" + se.getId() + i + "." + src.substring(src.lastIndexOf('.') + 1));// Model Image
 					}
 
@@ -285,5 +298,22 @@ public class RTFWriter implements DocumentWriter {
 	@Override
 	public void write(OutputStream ous) {
 		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	/**
+	 * Static class for Font definitions.
+	 */
+	private static class FONTS {
+		public static final Font body = new RtfFont("Arial", 10);
+		public static final Font h = new RtfFont("Arial", 8);
+		public static final Font h1 = new RtfFont("Arial", 16, Font.BOLD);
+		public static final Font h2 = new RtfFont("Arial", 14, Font.BOLDITALIC);
+		public static final Font h3 = new RtfFont("Arial", 13, Font.BOLD);
+		public static final Font th = new RtfFont("Arial", 10, Font.BOLD);
+		public static final Font td = new RtfFont("Arial", 9);
+
+		private FONTS() {
+			throw new IllegalStateException("FONTS Class cannot be instantiated");
+		}
 	}
 }

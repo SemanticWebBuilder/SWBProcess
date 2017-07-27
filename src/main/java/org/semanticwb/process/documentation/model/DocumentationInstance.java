@@ -1,5 +1,7 @@
 package org.semanticwb.process.documentation.model;
 
+import static org.semanticwb.process.utils.SWPUtils.copyFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import org.semanticwb.platform.SemanticProperty;
 import org.semanticwb.portal.api.SWBResourceModes;
 import org.semanticwb.portal.api.SWBResourceURL;
 import org.semanticwb.portal.api.SWBResourceURLImp;
-import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import org.semanticwb.process.model.GraphicalElement;
 import org.semanticwb.process.model.ProcessSite;
 import org.semanticwb.process.model.Task;
@@ -347,7 +348,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                             if (null != files && files.length > 0) {
                                               File file = files[0];
                                               urlDownload = "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/" + file.getName();
-                                              SWPUtils.copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
+                                              copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
                                             }
                                         }
                                     }
@@ -384,7 +385,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                             if (!repFile.exists()) {
                                                 repFile.mkdirs();
                                             }
-                                            SWPUtils.copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
+                                            copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
                                             src.attr("src", "rep_files/" + se.getId() + "/" + file.getName());
                                         }
                                     }
@@ -422,7 +423,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                             if (!repFile.exists()) {
                                                 repFile.mkdirs();
                                             }
-                                            SWPUtils.copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
+                                            copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
                                             src.attr("src", "rep_files/" + se.getId() + "/" + file.getName());
                                         }
                                     }
@@ -526,7 +527,7 @@ public class DocumentationInstance extends org.semanticwb.process.documentation.
                                                         if (null != files && files.length > 0) {
                                                         	File file = files[0];
                                                         	urlDownload = "rep_files/" + ref.getRefRepository().getId() + "/" + vi.getVersionNumber() + "/" + file.getName();
-                                                        SWPUtils.copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
+                                                        copyFile(file.getAbsolutePath(), repFile.getAbsolutePath() + "/" + file.getName());
                                                         }
                                                     }
                                                 }

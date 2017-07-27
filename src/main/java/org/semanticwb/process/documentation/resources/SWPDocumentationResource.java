@@ -1,7 +1,10 @@
 package org.semanticwb.process.documentation.resources;
 
-import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFile;
-import static org.semanticwb.process.documentation.resources.utils.SWPUtils.copyFileFromSWBAdmin;
+import static org.semanticwb.process.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.utils.SWPUtils.copyFileFromSWBAdmin;
+import static org.semanticwb.process.utils.SWPUtils.generateImageModel;
+import static org.semanticwb.process.utils.SWPUtils.FORMAT_PNG;
+import static org.semanticwb.process.utils.SWPUtils.FORMAT_SVG;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,7 +69,6 @@ import org.semanticwb.process.documentation.model.Referable;
 import org.semanticwb.process.documentation.model.Reference;
 import org.semanticwb.process.documentation.model.SectionElement;
 import org.semanticwb.process.documentation.model.SectionElementRef;
-import org.semanticwb.process.documentation.resources.utils.SWPUtils;
 import org.semanticwb.process.documentation.writers.DOCXWriter;
 import org.semanticwb.process.model.RepositoryDirectory;
 import org.semanticwb.process.model.RepositoryElement;
@@ -769,8 +770,8 @@ public class SWPDocumentationResource extends GenericAdmResource {
 				if (!dirBase.exists()) {
 					dirBase.mkdirs();
 				}
-				SWPUtils.generateImageModel(p, basePath + "/rep_files", SWPUtils.FORMAT_PNG, data, w, h);
-				SWPUtils.generateImageModel(p, basePath + "/rep_files", SWPUtils.FORMAT_SVG, data, w, h);
+				generateImageModel(p, basePath + "/rep_files", FORMAT_PNG, data, w, h);
+				generateImageModel(p, basePath + "/rep_files", FORMAT_SVG, data, w, h);
 
 				File dest = new File(basePath);
 				if (!dest.exists()) {
