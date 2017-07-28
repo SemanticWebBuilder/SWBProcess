@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,7 +18,7 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.resources;
 
@@ -30,9 +30,11 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
@@ -84,7 +86,6 @@ import org.semanticwb.process.xpdl.XPDLParser;
  * @author Hasdai Pacheco <ebenezer.sanchez@infotec.mx>
  */
 public class SVGModeler extends GenericAdmResource {
-
     private static Logger log = SWBUtils.getLogger(SVGModeler.class);
     public static final String MODE_MODELER = "modeler";
     public static final String MODE_GATEWAY = "gateway";
@@ -175,15 +176,10 @@ public class SVGModeler extends GenericAdmResource {
             try {
                 if (go != null && go instanceof Process) {
                     Process process = (Process) go;
-                    String pJson = process.serialize("JSON");//getProcessJSON(process);
+                    String pJson = process.serialize("JSON");
                     if (null == pJson || pJson.isEmpty()) {
                         pJson = ERRORSTRING.replace("_JSONERROR_", paramRequest.getLocaleString("msgJSONPError"));
                     }
-                    /*if (pJson != null) {
-                        json = pJson.toString();
-                    } else {
-                        json = ERRORSTRING.replace("_JSONERROR_", paramRequest.getLocaleString("msgJSONPError"));
-                    }*/
                     response.setContentType("application/json");
                     outs.write(pJson.getBytes("UTF-8"));
                 } else {
@@ -203,7 +199,7 @@ public class SVGModeler extends GenericAdmResource {
             outs.write(json.getBytes("UTF-8"));
         } else if (ACT_STOREPROCESS.equals(action)) { //Persistir modelo del proceso
             String jsonStr = request.getParameter("jsonString");
-            HashMap<String, JSONObject> hmjson = new HashMap();
+            HashMap<String, JSONObject> hmjson = new HashMap<>();
 
             if (go != null && go instanceof Process) {
                 Process process = (Process) go;
@@ -212,7 +208,6 @@ public class SVGModeler extends GenericAdmResource {
                 JSONObject jsobj = null;
 
                 try {
-                    //System.out.println("json recibido: "+node.getTextContent());
                     if (jsonStr.startsWith(JSONSTART) && jsonStr.endsWith(JSONEND)) {
                         jsonStr = jsonStr.replace(JSONSTART, "");
                         jsonStr = jsonStr.replace(JSONEND, "");
@@ -226,7 +221,6 @@ public class SVGModeler extends GenericAdmResource {
                                 try {
                                     jsobj = jsarr.getJSONObject(i);
                                     str_uri = jsobj.getString(SWBProcess.JSONProperties.PROP_URI);
-                                    //System.out.println("json uri:"+str_uri);
                                     hmjson.put(str_uri, jsobj);
                                 } catch (Exception ej) {
                                     log.error("Error en elemento del JSON. ", ej);
@@ -333,12 +327,12 @@ public class SVGModeler extends GenericAdmResource {
      * @return Vector, con los uris de los elementos existentes.
      */
     public HashMap<String, String> loadProcessElements(org.semanticwb.process.model.Process process) {
-        HashMap<String, String> hmori = new HashMap();
+        HashMap<String, String> hmori = new HashMap<>();
 
         try {
-            Iterator<GraphicalElement> it_fo = process.listContaineds();
-            while (it_fo.hasNext()) {
-                GraphicalElement obj = it_fo.next();
+            Iterator<GraphicalElement> itFo = process.listContaineds();
+            while (itFo.hasNext()) {
+                GraphicalElement obj = itFo.next();
                 hmori.put(obj.getURI(), obj.getURI());
 
                 // Se eliminan las conexiones entre GraphicalElements
@@ -346,7 +340,6 @@ public class SVGModeler extends GenericAdmResource {
                 while (it.hasNext()) {
                     ConnectionObject connectionObject = it.next();
                     hmori.put(connectionObject.getURI(), connectionObject.getURI());
-                    //connectionObject.remove();
                 }
                 if (obj instanceof Containerable) {
                     loadSubProcessElements((Containerable) obj, hmori);
@@ -366,9 +359,9 @@ public class SVGModeler extends GenericAdmResource {
      */
     public void loadSubProcessElements(org.semanticwb.process.model.Containerable subprocess, HashMap hmori) {
         try {
-            Iterator<GraphicalElement> it_fo = subprocess.listContaineds();
-            while (it_fo.hasNext()) {
-                GraphicalElement obj = it_fo.next();
+            Iterator<GraphicalElement> itFo = subprocess.listContaineds();
+            while (itFo.hasNext()) {
+                GraphicalElement obj = itFo.next();
                 hmori.put(obj.getURI(), obj.getURI());
 
                 // Se eliminan las conexiones entre GraphicalElements
@@ -376,7 +369,6 @@ public class SVGModeler extends GenericAdmResource {
                 while (it.hasNext()) {
                     ConnectionObject connectionObject = it.next();
                     hmori.put(connectionObject.getURI(), connectionObject.getURI());
-                    //connectionObject.remove();
                 }
                 if (obj instanceof Containerable) {
                     loadSubProcessElements((Containerable) obj, hmori);
@@ -401,13 +393,12 @@ public class SVGModeler extends GenericAdmResource {
     public boolean reviewJSON(org.semanticwb.process.model.Process process, HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramsRequest, HashMap<String, JSONObject> hmjson, boolean bupdate) {
         boolean ret = true;
         HashMap<String, String> hmori = loadProcessElements(process);
-        HashMap<String, String> hmnew = new HashMap();
-
+        HashMap<String, String> hmnew = new HashMap<>();
         ProcessSite procsite = process.getProcessSite();
         GenericObject go = null;
         String uri = null, sclass = null, title = null, description = null, container = null, parent = null, start = null, end = null;
         int x, y, w, h, labelSize, index;
-        Boolean isMultiInstance, isSeqMultiInstance, isLoop, isForCompensation, isCollection, isAdHoc, isTransaction, isInterrupting;
+        Boolean isMultiInstance, isLoop, isForCompensation, isCollection, isInterrupting;
 
         SemanticClass semclass = null;
         SemanticModel model = procsite.getSemanticObject().getModel();
@@ -419,7 +410,6 @@ public class SVGModeler extends GenericAdmResource {
             while (it.hasNext()) {
                 String key = it.next();
                 JSONObject json = (JSONObject) hmjson.get(key);
-                //System.out.println("json element: "+json.toString());
                 uri = json.getString(SWBProcess.JSONProperties.PROP_URI);
                 sclass = json.getString(SWBProcess.JSONProperties.PROP_CLASS);
                 semclass = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(PROCESS_PREFIX + "#" + sclass);
@@ -432,11 +422,8 @@ public class SVGModeler extends GenericAdmResource {
                         title = json.optString(SWBProcess.JSONProperties.PROP_TITLE, "");//TODO: Sanitize title and description from JSON
                         description = json.optString(SWBProcess.JSONProperties.PROP_DESCRIPTION, "");
                         isMultiInstance = json.optBoolean(SWBProcess.JSONProperties.PROP_isMultiInstance, false);
-                        isSeqMultiInstance = json.optBoolean(SWBProcess.JSONProperties.PROP_isSeqMultiInstance, false);
                         isLoop = json.optBoolean(SWBProcess.JSONProperties.PROP_isLoop, false);
                         isForCompensation = json.optBoolean(SWBProcess.JSONProperties.PROP_isForCompensation, false);
-                        isAdHoc = json.optBoolean(SWBProcess.JSONProperties.PROP_isAdHoc, false);
-                        isTransaction = json.optBoolean(SWBProcess.JSONProperties.PROP_isTransaction, false);
                         isInterrupting = json.optBoolean(SWBProcess.JSONProperties.PROP_isInterrupting, false);
                         isCollection = json.optBoolean(SWBProcess.JSONProperties.PROP_isCollection, false);
                         index = json.optInt(SWBProcess.JSONProperties.PROP_index, 1000);
@@ -452,47 +439,32 @@ public class SVGModeler extends GenericAdmResource {
 
                         // revisando si el elemento existe
                         if (hmori.get(uri) != null) {
-                            //System.out.println("revisando si el elemento existe");
                             go = ont.getGenericObject(uri);
 
                             if (go instanceof GraphicalElement) {
                                 // actualizando datos en elemento existente
                                 ge = (GraphicalElement) go;
-                                if (!ge.getTitle().equals(title)) {
-                                    if (bupdate) {
-                                        ge.setTitle(title);
-                                    }
+                                if (!ge.getTitle().equals(title) && bupdate) {
+                                    ge.setTitle(title);
                                 }
-                                if ((null != description && ge.getDescription() != null && !ge.getDescription().equals(description)) || (null != description && ge.getDescription() == null)) {
-                                    if (bupdate) {
-                                        ge.setDescription(description);
-                                    }
+                                if ((null != description && ge.getDescription() != null && !ge.getDescription().equals(description)) || (null != description && ge.getDescription() == null) && bupdate) {
+                                    ge.setDescription(description);
                                 }
 
-                                if (ge.getX() != x) {
-                                    if (bupdate) {
-                                        ge.setX(x);
-                                    }
+                                if (ge.getX() != x && bupdate) {
+                                    ge.setX(x);
                                 }
-                                if (ge.getY() != y) {
-                                    if (bupdate) {
-                                        ge.setY(y);
-                                    }
+                                if (ge.getY() != y && bupdate) {
+                                    ge.setY(y);
                                 }
-                                if (ge.getWidth() != w) {
-                                    if (bupdate) {
-                                        ge.setWidth(w);
-                                    }
+                                if (ge.getWidth() != w && bupdate) {
+                                    ge.setWidth(w);
                                 }
-                                if (ge.getHeight() != h) {
-                                    if (bupdate) {
-                                        ge.setHeight(h);
-                                    }
+                                if (ge.getHeight() != h && bupdate) {
+                                    ge.setHeight(h);
                                 }
-                                if (ge.getLabelSize() != labelSize) {
-                                    if (bupdate) {
-                                        ge.setLabelSize(labelSize);
-                                    }
+                                if (ge.getLabelSize() != labelSize && bupdate) {
+                                    ge.setLabelSize(labelSize);
                                 }
 
                                 // si es un Sortable se revisa si tiene index
@@ -545,14 +517,12 @@ public class SVGModeler extends GenericAdmResource {
                                         }
                                     }
 
-                                    //System.out.println("LoopCharacteristic....");
                                     if (isLoop) {
                                         // si existe no se hace nada se deja el LoopCharacteristics
                                         LoopCharacteristics loopchar = tsk.getLoopCharacteristics();
                                         if (loopchar == null) // si no existe lo crea
                                         {
                                             // si no existe se crea uno nuevo y se asigna al task
-                                            //System.out.println("creando LoopCharacteristic....");
                                             if (bupdate) {
                                                 loopchar = StandarLoopCharacteristics.ClassMgr.createStandarLoopCharacteristics(procsite);
                                                 tsk.setLoopCharacteristics(loopchar);
@@ -562,7 +532,6 @@ public class SVGModeler extends GenericAdmResource {
                                                 loopchar.getSemanticObject().remove();
                                             }
                                             // si no existe se crea uno nuevo y se asigna al task
-                                            //System.out.println("eliminando y creando LoopCharacteristic....");
                                             if (bupdate) {
                                                 loopchar = StandarLoopCharacteristics.ClassMgr.createStandarLoopCharacteristics(procsite);
                                                 tsk.setLoopCharacteristics(loopchar);
@@ -592,10 +561,7 @@ public class SVGModeler extends GenericAdmResource {
 
                             }
 
-                            //System.out.println("go:"+go);
-                            //System.out.println("lindex:"+json.has("lindex"));
                             if (go instanceof Lane && json.has("lindex")) {
-                                //System.out.println("val:"+json.getInt("lindex")+" "+json.get("lindex"));
                                 ((Lane) go).setLindex(json.getInt("lindex"));
                             }
                             // se quita elemento que ha sido actualizado
@@ -605,7 +571,6 @@ public class SVGModeler extends GenericAdmResource {
 
                         } else {
                             //Se genera el nuevo elemento
-                            //System.out.println("new element: "+semclass);
                             long id = model.getCounter(semclass);
                             GenericObject gi = null;
                             if (bupdate) {
@@ -621,7 +586,6 @@ public class SVGModeler extends GenericAdmResource {
                                 ge.setHeight(h);
                                 ge.setWidth(w);
 
-                                //System.out.println("uri: "+uri+" new uri: "+gi.getURI());
                                 // si es un Sortable se revisa si tiene index
                                 if (ge instanceof Sortable) {
                                     Sortable sorble = (Sortable) gi;
@@ -662,20 +626,17 @@ public class SVGModeler extends GenericAdmResource {
                                         }
                                     }
 
-                                    //System.out.println("LoopCharacteristic....");
                                     if (isLoop) {
                                         // si existe no se hace nada se deja el LoopCharacteristics
                                         LoopCharacteristics loopchar = tsk.getLoopCharacteristics();
                                         if (loopchar == null) // si no existe lo crea
                                         {
                                             // si no existe se crea uno nuevo y se asigna al task
-                                            //System.out.println("creando LoopCharacteristic....");
                                             loopchar = StandarLoopCharacteristics.ClassMgr.createStandarLoopCharacteristics(procsite);
                                             tsk.setLoopCharacteristics(loopchar);
                                         } else if (!(loopchar instanceof StandarLoopCharacteristics)) {
                                             loopchar.getSemanticObject().remove();
                                             // si no existe se crea uno nuevo y se asigna al task
-                                            //System.out.println("eliminando y creando LoopCharacteristic....");
                                             loopchar = StandarLoopCharacteristics.ClassMgr.createStandarLoopCharacteristics(procsite);
                                             tsk.setLoopCharacteristics(loopchar);
                                         }
@@ -684,7 +645,6 @@ public class SVGModeler extends GenericAdmResource {
                                         // si existe y cambio y ya no es Loop se elimina el StandarLoopCharacteristics asociado
                                         LoopCharacteristics loopchar = tsk.getLoopCharacteristics();
                                         if (null != loopchar && loopchar instanceof StandarLoopCharacteristics) {
-                                            //System.out.println("eliminando LoopCharacteristic....");
                                             loopchar.getSemanticObject().remove();
                                         }
                                     }
@@ -694,7 +654,6 @@ public class SVGModeler extends GenericAdmResource {
                                 if (ge instanceof Collectionable) {
                                     Collectionable colble = (Collectionable) gi;
                                     if (isCollection) {
-                                        //System.out.println("Save Collection ===>"+isCollection.booleanValue());
                                         colble.setCollection(isCollection);
                                     }
                                 }
@@ -706,29 +665,10 @@ public class SVGModeler extends GenericAdmResource {
                                 hmnew.put(uri, gi.getURI());
                             }
 
-                            //System.out.println("ge:"+ge);
-                            //System.out.println("lindex:"+json.has("lindex"));
                             if (ge instanceof Lane && json.has("lindex")) {
-                                //System.out.println("val:"+json.getInt("lindex")+" "+json.get("lindex"));
                                 ((Lane) ge).setLindex(json.getInt("lindex"));
                             }
 
-                            ///////////////////////////////////////
-//                        if(semclass.isSubClass(Task.swp_Task))
-//                        {
-//                                Task tsk = (Task) gi;
-//                                if(isForCompensation)
-//                                {
-//                                    tsk.setForCompensation(isForCompensation);
-//                                } else tsk.setForCompensation(false);
-//
-//                                Resource res = procsite.createResource();
-//                                res.setResourceType(procsite.getResourceType("ProcessForm"));
-//                                res.setTitle(title);
-//                                res.setActive(Boolean.TRUE);
-//                                ((UserTask)gi).addResource(res);
-//
-//                        }
                             if (semclass.equals(UserTask.swp_UserTask)) {
 
                                 if (procsite.getResourceType("ProcessForm") == null && bupdate) {
@@ -750,7 +690,6 @@ public class SVGModeler extends GenericAdmResource {
                                     ((UserTask) gi).addResource(res);
                                 }
                             }
-                            ////////////////////////////////////////
                         } // termina else
                     } // termina if graphicalElement
                 } catch (Exception e) {
@@ -786,15 +725,15 @@ public class SVGModeler extends GenericAdmResource {
                             ge.setContainer(process);
                         } else {
                             GenericObject subproc = ont.getGenericObject(hmnew.get(container));
-                            if (subproc != null) // && (subproc instanceof SubProcess || subproc.getSemanticObject().getSemanticClass().isSubClass(SubProcess.swp_SubProcess)))
+                            if (subproc != null)
                             {
                                 ge.setContainer((Containerable) subproc);
                             }
                         }
                         if (parent != null && parent.trim().length() > 0) {
-                            GenericObject go_ge = ont.getGenericObject(hmnew.get(parent));
-                            if (go_ge != null && go_ge instanceof GraphicalElement) {
-                                ge.setParent((GraphicalElement) go_ge);
+                            GenericObject goGe = ont.getGenericObject(hmnew.get(parent));
+                            if (goGe != null && goGe instanceof GraphicalElement) {
+                                ge.setParent((GraphicalElement) goGe);
                             }
                         } else if (ge.getParent() != null) {
                             ge.removeParent();
@@ -842,38 +781,28 @@ public class SVGModeler extends GenericAdmResource {
                     if (hmori.get(uri) != null) {
                         go = ont.getGenericObject(hmori.get(uri));
                         co = (ConnectionObject) go;
-                        if (!co.getTitle().equals(title)) {
-                            if (bupdate) {
-                                co.setTitle(title);
-                            }
+                        if (!co.getTitle().equals(title) && bupdate) {
+                            co.setTitle(title);
                         }
 
-                        if ((null != description && co.getDescription() != null && !co.getDescription().equals(description)) || (null != description && co.getDescription() == null)) {
-                            if (bupdate) {
-                                co.setDescription(description);
-                            }
+                        if ((null != description && co.getDescription() != null && !co.getDescription().equals(description)) || (null != description && co.getDescription() == null)  && bupdate) {
+                            co.setDescription(description);
                         }
 
-                        if ((null != sconnpoints && co.getConnectionPoints() != null && !co.getConnectionPoints().equals(sconnpoints)) || (null != sconnpoints && co.getConnectionPoints() == null)) {
-                            if (bupdate) {
-                                co.setConnectionPoints(sconnpoints);
-                            }
+                        if ((null != sconnpoints && co.getConnectionPoints() != null && !co.getConnectionPoints().equals(sconnpoints)) || (null != sconnpoints && co.getConnectionPoints() == null)  && bupdate) {
+                            co.setConnectionPoints(sconnpoints);
                         }
 
-                        if (!co.getSource().getURI().equals(start)) {
-                            if (hmnew.get(start) != null) {
-                                gostart = ont.getGenericObject(hmnew.get(start));
-                                if (bupdate) {
-                                    co.setSource((GraphicalElement) gostart);
-                                }
+                        if (!co.getSource().getURI().equals(start) && hmnew.get(start) != null) {
+                            gostart = ont.getGenericObject(hmnew.get(start));
+                            if (bupdate) {
+                                co.setSource((GraphicalElement) gostart);
                             }
                         }
-                        if (!co.getTarget().getURI().equals(end)) {
-                            if (hmnew.get(end) != null) {
-                                goend = ont.getGenericObject(hmnew.get(end));
-                                if (bupdate) {
-                                    co.setTarget((GraphicalElement) goend);
-                                }
+                        if (!co.getTarget().getURI().equals(end) && hmnew.get(end) != null) {
+                            goend = ont.getGenericObject(hmnew.get(end));
+                            if (bupdate) {
+                                co.setTarget((GraphicalElement) goend);
                             }
                         }
                         if (bupdate) {
@@ -887,15 +816,11 @@ public class SVGModeler extends GenericAdmResource {
                             if (bupdate) {
                                 co.setTitle(title);
                             }
-                            if (null != description) {
-                                if (bupdate) {
-                                    co.setDescription(description);
-                                }
+                            if (null != description && bupdate) {
+                                co.setDescription(description);
                             }
-                            if (null != sconnpoints) {
-                                if (bupdate) {
-                                    co.setConnectionPoints(sconnpoints);
-                                }
+                            if (null != sconnpoints && bupdate) {
+                                co.setConnectionPoints(sconnpoints);
                             }
                             gostart = ont.getGenericObject(hmnew.get(start));
                             goend = ont.getGenericObject(hmnew.get(end));
@@ -918,10 +843,8 @@ public class SVGModeler extends GenericAdmResource {
                 String key = it.next();
                 try {
                     so = ont.getSemanticObject(hmori.get(key));
-                    if (so != null) {
-                        if (bupdate) {
-                            so.remove();
-                        }
+                    if (so != null && bupdate) {
+                        so.remove();
                     }
                 } catch (Exception e) {
                     log.error("Error al tratar de eliminar elemento del proceso...", e);
@@ -984,18 +907,6 @@ public class SVGModeler extends GenericAdmResource {
             outs.write(pJson.getBytes("UTF-8"));
         } else if ("png".equals(format)) {
             response.setContentType("image/png; charset=ISO-8859-1");
-//            Document svg = SWBUtils.XML.xmlToDom(data);
-//            PNGTranscoder t = new PNGTranscoder();
-//            TranscoderInput input = new TranscoderInput(svg);
-//            TranscoderOutput output = new TranscoderOutput(response.getOutputStream());
-//            try {
-//                t.transcode(input, output);
-//                response.getOutputStream().flush();
-//                response.getOutputStream().close();
-//
-//            } catch (TranscoderException e) {
-//                e.printStackTrace();
-//            }
             String[] values = viewBox != null ? viewBox.split("\\ ") : "0 0 3800 2020".split("\\ ");
             InputStream strStream = new ByteArrayInputStream(data.getBytes("ISO-8859-1"));
             TranscoderInput ti = new TranscoderInput(strStream/*svgFile.toURI().toString()*/);
@@ -1010,58 +921,7 @@ public class SVGModeler extends GenericAdmResource {
             } catch (TranscoderException ex) {
                 log.error("Ocurrió un problema al generar la imagen", ex);
             }
-
-//            p = (Process) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(request.getParameter("surisvg"));
-//            data = request.getParameter("datasvg");
-//            String svg = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-//                    + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n";
-//            svg += data;
-//            //Corregir clases en objetos de datos
-//            svg = svg.replace("<g id=\"data\" bclass=\"itemaware\" oclass=\"itemaware_o\">", "<g id=\"data\" bclass=\"itemaware\" oclass=\"itemaware_o\" class=\"itemAware\">");
-//            svg = svg.replace("<g id=\"dataStore\" bclass=\"itemaware\" oclass=\"itemaware_o\" transform=\"translate(-12,-10)\">", "<g id=\"dataStore\" bclass=\"itemaware\" oclass=\"itemaware_o\" transform=\"translate(-12,-10)\" class=\"itemAware\">");
-////            response.setContentType("image/svg+xml");
-////            outs.write(svg.getBytes());
-//            String basePath = SWBPortal.getWorkPath() + "/models/" + p.getProcessSite().getId() + "/Resource/" + p.getId() + "/";
-//            File modeler = new File(basePath);
-//            if (!modeler.exists()) {
-//                modeler.mkdirs();
-//            }
-//            File index = new File(basePath + p.getId() + ".svg");
-//            FileOutputStream out = new FileOutputStream(index);
-//            out.write(svg.getBytes("UTF-8"));
-//            out.flush();
-//            out.close();
-//            try {
-//                OutputStream os = new FileOutputStream(new File(basePath + p.getId() + ".png"));
-//                PNGTranscoder trans = new PNGTranscoder();
-//                trans.addTranscodingHint(PNGTranscoder.KEY_WIDTH, new Float(3840));
-//                trans.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(2160));
-//                TranscoderInput input = new TranscoderInput(new FileInputStream(index));
-//                TranscoderOutput output = new TranscoderOutput(os);
-//                trans.transcode(input, output);
-//                os.flush();
-//                os.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
         }
-//            } else if ("png".equalsIgnoreCase(format)) {
-//                String svg = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
-//                             "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">";
-//                svg += data.trim();
-//                
-//                InputStream strStream = new ByteArrayInputStream(svg.toString().getBytes("UTF-8"));
-//                TranscoderInput ti = new TranscoderInput(strStream/*svgFile.toURI().toString()*/);
-//                TranscoderOutput to = new TranscoderOutput(outs);
-//                
-//                PNGTranscoder t = new PNGTranscoder();
-//                t.addTranscodingHint(PNGTranscoder.KEY_FORCE_TRANSPARENT_WHITE, Boolean.TRUE);
-//                try {                
-//                    t.transcode(ti, to);
-//                } catch (TranscoderException ex) {
-//                    log.error("Ocurrió un problema al generar la imagen", ex);
-//                }
-//            }
         outs.flush();
         outs.close();
     }
