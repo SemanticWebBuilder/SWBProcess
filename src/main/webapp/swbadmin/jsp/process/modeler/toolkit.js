@@ -1668,24 +1668,24 @@ var ToolKit = {
       try {
         _this.svg.removeChild(obj);
       } catch(noe){console.log(noe);}
-    },
+    };
 
     obj.hide=function() {
       obj.style.display="none";
       obj.hidden=true;
-    },
+    };
 
     obj.show=function() {
       obj.style.display="";
       obj.hidden=false;
-    },
+    };
 
     obj.setPoint(0,x1,y1);
     obj.addPoint(x2,y2);
 
     obj.setClass=function(styleC) {
       obj.setAttributeNS(null, "class", styleC);
-    },
+    };
 
     obj.moveFirst = function() {
       _this.svg.appendChild(obj);
