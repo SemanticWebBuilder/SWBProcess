@@ -23,6 +23,7 @@ package org.semanticwb.process.resources.reports;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
 import javax.servlet.RequestDispatcher;
@@ -117,7 +118,7 @@ public class ReportsResource extends GenericResource {
     }
     
     public ArrayList<UserRolesSegregationBean> getURSBeans(SWBParamRequest paramRequest, HttpServletRequest request, WebSite site) {
-        ArrayList<UserRolesSegregationBean> temp = UserRolesSegregationReport.generateBeans(site);
+        List<UserRolesSegregationBean> temp = UserRolesSegregationReport.generateBeans(site);
         String inPath = SWBUtils.getApplicationPath()+"/swbadmin/jsp/process/reports/URSReportTemplate.xls";
         String outPath = SWBPortal.getWorkPath() + "/models/" + site.getId() + "/reports/URSReport.xls";
         
