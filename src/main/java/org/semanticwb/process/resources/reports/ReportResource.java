@@ -347,7 +347,7 @@ public class ReportResource extends org.semanticwb.process.resources.reports.bas
     public void doShowURSReport(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
         WebSite site = paramRequest.getWebPage().getWebSite();
         String inPath = SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/reports/URSReportTemplate.xls";
-        ArrayList<UserRolesSegregationBean> temp = UserRolesSegregationReport.generateBeans(site);
+        List<UserRolesSegregationBean> temp = UserRolesSegregationReport.generateBeans(site);
         Map beans = new HashMap();
         beans.put("bean", temp);
         OutputStream out = response.getOutputStream();
