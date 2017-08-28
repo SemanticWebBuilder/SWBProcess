@@ -20,6 +20,7 @@
                 <resource>
                     <directory>src/main/java</directory>
                     <includes>
+                        <include>**/*.owl</include>
                         <include>**/*.properties</include>
                         <include>**/*.xml</include>
                         <include>**/*.xslt</include>
@@ -143,6 +144,7 @@
                 <resource>
                     <directory>src/main/java</directory>
                     <includes>
+                        <include>**/*.owl</include>
                         <include>**/*.properties</include>
                         <include>**/*.xml</include>
                         <include>**/*.xslt</include>
@@ -304,6 +306,7 @@
                 <resource>
                     <directory>src/main/java</directory>
                     <includes>
+                        <include>**/*.owl</include>
                         <include>**/*.properties</include>
                         <include>**/*.xml</include>
                         <include>**/*.xslt</include>
@@ -429,6 +432,7 @@
                 <resource>
                     <directory>src/main/java</directory>
                     <includes>
+                        <include>**/*.owl</include>
                         <include>**/*.properties</include>
                         <include>**/*.xml</include>
                         <include>**/*.xslt</include>
