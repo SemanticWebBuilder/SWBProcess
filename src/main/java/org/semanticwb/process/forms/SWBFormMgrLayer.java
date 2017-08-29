@@ -56,10 +56,9 @@ import com.arthurdo.parser.HtmlTag;
 
 /**
  *
- * @author jorge.jimenez
+ * @author Jorge Jiménez Sandoval {jorge.jimenez}
  */
 public class SWBFormMgrLayer {
-
 	private String xml = null;
 	HttpServletRequest request = null;
 	ArrayList<SWBFormLayer> aProperties = null;
@@ -115,7 +114,7 @@ public class SWBFormMgrLayer {
 					if (tok.getRawString().toLowerCase().startsWith("<!--[if"))
 						continue;
 					String tagName = tag.getTagString();
-					if (tagName.toLowerCase().equals("form")) {
+					if (tagName.equalsIgnoreCase("form")) {
 						if (tag.getParam("htmlType") != null)
 							htmlType = tag.getParam("htmlType");
 					} else if (tagName.equalsIgnoreCase("label")) {
@@ -297,7 +296,7 @@ public class SWBFormMgrLayer {
 						while (itTagKeys.hasNext()) {
 							String sTagKey = itTagKeys.next();
 							if (sTagKey.equalsIgnoreCase("name")) {
-								sTagClassComplete = (String) hmap.get(sTagKey);
+								sTagClassComplete = hmap.get(sTagKey);
 								if (sTagClassComplete != null) {
 									int pos = sTagClassComplete.indexOf('.');
 									if (pos > -1) {
@@ -307,7 +306,7 @@ public class SWBFormMgrLayer {
 								}
 							}
 							if (sTagKey.equalsIgnoreCase("mode")) {
-								smode = (String) hmap.get(sTagKey);
+								smode = hmap.get(sTagKey);
 							}
 						}
 

@@ -1,5 +1,4 @@
-/*
- * SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
+ /* SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
  * colaboración y conocimiento, que gracias al uso de tecnología semántica puede generar contextos de
  * información alrededor de algún tema de interés o bien integrar información y aplicaciones de diferentes
  * fuentes, donde a la información se le asigna un significado, de forma que pueda ser interpretada y
@@ -21,9 +20,11 @@
  */
 package org.semanticwb.process.model;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
+
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
@@ -57,30 +58,18 @@ public class StoreRepositoryFile extends org.semanticwb.process.model.base.Store
             ItemAwareReference ref = it.next();
             String n1=ref.getItemAware().getName();
             String n2=getNodeVarName();
-            if(n1!=null && n2!=null)
+            if(n1!=null && n2!=null && n1.equals(n2))
             {
-                if(n1.equals(n2))
-                {
-                    obj=ref.getProcessObject();
-                    break;
-                }
+	            obj=ref.getProcessObject();
+	            break;
             }
-            //System.out.println("n1:"+n1);
-            //System.out.println("n2:"+n2);
         }
-        
-        //System.out.println("obj:"+obj);
         
         if(obj!=null && obj instanceof org.semanticwb.process.schema.File)
         {
             org.semanticwb.process.schema.File f=(org.semanticwb.process.schema.File)obj;
-            //System.out.println("value:"+f.getValue());
-            //System.out.println("file:"+f.getRepositoryFile());
-            
-            
-            String filePath=SWBPortal.getWorkPath()+f.getWorkPath()+"/"+f.getValue();
-            //System.out.println("filePath:"+filePath);
-            
+
+            String filePath=SWBPortal.getWorkPath()+f.getWorkPath()+File.separator+f.getValue();            
             String filename = null;
             if (f.getValue() != null) {
                 filename=f.getValue().substring(16+f.getId().length());
@@ -123,10 +112,7 @@ public class StoreRepositoryFile extends org.semanticwb.process.model.base.Store
             while (it2.hasNext())
             {
                 String filename=it2.next();
-                String filePath=SWBPortal.getWorkPath()+f.getWorkPath()+"/"+filename;
-                //System.out.println("filePath:"+filePath);
-
-
+                String filePath=SWBPortal.getWorkPath()+f.getWorkPath()+File.separator+filename;
                 RepositoryFile file=null;
                 Iterator<RepositoryFile> it3=f.listRepositoryFiles();
                 while (it3.hasNext())
@@ -161,33 +147,18 @@ public class StoreRepositoryFile extends org.semanticwb.process.model.base.Store
                 }
                 String comments = this.getNodeComment();
                 if(comments!=null)comments=SWBScriptParser.parser(instance, user, comments);
-                FileInputStream fis = null;
-                try {
-                		fis = new FileInputStream(filePath);
-                		file.storeFile(fis, filename, comments, getNodeStatus()!=null?getNodeStatus().getId():"Indefinido", false);
-                } catch(Exception e) {
-                    LOG.error(e);
-                } finally {
-                		if (null != fis) {
-                			try {
-                				fis.close();
-                			} catch (IOException ioex) {
-                				LOG.error(ioex);
-                			}
-                		}
+                
+                try (FileInputStream fis = new FileInputStream(filePath)) {
+	            		file.storeFile(fis, filename, comments, getNodeStatus()!=null?getNodeStatus().getId():"Indefinido", false);
+                } catch (Exception e) {
+                		LOG.error(e);
                 }
+
             }
             
         }else if(obj!=null && obj instanceof org.semanticwb.process.schema.URL)
         {
-            org.semanticwb.process.schema.URL f=(org.semanticwb.process.schema.URL)obj;
-            //System.out.println("value:"+f.getValue());
-            //System.out.println("file:"+f.getRepositoryURL());
-            
-            
-            String url=f.getValue();
-            //System.out.println("filePath:"+filePath);
-            
+            org.semanticwb.process.schema.URL f=(org.semanticwb.process.schema.URL)obj;            
             RepositoryURL rurl=f.getRepositoryURL();
             if(rurl==null)
             {

@@ -421,12 +421,12 @@ public class SVGModeler extends GenericAdmResource {
                     if (semclass.isSubClass(GraphicalElement.swp_GraphicalElement)) {
                         title = json.optString(SWBProcess.JSONProperties.PROP_TITLE, "");//TODO: Sanitize title and description from JSON
                         description = json.optString(SWBProcess.JSONProperties.PROP_DESCRIPTION, "");
-                        isMultiInstance = json.optBoolean(SWBProcess.JSONProperties.PROP_isMultiInstance, false);
-                        isLoop = json.optBoolean(SWBProcess.JSONProperties.PROP_isLoop, false);
-                        isForCompensation = json.optBoolean(SWBProcess.JSONProperties.PROP_isForCompensation, false);
-                        isInterrupting = json.optBoolean(SWBProcess.JSONProperties.PROP_isInterrupting, false);
-                        isCollection = json.optBoolean(SWBProcess.JSONProperties.PROP_isCollection, false);
-                        index = json.optInt(SWBProcess.JSONProperties.PROP_index, 1000);
+                        isMultiInstance = json.optBoolean(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, false);
+                        isLoop = json.optBoolean(SWBProcess.JSONProperties.PROP_ISLOOP, false);
+                        isForCompensation = json.optBoolean(SWBProcess.JSONProperties.PROP_ISCOMPENSATION, false);
+                        isInterrupting = json.optBoolean(SWBProcess.JSONProperties.PROP_ISINTERRUPTING, false);
+                        isCollection = json.optBoolean(SWBProcess.JSONProperties.PROP_ISCOLLECTION, false);
+                        index = json.optInt(SWBProcess.JSONProperties.PROP_INDEX, 1000);
 
                         x = json.getInt(SWBProcess.JSONProperties.PROP_X);
                         y = json.getInt(SWBProcess.JSONProperties.PROP_Y);
@@ -435,7 +435,7 @@ public class SVGModeler extends GenericAdmResource {
 
                         parent = json.optString(SWBProcess.JSONProperties.PROP_PARENT, "");
                         container = json.optString(SWBProcess.JSONProperties.PROP_CONTAINER, "");
-                        labelSize = json.optInt(SWBProcess.JSONProperties.PROP_labelSize, 10);
+                        labelSize = json.optInt(SWBProcess.JSONProperties.PROP_LABELSIZE, 10);
 
                         // revisando si el elemento existe
                         if (hmori.get(uri) != null) {

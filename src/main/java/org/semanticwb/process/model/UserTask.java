@@ -51,7 +51,6 @@ public class UserTask extends org.semanticwb.process.model.base.UserTaskBase
             NotificationTemplate tpl=instance.getProcessInstance().getProcessType().getAssigmentNotificationTemplate();
             if(tpl!=null) {
                 try {
-                    //System.out.println("send mail:"+assigned);
                     SWBUtils.EMAIL.sendBGEmail(assigned.getEmail(), SWBScriptParser.parser(instance, assigned, tpl.getSubject()), SWBScriptParser.parser(instance, assigned, tpl.getBody()));
                 } catch(Exception e) {
                     log.error(e);
@@ -69,9 +68,6 @@ public class UserTask extends org.semanticwb.process.model.base.UserTaskBase
             wp=WrapperTaskWebPage.ClassMgr.createWrapperTaskWebPage(getId()+"_swpt", getProcessSite());
             setTaskWebPage(wp);
             wp.setActive(true);
-            //eliminar cache
-            //getSemanticObject().removeCache(wp.getURI());
-            //wp=super.getTaskWebPage();
         }
         return wp;
     }

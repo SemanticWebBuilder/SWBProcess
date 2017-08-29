@@ -252,14 +252,14 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 				}
 
 				if (obj.getLabelSize() != 0) {
-					ele.put(SWBProcess.JSONProperties.PROP_labelSize, obj.getLabelSize());
+					ele.put(SWBProcess.JSONProperties.PROP_LABELSIZE, obj.getLabelSize());
 				} else {
-					ele.put(SWBProcess.JSONProperties.PROP_labelSize, 10);
+					ele.put(SWBProcess.JSONProperties.PROP_LABELSIZE, 10);
 				}
 
 				if (obj instanceof Sortable) {
 					Sortable sorble = (Sortable) obj;
-					ele.put(SWBProcess.JSONProperties.PROP_index, sorble.getIndex());
+					ele.put(SWBProcess.JSONProperties.PROP_INDEX, sorble.getIndex());
 				}
 
 				if (obj instanceof ActivityConfable) {
@@ -267,27 +267,27 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 					if (tsk.getLoopCharacteristics() != null) {
 						LoopCharacteristics loopC = tsk.getLoopCharacteristics();
 						if (loopC instanceof MultiInstanceLoopCharacteristics) {
-							ele.put(SWBProcess.JSONProperties.PROP_isMultiInstance, true);
+							ele.put(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, true);
 						} else {
-							ele.put(SWBProcess.JSONProperties.PROP_isMultiInstance, false);
+							ele.put(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, false);
 						}
 
 						if (loopC instanceof StandarLoopCharacteristics) {
-							ele.put(SWBProcess.JSONProperties.PROP_isLoop, true);
+							ele.put(SWBProcess.JSONProperties.PROP_ISLOOP, true);
 						} else {
-							ele.put(SWBProcess.JSONProperties.PROP_isLoop, false);
+							ele.put(SWBProcess.JSONProperties.PROP_ISLOOP, false);
 						}
 					}
-					ele.put(SWBProcess.JSONProperties.PROP_isForCompensation,
+					ele.put(SWBProcess.JSONProperties.PROP_ISCOMPENSATION,
 							Boolean.toString(tsk.isForCompensation()));
 				}
 
 				if (obj instanceof Collectionable) {
 					Collectionable colble = (Collectionable) obj;
 					if (colble.isCollection()) {
-						ele.put(SWBProcess.JSONProperties.PROP_isCollection, true);
+						ele.put(SWBProcess.JSONProperties.PROP_ISCOLLECTION, true);
 					} else {
-						ele.put(SWBProcess.JSONProperties.PROP_isCollection, false);
+						ele.put(SWBProcess.JSONProperties.PROP_ISCOLLECTION, false);
 					}
 				}
 
@@ -368,19 +368,19 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 				}
 
 				if (obj.getLabelSize() != 0) {
-					ele.put(SWBProcess.JSONProperties.PROP_labelSize, obj.getLabelSize());
+					ele.put(SWBProcess.JSONProperties.PROP_LABELSIZE, obj.getLabelSize());
 				} else {
-					ele.put(SWBProcess.JSONProperties.PROP_labelSize, 10);
+					ele.put(SWBProcess.JSONProperties.PROP_LABELSIZE, 10);
 				}
 
 				if (obj instanceof Sortable) {
 					Sortable sorble = (Sortable) obj;
-					ele.put(SWBProcess.JSONProperties.PROP_index, sorble.getIndex());
+					ele.put(SWBProcess.JSONProperties.PROP_INDEX, sorble.getIndex());
 				}
 
 				if (obj instanceof IntermediateCatchEvent) {
 					IntermediateCatchEvent ice = (IntermediateCatchEvent) obj;
-					ele.put(SWBProcess.JSONProperties.PROP_isInterrupting, ice.isInterruptor());
+					ele.put(SWBProcess.JSONProperties.PROP_ISINTERRUPTING, ice.isInterruptor());
 				}
 
 				if (obj instanceof ActivityConfable) {
@@ -388,26 +388,26 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 					if (tsk.getLoopCharacteristics() != null) {
 						LoopCharacteristics loopC = tsk.getLoopCharacteristics();
 						if (loopC instanceof MultiInstanceLoopCharacteristics) {
-							ele.put(SWBProcess.JSONProperties.PROP_isMultiInstance, true);
+							ele.put(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, true);
 						} else {
-							ele.put(SWBProcess.JSONProperties.PROP_isMultiInstance, false);
+							ele.put(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, false);
 						}
 
 						if (loopC instanceof StandarLoopCharacteristics) {
-							ele.put(SWBProcess.JSONProperties.PROP_isLoop, true);
+							ele.put(SWBProcess.JSONProperties.PROP_ISLOOP, true);
 						} else {
-							ele.put(SWBProcess.JSONProperties.PROP_isLoop, false);
+							ele.put(SWBProcess.JSONProperties.PROP_ISLOOP, false);
 						}
 					}
-					ele.put(SWBProcess.JSONProperties.PROP_isForCompensation, Boolean.toString(tsk.isForCompensation()));
+					ele.put(SWBProcess.JSONProperties.PROP_ISCOMPENSATION, Boolean.toString(tsk.isForCompensation()));
 				}
 
 				if (obj instanceof Collectionable) {
 					Collectionable colble = (Collectionable) obj;
 					if (colble.isCollection()) {
-						ele.put(SWBProcess.JSONProperties.PROP_isCollection, true);
+						ele.put(SWBProcess.JSONProperties.PROP_ISCOLLECTION, true);
 					} else {
-						ele.put(SWBProcess.JSONProperties.PROP_isCollection, false);
+						ele.put(SWBProcess.JSONProperties.PROP_ISCOLLECTION, false);
 					}
 				}
 

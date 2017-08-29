@@ -1,12 +1,11 @@
-/*
- * SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
+ /* SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
  * colaboración y conocimiento, que gracias al uso de tecnología semántica puede generar contextos de
  * información alrededor de algún tema de interés o bien integrar información y aplicaciones de diferentes
  * fuentes, donde a la información se le asigna un significado, de forma que pueda ser interpretada y
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,26 +16,23 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.kpi;
 
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import org.jfree.util.Log;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBClass;
-import org.semanticwb.process.model.Process;
-import org.semanticwb.process.model.ProcessInstance;
-import org.semanticwb.process.model.FlowNodeInstance;
-import org.semanticwb.process.model.SubProcessInstance;
-
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticProperty;
+import org.semanticwb.process.model.FlowNodeInstance;
 import org.semanticwb.process.model.ItemAwareReference;
+import org.semanticwb.process.model.Process;
+import org.semanticwb.process.model.ProcessInstance;
+import org.semanticwb.process.model.SubProcessInstance;
 
 /**
  *
@@ -296,7 +292,7 @@ public class CaseProcessObject {
      * @return           Object Valor de la propiedad
      * @see
     */
-    private static Object sumatoryObject(SemanticObject sob, SemanticProperty property, Object value) throws com.hp.hpl.jena.rdf.model.ResourceRequiredException {
+    private static Object sumatoryObject(SemanticObject sob, SemanticProperty property, Object value) {
         try {
             if(property.isInt()) {
                 int ivalue = 0;
@@ -324,9 +320,9 @@ public class CaseProcessObject {
                 value = (Object)lvalue;
             }
         }catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre) {
-            Log.error(rre);
+            LOG.error(rre);
         }catch(Exception e) {
-            Log.error(e);
+        		LOG.error(e);
         }
         return value;
     }
@@ -340,37 +336,37 @@ public class CaseProcessObject {
      * @return      		Object Valor de la propiedad
      * @see
     */
-    private static Object maximumObject(SemanticObject sob, SemanticProperty property, Object value) throws com.hp.hpl.jena.rdf.model.ResourceRequiredException {
+    private static Object maximumObject(SemanticObject sob, SemanticProperty property, Object value) {
         try {
             if(property.isInt()){
                 int ivalue = 0;
                 if (null != value)
                     ivalue = ((Integer)value).intValue();
                 if (ivalue < sob.getIntProperty(property))
-                    value = new Integer(sob.getIntProperty(property));
+                    value = sob.getIntProperty(property);
             }else if(property.isFloat()){
                 float fvalue = 0;
                 if (null != value)
                     fvalue = ((Float)value).floatValue();
                 if (fvalue < sob.getFloatProperty(property))
-                    value = new Float(sob.getFloatProperty(property));
+                    value = sob.getFloatProperty(property);
             }else if(property.isDouble()){
                 double dvalue = 0.0;
                 if (null != value)
                     dvalue = ((Double)value).floatValue();
                 if (dvalue < sob.getDoubleProperty(property))
-                    value = new Double(sob.getDoubleProperty(property));
+                    value = sob.getDoubleProperty(property);
             } else if(property.isLong()){
                 long lvalue = 0;
                 if (null != value)
                     lvalue = ((Long)value).longValue();
                 if (lvalue < sob.getLongProperty(property))
-                    value = new Long(sob.getLongProperty(property));
+                    value = sob.getLongProperty(property);
             }
         } catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre){
-            Log.error(rre);
+        		LOG.error(rre);
         } catch(Exception e){
-            Log.error(e);
+        		LOG.error(e);
         }return value;
     }
 
@@ -383,40 +379,40 @@ public class CaseProcessObject {
      * @return      		Object Valor de la propiedad
      * @see
     */
-    private static Object minimumObject(SemanticObject sob, SemanticProperty property, Object value) throws com.hp.hpl.jena.rdf.model.ResourceRequiredException {
+    private static Object minimumObject(SemanticObject sob, SemanticProperty property, Object value) {
         try {
             if (null != value) {
                 if(property.isInt()) {
                     int ivalue = ((Integer)value).intValue();
                     if (ivalue > sob.getIntProperty(property))
-                        value = new Integer(sob.getIntProperty(property));
+                        value = sob.getIntProperty(property);
                 }else if(property.isFloat()) {
                     float fvalue = ((Float)value).floatValue();
                     if (fvalue > sob.getFloatProperty(property))
-                        value = new Float(sob.getFloatProperty(property));
+                        value = sob.getFloatProperty(property);
                 }else if(property.isDouble()) {
                     double dvalue = ((Double)value).floatValue();
                     if (dvalue > sob.getDoubleProperty(property))
-                        value = new Double(sob.getDoubleProperty(property));
+                        value = sob.getDoubleProperty(property);
                 }else if(property.isLong()) {
                     long lvalue = ((Long)value).longValue();
                     if (lvalue > sob.getLongProperty(property))
-                        value = new Long(sob.getLongProperty(property));
+                        value = sob.getLongProperty(property);
                 }
             }else {
                 if(property.isInt())
-                    value = new Integer(sob.getIntProperty(property));
+                    value = sob.getIntProperty(property);
                 else if(property.isFloat())
-                    value = new Float(sob.getFloatProperty(property));
+                    value = sob.getFloatProperty(property);
                 else if(property.isDouble())
-                    value = new Double(sob.getDoubleProperty(property));
+                    value = sob.getDoubleProperty(property);
                 else if(property.isLong())
-                    value = new Long(sob.getLongProperty(property));
+                    value = sob.getLongProperty(property);
             }
         } catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre) {
-            Log.error(rre);
+        		LOG.error(rre);
         } catch(Exception e) {
-            Log.error(e);
+        		LOG.error(e);
         }
         return value;
     }
@@ -428,42 +424,48 @@ public class CaseProcessObject {
      * @return      		Object Valor de la propiedad
      * @see
     */
-    private static void distinctObjects(SemanticObject sob, SemanticProperty property, ArrayList distincts) throws com.hp.hpl.jena.rdf.model.ResourceRequiredException {
+    private static void distinctObjects(SemanticObject sob, SemanticProperty property, ArrayList distincts) {
         try {
             if(property.isInt()) {
-                Integer ivalue = new Integer(sob.getIntProperty(property));
+                Integer ivalue = sob.getIntProperty(property);
                 if (!distincts.contains(ivalue))
                     distincts.add(ivalue);
             }else if(property.isFloat()){
-                Float fvalue = new Float(sob.getFloatProperty(property));
+                Float fvalue = sob.getFloatProperty(property);
                 if (!distincts.contains(fvalue))
                     distincts.add(fvalue);
             }else if(property.isDouble()){
-                Double dvalue = new Double(sob.getDoubleProperty(property));
+                Double dvalue = sob.getDoubleProperty(property);
                 if (!distincts.contains(dvalue))
                     distincts.add(dvalue);
             }else if(property.isLong()){
-                Long lvalue = new Long(sob.getLongProperty(property));
+                Long lvalue = sob.getLongProperty(property);
                 if (!distincts.contains(lvalue))
                     distincts.add(lvalue);
             }
         }catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre) {
-            Log.error(rre);
+        		LOG.error(rre);
         }catch(Exception e) {
-            Log.error(e);
+        		LOG.error(e);
         }
     }
 
     private static Object averageObject(Object sum, int instances) {
-        double avg = 0;
-        if (sum instanceof Integer)
-            avg = ((Integer)sum).intValue()/instances;
-        else if (sum instanceof Float)
-            avg = ((Float)sum).floatValue()/instances;
-        else if (sum instanceof Double)
-            avg = ((Double)sum).doubleValue()/instances;
-        else if (sum instanceof Long)
-            avg = ((Long)sum).longValue()/instances;
-        return new java.lang.Double(avg);
+        double dsum = 0;
+        
+        if (sum instanceof Integer) {
+        		int i = ((Integer)sum).intValue(); 
+        		dsum = (double)i;
+        } else if (sum instanceof Float) {
+        		dsum = ((Float)sum).floatValue(); 
+        } else if (sum instanceof Double) {
+        		dsum = ((Double)sum).doubleValue();
+        } else if (sum instanceof Long) {
+        		long i = ((Long)sum).longValue(); 
+        		dsum = (double)i;
+        }
+        
+        if (instances > 0) return new Double(dsum /instances);
+        return 0L;
     }
 }
