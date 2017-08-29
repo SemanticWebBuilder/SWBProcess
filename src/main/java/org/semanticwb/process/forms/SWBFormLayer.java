@@ -24,7 +24,7 @@ package org.semanticwb.process.forms;
 
 /**
  *
- * @author jorge.jimenez
+ * @author Jorge Jiménez Sandoval {jorge.jimenez}
  */
 public interface SWBFormLayer {
 
@@ -35,14 +35,6 @@ public interface SWBFormLayer {
      */
     public void setMoreAttr(String moreattr);
 
-
-    /**
-     * Set attributes to class according with the xml tag element.
-     */
-    //void setAttributes();
-
-
-    //gets
 
     /**
      * obtine atributos insertados adicionalmente a un elemento de forma *.

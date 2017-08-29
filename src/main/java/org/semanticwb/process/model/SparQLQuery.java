@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,26 +18,33 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.model;
 
-import org.semanticwb.SWBPlatform;
-import org.semanticwb.model.User;
-import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import java.util.Iterator;
+
 import org.semanticwb.Logger;
+import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBUtils;
+import org.semanticwb.model.User;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
 
 public class SparQLQuery extends org.semanticwb.process.model.base.SparQLQueryBase 
 {
     /** The log. */
-    private Logger log=SWBUtils.getLogger(SparQLQuery.class);
+    private Logger LOG=SWBUtils.getLogger(SparQLQuery.class);
 
     public SparQLQuery(org.semanticwb.platform.SemanticObject base)
     {
@@ -47,20 +54,20 @@ public class SparQLQuery extends org.semanticwb.process.model.base.SparQLQueryBa
     @Override
     public void execute(FlowNodeInstance instance, User user) {
         super.execute(instance, user);
-        String _query = getQuery();
+        String q = getQuery();
 
         try
         {
             Document dom = SWBUtils.XML.getNewDocument();
             Element node = dom.createElement("resultset");
                     dom.appendChild(node);
-            if(_query!=null&&_query.length()>0)
+            if(q!=null&&q.length()>0)
             {
                 Model model=SWBPlatform.getSemanticMgr().getOntology().getRDFOntModel();
-                String queryString = _query;
+                String queryString = q;
 
                 Query query = QueryFactory.create(queryString) ;
-                query.serialize(); //new IndentedWriter(response.getOutputStream(),true)) ;
+                query.serialize();
                 // Create a single execution of this query, apply to a model
                 // which is wrapped up as a Dataset
                 QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
@@ -93,27 +100,12 @@ public class SparQLQuery extends org.semanticwb.process.model.base.SparQLQueryBa
                 finally
                 {
                     // QueryExecution objects should be closed to free any system resources
-
                     qexec.close() ;
                 }
             }
-
-            if(dom!=null){
-                System.out.println("XML: --------");
-                System.out.println(SWBUtils.XML.domToXml(dom));
-            }
-
         }catch(Exception e)
         {
-
-            log.error("Error en la expresion SPARQL.",e);
-
-        }
-
-
-
-        
+            LOG.error("Error en la expresion SPARQL.",e);
+        }        
     }
-
-
 }

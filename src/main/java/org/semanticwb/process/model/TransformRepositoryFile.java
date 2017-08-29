@@ -1,12 +1,11 @@
-/*
- * SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
+ /* SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
  * colaboración y conocimiento, que gracias al uso de tecnología semántica puede generar contextos de
  * información alrededor de algún tema de interés o bien integrar información y aplicaciones de diferentes
  * fuentes, donde a la información se le asigna un significado, de forma que pueda ser interpretada y
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,14 +17,16 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.model;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.List;
+
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
@@ -36,21 +37,18 @@ import org.semanticwb.process.utils.SWBScriptParser;
 import org.semanticwb.process.utils.XDocReport;
 
 
-public class TransformRepositoryFile extends org.semanticwb.process.model.base.TransformRepositoryFileBase 
-{
+public class TransformRepositoryFile extends org.semanticwb.process.model.base.TransformRepositoryFileBase {
     private static Logger log=SWBUtils.getLogger(TransformRepositoryFile.class);    
     
-    public TransformRepositoryFile(org.semanticwb.platform.SemanticObject base)
-    {
+    public TransformRepositoryFile(org.semanticwb.platform.SemanticObject base) {
         super(base);
     }
     
     @Override
-    public void execute(FlowNodeInstance instance, User user)
-    {
+    public void execute(FlowNodeInstance instance, User user) {
         super.execute(instance, user);
 
-        String filePath=SWBPortal.getWorkPath()+this.getFileTemplate().getWorkPath()+"/"+this.getFileTemplate().getFileName();
+        String filePath=SWBPortal.getWorkPath()+this.getFileTemplate().getWorkPath()+File.separator+this.getFileTemplate().getFileName();
         XDocReport rep=new XDocReport(this.getNodeName(), filePath);
 
         rep.addContextObject("instance", instance);
@@ -97,10 +95,10 @@ public class TransformRepositoryFile extends org.semanticwb.process.model.base.T
 
         try
         {
-            ItemAwareStatus _status = getNodeStatus();
-            String status = null;
-            if (_status != null) status = _status.getId();
-            OutputStream ous = file.storeFile(SWBScriptParser.parser(instance, user, name)+".docx", comments, status, false, true);
+            ItemAwareStatus status = getNodeStatus();
+            String sstatus = null;
+            if (status != null) sstatus = status.getId();
+            OutputStream ous = file.storeFile(SWBScriptParser.parser(instance, user, name)+".docx", comments, sstatus, false, true);
             rep.generateReport(ous);
             
             if (getNodeVarName() != null && !getNodeVarName().trim().equals("")){
@@ -110,13 +108,10 @@ public class TransformRepositoryFile extends org.semanticwb.process.model.base.T
                     ItemAwareReference ref = it.next();
                     String n1=ref.getItemAware().getName();
                     String n2=getNodeVarName();
-                    if(n1!=null && n2!=null)
+                    if(n1!=null && n2!=null && n1.equals(n2))
                     {
-                        if(n1.equals(n2))
-                        {
-                            obj=ref.getProcessObject();
-                            break;
-                        }
+                        obj=ref.getProcessObject();
+                        break;
                     }
                 }
 

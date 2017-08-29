@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,8 +17,7 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.model;
 
@@ -26,13 +25,13 @@ import org.semanticwb.platform.SemanticProperty;
 
 /**
  *
- * @author javier.solis
+ * @author Javier Solís {javier.solis}
  */
 public class SWBProcessProperty
 {
-    private String m_name=null;
-    private SemanticProperty m_prop=null;
-    private String m_mode=null;
+    private String mName=null;
+    private SemanticProperty mProp=null;
+    private String mMode=null;
     private String varTitle=null;
 
     public SWBProcessProperty(String varName, SemanticProperty prop, String mode)
@@ -42,9 +41,9 @@ public class SWBProcessProperty
 
     public SWBProcessProperty(String varName, SemanticProperty prop, String varTitle, String mode)
     {
-        this.m_name=varName;
-        this.m_prop=prop;
-        this.m_mode=mode;
+        this.mName=varName;
+        this.mProp=prop;
+        this.mMode=mode;
         this.varTitle=varTitle;
     }
 
@@ -52,42 +51,42 @@ public class SWBProcessProperty
      * @return the m_cls
      */
     public String getVarName() {
-        return m_name;
+        return mName;
     }
 
     /**
      * @param m_cls the m_cls to set
      */
     public void setVarName(String varName) {
-        this.m_name = varName;
+        this.mName = varName;
     }
 
     /**
      * @return the m_prop
      */
     public SemanticProperty getSemanticProperty() {
-        return m_prop;
+        return mProp;
     }
 
     /**
-     * @param m_prop the m_prop to set
+     * @param mProp the m_prop to set
      */
     public void setSemanticProperty(SemanticProperty prop) {
-        this.m_prop = prop;
+        this.mProp = prop;
     }
 
     /**
      * @return the m_view
      */
     public String getMode() {
-        return m_mode;
+        return mMode;
     }
 
     /**
      * @param view the m_view to set
      */
     public void setMode(String mode) {
-        this.m_mode = mode;
+        this.mMode = mode;
     }
 
     public String getVarTitle()

@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,16 +17,16 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.forms;
 
-import com.arthurdo.parser.HtmlStreamTokenizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.User;
@@ -37,14 +37,15 @@ import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.process.model.SWBProcessFormMgr;
 import org.w3c.dom.NamedNodeMap;
 
+import com.arthurdo.parser.HtmlStreamTokenizer;
+
 /**
  *
- * @author jorge.jimenez
+ * @author Jorge Jiménez Sandoval {jorge.jimenez}
  */
 public class SWBButtonTag implements SWBFormLayer {
 
     private static Logger log = SWBUtils.getLogger(SWBButtonTag.class);
-    private HtmlStreamTokenizer tok = null;
     NamedNodeMap nmFormElement = null;
     private String htmlType = "dojo";
     HttpServletRequest request = null;
@@ -60,12 +61,11 @@ public class SWBButtonTag implements SWBFormLayer {
 
 
     public SWBButtonTag(HttpServletRequest request, SWBParamRequest paramRequest, HashMap<String,ArrayList<SemanticProperty>> hmapClasses, HashMap hMapProperties, SWBProcessFormMgr mgr, HtmlStreamTokenizer tok, String htmlType) {
-        this.tok = tok;
         stag=tok.getRawString();
         this.request = request;
         this.paramRequest = paramRequest;
-        if(htmlType!=null) this.htmlType=htmlType;
-        if(htmlType!=null && htmlType.equalsIgnoreCase("dojo")) htmlType=SWBFormMgr.TYPE_DOJO;
+        this.htmlType=htmlType;
+        if(this.htmlType!=null && this.htmlType.equalsIgnoreCase("dojo")) this.htmlType=SWBFormMgr.TYPE_DOJO;
         user = paramRequest.getUser();
         this.mgr = mgr;
         this.hMapProperties=hMapProperties;
@@ -104,10 +104,8 @@ public class SWBButtonTag implements SWBFormLayer {
                 }else if(stype.equalsIgnoreCase("cancelbtn")) {
                     renderElement=SWBFormButton.newCancelButton().renderButton(request, htmlType, user.getLanguage());
                 }else if(stype.equalsIgnoreCase("acceptbtn")) {
-                    //renderElement=new SWBFormButton().setTitle(msg,user.getLanguage()).setAttribute("name", "accept").setAttribute("type", "submit").renderButton(request, htmlType, user.getLanguage());
                     renderElement=new SWBFormButton().newAcceptProcessTaskButton().setAttribute("type", "submit").renderButton(request, htmlType, user.getLanguage());
                 }else if(stype.equalsIgnoreCase("rejectbtn")) {
-                    //renderElement=new SWBFormButton().setTitle(msg,user.getLanguage()).setAttribute("name", "reject").setAttribute("type", "submit").renderButton(request, htmlType, user.getLanguage());
                     renderElement=new SWBFormButton().newRejectProcessTaskButton().setAttribute("type", "submit").renderButton(request, htmlType, user.getLanguage());
                 }else if(stype.equalsIgnoreCase("submit")) {
                     renderElement=renderGenericBtn();

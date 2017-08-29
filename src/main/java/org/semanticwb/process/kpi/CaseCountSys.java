@@ -1,5 +1,4 @@
-/*
- * SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
+ /* SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
  * colaboración y conocimiento, que gracias al uso de tecnología semántica puede generar contextos de
  * información alrededor de algún tema de interés o bien integrar información y aplicaciones de diferentes
  * fuentes, donde a la información se le asigna un significado, de forma que pueda ser interpretada y
