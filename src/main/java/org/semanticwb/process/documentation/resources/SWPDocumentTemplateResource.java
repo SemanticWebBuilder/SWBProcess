@@ -619,7 +619,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 	@Override
 	public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
 			throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/documentTemplate.jsp";
+		String path = "/swbadmin/jsp/process/documentation/documentTemplate.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -633,7 +633,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 	@Override
 	public void doEdit(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
 			throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/documentTemplateEdit.jsp";
+		String path = "/swbadmin/jsp/process/documentation/documentTemplateEdit.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		String contURI = request.getParameter(PARAM_URITC) != null ? request.getParameter(PARAM_URITC) : "";
 		String docURI = request.getParameter(PARAM_URIDT) != null ? request.getParameter(PARAM_URIDT) : "";
@@ -663,8 +663,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 	public void doEditDocumentSection(HttpServletRequest request, HttpServletResponse response,
 			SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath()
-				+ "/swbadmin/jsp/process/documentation/documentTemplateEditSection.jsp";
+		String path = "/swbadmin/jsp/process/documentation/documentTemplateEditSection.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -676,8 +675,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 	public void doViewProperties(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
 			throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath()
-				+ "/swbadmin/jsp/process/documentation/documentTemplateProperties.jsp";
+		String path = "/swbadmin/jsp/process/documentation/documentTemplateProperties.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -689,7 +687,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 	public void doViewLog(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
 			throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/logView.jsp";
+		String path = "/swbadmin/jsp/process/documentation/logView.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -701,7 +699,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 	public void doViewVersion(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
 			throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/viewVersion.jsp";
+		String path = "/swbadmin/jsp/process/documentation/viewVersion.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -713,7 +711,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 	public void doEditVersionTemplate(HttpServletRequest request, HttpServletResponse response,
 			SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/newVersionTemplate.jsp";
+		String path = "/swbadmin/jsp/process/documentation/newVersionTemplate.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -725,7 +723,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 	public void doDuplicateTemplate(HttpServletRequest request, HttpServletResponse response,
 			SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/duplicateTemplate.jsp";
+		String path = "/swbadmin/jsp/process/documentation/duplicateTemplate.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -737,7 +735,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 	public void doAddTemplate(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
 			throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/addTemplate.jsp";
+		String path = "/swbadmin/jsp/process/documentation/addTemplate.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -749,8 +747,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 	public void doAddDocumentSection(HttpServletRequest request, HttpServletResponse response,
 			SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		String path = SWBPlatform.getContextPath()
-				+ "/swbadmin/jsp/process/documentation/documentTemplateAddDocumentSection.jsp";
+		String path = "/swbadmin/jsp/process/documentation/documentTemplateAddDocumentSection.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);

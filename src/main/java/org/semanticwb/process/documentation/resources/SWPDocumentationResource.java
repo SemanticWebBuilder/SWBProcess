@@ -464,7 +464,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 				try {
 					Document dom = docInstance.getXMLDocument(request, null, false);
 					if (dom != null) {
-						String tlpPath = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/documentation.xsl";
+						String tlpPath = "/swbadmin/jsp/process/documentation/documentation.xsl";
 						javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
 						out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes(UTF8));
 
@@ -586,7 +586,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/documentation.jsp";
+		String path = "/swbadmin/jsp/process/documentation/documentation.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 
 		try {
@@ -619,7 +619,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doEdit(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/documentationEdit.jsp";
+		String path = "/swbadmin/jsp/process/documentation/documentationEdit.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -632,7 +632,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doActualizaTab(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/actualizaTab.jsp";
+		String path = "/swbadmin/jsp/process/documentation/actualizaTab.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -645,7 +645,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doRelated(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/relatedItem.jsp";
+		String path = "/swbadmin/jsp/process/documentation/relatedItem.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -658,7 +658,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doTrace(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/logView.jsp";
+		String path = "/swbadmin/jsp/process/documentation/logView.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -671,7 +671,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doViewRemove(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/viewRemove.jsp";
+		String path = "/swbadmin/jsp/process/documentation/viewRemove.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -684,7 +684,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doVersion(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/saveVersion.jsp";
+		String path = "/swbadmin/jsp/process/documentation/saveVersion.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -697,7 +697,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doAdminVersion(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/documentationVersion.jsp";
+		String path = "/swbadmin/jsp/process/documentation/documentationVersion.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -710,7 +710,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doViewDesc(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/viewDescVersion.jsp";
+		String path = "/swbadmin/jsp/process/documentation/viewDescVersion.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -723,7 +723,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doRelateActivity(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/relateActivity.jsp";
+		String path = "/swbadmin/jsp/process/documentation/relateActivity.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
@@ -736,7 +736,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public void doEditDescription(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType(HTMLCONTENTTYPE);
 		response.setCharacterEncoding(UTF8);
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/editDescription.jsp";
+		String path = "/swbadmin/jsp/process/documentation/editDescription.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);

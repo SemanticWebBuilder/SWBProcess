@@ -68,7 +68,8 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
 	public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/userDocumentation.jsp";
+		String path = "/swbadmin/jsp/process/documentation/userDocumentation.jsp";
+		
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		String idpg = request.getParameter(PARAM_PROCESSGROUP) != null ? request.getParameter(PARAM_PROCESSGROUP) : "";
 
@@ -84,7 +85,7 @@ public class SWPUserDocumentationResource extends GenericAdmResource {
 	public void doViewDocumentation(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
-		String path = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/documentation/userDocumentationView.jsp";
+		String path = "/swbadmin/jsp/process/documentation/userDocumentationView.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
