@@ -86,7 +86,7 @@
 				}
 			}
 			itdsi = actives.iterator();
-	
+
 			SWBResourceURL urlVersion = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setMode(SWPDocumentationResource.MODE_VERSION).setParameter("uridi", di.getURI());
 			SWBResourceURL urlAdminVersion = paramRequest.getRenderUrl().setMode(SWPDocumentationResource.MODE_ADMIN_VERSION);
 			urlAdminVersion.setParameter("idp", idp);
@@ -94,14 +94,14 @@
 			urlAdminVersion.setParameter("wp", request.getParameter("wp"));
 			urlAdminVersion.setParameter("pg", request.getParameter("pg"));
 			urlAdminVersion.setParameter("_rid", _rid);
-	
+
 			WebPage wpage = WebPage.ClassMgr.getWebPage(wp, site);
-	
+
 			Resource resource = Resource.ClassMgr.getResource(_rid, site);
 			SWBResourceURL urlView = new SWBResourceURLImp(request, resource, wpage, SWBResourceModes.UrlType_RENDER);
 			urlView.setMode(SWPUserDocumentationResource.MODE_VIEW_DOCUMENTATION);
 			urlView.setParameter("idp", idp);
-	
+
 			String templatesUrl = wpage.getUrl(lang);
 			if (resource.getAttribute("templatePage") != null) {
 				WebPage twp = wpage.getWebSite().getWebPage(resource.getAttribute("templatePage"));
@@ -132,18 +132,18 @@
 					<input type="hidden" id="viewBox" name="viewBox" value="">
 					<input type="hidden" id="taskSelected" name="taskSelected">
 				</form>
-          
+
 				<script type="text/javascript">
 					var downloadVersion = function (format) {
-						var size = getDiagramSize(), 
-								form = document.getElementById("svgform"), 
+						var size = getDiagramSize(),
+								form = document.getElementById("svgform"),
 								svg = document.getElementsByTagName("svg")[0];
 
 						if (svg) {
 							var svg_xml = (new XMLSerializer).serializeToString(svg);
 							form['data'].value = svg_xml;
 						}
-                
+
 						form['format'].value = format;
 						form['width'].value = size.w;
 						form['height'].value = size.h;
@@ -163,19 +163,19 @@
            				ch = 0,
            				fx = null,
            				fy = null;
-           		
+
            		for (var i = 0; i < ToolKit.contents.length; i++) {
            			var obj = ToolKit.contents[i];
           				if (obj.typeOf && (obj.typeOf("GraphicalElement") || obj.typeOf("Pool"))) {
           					if (obj.layer === ToolKit.layer) {
           						var lastX = obj.getX() + obj.getWidth() / 2;
 										var lastY = obj.getY() + obj.getHeight() / 2;
-										
+
 										if (lastX > cw) {
 											cw = lastX;
 											fx = obj;
 										}
-										
+
 										if (lastY > ch) {
 											ch = lastY;
 											fy = obj;
@@ -183,7 +183,7 @@
 									}
         					}
         				}
-           		
+
            		if (fx && fy) {
            			cw = fx.getX() + fx.getWidth() / 2;
            			ch = fy.getY() + fy.getHeight() / 2;
@@ -301,7 +301,7 @@
 												SectionElement se = itse.next();
 												String uriSectionElement = se.getURI();
 												boolean isReference = false;
-												
+
 												if (se instanceof ElementReference) {
 													ElementReference er = (ElementReference) se;
 													if (er.getElementRef() == null) {
@@ -366,7 +366,7 @@
                            		} else if (se.getDocumentSectionInst() != null
                            			&& se.getDocumentSectionInst().getDocumentationInstance() != null
                            			&& se.getDocumentSectionInst().getDocumentationInstance().getProcessRef() != null) {
-                           			
+
                            			String captureUrl = paramRequest.getWebPage().getUrl(lang);
                            			Process pr = se.getDocumentSectionInst().getDocumentationInstance().getProcessRef();
                            			%>
@@ -435,14 +435,14 @@
 								Modeler.init('modeler', {mode: 'view', disableKeyEvents: true, layerNavigation: false}, callbackHandler);
 								var zoomFactor = 1.1,
 										panRate = 50;
-								
+
 								function callbackHandler() {
 									var strJSON = <%= p.getData() %>;
 									Modeler.loadProcess(strJSON);
-									
+
 									Modeler._svgSize = getDiagramSize();
 									fitToScreen();
-									
+
 									var viewBox = document.getElementById("modeler").getAttribute('viewBox');
 									//console.log(viewBox);
 									var vi = $('#viewBox');
@@ -456,42 +456,42 @@
 								function zoomin() {
 									var viewBox = document.getElementById("modeler").getAttribute('viewBox');
 									var viewBoxValues = viewBox.split(' ');
-									
+
 									viewBoxValues[2] = parseFloat(viewBoxValues[2]);
 									viewBoxValues[3] = parseFloat(viewBoxValues[3]);
-									
+
 									viewBoxValues[2] /= zoomFactor;
 									viewBoxValues[3] /= zoomFactor;
-									
+
 									document.getElementById("modeler").setAttribute('viewBox', viewBoxValues.join(' '));
 								}
-								
+
 								function zoomout() {
 									var viewBox = document.getElementById("modeler").getAttribute('viewBox');
 									var viewBoxValues = viewBox.split(' ');
-									
+
 									viewBoxValues[2] = parseFloat(viewBoxValues[2]);
 									viewBoxValues[3] = parseFloat(viewBoxValues[3]);
-									
+
 									viewBoxValues[2] *= zoomFactor;
 									viewBoxValues[3] *= zoomFactor;
-									
+
 									document.getElementById("modeler").setAttribute('viewBox', viewBoxValues.join(' '));
 								}
-								
+
 								function resetZoom() {
 									var el = document.getElementById("modeler");
 									el.setAttribute('viewBox', '0 0 ' + $("#modeler").parent().width() + ' ' + $("#modeler").parent().height());
 									el.setAttribute('width', '1024');
 									el.setAttribute('height', '768');
 								}
-								
+
 								function handlePanning(code) {
 									var viewBox = document.getElementById("modeler").getAttribute('viewBox');
 									var viewBoxValues = viewBox.split(' ');
 									viewBoxValues[0] = parseFloat(viewBoxValues[0]);
 									viewBoxValues[1] = parseFloat(viewBoxValues[1]);
-									
+
 									switch (code) {
 										case 'left':
 											viewBoxValues[0] += panRate;
@@ -508,14 +508,14 @@
 									}
 									document.getElementById("modeler").setAttribute('viewBox', viewBoxValues.join(' '));
 								}
-								
+
 								function fitToScreen() {
 									resetZoom();
 									var ws = $("#modeler").parent().width(),
 											hs = $("#modeler").parent().height(),
 											wi = Modeler._svgSize.w,
 											hi = Modeler._svgSize.h;
-									
+
 									if (wi > ws || hi > hs) {
 										var el = document.getElementById("modeler");
 										el.setAttribute('viewBox', '0 0 ' + wi + ' ' + hi);
@@ -616,7 +616,7 @@
 				}
 				%>
 			</div>
-			
+
 			<script type="text/javascript" src="<%= SWBPortal.getContextPath() %>/swbadmin/jsp/process/utils/tinymce/tinymce.min.js"></script>
 			<script type="text/javascript">
 				(function () {
@@ -624,7 +624,7 @@
 						$(".colorPicker").on("click", function (evt) {
 							var ele = evt.target,
 									link = ele && $(ele).closest("a.colorPicker");
-							
+
 							if (link) {
 								$.ajax({
 									url: link.attr("href"),
@@ -640,7 +640,7 @@
 						});
 					});
 				})();
-				
+
 				tinymce.init({
 					selector: 'textarea.freetext',
 					entity_encoding: "raw",
