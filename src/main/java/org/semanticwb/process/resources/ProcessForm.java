@@ -754,7 +754,7 @@ public class ProcessForm extends GenericResource {
 
 	@Override
 	public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		String jsp = SWBPlatform.getContextPath() + "/swbadmin/jsp/process/formsBuilder/render.jsp";
+		String jsp = "/swbadmin/jsp/process/formsBuilder/render.jsp";
 
 		RequestDispatcher rd = request.getRequestDispatcher(jsp);
 		try {
