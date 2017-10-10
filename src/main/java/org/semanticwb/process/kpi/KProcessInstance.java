@@ -1,12 +1,11 @@
-/*
- * SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
+ /* SemanticWebBuilder es una plataforma para el desarrollo de portales y aplicaciones de integración,
  * colaboración y conocimiento, que gracias al uso de tecnología semántica puede generar contextos de
  * información alrededor de algún tema de interés o bien integrar información y aplicaciones de diferentes
  * fuentes, donde a la información se le asigna un significado, de forma que pueda ser interpretada y
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,29 +16,26 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.kpi;
 
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import org.jfree.util.Log;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBClass;
-
 import org.semanticwb.model.User;
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticProperty;
-
-import org.semanticwb.process.utils.Restriction;
-import org.semanticwb.process.model.ProcessSite;
-import org.semanticwb.process.model.ProcessInstance;
 import org.semanticwb.process.model.FlowNodeInstance;
 import org.semanticwb.process.model.ItemAwareReference;
+import org.semanticwb.process.model.ProcessInstance;
+import org.semanticwb.process.model.ProcessSite;
 import org.semanticwb.process.model.SubProcessInstance;
+import org.semanticwb.process.utils.Restriction;
 
 /**
  *
@@ -75,7 +71,7 @@ public class KProcessInstance {
                 }
             }
         }catch(Exception e) {
-             Log.error(e);
+             LOG.error(e);
         }
         return processInstances;
     }
@@ -98,14 +94,14 @@ public class KProcessInstance {
                     processInstances.add(index, actins);
                     index++;
                     ArrayList aux = listProcessInstances((SubProcessInstance)actins);
-                    if(aux.size()>0) {
+                    if(!aux.isEmpty()) {
                         processInstances.addAll(index, aux);
                         index = index + aux.size();
                     }
                 }
             }
         }catch(Exception e) {
-            Log.error(e);
+            LOG.error(e);
         }
         return processInstances;
     }
@@ -119,17 +115,17 @@ public class KProcessInstance {
      * @return      		ArrayList
      * @see
     */
-    public static ArrayList listProcessInstancesByStatus(ArrayList instances, String status) {
-        ArrayList aux = instances;
-        ArrayList processInstances = new ArrayList();
+    public static ArrayList<ProcessInstance> listProcessInstancesByStatus(List<ProcessInstance> instances, String status) {
+        List<ProcessInstance> aux = instances;
+        ArrayList<ProcessInstance> processInstances = new ArrayList<>();
         try {
             for (int i=0; i<aux.size(); i++) {
-                ProcessInstance actins = (ProcessInstance)aux.get(i);
+                ProcessInstance actins = aux.get(i);
                 if (status.equalsIgnoreCase(String.valueOf(actins.getStatus())))
                     processInstances.add(actins);
             }
         }catch(Exception e) {
-            Log.error(e);
+            LOG.error(e);
         }
         return processInstances;
     }
@@ -143,17 +139,17 @@ public class KProcessInstance {
      * @return      		ArrayList
      * @see
     */
-    public static ArrayList listProcessInstancesByUser(ArrayList instances, User user) {
-        ArrayList aux = instances;
-        ArrayList processInstances = new ArrayList();
+    public static ArrayList listProcessInstancesByUser(List<ProcessInstance> instances, User user) {
+        List<ProcessInstance> aux = instances;
+        ArrayList<ProcessInstance> processInstances = new ArrayList();
         try {
             for(int i=0; i<aux.size(); i++) {
-                ProcessInstance actins = (ProcessInstance)aux.get(i);
+                ProcessInstance actins = aux.get(i);
                 if (user.equals(actins.getModifiedBy()))
                     processInstances.add(actins);
             }
         }catch(Exception e) {
-            Log.error(e);
+            LOG.error(e);
         }
         return processInstances;
     }
@@ -167,17 +163,17 @@ public class KProcessInstance {
      * @return      		ArrayList
      * @see
     */
-    public static ArrayList listProcessInstancesByProcess(ArrayList instances, String URI) {
+    public static ArrayList listProcessInstancesByProcess(ArrayList instances, String uri) {
         ArrayList aux = instances;
         ArrayList processInstances = new ArrayList();
         try {
             for (int i=0; i<aux.size(); i++) {
                 ProcessInstance actins = (ProcessInstance)aux.get(i);
-                if (actins.getProcessType().getURI().equalsIgnoreCase(URI))
+                if (actins.getProcessType().getURI().equalsIgnoreCase(uri))
                     processInstances.add(actins);
             }
         }catch(Exception e) {
-            Log.error(e);
+            LOG.error(e);
         }
         return processInstances;
     }
@@ -191,9 +187,8 @@ public class KProcessInstance {
             Iterator<SemanticProperty> spit = obj.getSemanticObject().listProperties();
             while (spit.hasNext()) {
                 SemanticProperty sp = spit.next();
-                //System.out.println(sp.getName() + " " + BPMSProcessInstance.getPropertyValue(obj.getSemanticObject(), sp));
-                if (restriction.getProperty().equalsIgnoreCase(sp.getName())) {
-                    if (restriction.match(obj.getSemanticObject(), sp) && !filterinstances.contains(pinst))
+                if (restriction.getProperty().equalsIgnoreCase(sp.getName())
+                		&& restriction.match(obj.getSemanticObject(), sp) && !filterinstances.contains(pinst)) {
                         filterinstances.add(pinst);
                 }
             }
@@ -203,7 +198,6 @@ public class KProcessInstance {
             FlowNodeInstance flobin = foit.next();
             if (flobin instanceof SubProcessInstance) {
                 SubProcessInstance spi=(SubProcessInstance)flobin;
-                //filterinstances = filterArtifactsObjects(spi.getProcessInstance(), restriction, filterinstances);
                 filterinstances = filterArtifactsObjects((SubProcessInstance)spi, restriction, filterinstances);
             }
         }
@@ -249,7 +243,7 @@ public class KProcessInstance {
      * @return      		String Valor de la propiedad
      * @see
     */
-    public static String getPropertyValue(SemanticObject sob, SemanticProperty property) throws com.hp.hpl.jena.rdf.model.ResourceRequiredException {
+    public static String getPropertyValue(SemanticObject sob, SemanticProperty property) {
        String strValue = "";
        try {
            if(property.isBoolean()){
@@ -269,14 +263,14 @@ public class KProcessInstance {
            } else if(property.isLong()){
                strValue = String.valueOf(sob.getLongProperty(property));
            } else if(property.isObjectProperty()){
-               SemanticObject sobject = (SemanticObject)sob.getObjectProperty(property);
+               SemanticObject sobject = sob.getObjectProperty(property);
                if(null!=sobject)
                    strValue = sobject.getDisplayName();
            }
        }catch(com.hp.hpl.jena.rdf.model.ResourceRequiredException rre) {
-           Log.error(rre);
+           LOG.error(rre);
        }catch(Exception e) {
-           Log.error(e);
+           LOG.error(e);
        }
        return strValue;
     }

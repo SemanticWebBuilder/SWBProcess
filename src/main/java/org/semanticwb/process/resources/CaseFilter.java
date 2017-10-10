@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -24,6 +24,7 @@ package org.semanticwb.process.resources;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,17 +80,23 @@ import org.semanticwb.process.utils.*;
 
 /**
  *
- * @author Sergio TÃ©llez
+ * @author Sergio Téllez
  */
 public class CaseFilter extends GenericResource {
 
     /** Log */
-    static Logger log = SWBUtils.getLogger(CaseFilter.class);
+    static final Logger LOG = SWBUtils.getLogger(CaseFilter.class);
 
     /** Permission */
-    public final static int USER=0;
-    public final static int ROLE=1;
-    public final static int GROUP=2;
+    public static final int USER=0;
+    public static final int ROLE=1;
+    public static final int GROUP=2;
+    
+    private static final String KEY_PROCESS = "process";
+    private static final String KEY_INSTANCE = "instance";
+    private static final String KEY_STARTED = "started";
+    private static final String KEY_CLOSED = "closed";
+    private static final String KEY_STATUS = "status";
 
     /**
      * Process request.
@@ -118,16 +125,13 @@ public class CaseFilter extends GenericResource {
             super.processRequest(request, response, paramsRequest);
     }
 
-   /* (non-Javadoc)
-    * @see org.semanticwb.portal.api.GenericAdmResource#doView(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.semanticwb.portal.api.SWBParamRequest)
-    */
     @Override
     public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
          PrintWriter out = response.getWriter();
          SWBResourceURL url = paramRequest.getRenderUrl();
-         url.setCallMethod(url.Call_DIRECT);
-         url.setMode(paramRequest.Mode_EDIT);
-         url.setAction(url.Action_EDIT);
+         url.setCallMethod(SWBResourceURL.Call_DIRECT);
+         url.setMode(SWBParamRequest.Mode_EDIT);
+         url.setAction(SWBResourceURL.Action_EDIT);
          out.println("<script type=\"text/javascript\">");
          out.println("  dojo.require(\"dojox.grid.DataGrid\");");
          out.println("  dojo.require(\"dojo.data.ItemFileReadStore\");");
@@ -147,18 +151,12 @@ public class CaseFilter extends GenericResource {
          out.println("  var layout= null;");
          out.println("  var gridMaster = null;");
          out.println("  dojo.addOnLoad(function() {");
-         /*out.println("      var formatLink = function(result) {");
-         out.println("          return typeof result != 'object' ? dojo.string.substitute(");
-		 out.println("              '<a target=_blank href=' + result + '>' + result.substring(result.length-2, result.length) + '</a>',");
-		 out.println("              result");
-         out.println("          ) : result;");
-         out.println("      }");*/
          out.println("      layout= ["); //formatter: formatLink,
-         out.println("          { field:\"instance\", width:\"100px\", name:\"" + paramRequest.getLocaleString("instance") + "\" },");
-         out.println("          { field:\"process\", width:\"100px\", name:\"" + paramRequest.getLocaleString("process") + "\" },");
+         out.println("          { field:\"instance\", width:\"100px\", name:\"" + paramRequest.getLocaleString(KEY_INSTANCE) + "\" },");
+         out.println("          { field:\"process\", width:\"100px\", name:\"" + paramRequest.getLocaleString(KEY_PROCESS) + "\" },");
          out.println("          { field:\"user\", width:\"100px\", name:\"" + paramRequest.getLocaleString("USER") + "\" },");
-         out.println("          { field:\"started\", width:\"100px\", name:\"" + paramRequest.getLocaleString("started") + "\" },");
-         out.println("          { field:\"closed\", width:\"100px\", name:\"" + paramRequest.getLocaleString("closed") + "\" },");
+         out.println("          { field:\"started\", width:\"100px\", name:\"" + paramRequest.getLocaleString(KEY_STARTED) + "\" },");
+         out.println("          { field:\"closed\", width:\"100px\", name:\"" + paramRequest.getLocaleString(KEY_CLOSED) + "\" },");
          out.println("          { field:\"status\", width:\"100px\", name:\"" + paramRequest.getLocaleString("status") + "\" },");
          out.println("      ];");
          out.println("      gridMaster = new dojox.grid.DataGrid({");
@@ -168,21 +166,10 @@ public class CaseFilter extends GenericResource {
          out.println("          rowsPerPage: \"15\"");
 
          out.println(",query:{ status: '*' } ");
-//         out.println(",onRowDblClick: fillTracking ");
 
          out.println("      }, \"gridMaster\");");
          out.println("      gridMaster.startup();");
          out.println("  });");
-
-//         out.println("function fillTracking(evt) {\n");
-//         out.println("alert(evt.grid.store.getValue(evt.grid.getItem(evt.rowIndex),'instanceURI'));\n");
-//         out.println("      doTracking('width=600, height=550, scrollbars, resizable, alwaysRaised, menubar',evt.grid.store.getValue(evt.grid.getItem(evt.rowIndex),'instanceURI')); \n");
-//         out.println("}\n");
-//
-//         out.println("function doTracking(size, key) { \n");
-//         out.println("   var params = '?instanceURI='+key;\n");
-//         out.println("   window.open(\""+url.setMode("tracking")+"\"+params,\"detailWindow\", size);\n");
-//         out.println("}\n");
 
          out.println("  function addProps(){");
          out.println("      var process = dijit.byId('process').value;");
@@ -209,7 +196,6 @@ public class CaseFilter extends GenericResource {
                  
          
          out.println("      var params = 'process='+process;");
-         //out.println("          params += '&permission=0';");
          out.println("          params += '&starteda=' + startda;");
          out.println("          params += '&startedto=' + startto;");
          out.println("          params += '&closeda=' + closeda;");
@@ -238,7 +224,7 @@ public class CaseFilter extends GenericResource {
          out.println("  function doApply(){");
          out.println("      var grid = dijit.byId('gridMaster');");
          out.println("      var params = addProps();");
-         //out.println("      window.open('" + url.setMode("html") + "?'+params,\'graphWindow\',size);");
+
          out.println("          fillGrid(grid, '"+url.setMode("view")+"', 'fillgridmtr', params);");
          out.println("  }");
          out.println("  function doXml(size) { ");
@@ -270,7 +256,7 @@ public class CaseFilter extends GenericResource {
          out.print("          <legend>" + paramRequest.getLocaleString("filter") + "</legend>\n");
          out.print("          <table border=\"0\" width=\"70%\" align=\"center\">\n");
          out.print("              <tr>\n");
-         out.print("                  <td width=\"40%\">" + paramRequest.getLocaleString("process") + ":</td>\n");
+         out.print("                  <td width=\"40%\">" + paramRequest.getLocaleString(KEY_PROCESS) + ":</td>\n");
          out.print("                  <td width=\"60%\" align=\"left\">\n");
          out.print("                      <select id=\"process\" name=\"process\" style=\"width:250px;\" dojoType=\"dijit.form.FilteringSelect\">\n");
          out.print("                          <option value=\"\">&nbsp;</option>\n");
@@ -294,15 +280,8 @@ public class CaseFilter extends GenericResource {
          out.print("                  </td>");
          out.print("              </tr>\n");
          out.print("              <tr>\n");
-         //out.print("                  <td>" + paramRequest.getLocaleString("permission") + "</td>\n");
          out.print("                  <td>" + paramRequest.getLocaleString("USER") + "</td>\n");
          out.print("                  <td>\n");
-         /*out.print("                      <select dojoType=\"dijit.form.FilteringSelect\" autocomplete=\"false\" id=\"permission\" name=\"permission\">\n");
-         out.print("                          <option value=\"\">&nbsp;</option>\n");
-         out.print("                          <option value=\"" + USER + "\">" + paramRequest.getLocaleString("USER") + "</option>\n");
-         out.print("                          <option value=\"" + ROLE + "\">" + paramRequest.getLocaleString("ROLE") + "</option>\n");
-         out.print("                          <option value=\"" + GROUP + "\">" + paramRequest.getLocaleString("GROUP") + "</option>\n");
-         out.print("                      </select>\n");*/
          out.print("                      <select id=\"permission_value\" name=\"permission_value\" style=\"width:250px;\" dojoType=\"dijit.form.FilteringSelect\">\n");
          out.print("                        <option value=\"\">&nbsp;</option>\n");
          getSelectUsers(out);
@@ -310,14 +289,14 @@ public class CaseFilter extends GenericResource {
          out.print("                  </td>");
          out.print("              </tr>\n");
          out.print("              <tr>\n");
-         out.print("                  <td>" + paramRequest.getLocaleString("started") + ":</td>\n");
+         out.print("                  <td>" + paramRequest.getLocaleString(KEY_STARTED) + ":</td>\n");
          out.print("                  <td>\n");
          out.print("                      <input type=\"text\" name=\"starteda\" id=\"starteda\" dojoType=\"dijit.form.DateTextBox\" size=\"11\" style=\"width:110px;\" hasDownArrow=\"true\">");
          out.print("                      &nbsp;<input type=\"text\" name=\"startedto\" id=\"startedto\" dojoType=\"dijit.form.DateTextBox\" size=\"11\" style=\"width:110px;\" hasDownArrow=\"true\">\n");
          out.print("                  </td>");
          out.print("              </tr>\n");
          out.print("              <tr>\n");
-         out.print("                  <td>" + paramRequest.getLocaleString("closed") + ":</td>\n");
+         out.print("                  <td>" + paramRequest.getLocaleString(KEY_CLOSED) + ":</td>\n");
          out.print("                  <td>\n");
          out.print("                      <input type=\"text\" name=\"closeda\" id=\"closeda\" dojoType=\"dijit.form.DateTextBox\" size=\"11\" style=\"width:110px;\" hasDownArrow=\"true\">");
          out.print("                      &nbsp;<input type=\"text\" name=\"closedto\" id=\"closedto\" dojoType=\"dijit.form.DateTextBox\" size=\"11\" style=\"width:110px;\" hasDownArrow=\"true\">\n");
@@ -398,7 +377,7 @@ public class CaseFilter extends GenericResource {
         Iterator<Process> itprocess = Process.ClassMgr.listProcesses();
         while (itprocess.hasNext()) {
             Process process = itprocess.next();
-            if(URLDecoder.decode(request.getParameter("process")).equals(process.getURI())) {
+            if(URLDecoder.decode(request.getParameter(KEY_PROCESS)).equals(process.getURI())) {
                 getProcessObjects(process, pobjs);
             }
         }
@@ -427,12 +406,12 @@ public class CaseFilter extends GenericResource {
             while (itpi.hasNext()) {
                 JSONObject obj = new JSONObject();
                 ProcessInstance pinst = itpi.next();
-                obj.put("instance", pinst.getId());
+                obj.put(KEY_INSTANCE, pinst.getId());
                 obj.put("instanceURI", pinst.getEncodedURI());
-                obj.put("process", pinst.getProcessType().getTitle());
+                obj.put(KEY_PROCESS, pinst.getProcessType().getTitle());
                 obj.put("user", Ajax.getModifiedBy(pinst));
-                obj.put("started", pinst.getCreated());
-                obj.put("closed", pinst.getEnded());
+                obj.put(KEY_STARTED, pinst.getCreated());
+                obj.put(KEY_CLOSED, pinst.getEnded());
                 obj.put("status", Ajax.statusLabel(pinst.getStatus(),paramsRequest));
                 jarr.put(obj);
             }
@@ -445,13 +424,12 @@ public class CaseFilter extends GenericResource {
 
     private Iterator applyRestrictions(HttpServletRequest request) {
         CaseCountSys ccs = new CaseCountSys();
-        if (!"".equals(request.getParameter("process")))
-            ccs.addRestriction(new Restriction(CaseCountSys.PROCESS,request.getParameter("process"),null));
+        if (!"".equals(request.getParameter(KEY_PROCESS)))
+            ccs.addRestriction(new Restriction(CaseCountSys.PROCESS,request.getParameter(KEY_PROCESS),null));
         if (!"".equals(request.getParameter("status")))
             ccs.addRestriction(new Restriction(CaseCountSys.STATUS,request.getParameter("status"),null));
-        if (/*!"".equals(request.getParameter("permission")) &&*/ !"".equals(request.getParameter("permission_value"))) {
-            //if (Integer.parseInt(request.getParameter("permission")) == USER)
-                ccs.addRestriction(new Restriction(CaseCountSys.USER,request.getParameter("permission_value"),null));
+        if (!"".equals(request.getParameter("permission_value"))) {
+            ccs.addRestriction(new Restriction(CaseCountSys.USER,request.getParameter("permission_value"),null));
         }
         if (!"".equals(request.getParameter("starteda")))
             ccs.addRestriction(new Restriction(String.valueOf(Instance.STATUS_INIT),new DateInterval(request.getParameter("starteda"),request.getParameter("startedto")),null));
@@ -470,37 +448,22 @@ public class CaseFilter extends GenericResource {
         while (keys.hasNext()) {
             String key = (String)keys.next();
             if (key.endsWith("_active")) {
-                key = key.substring(0, key.lastIndexOf("_"));
+                key = key.substring(0, key.lastIndexOf('_'));
                 listRestrictions.add(new Restriction(key,(String)map.get(key + "_filter"),(String)map.get(key + "_operator")));
             }
         }
         ccs.addRestriction(new Restriction(CaseCountSys.ARTIFACT,listRestrictions,null));
     }
 
-    private java.util.HashMap getParameters(java.util.Map map) {
-        java.util.HashMap attributes = new java.util.HashMap();
+    private HashMap getParameters(Map map) {
+        HashMap<String, String> attributes = new HashMap<>();
         Iterator iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             java.util.Map.Entry n = (java.util.Map.Entry)iter.next();
-            attributes.put(n.getKey().toString(), ((String[])n.getValue())[0].toString());
+            attributes.put(n.getKey().toString(), ((String[])n.getValue())[0]);
         }
         return attributes;
     }
-
-    /*private void getObjectsFromInstance(ProcessInstance pinst, ArrayList pobjs) {
-        Iterator<SWBClass> objit = pinst.getAllProcessObjects().iterator();
-        while(objit.hasNext()) {
-            SWBClass obj =  objit.next();
-            if (!pobjs.contains(obj))
-                pobjs.add(obj);
-        }
-        Iterator<FlowObjectInstance> foit = pinst.listFlowObjectInstances();
-        while(foit.hasNext()) {
-            FlowObjectInstance flobin = foit.next();
-            if (flobin instanceof ProcessInstance)
-                getObjectsFromInstance((ProcessInstance)flobin, pobjs);
-        }
-    }*/
 
     private void getProcessObjects(Process process, ArrayList pobjs) {
         Iterator<ItemAware> items = process.listHerarquicalRelatedItemAware().iterator();
@@ -552,9 +515,6 @@ public class CaseFilter extends GenericResource {
             while (objit.hasNext()) {
                 String dao = "";
                 SemanticClass cls =  objit.next();
-                //SemanticObject sob = SemanticObject.createSemanticObject(obj.getURI());
-                //SemanticClass cls = sob.getSemanticClass();
-                //System.out.println("SWBClass: " + obj.getURI() + " " + cls.getRootClass().getName() + " " + cls.getRootClass().getLabel(paramRequest.getUser().getLanguage()));
                 if (null!=cls.getRootClass().getLabel(paramRequest.getUser().getLanguage()))
                     dao = cls.getRootClass().getLabel(paramRequest.getUser().getLanguage());
                 else
@@ -566,7 +526,6 @@ public class CaseFilter extends GenericResource {
                 while(spit.hasNext()) {
                     SemanticProperty sp = spit.next();
                     if (sp.getPropId().equals("swb:valid") || sp.isObjectProperty()) continue;
-                    //out.print(" <tr>\n" + "<input name=\"key\" type=\"hidden\" value=\"" + sp.getName() + "\"/>");
                     out.print("     <td width=\"5%\"><input id=\"" + sp.getName() + "_active\" type=\"checkbox\" name=\"" + sp.getName() + "_active\" value=\"1\"" + ("1".equalsIgnoreCase(request.getParameter(sp.getName()+"_active")) ? " checked" : "") + "></td>\n");
                     out.print("     <td width=\"25%\">" + SWBUtils.TEXT.replaceSpecialCharacters(sp.getDisplayName(lang), true).replaceAll("_", " ") + "</td>\n");
                     out.print("     <td width=\"25%\">\n");
@@ -621,9 +580,9 @@ public class CaseFilter extends GenericResource {
         }
         return ids;
     }
-
-    private void getObjectsFromInstanceIds(ProcessInstance pinst, ArrayList pobjs) {
-        Iterator<ItemAwareReference> objit = pinst.listItemAwareReferences();
+    
+    private void getObjectsFromInstanceIds(Instance inst, ArrayList<SWBClass> pobjs) {
+        Iterator<ItemAwareReference> objit = inst.listItemAwareReferences();
         while(objit.hasNext()) {
             ItemAwareReference item=objit.next();
             SWBClass obj =  item.getProcessObject();
@@ -631,28 +590,22 @@ public class CaseFilter extends GenericResource {
             if (!pobjs.contains(obj))
                 pobjs.add(obj);
         }
-        Iterator<FlowNodeInstance> foit = pinst.listFlowNodeInstances();
-        while(foit.hasNext()) {
-            FlowNodeInstance flobin = foit.next();
-            if (flobin instanceof SubProcessInstance)
-                getObjectsFromInstanceIds((SubProcessInstance)flobin, pobjs);
+        
+        Iterator<FlowNodeInstance> foit = null;
+        if (inst instanceof ProcessInstance) {
+        		foit = ((ProcessInstance)inst).listFlowNodeInstances();
         }
-    }
+        
+        if (inst instanceof SubProcessInstance) {
+	    		foit = ((SubProcessInstance)inst).listFlowNodeInstances();
+	    }
 
-    private void getObjectsFromInstanceIds(SubProcessInstance spinst, ArrayList pobjs) {
-        Iterator<ItemAwareReference> objit = spinst.listItemAwareReferences();
-        while(objit.hasNext()) {
-            ItemAwareReference item=objit.next();
-            SWBClass obj =  item.getProcessObject();
-            //TODO: Verificar nombre del ItemAware
-            if (!pobjs.contains(obj))
-                pobjs.add(obj);
-        }
-        Iterator<FlowNodeInstance> foit = spinst.listFlowNodeInstances();
-        while(foit.hasNext()) {
-            FlowNodeInstance flobin = foit.next();
-            if (flobin instanceof SubProcessInstance)
-                getObjectsFromInstanceIds((SubProcessInstance)flobin, pobjs);
+        if (null != foit) {
+	        while(foit.hasNext()) {
+	            FlowNodeInstance flobin = foit.next();
+	            if (flobin instanceof SubProcessInstance)
+	                getObjectsFromInstanceIds((SubProcessInstance)flobin, pobjs);
+	        }
         }
     }
 
@@ -669,7 +622,6 @@ public class CaseFilter extends GenericResource {
         ArrayList pobjs = new ArrayList();
         PrintWriter out = response.getWriter();
         String idpinst = request.getParameter("instanceURI");
-        //SemanticObject semObject = SemanticObject.createSemanticObject(idpinst);
         ProcessInstance pinst = (ProcessInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(URLDecoder.decode(idpinst));
         
         if (pinst == null) {
@@ -687,17 +639,14 @@ public class CaseFilter extends GenericResource {
             Iterator<SemanticProperty> spit = pobj.getSemanticObject().listProperties();
             while(spit.hasNext()) {
                 SemanticProperty sp = spit.next();
-                //out.println("<li>" + Ajax.specialChars(sp.getDisplayName()) + ": " + BPMSProcessInstance.getPropertyValue(pobj.getSemanticObject(), sp) + "</li>");
                 out.println("<li>" + SWBUtils.TEXT.replaceSpecialCharacters(sp.getDisplayName(), true).replaceAll("_", " ") + ": " + KProcessInstance.getPropertyValue(pobj.getSemanticObject(), sp) + "</li>");
             }
         }
         out.println("</ul>");
         out.println("<h3>Detalle de Proceso</h3>");
         out.println("<ul>");
-        //Iterator<FlowObjectInstance> flowbis = pinst.listFlowObjectInstances();
         Iterator<FlowNodeInstance> flowbis = pinst.listFlowNodeInstances();
         while(flowbis.hasNext()) {
-            //FlowObjectInstance obj =  flowbis.next();
             FlowNodeInstance obj = flowbis.next();
             printActivityInstance(obj, out, paramsRequest);
         }
@@ -802,20 +751,19 @@ public class CaseFilter extends GenericResource {
             Element cases = dom.createElement("cases");
             cases.appendChild(dom.createTextNode(""));
             filter.appendChild(cases);
-            Element instance = dom.createElement("instance");
+            Element instance = dom.createElement(KEY_INSTANCE);
             instance.appendChild(dom.createTextNode(pinst.getId()));
             cases.appendChild(instance);
-            Element process = dom.createElement("process");
+            Element process = dom.createElement(KEY_PROCESS);
             process.appendChild(dom.createTextNode(pinst.getProcessType().getTitle()));
             cases.appendChild(process);
             Element user = dom.createElement("user");
-            //user.appendChild(dom.createTextNode(pinst.getModifiedBy().getFullName()));
             user.appendChild(dom.createTextNode(Ajax.getModifiedBy(pinst)));
             cases.appendChild(user);
-            Element started = dom.createElement("started");
+            Element started = dom.createElement(KEY_STARTED);
             started.appendChild(dom.createTextNode(""+pinst.getCreated()));
             cases.appendChild(started);
-            Element closed = dom.createElement("closed");
+            Element closed = dom.createElement(KEY_CLOSED);
             closed.appendChild(dom.createTextNode(Ajax.notNull(pinst.getEnded())));
             cases.appendChild(closed);
             Element status = dom.createElement("status");
@@ -848,11 +796,11 @@ public class CaseFilter extends GenericResource {
         out.println("   <body>");
         out.println("       <table border=\"0\" width=\"95%\">");
         out.println("           <tr>");
-        out.println("               <th>" + paramsRequest.getLocaleString("instance") + "</th>");
-        out.println("               <th>" + paramsRequest.getLocaleString("process") + "</th>");
+        out.println("               <th>" + paramsRequest.getLocaleString(KEY_INSTANCE) + "</th>");
+        out.println("               <th>" + paramsRequest.getLocaleString(KEY_PROCESS) + "</th>");
         out.println("               <th>" + paramsRequest.getLocaleString("USER") + "</th>");
-        out.println("               <th>" + paramsRequest.getLocaleString("started") + "</th>");
-        out.println("               <th>" + paramsRequest.getLocaleString("closed") + "</th>");
+        out.println("               <th>" + paramsRequest.getLocaleString(KEY_STARTED) + "</th>");
+        out.println("               <th>" + paramsRequest.getLocaleString(KEY_CLOSED) + "</th>");
         out.println("               <th>" + paramsRequest.getLocaleString("status") + "</th>");
         out.println("           </tr>");
         Iterator<ProcessInstance> itpi = applyRestrictions(request);
@@ -861,7 +809,6 @@ public class CaseFilter extends GenericResource {
             out.println("       <tr>");
             out.println("           <td>" + pinst.getId() + "</td>");
             out.println("           <td>" + pinst.getProcessType().getTitle() + "</td>");
-            //out.println("           <td>" + pinst.getModifiedBy().getFullName() + "</td>");
             out.println("           <td>" + Ajax.getModifiedBy(pinst) + "</td>");
             out.println("           <td>" + pinst.getCreated() + "</td>");
             out.println("           <td>" + Ajax.notNull(pinst.getEnded()) + "</td>");
@@ -895,7 +842,7 @@ public class CaseFilter extends GenericResource {
             jrResource.prepareReport();
             jrResource.exportReport(response);
         }catch (Exception e){
-            log.error("Error on method doFilterCasesPdf with id" + " " + getResourceBase().getId(), e);
+            LOG.error("Error on method doFilterCasesPdf with id" + " " + getResourceBase().getId(), e);
         }
     }
 
@@ -920,12 +867,12 @@ public class CaseFilter extends GenericResource {
             jrResource.prepareReport();
             jrResource.exportReport(response);
         }catch (Exception e){
-            log.error("Error on method doFilterCasesRtf with id" + " " + getResourceBase().getId(), e);
+            LOG.error("Error on method doFilterCasesRtf with id" + " " + getResourceBase().getId(), e);
         }
     }
 
     private void getSelectUsers(PrintWriter out) throws SWBResourceException {
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
         Iterator<UserRepository> listur = SWBContext.listUserRepositories();
         while (listur.hasNext()) {
             UserRepository ur = listur.next();
@@ -941,13 +888,6 @@ public class CaseFilter extends GenericResource {
             User user = itUsers.next();
             out.print("                      <option value=\"" + user.getLogin() + "\">" + user.getFullName() + "</option>\n");
         }
-    }
-
-    private String getURLInstance(String id) {
-        if (null != id)
-            return "http://www.process.swb#swp_ProcessInstance:" + id;
-        else
-            return "";
     }
 
     private String getLabelObject(SemanticClass obj, SWBParamRequest paramRequest) {

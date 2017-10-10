@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,7 +18,7 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.resources;
 
@@ -44,23 +44,21 @@ import org.semanticwb.webservices.ServiceInfo;
 
 /**
  *
- * @author juan.fernandez
+ * @author Juan Fernandez
  */
 public class ListWSOperations extends GenericResource {
 
-    private Logger log = SWBUtils.getLogger(ListWSOperations.class);
+    private static final Logger LOG = SWBUtils.getLogger(ListWSOperations.class);
 
     @Override
     public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 
-        response.setContentType("text/html; charset=ISO-8859-1");
+        response.setContentType("text/html");
+        response.setCharacterEncoding("ISO-8859-1");
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
 
-        User usr = paramRequest.getUser();
-
         String suri = request.getParameter("suri");
-
         if (suri == null) {
             return;
         }
@@ -100,68 +98,57 @@ public class ListWSOperations extends GenericResource {
                     ServiceInfo info = org.semanticwb.webservices.WebService.getServiceinfo(new URL(urlwsrv));
                     out.println("<tbody>");
 
-                    String isType = "";
+                    StringBuilder isType = new StringBuilder();
 
                     for (Service service : info.getServices()) {
-
-                        //System.out.println("service.getId():" + service.getId());
-
                         for (Operation operation : service.getOperations()) {
-
-                            //System.out.println("operation.getName():" + operation.getName());
-
                             out.println("<tr>");
                             out.println("<td valign=\"top\">");
                             out.println(service.getId() + " - " + operation.getName());
                             out.println("</td>");
                             out.println("<td valign=\"top\">");
                             out.println("<ul>");
-                            try {
-                                for (ParameterDefinition allparam : operation.getInput().getDefinitions()) {
-                                    isType = "";
-                                    isType = allparam.isBasic() ? "B" : "-";
-                                    isType += allparam.isMultiple() ? "M" : "-";
-                                    isType += allparam.isRequired() ? "R" : "-";
 
-                                    out.println("<li>" + allparam.getName() + " [" + allparam.getDefinitionType() + "](" + isType + ")");
-                                    if(!allparam.isBasic()){
-                                        out.println("<ul>");
-                                        for(ParameterDefinition paramdef: allparam.getProperties()){
-                                            isType = "";
-                                            isType = paramdef.isBasic() ? "B" : "-";
-                                            isType += paramdef.isMultiple() ? "M" : "-";
-                                            isType += paramdef.isRequired() ? "R" : "-";
-                                            out.println("<li>" + paramdef.getName() + " [" + paramdef.getDefinitionType() + "](" + isType + ")");
-                                        }
-                                        out.println("</ul>");
+                            for (ParameterDefinition allparam : operation.getInput().getDefinitions()) {
+                            		isType.append(allparam.isBasic() ? "B" : "-")
+                        				.append(allparam.isMultiple() ? "M" : "-")
+                        				.append(allparam.isRequired() ? "R" : "-");
+
+                                out.println("<li>" + allparam.getName() + " [" + allparam.getDefinitionType() + "](" + isType.toString() + ")");
+                                if(!allparam.isBasic()){
+                                    out.println("<ul>");
+                                    for(ParameterDefinition paramdef: allparam.getProperties()) {
+                                    		isType = new StringBuilder();
+                                    		isType.append(paramdef.isBasic() ? "B" : "-")
+                                    			.append(paramdef.isMultiple() ? "M" : "-")
+                                    			.append(paramdef.isRequired() ? "R" : "-");
+                                        out.println("<li>" + paramdef.getName() + " [" + paramdef.getDefinitionType() + "](" + isType.toString() + ")");
                                     }
-                                    out.println("</li>");
+                                    out.println("</ul>");
                                 }
-                            } catch (Exception e) {
-                                log.error("Error al cargar par&aacute;metros de entrada.", e);
+                                out.println("</li>");
                             }
 
                             out.println("</ul>");
-
                             out.println("</td>");
                             out.println("<td valign=\"top\">");
                             out.println("<ul>");
+                            
                             try {
                                 for (ParameterDefinition allparam : operation.getOutput().getDefinitions()) {
-
-                                    isType = "";
-                                    isType = allparam.isBasic() ? "B" : "-";
-                                    isType += allparam.isMultiple() ? "M" : "-";
-                                    isType += allparam.isRequired() ? "R" : "-";
-                                    out.println("<li>" + allparam.getName() + " [" + allparam.getDefinitionType() + "](" + isType + ")");
+                                    isType = new StringBuilder();
+                                    isType.append(allparam.isBasic() ? "B" : "-")
+                                    		.append(allparam.isMultiple() ? "M" : "-")
+                                    		.append(allparam.isRequired() ? "R" : "-");
+                                    out.println("<li>" + allparam.getName() + " [" + allparam.getDefinitionType() + "](" + isType.toString() + ")");
                                     if(!allparam.isBasic()){
                                         out.println("<ul>");
                                         for(ParameterDefinition paramdef: allparam.getProperties()){
-                                            isType = "";
-                                            isType = paramdef.isBasic() ? "B" : "-";
-                                            isType += paramdef.isMultiple() ? "M" : "-";
-                                            isType += paramdef.isRequired() ? "R" : "-";
-                                            out.println("<li>" + paramdef.getName() + " [" + paramdef.getDefinitionType() + "](" + isType + ")");
+                                            isType = new StringBuilder();
+                                            isType.append(paramdef.isBasic() ? "B" : "-")
+                                            		.append(paramdef.isMultiple() ? "M" : "-")
+                                            		.append(paramdef.isRequired() ? "R" : "-");
+                                            out.println("<li>" + paramdef.getName() + " [" + paramdef.getDefinitionType() + "](" + isType.toString() + ")");
                                         }
                                         out.println("</ul>");
                                     }
@@ -169,7 +156,7 @@ public class ListWSOperations extends GenericResource {
 
                                 }
                             } catch (Exception e) {
-                                log.error("Error al cargar par&aacute;metros de salida.", e);
+                                LOG.error("Error al cargar par&aacute;metros de salida.", e);
                             }
 
                             out.println("</ul>");
@@ -181,7 +168,7 @@ public class ListWSOperations extends GenericResource {
                     out.println("</tbody>");
 
                 } catch (Exception e) {
-                    log.debug(e);
+                    LOG.debug(e);
                 }
                 out.println("</table>");
                 out.println("</fieldset>");
@@ -190,13 +177,11 @@ public class ListWSOperations extends GenericResource {
                 out.println("</fieldset>");
                 out.println("</div>");
             } else {
-                log.error("Falta definir URL del WebService");
+                LOG.error("Falta definir URL del WebService");
                 out.println("<fieldset>");
                 out.println("<h2>Falta configurar el URL del WebService.</h2>");
                 out.println("</fieldset>");
             }
         }
-
-
     }
 }

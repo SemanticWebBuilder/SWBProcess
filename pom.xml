@@ -17,6 +17,7 @@
           <resource>
             <directory>src/main/java</directory>
             <includes>
+              <include>**/*.owl</include>
               <include>**/*.properties</include>
               <include>**/*.xml</include>
               <include>**/*.xslt</include>
@@ -25,6 +26,11 @@
         </resources>
       </build>
       <dependencies>
+        <dependency>
+          <groupId>org.apache.xmlgraphics</groupId>
+          <artifactId>batik-codec</artifactId>
+          <version>1.9</version>
+        </dependency>
         <dependency>
           <groupId>org.apache.xmlgraphics</groupId>
           <artifactId>batik-transcoder</artifactId>

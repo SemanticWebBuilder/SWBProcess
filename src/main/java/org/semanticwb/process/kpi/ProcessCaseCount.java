@@ -23,6 +23,8 @@
 package org.semanticwb.process.kpi;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.semanticwb.process.utils.Restriction;
 
 /**
@@ -44,7 +46,7 @@ public class ProcessCaseCount {
         return casesys.totalProcessInstance();
     }
 
-    public ArrayList listProcessInstance() {
+    public List listProcessInstance() {
         return casesys.listProcessInstance();
     }
 

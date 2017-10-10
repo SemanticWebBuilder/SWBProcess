@@ -22,12 +22,14 @@
  */
 package org.semanticwb.process.resources;
 
+import static org.semanticwb.process.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.utils.SWPUtils.copyFileFromSWBAdmin;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -68,8 +70,6 @@ import org.semanticwb.process.model.SubProcess;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.lowagie.text.DocumentException;
-
 /**
  * Recurso que gestiona la documentación de un proceso.
  * 
@@ -78,12 +78,17 @@ import com.lowagie.text.DocumentException;
 public class DocumentationResource extends GenericAdmResource {
 	private static final Logger LOG = SWBUtils.getLogger(DocumentationResource.class);
 	public static final String PARAM_TEXT = "txt";
+	public static final String HTML_CONTENTTYPE = "text/html";
+	public static final String UTF8 = "UTF-8";
+	public static final String MODE_DOCUMENTATION = "documentation";
+	public static final String MODE_EXPORT = "doExportDocument";
+	
 	Templates tpl;
 
 	@Override
-	public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
+	public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
+		response.setContentType("text/html");
+		response.setCharacterEncoding(UTF8);
 		String suri = request.getParameter("suri");
 		PrintWriter out = response.getWriter();
 		if (suri != null) {
@@ -97,25 +102,23 @@ public class DocumentationResource extends GenericAdmResource {
 				if (despliege.equals("Vista")) {
 					url.setMode("viewDocumentation");
 				} else {
-					url.setMode("documentation");
+					url.setMode(MODE_DOCUMENTATION);
 				}
 				url.setParameter("despliege", despliege);
 				url.setCallMethod(SWBResourceURL.Call_DIRECT);
 				url.setParameter("suri", request.getParameter("suri"));
-				out.println(
-						"<iframe src=\"" + url + "\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>");
+				out.println("<iframe src=\"" + url + "\" style=\"width:100%; height:100%;\" frameborder=\"0\"></iframe>");
 			}
 		}
 	}
 
 	@Override
-	public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException {
+	public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		String mode = paramRequest.getMode();
 		try {
-			if ("documentation".equals(mode)) {
+			if (MODE_DOCUMENTATION.equals(mode)) {
 				doProcessDocumentation(request, response, paramRequest);
-			} else if ("doExportDocument".equals(mode)) {
+			} else if (MODE_EXPORT.equals(mode)) {
 				doExportDocument(request, response, paramRequest);
 			} else if ("viewDocumentation".equals(mode)) {
 				doViewDocumentation(request, response, paramRequest);
@@ -130,8 +133,7 @@ public class DocumentationResource extends GenericAdmResource {
 	}
 
 	@Override
-	public void processAction(HttpServletRequest request, SWBActionResponse response)
-			throws SWBResourceException, IOException {
+	public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
 		String action = response.getAction();
 		if (action.equals(SWBResourceURL.Action_ADD)) {
 			String suri = request.getParameter("suri") != null ? request.getParameter("suri") : "";
@@ -144,15 +146,14 @@ public class DocumentationResource extends GenericAdmResource {
 				if (doc.getText().replace("&nbsp;", "").trim().length() < 62) {
 					doc.setText("<p>" + response.getLocaleString("hereDoc") + "</p>");
 				}
-				doc.setTextFormat("text/html");
+				doc.setTextFormat(HTML_CONTENTTYPE);
 			}
 		} else {
 			super.processAction(request, response);
 		}
 	}
 
-	public void doViewModel(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException {
+	public void doViewModel(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		String path = "/swbadmin/jsp/process/documentation/documentationModel.jsp";
 		request.setAttribute("paramRequest", paramRequest);
@@ -165,8 +166,7 @@ public class DocumentationResource extends GenericAdmResource {
 		}
 	}
 
-	public void doProcessDocumentation(HttpServletRequest request, HttpServletResponse response,
-			SWBParamRequest paramRequest) throws SWBResourceException, IOException {
+	public void doProcessDocumentation(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		String path = "/swbadmin/jsp/process/documentation/documentationResource.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -181,7 +181,7 @@ public class DocumentationResource extends GenericAdmResource {
 					// Si no existe documentación, crearla
 					doc = Documentation.ClassMgr.createDocumentation(paramRequest.getWebPage().getWebSite());
 					// Agregar la documentación al elemento
-					doc.setTextFormat("text/html");
+					doc.setTextFormat(HTML_CONTENTTYPE);
 					doc.setText("<p>" + paramRequest.getLocaleString("hereDoc") + "</p>");
 					pe.addDocumentation(doc);
 				}
@@ -193,8 +193,7 @@ public class DocumentationResource extends GenericAdmResource {
 		}
 	}
 
-	void doViewDocumentation(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException {
+	void doViewDocumentation(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		String path = "/swbadmin/jsp/process/documentation/viewDocumentation.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -208,8 +207,7 @@ public class DocumentationResource extends GenericAdmResource {
 		}
 	}
 
-	void doExportDocument(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException {
+	void doExportDocument(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 
 		org.semanticwb.process.model.Process pe = (org.semanticwb.process.model.Process) SWBPlatform.getSemanticMgr()
@@ -220,26 +218,19 @@ public class DocumentationResource extends GenericAdmResource {
 				+ pe.getTitle() + "/";
 
 		try {
+			String fontsBasePath = basePath + "css/fonts/";
 			Document dom = getDom(request.getParameter("suri"), response, paramRequest);
 			if (dom != null) {
 				// Copy bootstrap files
-				copyFileFromSWBAdmin("/swbadmin/css/bootstrap/bootstrap.css", basePath + "css/bootstrap/",
-						"/bootstrap.css");
-				copyFileFromSWBAdmin("/swbadmin/js/bootstrap/bootstrap.js", basePath + "js/bootstrap/",
-						"/bootstrap.js");
+				copyFileFromSWBAdmin("/swbadmin/css/bootstrap/bootstrap.css", basePath + "css/bootstrap/", "/bootstrap.css");
+				copyFileFromSWBAdmin("/swbadmin/js/bootstrap/bootstrap.js", basePath + "js/bootstrap/", "/bootstrap.js");
 				// Copy font-awesome files
-				copyFileFromSWBAdmin("/swbadmin/css/fontawesome/font-awesome.css", basePath + "css/fontawesome/",
-						"/font-awesome.css");
-				copyFileFromSWBAdmin("/swbadmin/css/fonts/FontAwesome.otf", basePath + "css/fonts/",
-						"/FontAwesome.otf");
-				copyFileFromSWBAdmin("/swbadmin/css/fonts/fontawesome-webfont.eot", basePath + "css/fonts/",
-						"/fontawesome-webfont.eot");
-				copyFileFromSWBAdmin("/swbadmin/css/fonts/fontawesome-webfont.svg", basePath + "css/fonts/",
-						"/fontawesome-webfont.svg");
-				copyFileFromSWBAdmin("/swbadmin/css/fonts/fontawesome-webfont.ttf", basePath + "css/fonts/",
-						"/fontawesome-webfont.ttf");
-				copyFileFromSWBAdmin("/swbadmin/css/fonts/fontawesome-webfont.woff", basePath + "css/fonts/",
-						"/fontawesome-webfont.woff");
+				copyFileFromSWBAdmin("/swbadmin/css/fontawesome/font-awesome.css", basePath + "css/fontawesome/", "/font-awesome.css");
+				copyFileFromSWBAdmin("/swbadmin/css/fonts/FontAwesome.otf", fontsBasePath, "/FontAwesome.otf");
+				copyFileFromSWBAdmin("/swbadmin/css/fonts/fontawesome-webfont.eot", fontsBasePath, "/fontawesome-webfont.eot");
+				copyFileFromSWBAdmin("/swbadmin/css/fonts/fontawesome-webfont.svg", fontsBasePath, "/fontawesome-webfont.svg");
+				copyFileFromSWBAdmin("/swbadmin/css/fonts/fontawesome-webfont.ttf", fontsBasePath, "/fontawesome-webfont.ttf");
+				copyFileFromSWBAdmin("/swbadmin/css/fonts/fontawesome-webfont.woff", fontsBasePath, "/fontawesome-webfont.woff");
 				// Copy jquery files
 				copyFileFromSWBAdmin("/swbadmin/js/jquery/jquery.js", basePath + "js/jquery/", "/jquery.js");
 				// Add modeler
@@ -251,23 +242,17 @@ public class DocumentationResource extends GenericAdmResource {
 				if (!modeler.exists()) {
 					modeler.mkdirs();
 				}
-				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/modeler/toolkit.js",
-						basePath + "/js/modeler/toolkit.js");
-				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/modeler/modeler.js",
-						basePath + "/js/modeler/modeler.js");
-				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/commons/css/modeler.css",
-						basePath + "/css/modeler/modeler.css");
-				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/commons/css/swbp.css",
-						basePath + "/css/swbp.css");
-				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/documentation/css/style.css",
-						basePath + "/css/style.css");
+				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/modeler/toolkit.js", basePath + "/js/modeler/toolkit.js");
+				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/modeler/modeler.js", basePath + "/js/modeler/modeler.js");
+				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/commons/css/modeler.css", basePath + "/css/modeler/modeler.css");
+				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/commons/css/swbp.css", basePath + "/css/swbp.css");
+				copyFile(SWBUtils.getApplicationPath() + "swbadmin/jsp/process/documentation/css/style.css", basePath + "/css/style.css");
 				// Add images
 				File images = new File(basePath + "css/images/");
 				if (!images.exists()) {
 					images.mkdirs();
 				}
-				SWBUtils.IO.copyStructure(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/images/",
-						basePath + "/css/images/");
+				SWBUtils.IO.copyStructure(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/images/", basePath + "/css/images/");
 
 				File dest = new File(basePath);
 				if (!dest.exists()) {
@@ -277,7 +262,8 @@ public class DocumentationResource extends GenericAdmResource {
 				tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
 				// Write index.html
 				File index = new File(basePath + "index.html");
-				FileOutputStream out = null;//new FileOutputStream(index);
+				FileOutputStream out = null;
+				FileOutputStream outFile = null;
 				ZipOutputStream zos = null;
 				OutputStream ou = null;
 				
@@ -285,7 +271,6 @@ public class DocumentationResource extends GenericAdmResource {
 					out = new FileOutputStream(index);
 					out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes());
 					out.flush();
-					out.close();
 					Iterator<GraphicalElement> itFiles = pe.listAllContaineds();
 					while (itFiles.hasNext()) {
 						GraphicalElement geFiles = itFiles.next();
@@ -293,10 +278,9 @@ public class DocumentationResource extends GenericAdmResource {
 							dom = getDom(geFiles.getEncodedURI(), response, paramRequest);
 							String fileName = removeAcent(geFiles.getTitle());
 							File geFile = new File(basePath + fileName + ".html");
-							FileOutputStream outFile = new FileOutputStream(geFile);
+							outFile = new FileOutputStream(geFile);
 							outFile.write(SWBUtils.XML.transformDom(tpl, dom).getBytes());
 							outFile.flush();
-							outFile.close();
 						}
 					}
 					ou = response.getOutputStream();
@@ -305,7 +289,6 @@ public class DocumentationResource extends GenericAdmResource {
 					zos.flush();
 					zos.close();
 					ou.flush();
-					ou.close();
 					deleteDerectory(dest);
 				} catch (IOException ioex) {
 					LOG.error(ioex);
@@ -313,6 +296,7 @@ public class DocumentationResource extends GenericAdmResource {
 					if (null != out) out.close();
 					if (null != ou) ou.close();
 					if (null != zos) zos.close();
+					if (null != outFile) outFile.close();
 				}
 			}
 		} catch (Exception e) {
@@ -329,61 +313,7 @@ public class DocumentationResource extends GenericAdmResource {
 		}
 		return output;
 	}
-
-	public static void copyFileFromSWBAdmin(String source, String destination, String fileName)
-			throws FileNotFoundException, IOException {
-		InputStream inputStream = null;//SWBPortal.getAdminFileStream(source);
-		OutputStream outputStream = null;
-		
-		try {
-			inputStream = SWBPortal.getAdminFileStream(source);
-			File css = new File(destination);
-			if (!css.exists()) {
-				css.mkdirs();
-			}
-
-			File file = new File(css.getAbsolutePath() + fileName);
-			outputStream = new FileOutputStream(file);
-			byte[] buffer = new byte[1024];
-			int len;
-			while ((len = inputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, len);
-			}
-			// outputStream.write(SWBUtils.IO.readInputStream(inputStream).getBytes());
-			outputStream.close();
-			inputStream.close();
-		} catch (IOException ioex) {
-			LOG.error(ioex);
-		} finally {
-			if (null != inputStream) inputStream.close();
-			if (null != outputStream) outputStream.close();
-		}
-	}
-
-	public static void copyFile(String sourceFile, String destFile) throws IOException {
-		InputStream inStream = null;
-		OutputStream outStream = null;
-		try {
-			File afile = new File(sourceFile);
-			File bfile = new File(destFile);
-			inStream = new FileInputStream(afile);
-			outStream = new FileOutputStream(bfile);
-			byte[] buffer = new byte[1024];
-			int length;
-			// copy the file content in bytes
-			while ((length = inStream.read(buffer)) > 0) {
-				outStream.write(buffer, 0, length);
-			}
-			inStream.close();
-			outStream.close();
-		} catch (IOException e) {
-			LOG.error("Error to copy file " + sourceFile + ", " + e.getMessage());
-		} finally {
-			if (null != inStream) inStream.close();
-			if (null != outStream) outStream.close();
-		}
-	}
-
+	
 	public static boolean deleteDerectory(File dir) {
 		boolean ret = false;
 		File[] files = dir.listFiles();
@@ -391,16 +321,14 @@ public class DocumentationResource extends GenericAdmResource {
 			File file = files[i];
 			if (file.isDirectory()) {
 				deleteDerectory(file);
-				ret = file.delete();
-			} else {
-				ret = file.delete();
 			}
+			ret = file.delete();
 		}
 		ret = dir.delete();
 		return ret;
 	}
 
-	public static void createModel(String suri, String basePath) throws FileNotFoundException, IOException {
+	public static void createModel(String suri, String basePath) throws IOException {
 		ProcessElement pe = (ProcessElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(suri);
 		String html = "";
 		html += "<link href=\"css/bootstrap/bootstrap.css\" rel=\"stylesheet\">\n"
@@ -1024,9 +952,7 @@ public class DocumentationResource extends GenericAdmResource {
 		return style;
 	}
 
-	public org.w3c.dom.Document getDom(String suri, javax.servlet.http.HttpServletResponse response,
-			SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException, TransformerConfigurationException, TransformerException {
+	public org.w3c.dom.Document getDom(String suri, javax.servlet.http.HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException, TransformerException {
 		String mode = paramRequest.getMode();
 		org.w3c.dom.Document doc = SWBUtils.XML.getNewDocument();
 		if (!suri.equals("")) {
@@ -1053,242 +979,236 @@ public class DocumentationResource extends GenericAdmResource {
 			String dataOBT = paramRequest.getLocaleString("data") != null ? paramRequest.getLocaleString("data")
 					: "Data";
 			String data = "";
-			if (pe != null) {
-				if (pe.listDocumentations().hasNext()) {
-					Element elements = doc.createElement("elements");
-					elements.setAttribute("title", pe.getTitle());
-					doc.appendChild(elements);
-					Element elProcess = doc.createElement("process");
-					elements.appendChild(elProcess);
-					SWBResourceURL urlExport = paramRequest.getRenderUrl().setMode("doExportDocument");
-					urlExport.setParameter("format", "html");
-					if (pe instanceof org.semanticwb.process.model.Process) {
-						process = (org.semanticwb.process.model.Process) pe;
-						elProcess.setAttribute("process", process.getTitle());
-						elProcess.setAttribute("title", process.getTitle());
-						elProcess.setAttribute("type", "process");
-						if (mode.equals("doExportDocument")) {
-							elProcess.setAttribute("url", "index.html");
-						} else {
-							elProcess.setAttribute("url", "?suri=" + process.getEncodedURI());
-						}
-						addElem(doc, elProcess, "documentation", process.getDocumentation().getText());
-						data = process.getData();
-						iterator = process.listContaineds();
-						urlExport.setParameter("suri", process.getEncodedURI());
-					}
-					if (pe instanceof SubProcess) {
-						subProcess = (SubProcess) pe;
-						elProcess.setAttribute("process", subProcess.getProcess().getTitle());
-						if (mode.equals("doExportDocument")) {
-							elProcess.setAttribute("url", "index.html");
-						} else {
-							elProcess.setAttribute("url", "?suri=" + subProcess.getProcess().getEncodedURI());
-						}
-						elProcess.setAttribute("title", subProcess.getTitle());
-						elProcess.setAttribute("type", "subprocess");
-						// Add path
-						String thePath = "";
-						Containerable con = subProcess.getContainer();
-						thePath = pe.getTitle() + ";" + pe.getEncodedURI() + "|" + thePath;
-						urls.add(subProcess);
-						while (con != null) {
-							thePath = ((ProcessElement) con).getTitle() + ";" + ((ProcessElement) con).getEncodedURI()
-									+ "|" + thePath;
-							if (con instanceof SubProcess) {
-								con = ((SubProcess) con).getContainer();
-								urls.add(((SubProcess) con));// Test
-							} else {
-								con = null;
-							}
-						}
-						elProcess.setAttribute("path", thePath);
-						addElem(doc, elProcess, "documentation", subProcess.getDocumentation().getText());
-						addElem(doc, elProcess, "model", subProcess.getData());
-						data = subProcess.getProcess().getData();
-						iterator = subProcess.listContaineds();
-						urlExport.setParameter("suri", subProcess.getProcess().getEncodedURI());
-					}
-					String theImports = "";
-					if (mode.equals("doExportDocument")) {
-						theImports = ""
-								+ "        <link href=\"css/bootstrap/bootstrap.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <link href=\"css/fontawesome/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <link href=\"css/swbp.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <link href=\"css/style.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <link href=\"css/modeler/modeler.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <script src=\"js/jquery/jquery.js\"></script>\n"
-								+ "        <script type=\"text/javascript\" src=\"js/modeler/toolkit.js\"></script>\n"
-								+ "        <script type=\"text/javascript\" src=\"js/modeler/modeler.js\"></script>\n"
-								+ "        <script src=\"js/bootstrap/bootstrap.js\"></script>\n";
+			if (pe != null && pe.listDocumentations().hasNext()) {
+				Element elements = doc.createElement("elements");
+				elements.setAttribute("title", pe.getTitle());
+				doc.appendChild(elements);
+				Element elProcess = doc.createElement("process");
+				elements.appendChild(elProcess);
+				SWBResourceURL urlExport = paramRequest.getRenderUrl().setMode(MODE_EXPORT);
+				urlExport.setParameter("format", "html");
+				if (pe instanceof org.semanticwb.process.model.Process) {
+					process = (org.semanticwb.process.model.Process) pe;
+					elProcess.setAttribute("process", process.getTitle());
+					elProcess.setAttribute("title", process.getTitle());
+					elProcess.setAttribute("type", "process");
+					if (mode.equals(MODE_EXPORT)) {
+						elProcess.setAttribute("url", "index.html");
 					} else {
-						String btnDownload = "       <a class=\"btn btn-default\" href=\" " + urlExport.toString()
-								+ " \" data-placement=\"bottom\" data-toggle=\"tooltip\" data-original-title=\""
-								+ pe.getTitle() + "\">\n" + "         <span class=\"fa fa-download\"></span>\n"
-								+ "     </a>";
-						addElem(doc, elProcess, "btnDownload", btnDownload);
-						theImports = "" + "        <link href=\"" + SWBPortal.getContextPath()
-								+ "/swbadmin/css/bootstrap/bootstrap.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <link href=\"" + SWBPortal.getContextPath()
-								+ "/swbadmin/css/fontawesome/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <link href=\"" + SWBPortal.getContextPath()
-								+ "/swbadmin/jsp/process/commons/css/swbp.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <link href=\"" + SWBPortal.getContextPath()
-								+ "/swbadmin/jsp/process/documentation/css/style.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <link href=\"" + SWBPortal.getContextPath()
-								+ "/swbadmin/jsp/process/commons/css/modeler.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
-								+ "        <script src=\"" + SWBPortal.getContextPath()
-								+ "/swbadmin/js/jquery/jquery.js\"></script>\n"
-								+ "        <script type=\"text/javascript\" src=\"" + SWBPortal.getContextPath()
-								+ "/swbadmin/jsp/process/modeler/toolkit.js\"></script>\n"
-								+ "        <script type=\"text/javascript\" src=\"" + SWBPortal.getContextPath()
-								+ "/swbadmin/jsp/process/modeler/modeler.js\"></script>\n" + "        <script src=\""
-								+ SWBPortal.getContextPath() + "/swbadmin/js/bootstrap/bootstrap.js\"></script>\n";
+						elProcess.setAttribute("url", "?suri=" + process.getEncodedURI());
 					}
-					elProcess.setAttribute("context", SWBPortal.getContextPath());
-					// imports css and js
-					addElem(doc, elProcess, "imports", theImports);
-					if (iterator != null) {
-						while (iterator.hasNext()) {
-							ge = iterator.next();
-							if (ge instanceof Lane) {
-								lane.add(ge);
-							}
-							if (ge instanceof Activity) {
-								activity.add(ge);
-							}
-							if (ge instanceof Gateway) {
-								gateway.add(ge);
-							}
-							if (ge instanceof Event) {
-								event.add(ge);
-							}
-							if (ge instanceof DataObject) {
-								dataob.add(ge);
-							}
+					addElem(doc, elProcess, MODE_DOCUMENTATION, process.getDocumentation().getText());
+					data = process.getData();
+					iterator = process.listContaineds();
+					urlExport.setParameter("suri", process.getEncodedURI());
+				}
+				if (pe instanceof SubProcess) {
+					subProcess = (SubProcess) pe;
+					elProcess.setAttribute("process", subProcess.getProcess().getTitle());
+					if (mode.equals(MODE_EXPORT)) {
+						elProcess.setAttribute("url", "index.html");
+					} else {
+						elProcess.setAttribute("url", "?suri=" + subProcess.getProcess().getEncodedURI());
+					}
+					elProcess.setAttribute("title", subProcess.getTitle());
+					elProcess.setAttribute("type", "subprocess");
+					// Add path
+					String thePath = "";
+					Containerable con = subProcess.getContainer();
+					thePath = pe.getTitle() + ";" + pe.getEncodedURI() + "|" + thePath;
+					urls.add(subProcess);
+					while (con != null) {
+						thePath = ((ProcessElement) con).getTitle() + ";" + ((ProcessElement) con).getEncodedURI()
+								+ "|" + thePath;
+						if (con instanceof SubProcess) {
+							con = ((SubProcess) con).getContainer();
+							urls.add(((SubProcess) con));// Test
+						} else {
+							con = null;
 						}
 					}
-					if (urls.size() > 0) {// Test
-						addProcessElements(doc, elements, urls, "urls", "urls", "URL", paramRequest);
-					}
-					if (lane.size() > 0) {
-						addProcessElements(doc, elements, lane, "lanes", "lane", laneT, paramRequest);
-					}
-					if (activity.size() > 0) {
-						addProcessElements(doc, elements, activity, "activities", "actvity", activityT, paramRequest);
-					}
-					if (gateway.size() > 0) {
-						addProcessElements(doc, elements, gateway, "gateways", "gateway", gatewayT, paramRequest);
-					}
-					if (event.size() > 0) {
-						addProcessElements(doc, elements, event, "events", "event", eventT, paramRequest);
-					}
-					if (dataob.size() > 0) {
-						addProcessElements(doc, elements, dataob, "dataobjects", "dataobject", dataOBT, paramRequest);
-					}
-					addElem(doc, elProcess, "model", getStyleModel());
-					// Add te javascript
-					String script = "<script type=\"text/javascript\">\n"
-							+ "             Modeler.init('modeler', {mode: 'view', layerNavigation: false}, callbackHandler);\n"
-							+ "             var zoomFactor = 1.1;\n" + "             var panRate = 10;\n"
-							+ "             function callbackHandler() {\n" + "                 var strJSON = '" + data
-							+ "';\n" + "                 Modeler.loadProcess(strJSON);\n";
-					if (subProcess != null) {// For SubProcess
-						script += "             var obj = Modeler.getGraphElementByURI(null, \"" + subProcess.getURI()
-								+ "\");\n" + "             ToolKit.setLayer(obj.subLayer);\n";
-					}
-					script += "\n                 Modeler._svgSize = getDiagramSize();\n"
-							+ "                 fitToScreen();\n" + "             }\n"
-							+ "             function zoomin() {\n"
-							+ "                 var viewBox = document.getElementById(\"modeler\").getAttribute('viewBox');\n"
-							+ "                 var viewBoxValues = viewBox.split(' ');\n" + "\n"
-							+ "                 viewBoxValues[2] = parseFloat(viewBoxValues[2]);\n"
-							+ "                 viewBoxValues[3] = parseFloat(viewBoxValues[3]);\n" + "\n"
-							+ "                 viewBoxValues[2] /= zoomFactor;\n"
-							+ "                 viewBoxValues[3] /= zoomFactor;\n" + "\n"
-							+ "                 document.getElementById(\"modeler\").setAttribute('viewBox', viewBoxValues.join(' '));\n"
-							+ "             }\n" + "\n" + "             function zoomout() {\n"
-							+ "                 var viewBox = document.getElementById(\"modeler\").getAttribute('viewBox');\n"
-							+ "                 var viewBoxValues = viewBox.split(' ');\n" + "\n"
-							+ "                 viewBoxValues[2] = parseFloat(viewBoxValues[2]);\n"
-							+ "                 viewBoxValues[3] = parseFloat(viewBoxValues[3]);\n" + "\n"
-							+ "                 viewBoxValues[2] *= zoomFactor;\n"
-							+ "                 viewBoxValues[3] *= zoomFactor;\n" + "\n"
-							+ "                 document.getElementById(\"modeler\").setAttribute('viewBox', viewBoxValues.join(' '));\n"
-							+ "             }\n" + "\n" + "             function resetZoom() {\n"
-							+ "                 var el = document.getElementById(\"modeler\");\n"
-							+ "                 el.setAttribute('viewBox', '0 0 ' + $(\"#modeler\").parent().width() + ' ' + $(\"#modeler\").parent().height());\n"
-							+ "                 el.setAttribute('width', '1024');\n"
-							+ "                 el.setAttribute('height', '768');\n" + "             }\n" + "\n"
-							+ "             function handlePanning(code) {\n"
-							+ "                 var viewBox = document.getElementById(\"modeler\").getAttribute('viewBox');\n"
-							+ "                 var viewBoxValues = viewBox.split(' ');\n"
-							+ "                 viewBoxValues[0] = parseFloat(viewBoxValues[0]);\n"
-							+ "                 viewBoxValues[1] = parseFloat(viewBoxValues[1]);\n" + "\n"
-							+ "                 switch (code) {\n" + "                     case 'left':\n"
-							+ "                         viewBoxValues[0] += panRate;\n"
-							+ "                         break;\n" + "                     case 'right':\n"
-							+ "                         viewBoxValues[0] -= panRate;\n"
-							+ "                         break;\n" + "                     case 'up':\n"
-							+ "                         viewBoxValues[1] += panRate;\n"
-							+ "                         break;\n" + "                         case 'down':\n"
-							+ "                         viewBoxValues[1] -= panRate;\n"
-							+ "                         break;\n" + "                 }\n"
-							+ "                 document.getElementById(\"modeler\").setAttribute('viewBox', viewBoxValues.join(' '));\n"
-							+ "             }\n" + "\n" + "             function getDiagramSize() {\n"
-							+ "                 var cw = 0;\n" + "                 var ch = 0;\n"
-							+ "                 var fx = null;\n" + "                 var fy = null;\n"
-							+ "                 for (var i = 0; i < ToolKit.contents.length; i++) {\n"
-							+ "                     var obj = ToolKit.contents[i];\n"
-							+ "                     if (obj.typeOf && (obj.typeOf(\"GraphicalElement\") || obj.typeOf(\"Pool\"))) {\n"
-							+ "                         if (obj.layer === ToolKit.layer) {\n"
-							+ "                             if (obj.getX() > cw) {\n"
-							+ "                                 cw = obj.getX();\n"
-							+ "                                 fx = obj;\n" + "                             }\n" + "\n"
-							+ "                             if (obj.getY() > ch) {\n"
-							+ "                                 ch = obj.getY();\n"
-							+ "                                 fy = obj;\n" + "                             }\n"
-							+ "                         }\n" + "                     }\n" + "                 }\n"
-							+ "                 cw = cw + fx.getBBox().width;\n"
-							+ "                 ch = ch + fy.getBBox().height;\n" + "\n"
-							+ "                 var ret = {w: cw, h: ch};\n" + "                 return ret;\n"
-							+ "             }\n" + "\n" + "             function fitToScreen() {\n"
-							+ "                 resetZoom();\n"
-							+ "                 var ws = $(\"#modeler\").parent().width();\n"
-							+ "                 var hs = $(\"#modeler\").parent().height();\n"
-							+ "                 var wi = Modeler._svgSize.w;\n"
-							+ "                 var hi = Modeler._svgSize.h;\n" + "\n"
-							+ "                 if (wi > ws || hi > hs) {\n"
-							+ "                     var el = document.getElementById(\"modeler\");\n"
-							+ "                     el.setAttribute('viewBox', '0 0 ' + wi + ' ' + hi);\n"
-							+ "                     el.setAttribute('width', ws);\n"
-							+ "                     el.setAttribute('height', hs);\n" + "                 }\n"
-							+ "             }\n" + "     </script>";
-					addElem(doc, elProcess, "script", script);
-
+					elProcess.setAttribute("path", thePath);
+					addElem(doc, elProcess, MODE_DOCUMENTATION, subProcess.getDocumentation().getText());
+					addElem(doc, elProcess, "model", subProcess.getData());
+					data = subProcess.getProcess().getData();
+					iterator = subProcess.listContaineds();
+					urlExport.setParameter("suri", subProcess.getProcess().getEncodedURI());
 				}
+				String theImports = "";
+				if (mode.equals(MODE_EXPORT)) {
+					theImports = ""
+							+ "        <link href=\"css/bootstrap/bootstrap.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <link href=\"css/fontawesome/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <link href=\"css/swbp.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <link href=\"css/style.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <link href=\"css/modeler/modeler.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <script src=\"js/jquery/jquery.js\"></script>\n"
+							+ "        <script type=\"text/javascript\" src=\"js/modeler/toolkit.js\"></script>\n"
+							+ "        <script type=\"text/javascript\" src=\"js/modeler/modeler.js\"></script>\n"
+							+ "        <script src=\"js/bootstrap/bootstrap.js\"></script>\n";
+				} else {
+					String btnDownload = "       <a class=\"btn btn-default\" href=\" " + urlExport.toString()
+							+ " \" data-placement=\"bottom\" data-toggle=\"tooltip\" data-original-title=\""
+							+ pe.getTitle() + "\">\n" + "         <span class=\"fa fa-download\"></span>\n"
+							+ "     </a>";
+					addElem(doc, elProcess, "btnDownload", btnDownload);
+					theImports = "" + "        <link href=\"" + SWBPortal.getContextPath()
+							+ "/swbadmin/css/bootstrap/bootstrap.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <link href=\"" + SWBPortal.getContextPath()
+							+ "/swbadmin/css/fontawesome/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <link href=\"" + SWBPortal.getContextPath()
+							+ "/swbadmin/jsp/process/commons/css/swbp.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <link href=\"" + SWBPortal.getContextPath()
+							+ "/swbadmin/jsp/process/documentation/css/style.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <link href=\"" + SWBPortal.getContextPath()
+							+ "/swbadmin/jsp/process/commons/css/modeler.css\" rel=\"stylesheet\" type=\"text/css\"></link>\n"
+							+ "        <script src=\"" + SWBPortal.getContextPath()
+							+ "/swbadmin/js/jquery/jquery.js\"></script>\n"
+							+ "        <script type=\"text/javascript\" src=\"" + SWBPortal.getContextPath()
+							+ "/swbadmin/jsp/process/modeler/toolkit.js\"></script>\n"
+							+ "        <script type=\"text/javascript\" src=\"" + SWBPortal.getContextPath()
+							+ "/swbadmin/jsp/process/modeler/modeler.js\"></script>\n" + "        <script src=\""
+							+ SWBPortal.getContextPath() + "/swbadmin/js/bootstrap/bootstrap.js\"></script>\n";
+				}
+				elProcess.setAttribute("context", SWBPortal.getContextPath());
+				// imports css and js
+				addElem(doc, elProcess, "imports", theImports);
+				if (iterator != null) {
+					while (iterator.hasNext()) {
+						ge = iterator.next();
+						if (ge instanceof Lane) {
+							lane.add(ge);
+						}
+						if (ge instanceof Activity) {
+							activity.add(ge);
+						}
+						if (ge instanceof Gateway) {
+							gateway.add(ge);
+						}
+						if (ge instanceof Event) {
+							event.add(ge);
+						}
+						if (ge instanceof DataObject) {
+							dataob.add(ge);
+						}
+					}
+				}
+				if (!urls.isEmpty()) {// Test
+					addProcessElements(doc, elements, urls, "urls", "urls", "URL", paramRequest);
+				}
+				if (!lane.isEmpty()) {
+					addProcessElements(doc, elements, lane, "lanes", "lane", laneT, paramRequest);
+				}
+				if (!activity.isEmpty()) {
+					addProcessElements(doc, elements, activity, "activities", "actvity", activityT, paramRequest);
+				}
+				if (!gateway.isEmpty()) {
+					addProcessElements(doc, elements, gateway, "gateways", "gateway", gatewayT, paramRequest);
+				}
+				if (!event.isEmpty()) {
+					addProcessElements(doc, elements, event, "events", "event", eventT, paramRequest);
+				}
+				if (!dataob.isEmpty()) {
+					addProcessElements(doc, elements, dataob, "dataobjects", "dataobject", dataOBT, paramRequest);
+				}
+				addElem(doc, elProcess, "model", getStyleModel());
+				// Add te javascript
+				String script = "<script type=\"text/javascript\">\n"
+						+ "             Modeler.init('modeler', {mode: 'view', layerNavigation: false}, callbackHandler);\n"
+						+ "             var zoomFactor = 1.1;\n" + "             var panRate = 10;\n"
+						+ "             function callbackHandler() {\n" + "                 var strJSON = '" + data
+						+ "';\n" + "                 Modeler.loadProcess(strJSON);\n";
+				if (subProcess != null) {// For SubProcess
+					script += "             var obj = Modeler.getGraphElementByURI(null, \"" + subProcess.getURI()
+							+ "\");\n" + "             ToolKit.setLayer(obj.subLayer);\n";
+				}
+				script += "\n                 Modeler._svgSize = getDiagramSize();\n"
+						+ "                 fitToScreen();\n" + "             }\n"
+						+ "             function zoomin() {\n"
+						+ "                 var viewBox = document.getElementById(\"modeler\").getAttribute('viewBox');\n"
+						+ "                 var viewBoxValues = viewBox.split(' ');\n" + "\n"
+						+ "                 viewBoxValues[2] = parseFloat(viewBoxValues[2]);\n"
+						+ "                 viewBoxValues[3] = parseFloat(viewBoxValues[3]);\n" + "\n"
+						+ "                 viewBoxValues[2] /= zoomFactor;\n"
+						+ "                 viewBoxValues[3] /= zoomFactor;\n" + "\n"
+						+ "                 document.getElementById(\"modeler\").setAttribute('viewBox', viewBoxValues.join(' '));\n"
+						+ "             }\n" + "\n" + "             function zoomout() {\n"
+						+ "                 var viewBox = document.getElementById(\"modeler\").getAttribute('viewBox');\n"
+						+ "                 var viewBoxValues = viewBox.split(' ');\n" + "\n"
+						+ "                 viewBoxValues[2] = parseFloat(viewBoxValues[2]);\n"
+						+ "                 viewBoxValues[3] = parseFloat(viewBoxValues[3]);\n" + "\n"
+						+ "                 viewBoxValues[2] *= zoomFactor;\n"
+						+ "                 viewBoxValues[3] *= zoomFactor;\n" + "\n"
+						+ "                 document.getElementById(\"modeler\").setAttribute('viewBox', viewBoxValues.join(' '));\n"
+						+ "             }\n" + "\n" + "             function resetZoom() {\n"
+						+ "                 var el = document.getElementById(\"modeler\");\n"
+						+ "                 el.setAttribute('viewBox', '0 0 ' + $(\"#modeler\").parent().width() + ' ' + $(\"#modeler\").parent().height());\n"
+						+ "                 el.setAttribute('width', '1024');\n"
+						+ "                 el.setAttribute('height', '768');\n" + "             }\n" + "\n"
+						+ "             function handlePanning(code) {\n"
+						+ "                 var viewBox = document.getElementById(\"modeler\").getAttribute('viewBox');\n"
+						+ "                 var viewBoxValues = viewBox.split(' ');\n"
+						+ "                 viewBoxValues[0] = parseFloat(viewBoxValues[0]);\n"
+						+ "                 viewBoxValues[1] = parseFloat(viewBoxValues[1]);\n" + "\n"
+						+ "                 switch (code) {\n" + "                     case 'left':\n"
+						+ "                         viewBoxValues[0] += panRate;\n"
+						+ "                         break;\n" + "                     case 'right':\n"
+						+ "                         viewBoxValues[0] -= panRate;\n"
+						+ "                         break;\n" + "                     case 'up':\n"
+						+ "                         viewBoxValues[1] += panRate;\n"
+						+ "                         break;\n" + "                         case 'down':\n"
+						+ "                         viewBoxValues[1] -= panRate;\n"
+						+ "                         break;\n" + "                 }\n"
+						+ "                 document.getElementById(\"modeler\").setAttribute('viewBox', viewBoxValues.join(' '));\n"
+						+ "             }\n" + "\n" + "             function getDiagramSize() {\n"
+						+ "                 var cw = 0;\n" + "                 var ch = 0;\n"
+						+ "                 var fx = null;\n" + "                 var fy = null;\n"
+						+ "                 for (var i = 0; i < ToolKit.contents.length; i++) {\n"
+						+ "                     var obj = ToolKit.contents[i];\n"
+						+ "                     if (obj.typeOf && (obj.typeOf(\"GraphicalElement\") || obj.typeOf(\"Pool\"))) {\n"
+						+ "                         if (obj.layer === ToolKit.layer) {\n"
+						+ "                             if (obj.getX() > cw) {\n"
+						+ "                                 cw = obj.getX();\n"
+						+ "                                 fx = obj;\n" + "                             }\n" + "\n"
+						+ "                             if (obj.getY() > ch) {\n"
+						+ "                                 ch = obj.getY();\n"
+						+ "                                 fy = obj;\n" + "                             }\n"
+						+ "                         }\n" + "                     }\n" + "                 }\n"
+						+ "                 cw = cw + fx.getBBox().width;\n"
+						+ "                 ch = ch + fy.getBBox().height;\n" + "\n"
+						+ "                 var ret = {w: cw, h: ch};\n" + "                 return ret;\n"
+						+ "             }\n" + "\n" + "             function fitToScreen() {\n"
+						+ "                 resetZoom();\n"
+						+ "                 var ws = $(\"#modeler\").parent().width();\n"
+						+ "                 var hs = $(\"#modeler\").parent().height();\n"
+						+ "                 var wi = Modeler._svgSize.w;\n"
+						+ "                 var hi = Modeler._svgSize.h;\n" + "\n"
+						+ "                 if (wi > ws || hi > hs) {\n"
+						+ "                     var el = document.getElementById(\"modeler\");\n"
+						+ "                     el.setAttribute('viewBox', '0 0 ' + wi + ' ' + hi);\n"
+						+ "                     el.setAttribute('width', ws);\n"
+						+ "                     el.setAttribute('height', hs);\n" + "                 }\n"
+						+ "             }\n" + "     </script>";
+				addElem(doc, elProcess, "script", script);
 			}
 		}
 		return doc;
 	}
 
-	public void addProcessElements(org.w3c.dom.Document doc, Element elements, ArrayList arrayList, String type,
-			String subType, String title, SWBParamRequest paramRequest)
-			throws UnsupportedEncodingException, IOException {
+	public void addProcessElements(org.w3c.dom.Document doc, Element elements, ArrayList arrayList, String type, String subType, String title, SWBParamRequest paramRequest) throws IOException {
 		Element father = null;
 		String url = "";
 		String mode = paramRequest.getMode();
-		if (arrayList.size() > 0) {
+		if (!arrayList.isEmpty()) {
 			father = doc.createElement("father");
 			elements.appendChild(father);
 			father.setAttribute("type", type);
 			father.setAttribute("title", title);
 			father.setAttribute("id", type + "menu");
 			father.setAttribute("url", "#" + type + "menu");
-			father.setAttribute("size", arrayList.size() + "");
+			father.setAttribute("size", Integer.toString(arrayList.size()));
 			Element son = null;
-			Iterator<GraphicalElement> iterator = SWBComparator.sortByDisplayName(arrayList.iterator(),
-					paramRequest.getUser().getLanguage());
+			Iterator<GraphicalElement> iterator = SWBComparator.sortByDisplayName(arrayList.iterator(), paramRequest.getUser().getLanguage());
 			while (iterator.hasNext()) {
 				GraphicalElement ge = iterator.next();
 				son = doc.createElement("son");
@@ -1296,7 +1216,7 @@ public class DocumentationResource extends GenericAdmResource {
 				son.setAttribute("title", ge.getTitle());
 				url = "#" + ge.getSemanticObject().getSemanticClass().getName() + "" + ge.getId();
 				if (ge instanceof SubProcess) {
-					if (mode.equals("doExportDocument")) {
+					if (mode.equals(MODE_EXPORT)) {
 						url = removeAcent(ge.getTitle()) + ".html";
 					} else {
 						url = "?suri=" + URLEncoder.encode(((SubProcess) ge).getEncodedURI());
@@ -1304,7 +1224,7 @@ public class DocumentationResource extends GenericAdmResource {
 				}
 				son.setAttribute("id", ge.getSemanticObject().getSemanticClass().getName() + "" + ge.getId());
 				son.setAttribute("url", url);
-				addElem(doc, son, "documentation", ge.getDocumentation().getText());
+				addElem(doc, son, MODE_DOCUMENTATION, ge.getDocumentation().getText());
 			}
 		}
 	}

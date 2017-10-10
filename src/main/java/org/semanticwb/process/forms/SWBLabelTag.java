@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,58 +17,50 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.forms;
 
-import com.arthurdo.parser.HtmlStreamTokenizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.Resource;
 import org.semanticwb.model.User;
-import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticProperty;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.process.model.SWBProcessFormMgr;
 
+import com.arthurdo.parser.HtmlStreamTokenizer;
+
 /**
  *
- * @author jorge.jimenez
+ * @author Jorge Jiménez Sandoval {jorge.jimenez}
  */
 public class SWBLabelTag implements SWBFormLayer {
-
     private static Logger log = SWBUtils.getLogger(SWBLabelTag.class);
-    private HtmlStreamTokenizer tok = null;
-    private String htmlType = "dojo";
     HttpServletRequest request = null;
     SWBParamRequest paramRequest = null;
     SWBProcessFormMgr mgr = null;
     Resource base = null;
     User user = null;
     String stag="";
-    HashMap hmapClasses=null;
-    HashMap hMapProperties=null;
+    HashMap<String,ArrayList<SemanticProperty>> hmapClasses=null;
+    HashMap<String, String> hMapProperties=null;
     String sTagClassComplete = null;
     String sTagProp = null;
     String sformElement=null;
     String smode=null;
     String sTagVarName=null;
 
-
-
     public SWBLabelTag(HttpServletRequest request, SWBParamRequest paramRequest, HashMap<String,ArrayList<SemanticProperty>> hmapClasses, HashMap <String, String> hMapProperties, SWBProcessFormMgr mgr, HtmlStreamTokenizer tok, String htmlType) {
-        this.tok = tok;
         stag=tok.getRawString();
         this.request = request;
         this.paramRequest = paramRequest;
-        if(htmlType!=null) this.htmlType=htmlType;
-        //base = paramRequest.getResourceBase();
-        //user = paramRequest.getUser();
         this.mgr = mgr;
         this.hmapClasses=hmapClasses;
         this.hMapProperties=hMapProperties;
@@ -82,7 +74,7 @@ public class SWBLabelTag implements SWBFormLayer {
             if(sTagKey.equalsIgnoreCase("name")){
                 sTagClassComplete=(String)hMapProperties.get(sTagKey);
                 if(sTagClassComplete!=null){
-                    int pos=sTagClassComplete.indexOf(".");
+                    int pos=sTagClassComplete.indexOf('.');
                     if(pos>-1){
                         sTagVarName=sTagClassComplete.substring(0,pos);
                         sTagProp=sTagClassComplete.substring(pos+1);
@@ -103,11 +95,11 @@ public class SWBLabelTag implements SWBFormLayer {
                 while(itClasses.hasNext()){
                     String varName=itClasses.next();
                     if(sTagVarName.equalsIgnoreCase(varName)){
-                        Iterator <SemanticProperty> itClassProps=((ArrayList)hmapClasses.get(varName)).iterator();
+                        Iterator <SemanticProperty> itClassProps=((ArrayList<SemanticProperty>)hmapClasses.get(varName)).iterator();
                         while(itClassProps.hasNext()){
                             SemanticProperty semProp=itClassProps.next();
                             if(semProp.getName().endsWith(sTagProp)){
-                                renderElement=mgr.renderLabel(request, semProp, varName, mgr.MODE_VIEW);
+                                renderElement=mgr.renderLabel(request, semProp, varName, SWBProcessFormMgr.MODE_VIEW);
                             }
                         }
                     }

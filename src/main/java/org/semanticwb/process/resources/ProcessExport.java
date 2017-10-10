@@ -57,8 +57,7 @@ public class ProcessExport extends GenericResource {
 	private static final Logger LOG = SWBUtils.getLogger(ProcessExport.class);
 
 	@Override
-	public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException {
+	public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		String mode = paramRequest.getMode();
 		if (mode.equals(GET_FILE)) {
 			doGetFile(request, response, paramRequest);
@@ -68,14 +67,13 @@ public class ProcessExport extends GenericResource {
 	}
 
 	@Override
-	public void processAction(HttpServletRequest request, SWBActionResponse response)
-			throws SWBResourceException, IOException {
+	public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
 		String action = response.getAction();
 
 		if (action.equals(ACTION_EXPORT)) {
 			if (response.getWebPage().getWebSite() instanceof ProcessSite) {
 				ProcessSite site = (ProcessSite) response.getWebPage().getWebSite();
-				ArrayList<String> processIds = new ArrayList<String>();
+				ArrayList<String> processIds = new ArrayList<>();
 				Map<String, String[]> params = request.getParameterMap();
 
 				Iterator<String> keys = params.keySet().iterator();
@@ -93,13 +91,9 @@ public class ProcessExport extends GenericResource {
 			fup.getFiles(request, null);
 			byte[] bcont = fup.getFileData("ffile");
 
-			System.out.println(fup.getFileName("ffile"));
-
 			File file = new File(SWBPortal.getWorkPath() + getResourceBase().getWorkPath());
 			file.mkdirs();
-			OutputStream outs = new FileOutputStream(
-					SWBPortal.getWorkPath() + getResourceBase().getWorkPath() + "/ProcessPackage.zip");
-
+			OutputStream outs = new FileOutputStream(SWBPortal.getWorkPath() + getResourceBase().getWorkPath() + "/ProcessPackage.zip");
 			SWBUtils.IO.copyStream(new ByteArrayInputStream(bcont), outs);
 
 			String path = SWBPortal.getWorkPath() + getResourceBase().getWorkPath() + "/";
@@ -108,11 +102,7 @@ public class ProcessExport extends GenericResource {
 			if (zipFile.exists()) {
 				java.io.File extractTo = new File(path + "_tmp");
 				org.semanticwb.SWBUtils.IO.unzip(zipFile, extractTo);
-				// String pkgData =
-				// SWBUtils.IO.readFileFromZipAsString(zipFile.getAbsolutePath(),
-				// "PkgData.json");
-				String pkgData = SWBUtils.IO
-						.readInputStream(new FileInputStream(zipFile.getAbsolutePath() + "PkgData.json"));
+				String pkgData = SWBUtils.IO.readInputStream(new FileInputStream(zipFile.getAbsolutePath() + "PkgData.json"));
 				try {
 					JSONObject data = new JSONObject(pkgData);
 					importProcessesPackage(data, extractTo, (ProcessSite) response.getWebPage().getWebSite());
@@ -126,8 +116,7 @@ public class ProcessExport extends GenericResource {
 		}
 	}
 
-	public void doGetFile(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException {
+	public void doGetFile(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setHeader("Pragma", "no-cache");
 
@@ -147,8 +136,7 @@ public class ProcessExport extends GenericResource {
 	}
 
 	@Override
-	public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
-			throws SWBResourceException, IOException {
+	public void doView(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		PrintWriter out = response.getWriter();
 		WebSite model = paramRequest.getWebPage().getWebSite();
 		StringBuilder sb = new StringBuilder();
@@ -170,18 +158,18 @@ public class ProcessExport extends GenericResource {
 			while (groups.hasNext()) {
 				ProcessGroup group = groups.next();
 				Iterator<Process> processes = group.listProcesses();
-				ArrayList<Process> _processes = new ArrayList<Process>();
+				ArrayList<Process> retProcesses = new ArrayList<>();
 				while (processes.hasNext()) {
 					Process process = processes.next();
 					if (!process.isDeleted()) {
-						_processes.add(process);
+						retProcesses.add(process);
 						if (!hasProcess) {
 							hasProcess = true;
 						}
 					}
 				}
 
-				processes = SWBComparator.sortByDisplayName(_processes.iterator(), lang);
+				processes = SWBComparator.sortByDisplayName(retProcesses.iterator(), lang);
 				if (processes.hasNext()) {
 					sb.append("    <tr>");
 					sb.append("      <td align=\"left\" colspan=\"2\"><b>" + group.getDisplayTitle(lang) + "</b></td>");
@@ -240,61 +228,52 @@ public class ProcessExport extends GenericResource {
 			}
 
 			File zip = new File(basepath + "ProcessPackage.zip");
-			if (zip.exists()) {
-				if (zip.delete()) {
-					ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zip));
-					ZipEntry entry = new ZipEntry("PkgData.json");
-					zos.putNextEntry(entry);
-					// zos.write(data.toString(2).getBytes("utf-8"));
-					zos.write(data.toString(2).getBytes());
-					zos.closeEntry();
+			if (zip.exists() && zip.delete()) {
+				ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zip));
+				ZipEntry entry = new ZipEntry("PkgData.json");
+				zos.putNextEntry(entry);
+				zos.write(data.toString(2).getBytes());
+				zos.closeEntry();
 
-					// Copiar filesystem de las plantillas de archivos
-					JSONArray processTools = data.getJSONArray("tools");
-					if (processTools != null) {
-						for (int i = 0; i < processTools.length(); i++) {
-							JSONObject tool = processTools.getJSONObject(i);
-							String clsName = tool.getString("class");
-							if (clsName.equals("org.semanticwb.process.model.ProcessFileTemplate")) {
-								SemanticObject semObject = SemanticObject.createSemanticObject(tool.getString("uri"));
-								if (semObject != null) {
-									String objPath = SWBPortal.getWorkPath() + semObject.getWorkPath() + "/";
-									File directory2Zip = new File(objPath);
-									if (directory2Zip != null && directory2Zip.exists()) {
-										// System.out.println("dirPath: "+objPath+", basePath: "+sitePath);
-										org.semanticwb.SWBUtils.IO.zip(directory2Zip, new File(sitePath), zos);
-									}
+				// Copiar filesystem de las plantillas de archivos
+				JSONArray processTools = data.getJSONArray("tools");
+				if (processTools != null) {
+					for (int i = 0; i < processTools.length(); i++) {
+						JSONObject tool = processTools.getJSONObject(i);
+						String clsName = tool.getString("class");
+						if (clsName.equals("org.semanticwb.process.model.ProcessFileTemplate")) {
+							SemanticObject semObject = SemanticObject.createSemanticObject(tool.getString("uri"));
+							if (semObject != null) {
+								String objPath = SWBPortal.getWorkPath() + semObject.getWorkPath() + "/";
+								File directory2Zip = new File(objPath);
+								if (directory2Zip != null && directory2Zip.exists()) {
+									org.semanticwb.SWBUtils.IO.zip(directory2Zip, new File(sitePath), zos);
 								}
 							}
 						}
 					}
+				}
 
-					// Almacenar los filesystems de los objetos
-					processTools = data.getJSONArray("processes");
-					if (processTools != null) {
-						for (int i = 0; i < processTools.length(); i++) {
-							JSONObject process = processTools.getJSONObject(i);
-							JSONArray nodes = process.getJSONArray("nodes");
-							if (nodes != null) {
-								for (int j = 0; j < nodes.length(); j++) {
-									JSONObject node = nodes.getJSONObject(j);
-									if (!node.optString("resources", "").equals("")) {
-										JSONArray resources = node.getJSONArray("resources");
-										for (int k = 0; k < resources.length(); k++) {
-											JSONObject resource = resources.getJSONObject(k);
-											if (!resource.optString("uri", "").equals("")) {
-												SemanticObject semObject = SemanticObject
-														.createSemanticObject(resource.getString("uri"));
-												if (semObject != null) {
-													String objPath = SWBPortal.getWorkPath() + semObject.getWorkPath()
-															+ "/";
-													File directory2Zip = new File(objPath);
-													if (directory2Zip != null && directory2Zip.exists()) {
-														// System.out.println("dirPath: "+objPath+", basePath:
-														// "+sitePath);
-														org.semanticwb.SWBUtils.IO.zip(directory2Zip,
-																new File(sitePath), zos);
-													}
+				// Almacenar los filesystems de los objetos
+				processTools = data.getJSONArray("processes");
+				if (processTools != null) {
+					for (int i = 0; i < processTools.length(); i++) {
+						JSONObject process = processTools.getJSONObject(i);
+						JSONArray nodes = process.getJSONArray("nodes");
+						if (nodes != null) {
+							for (int j = 0; j < nodes.length(); j++) {
+								JSONObject node = nodes.getJSONObject(j);
+								if (!node.optString("resources", "").equals("")) {
+									JSONArray resources = node.getJSONArray("resources");
+									for (int k = 0; k < resources.length(); k++) {
+										JSONObject resource = resources.getJSONObject(k);
+										if (!resource.optString("uri", "").equals("")) {
+											SemanticObject semObject = SemanticObject.createSemanticObject(resource.getString("uri"));
+											if (semObject != null) {
+												String objPath = SWBPortal.getWorkPath() + semObject.getWorkPath() + "/";
+												File directory2Zip = new File(objPath);
+												if (directory2Zip != null && directory2Zip.exists()) {
+													org.semanticwb.SWBUtils.IO.zip(directory2Zip, new File(sitePath), zos);
 												}
 											}
 										}
@@ -303,8 +282,8 @@ public class ProcessExport extends GenericResource {
 							}
 						}
 					}
-					zos.close();
 				}
+				zos.close();
 			}
 		} catch (Exception ex) {
 			LOG.error(ex);
@@ -316,13 +295,11 @@ public class ProcessExport extends GenericResource {
 		JSONArray nodes = new JSONArray();
 		JSONArray data = new JSONArray();
 		JSONArray conns = new JSONArray();
-		HashMap<String, ConnectionObject> cobjs = new HashMap<String, ConnectionObject>();
-		// Model model = ModelFactory.createDefaultModel();
+		HashMap<String, ConnectionObject> cobjs = new HashMap<>();
 
 		Iterator<GraphicalElement> itChilds = process.listAllContaineds();
 		while (itChilds.hasNext()) {
 			GraphicalElement ge = itChilds.next();
-			// model.add(ge.getSemanticObject().getRDFResource().listProperties());
 			JSONObject child = getProcessElementJSON(ge);
 			if (ge instanceof ItemAware) {
 				ItemAware temp = (ItemAware) ge;
@@ -600,7 +577,6 @@ public class ProcessExport extends GenericResource {
 				Iterator<Resource> resources = temp.listResources();
 				while (resources.hasNext()) {
 					Resource resource = resources.next();
-					// System.out.println("Checando resource "+resource.getURI());
 					JSONObject res = getElementJSON(resource);
 
 					res.put("resTypeId", resource.getResourceType().getId());
@@ -818,7 +794,6 @@ public class ProcessExport extends GenericResource {
 
 		// Procesos de negocio
 		Iterator<String> keys = processIds.iterator();
-		// Iterator<Process> itProcesses = Process.ClassMgr.listProcesses(site);
 		while (keys.hasNext()) {
 			String key = keys.next();
 			Process process = Process.ClassMgr.getProcess(key, site);
@@ -840,7 +815,7 @@ public class ProcessExport extends GenericResource {
 
 	private void importProcessesPackage(JSONObject data, java.io.File targetDir, ProcessSite site) {
 		// Crear herramientas de procesos
-		HashMap<String, GenericObject> _elements = new HashMap<String, GenericObject>();
+		HashMap<String, GenericObject> pelements = new HashMap<>();
 		SemanticModel model = site.getSemanticObject().getModel();
 		GenericObject go = null;
 
@@ -854,28 +829,22 @@ public class ProcessExport extends GenericResource {
 					go = getGenericObject(suri, clsUri, model);
 
 					if (go != null) {
-						_elements.put(suri, go);
+						pelements.put(suri, go);
 						Descriptiveable desc = (Descriptiveable) go;
-						if (desc.getTitle() == null || (desc.getTitle() != null && !desc.getTitle()
-								.equals(tool.optString(Descriptiveable.swb_title.getPropId(), "")))) {
+						if (desc.getTitle() == null || (desc.getTitle() != null && !desc.getTitle().equals(tool.optString(Descriptiveable.swb_title.getPropId(), "")))) {
 							setBaseProperties(go, tool);
 							if (go instanceof ProcessRule) {
 								ProcessRule temp = (ProcessRule) go;
-								String prUri = tool.getJSONObject(ProcessRule.swp_processRuleGroup.getPropId())
-										.getString("uri");
-								ProcessRuleGroup ruleGroup = (ProcessRuleGroup) getGenericObject(prUri,
-										ProcessRuleGroup.sclass.getURI(), model);
-								setBaseProperties(ruleGroup,
-										tool.getJSONObject(ProcessRule.swp_processRuleGroup.getPropId()));
+								String prUri = tool.getJSONObject(ProcessRule.swp_processRuleGroup.getPropId()).getString("uri");
+								ProcessRuleGroup ruleGroup = (ProcessRuleGroup) getGenericObject(prUri, ProcessRuleGroup.sclass.getURI(), model);
+								setBaseProperties(ruleGroup, tool.getJSONObject(ProcessRule.swp_processRuleGroup.getPropId()));
 								temp.setProcessRuleGroup(ruleGroup);
 								temp.setRuleCondition(tool.optString(ProcessRule.swp_ruleCondition.getPropId(), ""));
 							}
 							if (go instanceof NotificationTemplate) {
 								NotificationTemplate temp = (NotificationTemplate) go;
-								temp.setSubject(tool.optString(
-										NotificationTemplate.swp_notificationTemplateSubject.getPropId(), ""));
-								temp.setBody(tool
-										.optString(NotificationTemplate.swp_notificationTemplateBody.getPropId(), ""));
+								temp.setSubject(tool.optString(NotificationTemplate.swp_notificationTemplateSubject.getPropId(), ""));
+								temp.setBody(tool.optString(NotificationTemplate.swp_notificationTemplateBody.getPropId(), ""));
 							}
 							if (go instanceof ProcessFileTemplate) {
 								ProcessFileTemplate temp = (ProcessFileTemplate) go;
@@ -893,25 +862,16 @@ public class ProcessExport extends GenericResource {
 								temp.setUrl(tool.optString(WebService.swp_wsUrl.getPropId(), ""));
 							}
 
-							int pos = suri.indexOf("#");
-							// System.out.println("suri: "+suri);
+							int pos = suri.indexOf('#');
 							String newSObjPath = go.getSemanticObject().getWorkPath();
 							if (pos > -1) {
 								int pos1 = suri.indexOf(":", pos);
 								if (pos1 > -1) {
 									String dirOldSObj = suri.substring(pos + 1, pos1);
 									String idOldSobj = suri.substring(pos1 + 1);
-									File fileOldSObjPath = new File(
-											targetDir.getAbsolutePath() + "/" + dirOldSObj + "/" + idOldSobj + "/");
-									// System.out.println("path:"+fileOldSObjPath.getAbsolutePath());
+									File fileOldSObjPath = new File(targetDir.getAbsolutePath() + "/" + dirOldSObj + "/" + idOldSobj + "/");
 									if (fileOldSObjPath.isDirectory() && fileOldSObjPath.exists()) {
-										boolean r = SWBUtils.IO.copyStructure(
-												targetDir.getAbsolutePath() + "/" + dirOldSObj + "/" + idOldSobj + "/",
-												SWBPortal.getWorkPath() + newSObjPath + "/");
-										// System.out.println(r+" Copiando estructura de "+targetDir.getAbsolutePath() +
-										// "/" + dirOldSObj + "/" + idOldSobj + "/ a "+SWBPortal.getWorkPath() +
-										// newSObjPath+"/");
-										// System.out.println(idOldSobj+"-->"+_elements.get(nodeUri).getId());
+										SWBUtils.IO.copyStructure(targetDir.getAbsolutePath() + "/" + dirOldSObj + "/" + idOldSobj + "/", SWBPortal.getWorkPath() + newSObjPath + "/");
 									}
 								}
 							}
@@ -928,12 +888,12 @@ public class ProcessExport extends GenericResource {
 					String suri = processJson.getString("uri");
 					SemanticObject sobj = SemanticObject.createSemanticObject(suri);
 					if (sobj == null) {
-						String id = suri.substring(suri.lastIndexOf(":") + 1, suri.length());
+						String id = suri.substring(suri.lastIndexOf(':') + 1, suri.length());
 						Role role = site.getUserRepository().createRole(id);
 						role.setTitle(processJson.optString(Descriptiveable.swb_title.getPropId(), ""));
-						_elements.put(suri, role);
+						pelements.put(suri, role);
 					} else {
-						_elements.put(suri, sobj.createGenericInstance());
+						pelements.put(suri, sobj.createGenericInstance());
 					}
 				}
 			}
@@ -948,7 +908,7 @@ public class ProcessExport extends GenericResource {
 					go = getGenericObject(suri, clsUri, model);
 
 					if (go != null) {
-						_elements.put(suri, go);
+						pelements.put(suri, go);
 
 						// Crear objetos de datos del proceso
 						JSONArray processObjs = processJson.getJSONArray("data");
@@ -958,7 +918,7 @@ public class ProcessExport extends GenericResource {
 							String doClsUri = processObjJson.getString("sclass");
 							GenericObject gdo = getGenericObject(doUri, doClsUri, model);
 							if (gdo != null)
-								_elements.put(doUri, gdo);
+								pelements.put(doUri, gdo);
 						}
 
 						// Crear nodos del proceso
@@ -969,7 +929,7 @@ public class ProcessExport extends GenericResource {
 							String doClsUri = processObjJson.getString("sclass");
 							GenericObject gdo = getGenericObject(doUri, doClsUri, model);
 							if (gdo != null)
-								_elements.put(doUri, gdo);
+								pelements.put(doUri, gdo);
 						}
 
 						// Crear conexiones del proceso
@@ -980,7 +940,7 @@ public class ProcessExport extends GenericResource {
 							String doClsUri = processObjJson.getString("sclass");
 							GenericObject gdo = getGenericObject(doUri, doClsUri, model);
 							if (gdo != null)
-								_elements.put(doUri, gdo);
+								pelements.put(doUri, gdo);
 						}
 					}
 				}
@@ -991,7 +951,7 @@ public class ProcessExport extends GenericResource {
 				for (int i = 0; i < elements.length(); i++) {
 					JSONObject processJson = elements.getJSONObject(i);
 					String suri = processJson.getString("uri");
-					go = _elements.get(suri);
+					go = pelements.get(suri);
 
 					if (go != null) {
 						Process process = (Process) go;
@@ -1001,15 +961,15 @@ public class ProcessExport extends GenericResource {
 						setBaseProperties(pGroup, processJson.getJSONObject(Process.swp_processGroup.getPropId()));
 						process.setProcessGroup(pGroup);
 
-						setProcessProperties(go, processJson, _elements, site);
+						setProcessProperties(go, processJson, pelements, site);
 
 						// Crear objetos de datos del proceso
 						JSONArray processObjs = processJson.getJSONArray("data");
 						for (int j = 0; j < processObjs.length(); j++) {
 							JSONObject processObjJson = processObjs.getJSONObject(j);
 							String doUri = processObjJson.getString("uri");
-							GenericObject gdo = _elements.get(doUri);
-							setProcessProperties(gdo, processObjJson, _elements, site);
+							GenericObject gdo = pelements.get(doUri);
+							setProcessProperties(gdo, processObjJson, pelements, site);
 						}
 
 						// Crear nodos del proceso
@@ -1017,33 +977,25 @@ public class ProcessExport extends GenericResource {
 						for (int j = 0; j < processObjs.length(); j++) {
 							JSONObject node = processObjs.getJSONObject(j);
 							String doUri = node.getString("uri");
-							GenericObject gdo = _elements.get(doUri);
-							setProcessProperties(gdo, node, _elements, site);
+							GenericObject gdo = pelements.get(doUri);
+							setProcessProperties(gdo, node, pelements, site);
 							if (gdo instanceof Resourceable) { // Copiar fileSystem
 								JSONArray resources = node.getJSONArray("resources");
 								for (int k = 0; k < resources.length(); k++) {
 									JSONObject resource = resources.getJSONObject(k);
 									String nodeUri = resource.getString("uri");
-									int pos = nodeUri.indexOf("#");
+									int pos = nodeUri.indexOf('#');
 
-									if (_elements.get(nodeUri) != null) {
-										String newSObjPath = _elements.get(nodeUri).getSemanticObject().getWorkPath();
+									if (pelements.get(nodeUri) != null) {
+										String newSObjPath = pelements.get(nodeUri).getSemanticObject().getWorkPath();
 										if (pos > -1) {
-											int pos1 = nodeUri.indexOf(":", pos);
+											int pos1 = nodeUri.indexOf(':', pos);
 											if (pos1 > -1) {
 												String dirOldSObj = nodeUri.substring(pos + 1, pos1);
 												String idOldSobj = nodeUri.substring(pos1 + 1);
-												File fileOldSObjPath = new File(targetDir.getAbsolutePath() + "/"
-														+ dirOldSObj + "/" + idOldSobj + "/");
+												File fileOldSObjPath = new File(targetDir.getAbsolutePath() + "/" + dirOldSObj + "/" + idOldSobj + "/");
 												if (fileOldSObjPath.isDirectory() && fileOldSObjPath.exists()) {
-													boolean r = SWBUtils.IO.copyStructure(
-															targetDir.getAbsolutePath() + "/" + dirOldSObj + "/"
-																	+ idOldSobj + "/",
-															SWBPortal.getWorkPath() + newSObjPath + "/");
-													// System.out.println(r+" Copiando estructura de
-													// "+targetDir.getAbsolutePath() + "/" + dirOldSObj + "/" +
-													// idOldSobj + "/ a "+SWBPortal.getWorkPath() + newSObjPath+"/");
-													// System.out.println(idOldSobj+"-->"+_elements.get(nodeUri).getId());
+													SWBUtils.IO.copyStructure(targetDir.getAbsolutePath() + "/" + dirOldSObj + "/" + idOldSobj + "/", SWBPortal.getWorkPath() + newSObjPath + "/");
 												}
 											}
 										}
@@ -1057,8 +1009,8 @@ public class ProcessExport extends GenericResource {
 						for (int j = 0; j < processObjs.length(); j++) {
 							JSONObject conn = processObjs.getJSONObject(j);
 							String doUri = conn.getString("uri");
-							GenericObject gdo = _elements.get(doUri);
-							setProcessProperties(gdo, conn, _elements, site);
+							GenericObject gdo = pelements.get(doUri);
+							setProcessProperties(gdo, conn, pelements, site);
 						}
 					}
 				}
@@ -1066,14 +1018,6 @@ public class ProcessExport extends GenericResource {
 		} catch (Exception ex) {
 			LOG.error(ex);
 		}
-
-		// Iterator props = tool.keys();
-		// while (props.hasNext()) {
-		// String k = (String) props.next();
-		// if (!k.equals("class") && !k.equals("uri")) {
-		// System.out.println(k + ":" + tool.get(k));
-		// }
-		// }
 	}
 
 	private void setProcessProperties(GenericObject go, JSONObject obj, HashMap<String, GenericObject> elements,
@@ -1102,28 +1046,19 @@ public class ProcessExport extends GenericResource {
 			}
 		}
 
-		if (go instanceof ResourceAssignmentable) {
-			if (!obj.optString(ResourceAssignmentable.swp_resourceAssignationRule.getPropId(), "").equals(""))
-				((ResourceAssignmentable) go).setResourceAssignationRule(
-						obj.getInt(ResourceAssignmentable.swp_resourceAssignationRule.getPropId()));
+		if (go instanceof ResourceAssignmentable && !obj.optString(ResourceAssignmentable.swp_resourceAssignationRule.getPropId(), "").equals("")) {
+			((ResourceAssignmentable) go).setResourceAssignationRule(obj.getInt(ResourceAssignmentable.swp_resourceAssignationRule.getPropId()));
 		}
 
-		if (go instanceof CallActivity) {
-			if (!obj.optString(CallActivity.swp_calledElement.getPropId(), "").equals("")) {
-				GenericObject called = elements.get(obj.getString("uri"));
-				if (called != null) {
-					((CallActivity) go).setCalledElement((Callable) called);
-				}
+		if (go instanceof CallActivity && !obj.optString(CallActivity.swp_calledElement.getPropId(), "").equals("")) {
+			GenericObject called = elements.get(obj.getString("uri"));
+			if (called != null) {
+				((CallActivity) go).setCalledElement((Callable) called);
 			}
 		}
 
 		if (go instanceof ActivityConfable) {
-			((ActivityConfable) go)
-					.setForCompensation(obj.getBoolean(ActivityConfable.swp_forCompensation.getPropId()));
-			// if (temp.getLoopCharacteristics() != null)
-			// ret.put(ActivityConfable.swp_loopCharacteristics.getPropId(),
-			// getElementJSON(temp.getLoopCharacteristics()));
-			// else ret.put(ActivityConfable.swp_loopCharacteristics.getPropId(), "");
+			((ActivityConfable) go).setForCompensation(obj.getBoolean(ActivityConfable.swp_forCompensation.getPropId()));
 		}
 
 		if (go instanceof ActionCodeable) {
@@ -1138,13 +1073,11 @@ public class ProcessExport extends GenericResource {
 				JSONObject mapping = mappings.getJSONObject(i);
 				String localUri = mapping.optString(ItemAwareMapping.swp_localItemAware.getPropId());
 				String remoteUri = mapping.optString(ItemAwareMapping.swp_remoteItemAware.getPropId());
-				if (!localUri.equals("") && !remoteUri.equals("")) {
-					if (elements.get(localUri) != null && elements.get(remoteUri) != null) {
-						ItemAwareMapping mp = ItemAwareMapping.ClassMgr.createItemAwareMapping(site);
-						mp.setLocalItemAware((ItemAware) elements.get(localUri));
-						mp.setRemoteItemAware((ItemAware) elements.get(remoteUri));
-						temp.addItemAwareMapping(mp);
-					}
+				if (!localUri.equals("") && !remoteUri.equals("") && elements.get(localUri) != null && elements.get(remoteUri) != null) {
+					ItemAwareMapping mp = ItemAwareMapping.ClassMgr.createItemAwareMapping(site);
+					mp.setLocalItemAware((ItemAware) elements.get(localUri));
+					mp.setRemoteItemAware((ItemAware) elements.get(remoteUri));
+					temp.addItemAwareMapping(mp);
 				}
 			}
 		}
@@ -1226,55 +1159,45 @@ public class ProcessExport extends GenericResource {
 			((ScriptTask) go).setScriptCode(obj.optString(ScriptTask.swp_scriptCode.getPropId(), ""));
 		}
 
-		if (go instanceof ServiceTask) {
-			if (!obj.optString(ServiceTask.swp_processService.getPropId(), "").equals("")) {
-				JSONObject ps = obj.getJSONObject(ServiceTask.swp_processService.getPropId());
-				String psUri = ps.getString("uri");
-				String psClsUri = ps.getString("sclass");
-				GenericObject gps = getGenericObject(psUri, psClsUri, site.getSemanticObject().getModel());
+		if (go instanceof ServiceTask && !obj.optString(ServiceTask.swp_processService.getPropId(), "").equals("")) {
+			JSONObject ps = obj.getJSONObject(ServiceTask.swp_processService.getPropId());
+			String psUri = ps.getString("uri");
+			String psClsUri = ps.getString("sclass");
+			GenericObject gps = getGenericObject(psUri, psClsUri, site.getSemanticObject().getModel());
 
-				if (gps != null) {
-					setBaseProperties(gps, ps);
-					if (gps instanceof TransformRepositoryFile) {
-						String ftemplate = ps
-								.getString(TransformRepositoryFile.swp_transformRepFileTemplate.getPropId());
-						GenericObject template = elements.get(ftemplate);
-						if (template != null) {
-							((TransformRepositoryFile) gps).setFileTemplate((ProcessFileTemplate) template);
-						}
-						((TransformRepositoryFile) gps).setNodeVarName(
-								ps.optString(TransformRepositoryFile.swp_transformRepNodeVarName.getPropId(), ""));
-					} else if (gps instanceof SendMail) {
-						((SendMail) gps).setContent(ps.optString(SendMail.swp_sendMailContent.getPropId(), ""));
-						((SendMail) gps).setFrom(ps.optString(SendMail.swp_sendMailFrom.getPropId(), ""));
-						((SendMail) gps).setSubject(ps.optString(SendMail.swp_sendMailSubject.getPropId(), ""));
-						((SendMail) gps).setTo(ps.optString(SendMail.swp_sendMailTo.getPropId(), ""));
-					} else if (gps instanceof SparQLQuery) {
-						((SparQLQuery) gps).setCode(ps.optString(SparQLQuery.swp_sparQLCode.getPropId()));
-						((SparQLQuery) gps).setQuery(ps.optString(SparQLQuery.swp_sparQLQuery.getPropId()));
-					} else if (gps instanceof SQLQuery) {
-						if (!ps.optString(SQLQuery.swp_dbConnection.getPropId(), "").equals("")) {
-							GenericObject dbconn = elements.get(ps.getString(SQLQuery.swp_dbConnection.getPropId()));
-							if (dbconn != null)
-								((SQLQuery) gps).setDbConnection((DBConnection) dbconn);
-						}
-					} else if (gps instanceof StoreRepositoryFile) {
-						((StoreRepositoryFile) gps).setNodeVarName(
-								ps.optString(StoreRepositoryFile.swp_storeRepNodeVarName.getPropId(), ""));
-					} /*
-						 * else if (gps instanceof WebServiceInvoker) {
-						 * 
-						 * }
-						 */
-					((ServiceTask) go).setProcessService((ProcessService) gps);
+			if (gps != null) {
+				setBaseProperties(gps, ps);
+				if (gps instanceof TransformRepositoryFile) {
+					String ftemplate = ps
+							.getString(TransformRepositoryFile.swp_transformRepFileTemplate.getPropId());
+					GenericObject template = elements.get(ftemplate);
+					if (template != null) {
+						((TransformRepositoryFile) gps).setFileTemplate((ProcessFileTemplate) template);
+					}
+					((TransformRepositoryFile) gps).setNodeVarName(
+							ps.optString(TransformRepositoryFile.swp_transformRepNodeVarName.getPropId(), ""));
+				} else if (gps instanceof SendMail) {
+					((SendMail) gps).setContent(ps.optString(SendMail.swp_sendMailContent.getPropId(), ""));
+					((SendMail) gps).setFrom(ps.optString(SendMail.swp_sendMailFrom.getPropId(), ""));
+					((SendMail) gps).setSubject(ps.optString(SendMail.swp_sendMailSubject.getPropId(), ""));
+					((SendMail) gps).setTo(ps.optString(SendMail.swp_sendMailTo.getPropId(), ""));
+				} else if (gps instanceof SparQLQuery) {
+					((SparQLQuery) gps).setCode(ps.optString(SparQLQuery.swp_sparQLCode.getPropId()));
+					((SparQLQuery) gps).setQuery(ps.optString(SparQLQuery.swp_sparQLQuery.getPropId()));
+				} else if (gps instanceof SQLQuery) {
+					if (!ps.optString(SQLQuery.swp_dbConnection.getPropId(), "").equals("")) {
+						GenericObject dbconn = elements.get(ps.getString(SQLQuery.swp_dbConnection.getPropId()));
+						if (dbconn != null)
+							((SQLQuery) gps).setDbConnection((DBConnection) dbconn);
+					}
+				} else if (gps instanceof StoreRepositoryFile) {
+					((StoreRepositoryFile) gps).setNodeVarName(
+							ps.optString(StoreRepositoryFile.swp_storeRepNodeVarName.getPropId(), ""));
 				}
+				
+				((ServiceTask) go).setProcessService((ProcessService) gps);
 			}
 		}
-		// if (((ServiceTask)ge).getProcessService() != null)
-		// ret.put(ServiceTask.swp_processService.getPropId(),
-		// getElementJSON(((ServiceTask)ge).getProcessService()));
-		// else ret.put(ServiceTask.swp_processService.getPropId(), "");
-		// }
 
 		if (go instanceof UserTask) {
 			UserTask temp = (UserTask) go;
@@ -1293,33 +1216,10 @@ public class ProcessExport extends GenericResource {
 		if (go instanceof CatchEvent) {
 			((CatchEvent) go).setInterruptor(obj.getBoolean(CatchEvent.swp_interruptor.getPropId()));
 		}
-		//
-		// if (ge instanceof MultipleIntermediateThrowEvent) {
-		// MultipleIntermediateThrowEvent temp = (MultipleIntermediateThrowEvent)ge;
-		// JSONArray events = new JSONArray();
-		//
-		// Iterator<IntermediateThrowEvent> itm = temp.listThrowEventses();
-		// while (itm.hasNext()) {
-		// IntermediateThrowEvent event = itm.next();
-		// events.put(event.getURI());
-		// }
-		//
-		// ret.put(MultipleIntermediateThrowEvent.swp_hasThrowEvents.getPropId(),
-		// events);
-		// }
-		//
-		// if (ge instanceof Gateway) {
-		// ret.put(Gateway.swp_gatewayMode.getPropId(), ((Gateway)ge).getGatewayMode());
-		// if (ge instanceof ComplexGateway) {
-		// ret.put(ComplexGateway.swp_startTokens.getPropId(),
-		// ((ComplexGateway)ge).getStartTokens());
-		// }
-		// }
-		//
+		
 		if (go instanceof DataStore) {
 			((DataStore) go).setDataObjectId(obj.optString(DataStore.swp_dataObjectId.getPropId(), ""));
-			((DataStore) go)
-					.setInitializationCode(obj.optString(DataStore.swp_dataObjectInitializationCode.getPropId(), ""));
+			((DataStore) go).setInitializationCode(obj.optString(DataStore.swp_dataObjectInitializationCode.getPropId(), ""));
 		}
 
 		if (go instanceof Resourceable) {
@@ -1355,16 +1255,14 @@ public class ProcessExport extends GenericResource {
 				SWBResource swbres = SWBPortal.getResourceMgr().getResource(res);
 				if (swbres instanceof Versionable) {
 					Versionable ver = (Versionable) swbres;
-					if (ver.getActualVersion() == null) {
-						if (!resource.optString(Versionable.swb_actualVersion.getPropId(), "").equals("")) {
-							JSONObject versionInfo = resource.getJSONObject(Versionable.swb_actualVersion.getPropId());
-							VersionInfo vi = swbres.getResourceBase().getWebSite().createVersionInfo();
-							vi.setVersionFile(versionInfo.getString(VersionInfo.swb_versionFile.getPropId()));
-							vi.setVersionNumber(1);
-							vi.setVersionComment(versionInfo.getString(VersionInfo.swb_versionComment.getPropId()));
-							ver.setActualVersion(vi);
-							ver.setLastVersion(vi);
-						}
+					if (ver.getActualVersion() == null && !resource.optString(Versionable.swb_actualVersion.getPropId(), "").equals("")) {
+						JSONObject versionInfo = resource.getJSONObject(Versionable.swb_actualVersion.getPropId());
+						VersionInfo vi = swbres.getResourceBase().getWebSite().createVersionInfo();
+						vi.setVersionFile(versionInfo.getString(VersionInfo.swb_versionFile.getPropId()));
+						vi.setVersionNumber(1);
+						vi.setVersionComment(versionInfo.getString(VersionInfo.swb_versionComment.getPropId()));
+						ver.setActualVersion(vi);
+						ver.setLastVersion(vi);
 					}
 				}
 
@@ -1390,33 +1288,6 @@ public class ProcessExport extends GenericResource {
 					process.setDelayNotificationTemplate((NotificationTemplate) template);
 				}
 			}
-			// if (!processJson.optString(Process.swp_administrationRole.getPropId(),
-			// "").equals("")) {
-			// SemanticObject so =
-			// SemanticObject.createSemanticObject(processJson.getString(Process.swp_administrationRole.getPropId()));
-			// if (so != null) {
-			// Role role = (Role)so.createGenericInstance();
-			// process.setAdministrationRole(role);
-			// }
-			// }
-			// if (!processJson.optString(Process.swp_notificationRole.getPropId(),
-			// "").equals("")) {
-			// SemanticObject so =
-			// SemanticObject.createSemanticObject(processJson.getString(Process.swp_notificationRole.getPropId()));
-			// if (so != null) {
-			// Role role = (Role)so.createGenericInstance();
-			// process.setNotificationRole(role);
-			// }
-			// }
-			// if (!processJson.optString(Process.swp_parentWebPage.getPropId(),
-			// "").equals("")) {
-			// SemanticObject so =
-			// SemanticObject.createSemanticObject(processJson.getString(Process.swp_parentWebPage.getPropId()));
-			// if (so != null) {
-			// WebPage wp = (WebPage)so.createGenericInstance();
-			// process.setParentWebPage(wp);
-			// }
-			// }
 		}
 
 		if (go instanceof ItemAware) {
@@ -1455,23 +1326,18 @@ public class ProcessExport extends GenericResource {
 
 			if (go instanceof Activeable)
 				((Activeable) go).setActive(obj.getBoolean(Activeable.swb_active.getPropId()));
-			if (go instanceof XMLable) {
-				if (!obj.optString(XMLable.swb_xml.getPropId(), "").equals("")) {
-					((XMLable) go).setXml(obj.optString(XMLable.swb_xml.getPropId(), ""));
-				}
+			
+			if (go instanceof XMLable && !obj.optString(XMLable.swb_xml.getPropId(), "").equals("")) {
+				((XMLable) go).setXml(obj.optString(XMLable.swb_xml.getPropId(), ""));
 			}
-			if (go instanceof Expirable) {
-				if (!obj.optString(Expirable.swb_expiration.getPropId(), "").equals("")) {
-					((Expirable) go).setExpiration(
-							SWBUtils.TEXT.iso8601DateParse(obj.getString(Expirable.swb_expiration.getPropId())));
-				}
+			if (go instanceof Expirable && !obj.optString(Expirable.swb_expiration.getPropId(), "").equals("")) {
+				((Expirable) go).setExpiration(SWBUtils.TEXT.iso8601DateParse(obj.getString(Expirable.swb_expiration.getPropId())));
 			}
 			if (go instanceof Callable)
 				((Callable) go).setCallable(obj.getBoolean(Callable.swp_callable.getPropId()));
-			if (go instanceof Sortable) {
-				if (obj.optInt(Sortable.swb_index.getPropId(), -1) != -1) {
-					((Sortable) go).setIndex(obj.getInt(Sortable.swb_index.getPropId()));
-				}
+			
+			if (go instanceof Sortable && obj.optInt(Sortable.swb_index.getPropId(), -1) != -1) {
+				((Sortable) go).setIndex(obj.getInt(Sortable.swb_index.getPropId()));
 			}
 
 			if (go instanceof StoreRepositoryNodeable) {
@@ -1491,7 +1357,7 @@ public class ProcessExport extends GenericResource {
 	private GenericObject getGenericObject(String suri, String clsUri, SemanticModel model) {
 		GenericObject go = null;
 		try {
-			String id = suri.substring(suri.lastIndexOf(":") + 1, suri.length());
+			String id = suri.substring(suri.lastIndexOf(':') + 1, suri.length());
 			SemanticClass scls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(clsUri);
 			SemanticObject so = model.getSemanticObject(model.getObjectUri(id, scls));
 

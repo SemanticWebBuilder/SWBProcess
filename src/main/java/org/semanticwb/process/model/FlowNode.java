@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -18,14 +18,14 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ *  http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.model;
 
-import bsh.Interpreter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBClass;
@@ -35,12 +35,23 @@ import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticProperty;
 
+import bsh.Interpreter;
 
+/**
+ * Clase que encapsula las propiedades y comportamiento de un nodo de flujo en un modelo de procesos.
+ * @author Javier Solís
+ * @author Hasdai Pacheco
+ *
+ */
 public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase 
 {    
-    private static Logger log=SWBUtils.getLogger(SWBPClassMgr.class);
+    private static final Logger log=SWBUtils.getLogger(FlowNode.class);
     
-    public FlowNode(org.semanticwb.platform.SemanticObject base)
+    /**
+     * Constructor.
+     * @param base
+     */
+    public FlowNode(SemanticObject base)
     {
         super(base);
     }
@@ -67,8 +78,6 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
         inst.setFlowNodeType(this);
         inst.setStatus(Instance.STATUS_INIT);
         inst.setContainerInstance(pinst);
-        
-        //System.out.println("createInstance:"+pinst+" "+inst);
 
         //Crea las instancias de los item aware de entrada  que a su vez no tengan entradas
         initItemAwares(inst);
@@ -103,9 +112,8 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
                         ref.setItemAware(item);
                         ref.setItemAwareTemporal(true);
                         SWBModel model=this.getProcessSite().getProcessDataInstanceModel();
-                        String id=id=String.valueOf(model.getSemanticModel().getCounter(scls));
+                        String id=String.valueOf(model.getSemanticModel().getCounter(scls));
                         SemanticObject ins=model.getSemanticModel().createSemanticObjectById(id, scls);
-                        //System.out.println("item add2:"+ref+" "+inst);
                         ref.setProcessObject((SWBClass)ins.createGenericInstance());
                         inst.addItemAwareReference(ref);
                     }
@@ -125,13 +133,9 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
         while (it.hasNext())
         {
             ItemAware item = it.next();
-            
-            //System.out.println("item:"+item+" "+inst);
-
             if(!item.listInputConnectionObjects().hasNext())
             {
                 SemanticClass scls=item.getItemSemanticClass();
-                SemanticProperty sprop=null;
                 SWBModel model=this.getProcessSite();
                 String id=null;
                 String code=null;
@@ -154,16 +158,12 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
                         Object ret=null;
                         try
                         {
-                            //long ini=System.currentTimeMillis();
                             Interpreter i = SWBPClassMgr.getInterpreter();
                             ret=i.eval(code);
-                            //System.out.println("ret:"+ret);
-                            //System.out.println("time:"+ (System.currentTimeMillis()-ini ));
                         }catch(Exception e)
                         {
                             log.error(e);
                         }
-                        //String action=source.getAction();
                         if(ret!=null && ret instanceof SemanticObject && ((SemanticObject)ret).instanceOf(scls))
                         {
                             ins=((SemanticObject)ret);
@@ -197,11 +197,9 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
                     ref.setItemAware(item);
                     if(ins!=null)
                     {
-                        //System.out.println("item add1:"+ref+" "+inst);
                         ref.setProcessObject((SWBClass)ins.createGenericInstance());
                     }
                     inst.addItemAwareReference(ref);
-                    //System.out.println("addItemAwareReference:"+ref);
                 }
             }else //Reutiliza los data objects
             {
@@ -226,7 +224,6 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
      */
     public void nextObject(FlowNodeInstance instance, User user)
     {
-        //System.out.println("nextObject:"+getId()+" "+getFlowNodeType().getClass().getName()+" "+getFlowNodeType().getTitle());
         DefaultFlow def=null;
         boolean execute=false;
         Iterator<ConnectionObject> it=listOutputConnectionObjects();
@@ -276,7 +273,6 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
      */
     public List<ItemAware> listRelatedItemAware()
     {
-        //System.out.println("listRelatedItemAwareClasses:"+this);
         ArrayList<ItemAware> arr=new ArrayList();
         if(this instanceof SubProcess)
         {
@@ -319,7 +315,6 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
      */
     public List<ItemAware> listHerarquicalRelatedItemAware()
     {
-        //System.out.println("getHerarquicalRelatedItemAwareClasses:"+this);
         ArrayList<ItemAware> arr=new ArrayList(listRelatedItemAware());
         arr.addAll(getContainer().listHerarquicalRelatedItemAware());
         return arr;
@@ -333,7 +328,6 @@ public class FlowNode extends org.semanticwb.process.model.base.FlowNodeBase
      */
     public List<ItemAware> listHerarquicalRelatedItemAwarePlusNullOutputs()
     {
-        //System.out.println("getHerarquicalRelatedItemAwareClasses:"+this);
         ArrayList<ItemAware> arr=new ArrayList(listRelatedItemAware());
         arr.addAll(getContainer().listHerarquicalRelatedItemAware());
 
