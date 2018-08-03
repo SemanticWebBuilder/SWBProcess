@@ -1,121 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.semanticwb</groupId>
-  <artifactId>SWBProcess</artifactId>
-  <version>5.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.semanticwb</groupId>
+    <artifactId>SWBProcessModel</artifactId>
+    <version>5.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-    <name>SWBProcess</name>
+    <name>SWBProcessModel</name>
     <description>SemanticWebBuilder Process model components based on BPMN 2.0 standard specification</description>
     <url>http://semanticwebbuilder.org.mx/BMV/Ingles</url>
-    
+
     <organization>
-      <name>INFOTEC - Centro de Investigacion e Innovacion en Tecnologias de la Informacion y Comunicacion</name>
-      <url>https://www.infotec.mx/</url>
+        <name>INFOTEC - Centro de Investigacion e Innovacion en Tecnologias de la Informacion y Comunicacion</name>
+        <url>https://www.infotec.mx/</url>
     </organization>
-    
-    <scm>
-      <url>scm:git:https://github.com/SemanticWebBuilder/SWBProcess</url>
-    </scm>
-  
-  <profiles>
-    <profile>
-      <id>Default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <resources>
-          <resource>
-            <directory>src/main/java</directory>
-            <includes>
-              <include>**/*.owl</include>
-              <include>**/*.properties</include>
-              <include>**/*.xml</include>
-              <include>**/*.xslt</include>
-            </includes>
-          </resource>
-        </resources>
-      </build>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.xmlgraphics</groupId>
-          <artifactId>batik-codec</artifactId>
-          <version>1.9</version>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.xmlgraphics</groupId>
-          <artifactId>batik-transcoder</artifactId>
-          <version>1.9</version>
-        </dependency>
-        <dependency>
-          <groupId>fr.opensagres.xdocreport</groupId>
-          <artifactId>fr.opensagres.xdocreport.core</artifactId>
-          <version>1.0.6</version>
-        </dependency>
-        <dependency>
-          <groupId>fr.opensagres.xdocreport</groupId>
-          <artifactId>fr.opensagres.xdocreport.document</artifactId>
-          <version>1.0.6</version>
-        </dependency>
-        <dependency>
-          <groupId>org.beanshell</groupId>
-          <artifactId>bsh-core</artifactId>
-          <version>2.0b4</version>
-        </dependency>
-        <dependency>
-          <groupId>net.sf.jxls</groupId>
-          <artifactId>jxls-core</artifactId>
-          <version>1.0.6</version>
-        </dependency>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>SWBBase</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>SWBPlatform</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>SWBModel</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>SWBPortal</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>SWBXMLRPCServer</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>SWBXMLRPCClient</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>SWBWebServices</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>javax</groupId>
-          <artifactId>javaee-web-api</artifactId>
-          <version>7.0</version>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-      <properties>
+
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-      </properties>
-    </profile>
-  </profiles>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>Default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/java</directory>
+                        <includes>
+                            <include>**/*.owl</include>
+                            <include>**/*.properties</include>
+                            <include>**/*.xml</include>
+                            <include>**/*.xslt</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-codec</artifactId>
+                    <version>1.9</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-transcoder</artifactId>
+                    <version>1.9</version>
+                </dependency>
+                <dependency>
+                    <groupId>fr.opensagres.xdocreport</groupId>
+                    <artifactId>fr.opensagres.xdocreport.core</artifactId>
+                    <version>1.0.6</version>
+                </dependency>
+                <dependency>
+                    <groupId>fr.opensagres.xdocreport</groupId>
+                    <artifactId>fr.opensagres.xdocreport.document</artifactId>
+                    <version>1.0.6</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.beanshell</groupId>
+                    <artifactId>bsh-core</artifactId>
+                    <version>2.0b4</version>
+                </dependency>
+                <dependency>
+                    <groupId>net.sf.jxls</groupId>
+                    <artifactId>jxls-core</artifactId>
+                    <version>1.0.6</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.semanticwb</groupId>
+                    <artifactId>SWBBase</artifactId>
+                    <version>5.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.semanticwb</groupId>
+                    <artifactId>SWBPlatform</artifactId>
+                    <version>5.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.semanticwb</groupId>
+                    <artifactId>SWBModel</artifactId>
+                    <version>5.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.semanticwb</groupId>
+                    <artifactId>SWBPortal</artifactId>
+                    <version>5.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.semanticwb</groupId>
+                    <artifactId>SWBXMLRPCServer</artifactId>
+                    <version>5.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.github.SemanticWebBuilder</groupId>
+                    <artifactId>SWBXMLRPCClient</artifactId>
+                    <version>master-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.github.SemanticWebBuilder</groupId>
+                    <artifactId>SWBWebServices</artifactId>
+                    <version>master-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>javax</groupId>
+                    <artifactId>javaee-web-api</artifactId>
+                    <version>7.0</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
