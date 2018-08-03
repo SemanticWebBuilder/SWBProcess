@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<admresource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xslfile>admresource.xslt</xslfile>
+    <form name="frmAdmRes" action="true" method="post" enctype="multipart/form-data" jsframework="dojo" >
+        <admdbconnmgr defconn="true"/>
+        <fieldset legend="General">
+            <input type="TEXT" name="labelRelations" label="Etiqueta elementos relacionados(default Relacionados):"/>
+            <input type="CHECKBOX" name="allowEditText" label="Habilitar edición de texto avanzada" value="true"/>
+        </fieldset>
+        <fieldset legend="Opciones de exportación a MSWord">
+            <input type="CHECKBOX" name="allowWord" label="Habilitar descarga en MSWord" value="true"/>
+            <input type="CHECKBOX" name="includeFirstPage" label="Incluir portada" value="true"/>
+            <input type="CHECKBOX" name="includeHeaderFooter" label="Incluir encabezado y pié" value="true"/>
+            <input type="CHECKBOX" name="addPageBreaks" label="Salto de página entre secciones" value="true"/>
+            <input type="CHECKBOX" name="activityAsTable" label="Mostrar actividades como tabla" value="true"/>
+            <input type="file" name="template" showfile="true" filetype="docx" isshowfiletype="true" isremovefile="true" removemsg="Eliminar plantilla" label="Plantilla base"/>
+        </fieldset>
+        <fieldset>
+            <input type="submit" name="btnSave" id="btnSave" value="Guardar" />
+            <input type="reset"  name="btnReset" id="btnReset" value="Restablecer" />
+        </fieldset>
+    </form>
+</admresource>

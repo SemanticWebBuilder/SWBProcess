@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<admresource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xslfile>admresource.xslt</xslfile>
+    <form name="frmAdmRes" action="true" method="post" enctype="multipart/form-data" jsframework="dojo" >
+        <admdbconnmgr defconn="true"/>
+        <fieldset legend="General">
+            <input type="TEXT" name="templatePage" label="ID de la página de administración de plantillas:"/>
+            <input type="TEXT" name="contentPage" label="ID de la página de captura de documentación:"/>
+            <input type="TEXT" name="configuration" label="ID de la página de configuración:"/>
+            <input type="TEXT" name="docRole" label="ID del rol de documentador:"/>
+            <input type="TEXT" name="itemsPerPage" label="Elementos a mostrar por página:"/>
+            
+        </fieldset>
+        <fieldset legend="Vista documentación">
+            <input type="TEXT" name="colorForTask" label="Color para tarea seleccionada (default #00cc00):"/>
+            <input type="TEXT" name="timeForColor" label="Tiempo para desvanecer color (default 3 seg):"/>
+        </fieldset>
+        <fieldset>
+            <input type="submit" name="btnSave" id="btnSave" value="Guardar" />
+            <input type="reset"  name="btnReset" id="btnReset" value="Restablecer" />
+        </fieldset>
+    </form>
+</admresource>
