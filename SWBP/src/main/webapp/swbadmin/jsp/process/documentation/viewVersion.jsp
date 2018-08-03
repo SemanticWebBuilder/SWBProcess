@@ -3,20 +3,15 @@
     Created on : 13/12/2013, 04:24:31 PM
     Author     : carlos.alvarez
 --%>
-
-<%@page import="org.semanticwb.process.utils.SWPUtils"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.text.DateFormat"%>
-<%@page import="java.util.Locale"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.DocumentTemplate"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.TemplateContainer"%>
+<%@page import="org.semanticwb.process.utils.SWPUtils"%>
+<%@page import="java.util.Iterator"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 
@@ -30,7 +25,7 @@
         %>
         <div class="row no-margin swbp-button-ribbon text-right">
             <a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_EDIT).setParameter("uritc", tc.getURI()) %>" class="btn btn-swbp-action" >Volver a la plantilla</a>
-            <a href="<%= admVersion.setParameter("uritc", tc.getURI())%>" class="btn btn-swbp-action" data-toggle="modal" data-target="#modalDialog">Agregar versión</a>
+            <a href="<%= admVersion.setParameter("uritc", tc.getURI())%>" class="btn btn-swbp-action" data-toggle="modal" data-target="#modalDialog">Agregar versiï¿½n</a>
         </div>
         <hr>
         <div class="panel panel-default swbp-panel-head">
@@ -56,13 +51,13 @@
                         <a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_EDIT).setParameter("uridt",dt.getURI()).setParameter("uritc", tc.getURI()) %>" class="btn btn-default col-xs-3 fa fa-pencil"></a>
                         <%
                         if (!actual) {
-                            %><a href="<%= urlAction.setParameter("uridt", dt.getURI())%>" class="btn btn-default col-xs-3 fa fa-retweet" onclick="if (!confirm('¿Desea hacer versión <%= dt.getVersionValue() %> la versión actual?')) return false;"></a><%
+                            %><a href="<%= urlAction.setParameter("uridt", dt.getURI())%>" class="btn btn-default col-xs-3 fa fa-retweet" onclick="if (!confirm('ï¿½Desea hacer versiï¿½n <%= dt.getVersionValue() %> la versiï¿½n actual?')) return false;"></a><%
                         } else {
                             %><a href="#" class="btn btn-default col-xs-3 fa fa-check-square-o disabled active"></a><%
                         }
                         %>
                         <a href="<%= admVersion.setParameter("uridt", dt.getURI())%>" class="btn btn-default col-xs-3 fa fa-info-circle" data-toggle="modal" data-target="#modalDialog"></a>
-                        <a href="<%= !actual ? urlActionRemove.setParameter("uridt", dt.getURI()) : "#" %>" class="btn btn-default col-xs-3 fa fa-trash-o <%= actual ? "disabled" : "" %>" <% if (!actual) {%>onclick="if (!confirm('¿Seguro desea eliminar versión <%= dt.getVersionValue() %>?')) return false;" <%}%>></a>
+                        <a href="<%= !actual ? urlActionRemove.setParameter("uridt", dt.getURI()) : "#" %>" class="btn btn-default col-xs-3 fa fa-trash-o <%= actual ? "disabled" : "" %>" <% if (!actual) {%>onclick="if (!confirm('ï¿½Seguro desea eliminar versiï¿½n <%= dt.getVersionValue() %>?')) return false;" <%}%>></a>
                     </div>
                 </div> 
                 <%

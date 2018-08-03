@@ -4,9 +4,9 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.process.documentation.resources.SWPConfigurationResource"%>
 <%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@ page import="org.semanticwb.process.resources.documentation.SWPConfigurationResource" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPConfigurationResource.PARAM_REQUEST);

@@ -3,23 +3,20 @@
     Created on : 11/03/2013, 05:23:28 PM
     Author     : carlos.alvarez
 --%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.process.resources.reports.ColumnReport"%>
-<%@page import="org.semanticwb.process.resources.reports.Report"%>
-<%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="java.util.HashMap"%>
 <%@page import="org.semanticwb.model.SWBComparator"%>
+<%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.platform.SemanticObject"%>
+<%@page import="org.semanticwb.platform.SemanticProperty"%>
+<%@page import="org.semanticwb.portal.SWBFormMgr"%>
+<%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.model.ItemAware"%>
 <%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.platform.SemanticProperty"%>
-<%@page import="org.semanticwb.portal.SWBFormButton"%>
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
+<%@page import="org.semanticwb.process.resources.reports.ColumnReport"%>
+<%@page import="org.semanticwb.process.resources.reports.Report"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<!--%@page contentType="text/html"%-->
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     SWBResourceURL urlAction = paramRequest.getActionUrl();
@@ -43,7 +40,7 @@
     
     ArrayList<String> conf = new ArrayList<>();
 
-    Iterator<ColumnReport> cols = obj.listColumnReports();//ColumnReport.ClassMgr.listColumnReportByReportName(obj);
+    Iterator<ColumnReport> cols = obj.listColumnReports();
     while (cols.hasNext()) {
         ColumnReport col = cols.next();
         conf.add(col.getNameProperty());
@@ -136,7 +133,7 @@
         if (!conf.isEmpty()) {
             %>
             <div class="panel panel-default swbp-panel-head no-margin">
-                <div class="panel-heading text-center">Configuración de columnas</div>
+                <div class="panel-heading text-center">Configuraciï¿½n de columnas</div>
                 <form method="post" action="<%=urlAction.setAction("updateColumn")%>" class="form-horizontal swbp-form">
                     <input type="hidden" name="idReport" value="<%= obj.getId() %>"/>
                     <div class="panel-body swbp-panel-body-card">

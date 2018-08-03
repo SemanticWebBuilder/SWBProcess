@@ -4,18 +4,12 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.process.documentation.model.Activity"%>
-<%@page import="java.util.Date"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSectionInstance"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.model.WebSite"%>
+<%@page import="org.semanticwb.model.WebPage"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.SectionElement"%>
+<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     String urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";

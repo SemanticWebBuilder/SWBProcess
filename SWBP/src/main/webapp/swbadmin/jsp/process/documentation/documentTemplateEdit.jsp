@@ -3,20 +3,18 @@
     Created on : 2/10/2014, 01:24:09 PM
     Author     : carlos.alvarez
 --%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
-<%@page import="java.util.List"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
-<!--%@page isELIgnored="false" %-->
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.DocumentSection"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.DocumentTemplate"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.TemplateContainer"%>
+<%@page import="java.util.Iterator"%>
+<%@ page import="java.util.List" %>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentTemplateResource.PARAM_REQUEST);
     User user = paramRequest.getUser();
@@ -104,7 +102,7 @@ if (null != docTemplate) {
                         <h5><%=paramRequest.getLocaleString("lblSections")%></h5>
                     </label>
                     <div class="row no-margin text-right">
-                        <a href="<%= url.setMode(SWPDocumentTemplateResource.MODE_ADD_DOCUMENT_SECTION).setParameter("uridt", docTemplate.getURI()).setParameter("uritc", docTemplate.getURI()) %>" data-toggle="modal" data-target="#modalDialog" class="btn btn-default swbp-btn-inter2" role="button">Agregar sección</a>
+                        <a href="<%= url.setMode(SWPDocumentTemplateResource.MODE_ADD_DOCUMENT_SECTION).setParameter("uridt", docTemplate.getURI()).setParameter("uritc", docTemplate.getURI()) %>" data-toggle="modal" data-target="#modalDialog" class="btn btn-default swbp-btn-inter2" role="button">Agregar secciï¿½n</a>
                     </div>
                 </div>
                 <%
@@ -157,7 +155,7 @@ if (null != docTemplate) {
                         <script>
                             $("a.btn-ajax-action.btn-ajax-action-remove").on("click", function(evt) {
                                 evt.preventDefault();
-                                if (!confirm("¿Desea eliminar esta sección?")) return false;
+                                if (!confirm("ï¿½Desea eliminar esta secciï¿½n?")) return false;
                                 $.post($(this).attr("href"), function(data) {
                                     window.location.reload(true); 
                                 });

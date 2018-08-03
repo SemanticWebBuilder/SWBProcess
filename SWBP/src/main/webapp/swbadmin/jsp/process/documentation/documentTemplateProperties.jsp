@@ -4,30 +4,23 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.process.documentation.model.Instantiable"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.process.documentation.model.Referable"%>
-<%@page import="org.semanticwb.process.model.ProcessSite"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
-<%@page import="org.semanticwb.process.documentation.model.Reference"%>
-<%@page import="org.semanticwb.process.documentation.model.Definition"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.process.documentation.model.Format"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.platform.SemanticProperty"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.model.WebPage"%>
+<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.platform.SemanticClass"%>
+<%@page import="org.semanticwb.platform.SemanticProperty"%>
+<%@page import="org.semanticwb.portal.SWBFormMgr"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.DocumentSection"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.Instantiable"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.Referable"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Iterator"%>
+<%@ page import="java.util.Map" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%

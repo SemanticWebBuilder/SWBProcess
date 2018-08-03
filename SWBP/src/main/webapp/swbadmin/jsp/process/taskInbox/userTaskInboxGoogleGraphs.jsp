@@ -4,9 +4,9 @@
     Author     : Hasdai Pacheco <ebenezer.sanchez@infotec.com.mx>
 --%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
 <%@page import="org.semanticwb.model.Resource"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");

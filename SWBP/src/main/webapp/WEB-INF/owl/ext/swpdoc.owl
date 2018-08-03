@@ -703,7 +703,7 @@
     <swb:prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >swpdoc</swb:prefix>
     <swb:package rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >org.semanticwb.process.documentation.model</swb:package>
+    >org.semanticwb.process.resources.documentation.model</swb:package>
   </swb:CodePackage>
   <swb:Class rdf:ID="Risk">
     <rdfs:subClassOf rdf:resource="#ElementReferable"/>

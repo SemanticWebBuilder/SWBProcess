@@ -4,8 +4,6 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
 <%@page import="org.semanticwb.SWBPortal"%>
 <%@page import="java.io.File"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

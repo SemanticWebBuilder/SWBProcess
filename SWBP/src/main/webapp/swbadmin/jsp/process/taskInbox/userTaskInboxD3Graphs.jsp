@@ -4,10 +4,8 @@
     Author     : Hasdai Pacheco <ebenezer.sanchez@infotec.com.mx>
 --%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
-<%@page import="org.semanticwb.model.Resource"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 String processData = (String) request.getAttribute("processStats");
@@ -23,10 +21,10 @@ if (null == _conf) _conf = "";
 <div class="row">
     <div class="col-sm-4">
         <div class="panel panel-default">
-            <div class="panel-heading">Desempeño</div>
+            <div class="panel-heading">Desempeï¿½o</div>
             <div class="panel-body">
                 <div id="performanceGraph" class="row">
-                    <div class="col-xs-12"><p class="text-center">Sin información</p></div>
+                    <div class="col-xs-12"><p class="text-center">Sin informaciï¿½n</p></div>
                 </div>
             </div>
         </div>
@@ -36,7 +34,7 @@ if (null == _conf) _conf = "";
             <div class="panel-heading"><%=paramRequest.getLocaleString("lblResponsetime")%></div>
             <div class="panel-body">
                 <div id="responseTime" class="row">
-                    <div class="col-xs-12"><p class="text-center">Sin información</p></div>
+                    <div class="col-xs-12"><p class="text-center">Sin informaciï¿½n</p></div>
                 </div>
             </div>
         </div>
@@ -46,7 +44,7 @@ if (null == _conf) _conf = "";
             <div class="panel-heading">Estatus</div>
             <div class="panel-body">
                 <div id="overdueGraph" class="row">
-                    <div class="col-xs-12"><p class="text-center">Sin información</p></div>
+                    <div class="col-xs-12"><p class="text-center">Sin informaciï¿½n</p></div>
                 </div>
             </div>
         </div>
@@ -55,7 +53,7 @@ if (null == _conf) _conf = "";
         <div class="panel panel-default">
             <div class="panel-body">
                <div id="participationGraph" class="row">
-                   <div class="col-sm-12"><p class="text-center">Sin información</p></div>
+                   <div class="col-sm-12"><p class="text-center">Sin informaciï¿½n</p></div>
                </div>
             </div>
        </div>

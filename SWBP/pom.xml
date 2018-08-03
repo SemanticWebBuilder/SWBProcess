@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>SWBPDocumenter</artifactId>
+            <artifactId>SWBPComponents</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

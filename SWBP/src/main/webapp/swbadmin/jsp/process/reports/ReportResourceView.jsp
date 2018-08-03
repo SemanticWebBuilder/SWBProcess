@@ -4,32 +4,23 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.process.resources.reports.ColumnReport"%>
-<%@page import="org.semanticwb.process.resources.reports.Report"%>
-<%@page import="org.semanticwb.SWBUtils.Collections"%>
+<%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
+<%@page import="org.semanticwb.platform.SemanticProperty"%>
+<%@page import="org.semanticwb.portal.SWBFormMgr"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<%@page import="java.io.DataOutputStream"%>
-<%@page import="java.io.DataOutput"%>
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.model.WebSite"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.ItemAware"%>
 <%@page import="org.semanticwb.process.model.ItemAwareReference"%>
 <%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.process.model.ItemAware"%>
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="java.util.HashMap"%>
+<%@page import="org.semanticwb.process.resources.reports.ColumnReport"%>
+<%@page import="org.semanticwb.process.resources.reports.Report"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.platform.SemanticProperty"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     boolean isSaveOnSystem = Boolean.parseBoolean(request.getAttribute("isSaveOnSystem").toString());
-    //SWBResourceURL urlReport = paramRequest.getRenderUrl().setMode("generate").setCallMethod(SWBParamRequest.Call_DIRECT);
     SWBResourceURL url = paramRequest.getRenderUrl();
     String lang = null;
     if (paramRequest.getUser() != null) {
@@ -44,7 +35,7 @@
     String dataType = "";
     String des = "";
     if (request.getParameter("des") != null) {
-        des = request.getParameter("des").toString();
+        des = request.getParameter("des");
     }
     SWBResourceURL urlDialog = paramRequest.getRenderUrl().setMode("dialog").setCallMethod(SWBResourceURL.Call_DIRECT);
     urlDialog.setParameter("idReport", obj.getId());

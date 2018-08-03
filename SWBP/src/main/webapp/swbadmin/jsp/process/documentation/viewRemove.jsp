@@ -1,21 +1,19 @@
-<%@page import="org.semanticwb.process.documentation.model.DocumentSectionInstance"%>
-<%@page import="org.semanticwb.process.documentation.model.Referable"%>
-<%@page import="org.semanticwb.model.RepositoryFile"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
+<%@page import="org.semanticwb.SWBPlatform"%>
 <%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.DocumentSectionInstance"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.Referable"%>
 <%
   SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 
-  String urise = request.getParameter("urise") != null ? request.getParameter("urise").toString() : "";
-  String fileSe = request.getParameter("fileSe") != null ? request.getParameter("fileSe").toString() : "";
-  String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi").toString() : "";
-  String title = request.getParameter("title") != null ? request.getParameter("title").toString() : "";
-  String _rid = request.getParameter("_rid") != null ? request.getParameter("_rid").toString() : "";
-  String idp = request.getParameter("idp") != null ? request.getParameter("idp").toString() : "";
-  String wp = request.getParameter("wp") != null ? request.getParameter("wp").toString() : "";
+  String urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
+  String fileSe = request.getParameter("fileSe") != null ? request.getParameter("fileSe") : "";
+  String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+  String title = request.getParameter("title") != null ? request.getParameter("title") : "";
+  String _rid = request.getParameter("_rid") != null ? request.getParameter("_rid") : "";
+  String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
+  String wp = request.getParameter("wp") != null ? request.getParameter("wp") : "";
   //String link = request.getParameter("link") != null ? request.getParameter("link").toString() : "";
   SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWBResourceURL.Action_REMOVE).setParameter("uridsi", uridsi).setParameter("urise", urise);
 

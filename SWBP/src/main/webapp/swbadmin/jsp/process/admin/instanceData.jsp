@@ -1,14 +1,13 @@
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.model.SWBClass"%>
-<%@page import="org.semanticwb.process.model.ItemAwareReference"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.process.model.base.ProcessInstanceBase"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.SWBUtils"%>
 <%@page import="org.semanticwb.model.GenericObject"%>
+<%@page import="org.semanticwb.model.SWBClass"%>
+<%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.ItemAwareReference"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.model.ProcessInstance"%>
+<%@page import="java.util.Iterator"%>
 <jsp:useBean id="paramRequest" scope="request" type="org.semanticwb.portal.api.SWBParamRequest"/>
 <%
 User user = paramRequest.getUser();

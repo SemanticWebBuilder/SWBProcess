@@ -4,22 +4,15 @@
     Author     : hasdai
 --%>
 
-<%@page import="org.semanticwb.process.documentation.model.ElementReference"%>
-<%@page import="org.semanticwb.process.documentation.model.Activity"%>
-<%@page import="org.semanticwb.process.documentation.model.Model"%>
-<%@page import="org.semanticwb.platform.SemanticClass"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.*"%>
+<%@page import="java.util.Iterator"%>
+<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource" %>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     SWBResourceURL act = paramRequest.getActionUrl().setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
@@ -36,7 +29,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h5 class="modal-title">Agregar sección</h5>
+            <h5 class="modal-title">Agregar secciï¿½n</h5>
         </div>
         <%
         if (null == docTemplate) {
@@ -61,7 +54,7 @@
                 <input type="hidden" name="uridt" value="<%= docTemplate.getURI() %>"/>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label">Título: *</label>
+                        <label for="" class="col-sm-4 control-label">Tï¿½tulo: *</label>
                         <div class="col-sm-7">
                             <input name="titleSection" id="titltitleSectione" type="text" required class="form-control"/>
                         </div>

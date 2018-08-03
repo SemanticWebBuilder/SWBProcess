@@ -3,20 +3,19 @@
     Created on : 30/09/2014, 09:32:20 AM
     Author     : carlos.alvarez
 --%>
-<%@page import="java.util.Collections"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPUserDocumentationResource"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
-<%@page import="java.util.List"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.DocumentTemplate"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.TemplateContainer"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.List"%>
+<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource" %>
+<%@ page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource" %>
 <%!
 private static void setVersionNumbers(DocumentTemplate lastTemplate) { // TO DEPRECATE in FUTURE VERSIONS
 	if (null != lastTemplate) {
@@ -45,7 +44,7 @@ private static void setVersionNumbers(DocumentTemplate lastTemplate) { // TO DEP
     WebSite model = paramRequest.getWebPage().getWebSite();
     User user = paramRequest.getUser();
     String lang = user != null && user.getLanguage() != null ? user.getLanguage() : "es";
-    String idpg = request.getParameter(SWPUserDocumentationResource.PARAM_PROCESSGROUP);
+    String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP);
     if (null == idpg) idpg = "";
 
     if (user != null && !user.isSigned() && paramRequest.getCallMethod() == SWBParamRequest.Call_CONTENT) {
@@ -63,7 +62,7 @@ private static void setVersionNumbers(DocumentTemplate lastTemplate) { // TO DEP
         createURL.setMode(SWPDocumentTemplateResource.MODE_ADD_TEMPLATE);
         %>
         <div class="row no-margin swbp-button-ribbon text-right">
-            <a href="<%=paramRequest.getWebPage().getParent().getUrl(lang)%>?<%= SWPUserDocumentationResource.PARAM_PROCESSGROUP %>=<%= idpg %>" class="btn btn-swbp-action" title="<%=paramRequest.getLocaleString("lblBack")%>">
+            <a href="<%=paramRequest.getWebPage().getParent().getUrl(lang)%>?<%= SWBProcessManagerResource.PARAM_PROCESSGROUP %>=<%= idpg %>" class="btn btn-swbp-action" title="<%=paramRequest.getLocaleString("lblBack")%>">
                 <%=paramRequest.getLocaleString("lblBack")%>
             </a>
             <a href="<%= createURL %>" class="btn btn-swbp-action" title="<%=paramRequest.getLocaleString("lblBack")%>" data-toggle="modal" data-target="#modalDialog">

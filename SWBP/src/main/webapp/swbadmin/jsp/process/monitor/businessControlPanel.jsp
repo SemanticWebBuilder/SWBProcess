@@ -1,59 +1,17 @@
 <%--
-     SemanticWebBuilder Process (SWBP) es una plataforma para la gestión de procesos de negocio mediante el uso de 
-     tecnología semántica, que permite el modelado, configuración, ejecución y monitoreo de los procesos de negocio
-     de una organización, así como el desarrollo de componentes y aplicaciones orientadas a la gestión de procesos.
-
-     Mediante el uso de tecnología semántica, SemanticWebBuilder Process puede generar contextos de información
-     alrededor de algún tema de interés o bien integrar información y aplicaciones de diferentes fuentes asociadas a
-     un proceso de negocio, donde a la información se le asigna un significado, de forma que pueda ser interpretada
-     y procesada por personas y/o sistemas. SemanticWebBuilder Process es una creación original del Fondo de 
-     Información y Documentación para la Industria INFOTEC.
-
-     INFOTEC pone a su disposición la herramienta SemanticWebBuilder Process a través de su licenciamiento abierto 
-     al público ("open source"), en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC 
-     lo ha diseñado y puesto a su disposición; aprender de él; distribuirlo a terceros; acceder a su código fuente,
-     modificarlo y combinarlo (o enlazarlo) con otro software. Todo lo anterior de conformidad con los términos y 
-     condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización de SemanticWebBuilder Process. 
-
-     INFOTEC no otorga garantía sobre SemanticWebBuilder Process, de ninguna especie y naturaleza, ni implícita ni 
-     explícita, siendo usted completamente responsable de la utilización que le dé y asumiendo la totalidad de los 
-     riesgos que puedan derivar de la misma. 
-
-     Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder Process, INFOTEC pone a su disposición la
-     siguiente dirección electrónica: 
-     http://www.semanticwebbuilder.org.mx
-
     Document   : businessControlPanel
     Created on : 5/07/2011, 04:14:49 PM
     Author     : Hasdai Pacheco {ebenezer.sanchez@infotec.com.mx}
 --%>
-<%@page import="org.semanticwb.process.resources.controlpanel.ControlPanelResource"%>
-<%@page import="org.semanticwb.process.model.IntermediateCatchEvent"%>
+<%@page import="org.semanticwb.SWBUtils"%>
+<%@page import="org.semanticwb.model.*"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.model.RoleRef"%>
-<%@page import="org.semanticwb.model.Role"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.process.model.SubProcessInstance"%>
-<%@page import="org.semanticwb.process.model.Activity"%>
-<%@page import="org.semanticwb.process.model.Instance"%>
-<%@page import="org.semanticwb.process.model.ProcessSite"%>
-<%@page import="org.semanticwb.process.model.UserTask"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.process.model.ProcessGroup"%>
-<%@page import="org.semanticwb.process.model.SWBProcessMgr"%>
-<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="java.util.Iterator"%>
+<%@page import="org.semanticwb.process.model.*"%>
+<%@page import="org.semanticwb.process.resources.controlpanel.ControlPanelResource"%>
 <%@page import="java.net.URLEncoder"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="java.util.List"%>
-<%@page import="java.lang.Math"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Iterator"%>
 
 <%!
     public String getStatusInstances(ProcessInstance pi, int status) {
@@ -267,11 +225,11 @@
                                             ProcessInstance instance = instances.next();
                                             String Id = instance.getId();
                                             String pName = instance.getProcessType().getDisplayTitle(lang);
-                                            String pCreated = SWBUtils.TEXT.iso8601DateFormat(instance.getCreated());//getStrDate(instance.getCreated(), lang, "dd/mm/yy - hh:%m");
+                                            String pCreated = SWBUtils.TEXT.iso8601DateFormat(instance.getCreated());
                                             String pClosed = "-";
 
                                             if (instance.getStatus() == ProcessInstance.STATUS_CLOSED) {
-                                                pClosed = SWBUtils.TEXT.iso8601DateFormat(instance.getEnded());//getStrDate(instance.getEnded(), lang, "dd/mm/yy - hh:%m");
+                                                pClosed = SWBUtils.TEXT.iso8601DateFormat(instance.getEnded());
                                             }
                                             %>
                                             <tr>
@@ -376,7 +334,6 @@
                                                         docsUrl.setParameter("sF", request.getParameter("sF"));
                                                         docsUrl.setParameter("sort", request.getParameter("sort"));
                                                         %>
-                                                        <!--a href="<%=docsUrl%>" class="btn btn-default col-lg-4 col-md-4" title="<%=paramRequest.getLocaleString("actDocs")%>"><span class="fa fa-folder-open-o"></span></a-->
                                                     </td>
                                                     <%
                                                 }

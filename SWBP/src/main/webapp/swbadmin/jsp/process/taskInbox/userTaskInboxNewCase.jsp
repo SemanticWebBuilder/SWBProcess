@@ -4,16 +4,16 @@
     Author     : Hasdai Pacheco <ebenezer.sanchez@infotec.com.mx>
 --%>
 <%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.model.StartEvent"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
-<%@page import="java.util.TreeMap"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Map"%>
 <%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.model.StartEvent"%>
+<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.TreeMap"%>
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 User user = paramRequest.getUser();
@@ -34,7 +34,7 @@ while(startEvents.hasNext()) {
     //Si el usuario tiene permisos en el evento
     if (sevt.getContainer() != null && sevt.getContainer() instanceof Process && user.haveAccess(sevt)) {
         Process itp = sevt.getProcess();
-        //Si el proceso al que pertenece el evento y es válido
+        //Si el proceso al que pertenece el evento y es vï¿½lido
         if (itp != null && itp.isValid() && itp.isExecutable()) {
             if(itp.getProcessGroup() != null) {
                 String pg = itp.getProcessGroup().getDisplayTitle(lang);

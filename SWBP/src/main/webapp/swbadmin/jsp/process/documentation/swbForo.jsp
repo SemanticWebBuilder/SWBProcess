@@ -1,20 +1,18 @@
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.portal.resources.sem.forum.Post"%>
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="java.util.TreeSet"%>
-<%@page import="java.util.Iterator"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.portal.resources.sem.forum.Thread"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.portal.resources.sem.forum.SWBForum"%>
+<%@page import="org.semanticwb.SWBUtils"%>
 <%@page import="org.semanticwb.model.Resource"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
+<%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.model.WebPage"%>
+<%@page import="org.semanticwb.portal.SWBFormMgr"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.portal.resources.sem.forum.Post"%>
+<%@page import="org.semanticwb.portal.resources.sem.forum.SWBForum"%>
+<%@page import="org.semanticwb.portal.resources.sem.forum.Thread"%>
 <%@page import="java.util.Comparator"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.TreeSet"%>
 <jsp:useBean id="paramRequest" scope="request" type="org.semanticwb.portal.api.SWBParamRequest"/>
 <%
 WebPage webpage = paramRequest.getWebPage();
@@ -79,7 +77,7 @@ if (action != null && action.equals("viewPost")) {
                         <span class="col-lg-6 col-md-6 col-sm-12 col-xs-12 fa fa-pencil"></span>
                         <span class="col-lg-6 col-md-6 hidden-sm hidden-xs text-left">Editar</span>
                     </a>
-                    <a class="btn btn-default col-xs-6" onclick="if (!confirm('¿Está seguro de querer eliminar la entrada?')) return false;" href="<%=actionURL%>" role="button">
+                    <a class="btn btn-default col-xs-6" onclick="if (!confirm('ï¿½Estï¿½ seguro de querer eliminar la entrada?')) return false;" href="<%=actionURL%>" role="button">
                         <span class="col-lg-6 col-md-6 col-sm-12 col-xs-12 fa fa-trash-o"></span>
                         <span class="col-lg-6 col-md-6 hidden-sm hidden-xs text-left">Eliminar</span>
                     </a>
@@ -149,7 +147,7 @@ if (action != null && action.equals("viewPost")) {
         while (itPost.hasNext()) {
             isTheAuthor = false;
             Post post = itPost.next();
-            String creator = "Anónimo";
+            String creator = "Anï¿½nimo";
             if (null != post.getCreator()) {
                 creator = post.getCreator().getFullName();
                 isTheAuthor = post.getCreator().getURI().equals(user.getURI());
@@ -174,7 +172,7 @@ if (action != null && action.equals("viewPost")) {
                         %>
                         <div class="row hidden-margin">
                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6 pull-right swbp-panel-blog-button">
-                                <a class="btn btn-block" onclick="if (!confirm('¿Está seguro de querer eliminar el comentario?')) return false;" href="<%=actionURL%>" role="button">
+                                <a class="btn btn-block" onclick="if (!confirm('ï¿½Estï¿½ seguro de querer eliminar el comentario?')) return false;" href="<%=actionURL%>" role="button">
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 fa fa-trash-o icon"></div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 hidden-xs text">Eliminar</div>
                                 </a>

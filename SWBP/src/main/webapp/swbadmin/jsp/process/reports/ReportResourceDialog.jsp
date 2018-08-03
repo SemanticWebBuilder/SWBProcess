@@ -7,7 +7,6 @@
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.resources.reports.Report"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 Report report = Report.ClassMgr.getReport(request.getAttribute("idReport").toString(), paramRequest.getWebPage().getWebSite());

@@ -3,24 +3,17 @@
     Created on : 9/12/2013, 10:30:59 AM
     Author     : carlos.alvarez
 --%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Comparator"%>
-<%@page import="java.util.Collections"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPUserDocumentationResource"%>
-<%@page import="org.semanticwb.model.Descriptiveable"%>
-<%@page import="java.util.List"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.model.Resource"%>
-<%@page import="org.semanticwb.model.Role"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.model.*"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.process.model.ProcessGroup"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.model.Process"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
-<%! 
+<%@page import="org.semanticwb.process.model.ProcessGroup"%>
+<%@page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.Comparator"%>
+<%@ page import="java.util.List" %>
+<%!
     ArrayList<ProcessGroup> getNavPath (WebSite site, ProcessGroup current) {
         ArrayList<ProcessGroup> ret = new ArrayList<>();
         if (current != null) {
@@ -34,7 +27,7 @@
     }
 %>
 <%
-SWBParamRequest paramRequest = request.getAttribute(SWPUserDocumentationResource.PARAM_REQUEST) != null ? (SWBParamRequest) request.getAttribute(SWPUserDocumentationResource.PARAM_REQUEST) : null;
+SWBParamRequest paramRequest = request.getAttribute(SWBProcessManagerResource.PARAM_REQUEST) != null ? (SWBParamRequest) request.getAttribute(SWBProcessManagerResource.PARAM_REQUEST) : null;
 WebSite model = paramRequest.getWebPage().getWebSite();
 User user = paramRequest.getUser();
 String lang = user.getLanguage();
@@ -42,12 +35,12 @@ WebPage webpage = paramRequest.getWebPage();
 Role docRole = webpage.getWebSite().getUserRepository().getRole(paramRequest.getResourceBase().getAttribute("docRole"));//TODO: Hacer cnfigurable el rol
 Role adminRole = webpage.getWebSite().getUserRepository().getRole("admin");//TODO: Hacer cnfigurable el rol
 Resource base = paramRequest.getResourceBase();
-List<Descriptiveable> list = request.getAttribute(SWPUserDocumentationResource.LIST_PROCESSES) != null ? (List<Descriptiveable>) request.getAttribute(SWPUserDocumentationResource.LIST_PROCESSES) : null;
+List<Descriptiveable> list = request.getAttribute(SWBProcessManagerResource.LIST_PROCESSES) != null ? (List<Descriptiveable>) request.getAttribute(SWBProcessManagerResource.LIST_PROCESSES) : null;
 
-String idpg = request.getParameter(SWPUserDocumentationResource.PARAM_PROCESSGROUP) != null ? request.getParameter(SWPUserDocumentationResource.PARAM_PROCESSGROUP) : null;
+String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP) != null ? request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP) : null;
 ProcessGroup group1 = (ProcessGroup) ProcessGroup.ClassMgr.getProcessGroup(idpg, model);
 
-SWBResourceURL urlDoc = paramRequest.getRenderUrl().setMode(SWPUserDocumentationResource.MODE_VIEW_DOCUMENTATION);
+SWBResourceURL urlDoc = paramRequest.getRenderUrl().setMode(SWBProcessManagerResource.MODE_VIEW_DOCUMENTATION);
 String pag = request.getParameter("p") != null ? request.getParameter("p") : "";
 WebPage templatesPage = webpage.getWebSite().getWebPage(base.getAttribute("templatePage"));
 WebPage contentsPage = webpage.getWebSite().getWebPage(base.getAttribute("contentPage"));
@@ -58,7 +51,7 @@ boolean isDocumenter = user.hasRole(docRole) || user.hasRole(adminRole);
 if (isDocumenter) {
     %>
     <div class="row no-margin swbp-button-ribbon text-right">
-        <a href="<%= templatesPage.getUrl() %>?<%= SWPUserDocumentationResource.PARAM_PROCESSGROUP %>=<%= idpg %>" class="btn btn-swbp-action" title="<%=paramRequest.getLocaleString("lblAdminTemplates")%>">
+        <a href="<%= templatesPage.getUrl() %>?<%= SWBProcessManagerResource.PARAM_PROCESSGROUP %>=<%= idpg %>" class="btn btn-swbp-action" title="<%=paramRequest.getLocaleString("lblAdminTemplates")%>">
             <%=paramRequest.getLocaleString("lblAdminTemplates")%>
         </a>
     </div>
@@ -81,7 +74,7 @@ if (isDocumenter) {
                 cssClass = "active";
             }
             %>
-            <li <%= cssClass.isEmpty() ? "" : "class=\"active\""%>><a href="?<%= SWPUserDocumentationResource.PARAM_PROCESSGROUP %>=<%= _pg.getId() %>"><%= _pg.getTitle() %></a></li>
+            <li <%= cssClass.isEmpty() ? "" : "class=\"active\""%>><a href="?<%= SWBProcessManagerResource.PARAM_PROCESSGROUP %>=<%= _pg.getId() %>"><%= _pg.getTitle() %></a></li>
             <%
         }
     }
@@ -118,7 +111,7 @@ if (list.isEmpty()) {
                     <div class="col-lg-10  col-md-10 col-sm-11 col-xs-10 swbp-list-text swbp-align-text"><%= title %></div>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-3 col-xs-12 swbp-list-action">
-                    <a class="btn btn-default col-lg-6 col-md-6 col-sm-6 col-xs-6" href="<%= urlDoc.setParameter("idp", idp).setParameter(SWPUserDocumentationResource.PARAM_PROCESSGROUP, idpg)%>"  role="button">
+                    <a class="btn btn-default col-lg-6 col-md-6 col-sm-6 col-xs-6" href="<%= urlDoc.setParameter("idp", idp).setParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP, idpg)%>"  role="button">
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-eye"></div>
                         <div class="col-lg-8 col-md-8 hidden-sm hidden-xs swbp-list-action-text">Ver</div>
                     </a>
@@ -126,7 +119,7 @@ if (list.isEmpty()) {
                     if (isDocumenter) {
                         Process p = (Process)desc;
                         %>
-                        <a class="btn btn-default col-lg-6 col-md-6 col-sm-6 col-xs-6" role="button" href="<%= contentsPage.getUrl() %>?idp=<%= p.getId() %>&_rid=<%=paramRequest.getResourceBase().getId()%>&wp=<%=paramRequest.getWebPage().getId()%>&<%= SWPUserDocumentationResource.PARAM_PROCESSGROUP %>=<%=idpg%>&p=<%= pag %>">
+                        <a class="btn btn-default col-lg-6 col-md-6 col-sm-6 col-xs-6" role="button" href="<%= contentsPage.getUrl() %>?idp=<%= p.getId() %>&_rid=<%=paramRequest.getResourceBase().getId()%>&wp=<%=paramRequest.getWebPage().getId()%>&<%= SWBProcessManagerResource.PARAM_PROCESSGROUP %>=<%=idpg%>&p=<%= pag %>">
                         <%
                     } else{
                         %>
@@ -144,7 +137,7 @@ if (list.isEmpty()) {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 swbp-list-title swbp-title-xs">
                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 fa fa-folder-open swbp-list-icon"></div>
                     <div class="col-lg-11  col-md-11 col-sm-11 col-xs-10 swbp-list-text">
-                        <a href="?<%= SWPUserDocumentationResource.PARAM_PROCESSGROUP %>=<%= desc.getSemanticObject().getId()%> "><%= title %></a>
+                        <a href="?<%= SWBProcessManagerResource.PARAM_PROCESSGROUP %>=<%= desc.getSemanticObject().getId()%> "><%= title %></a>
                     </div>
                 </div>
                 <%

@@ -11,7 +11,7 @@
 
     <modules>
         <module>SWBProcessModel</module>
-        <module>SWBPDocumenter</module>
+        <module>SWBPComponents</module>
         <module>SWBP</module>
     </modules>
 
@@ -38,8 +38,8 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>com.github.jsimone</groupId>
-                                    <artifactId>webapp-runner</artifactId>
-                                    <version>8.5.23.0</version>
+                                    <artifactId>webapp-runner-main</artifactId>
+                                    <version>9.0.8.1</version>
                                     <destFileName>webapp-runner.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>

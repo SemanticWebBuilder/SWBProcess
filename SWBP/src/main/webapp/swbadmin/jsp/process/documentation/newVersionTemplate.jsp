@@ -4,18 +4,15 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.process.utils.SWPUtils"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
-<%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.DocumentTemplate"%>
+<%@page import="org.semanticwb.process.resources.documentation.model.TemplateContainer"%>
+<%@page import="org.semanticwb.process.utils.SWPUtils"%>
+<%@page import="java.util.Iterator"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     String uridt = request.getParameter("uridt") != null ? request.getParameter("uridt").toString() : "";
@@ -29,7 +26,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h5 class="modal-title"><%= null == dt ? "Agregar " : "Propiedades de " %>versión</h5>
+            <h5 class="modal-title"><%= null == dt ? "Agregar " : "Propiedades de " %>versiï¿½n</h5>
         </div>
         <%
         if (null == tc) {
@@ -51,13 +48,13 @@
                         if (isEdit) {
                             %>
                             <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">Creador de la versión</label>
+                                <label for="" class="col-sm-4 control-label">Creador de la versiï¿½n</label>
                                 <div class="col-sm-7">
                                     <p class="form-control-static"><%= dt.getCreator()!=null? dt.getCreator().getFullName() : "" %></p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">Fecha de creación</label>
+                                <label for="" class="col-sm-4 control-label">Fecha de creaciï¿½n</label>
                                 <div class="col-sm-7">
                                     <p class="form-control-static"><%= SWPUtils.DateFormatter.format(dt.getCreated()) %></p>
                                 </div>
@@ -67,10 +64,10 @@
                             %>
                             <input type="hidden" name="uritc" value="<%= tc.getURI() %>"/>
                             <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">Versión base *</label>
+                                <label for="" class="col-sm-4 control-label">Versiï¿½n base *</label>
                                 <div class="col-sm-7">
                                     <select name="uridtp" class="form-control" required>
-                                        <option value="">Seleccione versión base</option>
+                                        <option value="">Seleccione versiï¿½n base</option>
                                         <%
                                         Iterator<DocumentTemplate> it = SWBComparator.sortByCreated(tc.listTemplates(), false);
                                         while (it.hasNext()) {
@@ -85,7 +82,7 @@
                         }
                         %>
                         <div class="form-group">
-                            <label for="" class="col-sm-4 control-label">Comentarios de la versión</label>
+                            <label for="" class="col-sm-4 control-label">Comentarios de la versiï¿½n</label>
                             <div class="col-sm-7">
                                 <%
                                 if (isEdit) {

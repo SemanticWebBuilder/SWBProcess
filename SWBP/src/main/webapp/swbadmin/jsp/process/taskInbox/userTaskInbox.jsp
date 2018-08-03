@@ -355,7 +355,7 @@ if (!user.isSigned()) {
                                         if (isAdminUser(user, utir)) {
                                             SWBResourceURL claimUrl = paramRequest.getActionUrl().setAction(UserTaskInboxResource.ACT_CLAIM);
                                             %>
-                                            <a class="btn btn-default col-xs-3" href="<%=claimUrl%>?suri=<%=instance.getEncodedURI()%>" <% if (instance.getAssignedto() != null && !user.getURI().equals(instance.getAssignedto().getURI())) {%>onclick="return (confirm('La tarea le será asignada y desaparecerá de la bandeja del dueño. ¿Desea continuar?'))"<%}%>>
+                                            <a class="btn btn-default col-xs-3" href="<%=claimUrl%>?suri=<%=instance.getEncodedURI()%>" <% if (instance.getAssignedto() != null && !user.getURI().equals(instance.getAssignedto().getURI())) {%>onclick="return (confirm('La tarea le serï¿½ asignada y desaparecerï¿½ de la bandeja del dueï¿½o. ï¿½Desea continuar?'))"<%}%>>
                                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-hand-o-up"></span>
                                                 <span class="col-lg-8 col-md-8 hidden-sm hidden-xs no-padding text-left"><%=paramRequest.getLocaleString("actTake")%></span>
                                             </a>
