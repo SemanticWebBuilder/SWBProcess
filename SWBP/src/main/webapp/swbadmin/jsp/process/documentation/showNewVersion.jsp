@@ -17,4 +17,6 @@
 
     SWBResourceURL urlDoc = paramRequest.getRenderUrl().setMode(SWBProcessManagerResource.MODE_VIEW_DOCUMENTATION);
 %>
-<a href="<%= urlDoc.setParameter("idp", idp)%>" data-toggle="tooltip" data-placement="bottom" data-original-title="<%=paramRequest.getLocaleString("lblDocumentation")%>" title="<%=paramRequest.getLocaleString("lblDocumentation")%>" class="btn btn-default fa fa-eye"></a>
+<a href="<%= urlDoc.setParameter("idp", idp)%>" data-toggle="tooltip"
+   data-placement="bottom" data-original-title="<%=paramRequest.getLocaleString("lblDocumentation")%>"
+   title="<%=paramRequest.getLocaleString("lblDocumentation")%>" class="btn btn-default fa fa-eye"></a>

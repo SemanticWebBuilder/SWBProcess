@@ -26,6 +26,7 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%!
     String getRepoOptions(RepositoryDirectory root, RepositoryDirectory actual, String indentChar) {
         StringBuilder ret = new StringBuilder();
@@ -147,7 +148,7 @@
                                           </div>
                                       </div>
                                       <%
-                                  } else { // Es edici�n
+                                  } else { // Es edición
                                       List<VersionInfo> listvi = null;
                                       VersionInfo vi = null;
 

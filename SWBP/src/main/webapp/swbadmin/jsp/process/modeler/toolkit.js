@@ -944,22 +944,6 @@ if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathDa
   })();
 }
 
-/****Toolkit******/
-    function desc(obj, content)
-    {
-        var ret="";
-        for (property in obj) {
-            if(content && content===true)
-            {
-                ret+="-->"+property+"="+obj[property]+"\r\n";
-            }else
-            {
-                ret+="-->"+property+"\r\n";
-            }
-        }
-        //alert(ret);
-    }
-
 var ToolKit = {
   svgNS:"http://www.w3.org/2000/svg",
   xlink:"http://www.w3.org/1999/xlink",

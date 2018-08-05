@@ -25,7 +25,8 @@
         }
     </style>
     <div class="swbp-content"> 
-        <form id="uploadImg" class="form-horizontal" onsubmit="uploadOk();" action="<%= urlact%>" method="post" enctype="multipart/form-data">
+        <form id="uploadImg" class="form-horizontal" onsubmit="uploadOk();"
+              action="<%= urlact%>" method="post" enctype="multipart/form-data">
             <div class="panel-body">
               
                 <%
@@ -39,7 +40,8 @@
                         for (File file : dir.listFiles()) {
                     %>
                     <a class="btn btn-default shortcut" onclick="selectImage('image_<%= i %>')">
-                        <img id="image_<%= i %>" width="40" height="40" src="<%= SWBPortal.getWebWorkPath() %>/models/<%= modelid%>/swp_DocumentationImage/<%= file.getName() %>">
+                        <img id="image_<%= i %>" width="40" height="40"
+                             src="<%= SWBPortal.getWebWorkPath() %>/models/<%= modelid%>/swp_DocumentationImage/<%= file.getName() %>">
                         <span class="swbp-menu-vertical"><%= file.getName()%></span>
                     </a>
                     <%
@@ -57,7 +59,8 @@
                         <span class="btn btn-default btn-file">
                             <span class="fa fa-cloud-upload"></span>
                             Seleccionar
-                            <input required type="file" accept="image/jpg,image/png,image/jpeg,image/gif" name="fupload" id="fupload" class="form-control" />
+                            <input required type="file" accept="image/jpg,image/png,image/jpeg,image/gif"
+                                   name="fupload" id="fupload" class="form-control" />
                         </span>
                     </span>
                     <input type="text" id="nameLogo" class="form-control" disabled/>
@@ -80,7 +83,6 @@
                 if(top.tinymce.activeEditor.id.indexOf('http') == 0){
                     top.tinymce.activeEditor.windowManager.close();
                 }
-                //top.tinymce.activeEditor.windowManager.getParams().oninsert(window.location.origin + '/work/models/<%= modelid%>/swp_DocumentationImage/' + element);
             }
             function uploadOk() {
                 top.tinymce.activeEditor.windowManager.getParams().oninsert('/work/models/<%= modelid%>/swp_DocumentationImage/' + $('#nameLogo').val(),true);

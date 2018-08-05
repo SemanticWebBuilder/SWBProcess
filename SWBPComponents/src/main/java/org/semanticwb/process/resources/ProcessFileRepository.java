@@ -22,53 +22,23 @@
  */
 package org.semanticwb.process.resources;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.semanticwb.Logger;
-import org.semanticwb.SWBException;
-import org.semanticwb.SWBPlatform;
-import org.semanticwb.SWBPortal;
-import org.semanticwb.SWBUtils;
-import org.semanticwb.model.Descriptiveable;
-import org.semanticwb.model.GenericObject;
-import org.semanticwb.model.Resource;
-import org.semanticwb.model.ResourceType;
-import org.semanticwb.model.Role;
-import org.semanticwb.model.Traceable;
-import org.semanticwb.model.User;
-import org.semanticwb.model.UserGroup;
-import org.semanticwb.model.VersionInfo;
-import org.semanticwb.model.WebPage;
-import org.semanticwb.model.WebSite;
+import org.semanticwb.*;
+import org.semanticwb.model.*;
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticOntology;
-import org.semanticwb.portal.api.SWBActionResponse;
-import org.semanticwb.portal.api.GenericResource;
-import org.semanticwb.portal.api.SWBParamRequest;
-import org.semanticwb.portal.api.SWBResourceException;
-import org.semanticwb.portal.api.SWBResourceURL;
-import org.semanticwb.process.model.ItemAwareStatus;
-import org.semanticwb.process.model.RepositoryDirectory;
-import org.semanticwb.process.model.RepositoryElement;
+import org.semanticwb.portal.api.*;
+import org.semanticwb.process.model.*;
 import org.semanticwb.process.model.RepositoryFile;
-import org.semanticwb.process.model.RepositoryURL;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.*;
 
 /**
  *

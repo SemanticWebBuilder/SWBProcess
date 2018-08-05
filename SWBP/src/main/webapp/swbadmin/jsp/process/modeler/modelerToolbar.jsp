@@ -3,10 +3,9 @@
     Created on : 17-feb-2016, 17:28:13
     Author     : hasdai
 --%>
-<%@page import="org.semanticwb.model.SWBContext"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%
-SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
+    SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 %>
 <div class="toolbarContainer">
     <div id="toolBar">
@@ -61,13 +60,7 @@ SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequ
             Modeler.clearCanvas();
         }"></span>
     <span class="openProcess" onmouseover="ToolBar.overToolBar(true);" onmouseout="ToolBar.outToolBar()" title="<%= paramRequest.getLocaleString("itemOpen") %>" onclick="showLoadDialog();"></span>
-    <%
-    if (SWBContext.getAdminWebSite().equals(paramRequest.getWebPage().getWebSite())) {
-        %>
-        <span class="storeProcess" onmouseover="ToolBar.overToolBar(true);" onmouseout="ToolBar.outToolBar()" title="<%= paramRequest.getLocaleString("itemSend") %>" onclick="storeProcess();"></span>
-        <%
-    }
-    %>
+    <span class="storeProcess" onmouseover="ToolBar.overToolBar(true);" onmouseout="ToolBar.outToolBar()" title="<%= paramRequest.getLocaleString("itemSend") %>" onclick="storeProcess();"></span>
     <span class="saveProcess" onmouseover="ToolBar.overToolBar(true);" onmouseout="ToolBar.outToolBar()" title="<%=paramRequest.getLocaleString("itemSave")%>" onclick="submit_download_form('swp')"></span>
     <span class="saveAsSVG" onmouseover="ToolBar.overToolBar(true);" onmouseout="ToolBar.outToolBar()" title="<%=paramRequest.getLocaleString("itemSaveImageSVG")%>" onclick="submit_download_form('svg')"></span>
     <span class="saveAsImage" onmouseover="ToolBar.overToolBar(true);" onmouseout="ToolBar.outToolBar()" title="<%=paramRequest.getLocaleString("itemSaveImagePNG")%>" onclick="submit_download_form('png')"></span>

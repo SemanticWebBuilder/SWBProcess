@@ -16,6 +16,7 @@
 <%@page import="java.util.List"%>
 <%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource" %>
 <%@ page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%!
 private static void setVersionNumbers(DocumentTemplate lastTemplate) { // TO DEPRECATE in FUTURE VERSIONS
 	if (null != lastTemplate) {
@@ -40,7 +41,7 @@ private static void setVersionNumbers(DocumentTemplate lastTemplate) { // TO DEP
 %>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentTemplateResource.PARAM_REQUEST);
-    SWBResourceURL url = paramRequest.getRenderUrl();//.setCallMethod(SWBResourceURL.Call_DIRECT);
+    SWBResourceURL url = paramRequest.getRenderUrl();
     WebSite model = paramRequest.getWebPage().getWebSite();
     User user = paramRequest.getUser();
     String lang = user != null && user.getLanguage() != null ? user.getLanguage() : "es";

@@ -10,10 +10,11 @@
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
 <%@page import="org.semanticwb.process.resources.documentation.model.Documentation"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
-<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
+<%@ page import="java.util.List" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
@@ -70,13 +71,13 @@
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 swbp-list-action">
                         <%
                         if (!actual) {
-                            %><a href="<%= urlActive.setParameter("uridoc", documentation.getURI()).setParameter("wp", request.getParameter("wp")).setParameter("_rid", request.getParameter("_rid")) %>" class="btn btn-default col-xs-4 fa fa-retweet" onclick="if (!confirm('�Desea hacer versi�n <%= documentation.getVersionValue() %> la versi�n actual?')) return false;"></a><%
+                            %><a href="<%= urlActive.setParameter("uridoc", documentation.getURI()).setParameter("wp", request.getParameter("wp")).setParameter("_rid", request.getParameter("_rid")) %>" class="btn btn-default col-xs-4 fa fa-retweet" onclick="if (!confirm('¿Desea hacer versión <%= documentation.getVersionValue() %> la versión actual?')) return false;"></a><%
                         } else {
                             %><a href="#" class="btn btn-default col-xs-4 fa fa-check-square-o active"></a><%
                         }
                         %>
                         <a href="<%= urlTrace.setParameter("uritc", documentation.getURI())%>" class="col-xs-4 btn btn-default fa fa-info-circle" role="button" data-toggle="modal" data-target="#modalDialog"></a>
-                        <a href="<%= !actual ? urlRemove.setParameter("uridoc", documentation.getURI()).setParameter("wp", request.getParameter("wp")).setParameter("_rid", request.getParameter("_rid")) : "#" %>" <%if (!actual) {%> onclick="if (!confirm('Eliminar versi�n?')) return false;" <%}%>
+                        <a href="<%= !actual ? urlRemove.setParameter("uridoc", documentation.getURI()).setParameter("wp", request.getParameter("wp")).setParameter("_rid", request.getParameter("_rid")) : "#" %>" <%if (!actual) {%> onclick="if (!confirm('Eliminar versión?')) return false;" <%}%>
                             class="col-xs-4 btn btn-default fa fa-trash-o <%= actual ? "disabled" : "" %>">
                         </a>
                     </div>

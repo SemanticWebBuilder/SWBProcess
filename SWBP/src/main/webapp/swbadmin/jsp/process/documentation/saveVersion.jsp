@@ -12,10 +12,8 @@
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     String uridi = request.getParameter("uridi") != null ? request.getParameter("uridi") : "";
     String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
-    //SWBFormMgr forMgr = new SWBFormMgr(Documentation.sclass, paramRequest.getWebPage().getWebSite().getSemanticObject(), SWBFormMgr.MODE_CREATE);
-    //String title = forMgr.renderLabel(request, Documentation.swb_title, SWBFormMgr.MODE_CREATE);
-    //String description = forMgr.renderLabel(request, Documentation.swb_description, SWBFormMgr.MODE_CREATE);
-    SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentationResource.ACTION_SAVE_VERSION).setParameter("uridi", uridi);
+    SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setAction(SWPDocumentationResource.ACTION_SAVE_VERSION).setParameter("uridi", uridi);
 %>
 <div class="modal-dialog">
     <div class="modal-content">

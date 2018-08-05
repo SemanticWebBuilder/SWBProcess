@@ -6,6 +6,7 @@
 
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     SWBResourceURL act = paramRequest.getActionUrl().setAction(SWBResourceURL.Action_ADD);
@@ -19,7 +20,7 @@
         <form class="form-horizontal swbp-form" action="<%= act %>" id="formNTP">
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label" for="">Título: *</label>
+                    <label class="col-sm-3 control-label">Título: *</label>
                     <div class="col-sm-8">
                         <input name="titletc" id="title" type="text" required class="form-control"/>
                     </div>

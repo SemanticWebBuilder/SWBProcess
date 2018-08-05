@@ -12,20 +12,31 @@
 <%@page import="org.semanticwb.process.resources.documentation.model.TemplateContainer"%>
 <%@page import="org.semanticwb.process.utils.SWPUtils"%>
 <%@page import="java.util.Iterator"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 
-    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").toString() : "";
+    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc") : "";
     TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-    SWBResourceURL admVersion = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setMode(SWPDocumentTemplateResource.MODE_EDIT_VERSION_TEMPLATE).setParameter("uritc", uritc);
-    SWBResourceURL urlAction = paramRequest.getActionUrl().setAction(SWPDocumentTemplateResource.ACTION_DEFINE_VERSION_TEMPLATE).setParameter("uritc", uritc);
-    SWBResourceURL urlActionRemove = paramRequest.getActionUrl().setAction(SWPDocumentTemplateResource.ACTION_REMOVE_VERSION_TEMPLATE).setParameter("uritc", uritc);
+    SWBResourceURL admVersion = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setMode(SWPDocumentTemplateResource.MODE_EDIT_VERSION_TEMPLATE).setParameter("uritc", uritc);
+
+    SWBResourceURL urlAction = paramRequest.getActionUrl()
+            .setAction(SWPDocumentTemplateResource.ACTION_DEFINE_VERSION_TEMPLATE)
+            .setParameter("uritc", uritc);
+
+    SWBResourceURL urlActionRemove = paramRequest.getActionUrl()
+            .setAction(SWPDocumentTemplateResource.ACTION_REMOVE_VERSION_TEMPLATE)
+            .setParameter("uritc", uritc);
 
     if (tc != null) {
         %>
         <div class="row no-margin swbp-button-ribbon text-right">
-            <a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_EDIT).setParameter("uritc", tc.getURI()) %>" class="btn btn-swbp-action" >Volver a la plantilla</a>
-            <a href="<%= admVersion.setParameter("uritc", tc.getURI())%>" class="btn btn-swbp-action" data-toggle="modal" data-target="#modalDialog">Agregar versi�n</a>
+            <a
+                href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_EDIT).setParameter("uritc", tc.getURI()) %>"
+                class="btn btn-swbp-action" >Volver a la plantilla</a>
+            <a href="<%= admVersion.setParameter("uritc", tc.getURI())%>"
+               class="btn btn-swbp-action" data-toggle="modal" data-target="#modalDialog">Agregar versión</a>
         </div>
         <hr>
         <div class="panel panel-default swbp-panel-head">
@@ -48,16 +59,22 @@
                         <div class="col-lg-5 col-md-5 col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-2 swbp-list-date"><%= SWPUtils.DateFormatter.format(dt.getCreated()) %></div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 swbp-list-action">
-                        <a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_EDIT).setParameter("uridt",dt.getURI()).setParameter("uritc", tc.getURI()) %>" class="btn btn-default col-xs-3 fa fa-pencil"></a>
+                        <a
+                            href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_EDIT).setParameter("uridt",dt.getURI()).setParameter("uritc", tc.getURI()) %>"
+                            class="btn btn-default col-xs-3 fa fa-pencil"></a>
                         <%
                         if (!actual) {
-                            %><a href="<%= urlAction.setParameter("uridt", dt.getURI())%>" class="btn btn-default col-xs-3 fa fa-retweet" onclick="if (!confirm('�Desea hacer versi�n <%= dt.getVersionValue() %> la versi�n actual?')) return false;"></a><%
+                            %>
+                            <a href="<%= urlAction.setParameter("uridt", dt.getURI())%>"
+                               class="btn btn-default col-xs-3 fa fa-retweet"
+                               onclick="if (!confirm('¿Desea hacer versión <%= dt.getVersionValue() %> la versión actual?')) return false;"></a>
+                            <%
                         } else {
                             %><a href="#" class="btn btn-default col-xs-3 fa fa-check-square-o disabled active"></a><%
                         }
                         %>
                         <a href="<%= admVersion.setParameter("uridt", dt.getURI())%>" class="btn btn-default col-xs-3 fa fa-info-circle" data-toggle="modal" data-target="#modalDialog"></a>
-                        <a href="<%= !actual ? urlActionRemove.setParameter("uridt", dt.getURI()) : "#" %>" class="btn btn-default col-xs-3 fa fa-trash-o <%= actual ? "disabled" : "" %>" <% if (!actual) {%>onclick="if (!confirm('�Seguro desea eliminar versi�n <%= dt.getVersionValue() %>?')) return false;" <%}%>></a>
+                        <a href="<%= !actual ? urlActionRemove.setParameter("uridt", dt.getURI()) : "#" %>" class="btn btn-default col-xs-3 fa fa-trash-o <%= actual ? "disabled" : "" %>" <% if (!actual) {%>onclick="if (!confirm('¿Seguro desea eliminar versión <%= dt.getVersionValue() %>?')) return false;" <%}%>></a>
                     </div>
                 </div> 
                 <%

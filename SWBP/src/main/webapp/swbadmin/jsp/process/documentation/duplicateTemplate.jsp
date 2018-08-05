@@ -12,11 +12,14 @@
 <%@page import="org.semanticwb.process.resources.documentation.model.DocumentTemplate"%>
 <%@page import="org.semanticwb.process.resources.documentation.model.TemplateContainer"%>
 <%@ page import="java.util.Iterator" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentTemplateResource.PARAM_REQUEST);
-    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").toString() : "";
+    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc") : "";
     TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-    SWBResourceURL urlSave = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentTemplateResource.ACTION_DUPLICATE_TEMPLATE).setParameter("uritc", uritc);
+    SWBResourceURL urlSave = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setAction(SWPDocumentTemplateResource.ACTION_DUPLICATE_TEMPLATE).setParameter("uritc", uritc);
+
 %>
 <div class="modal-dialog">
     <div class="modal-content">
@@ -27,16 +30,17 @@
         <form action="<%= urlSave %>" method="post" id="formdte" class="form-horizontal swbp-form">
             <div class="modal-body">
                 <div class="form-group" id="divtitletcd">
-                    <label for="" class="col-sm-3 control-label">T�tulo *:</label>
+                    <label class="col-sm-3 control-label">Título *:</label>
                     <div class="col-sm-8">
-                        <input name="titletcd" id="titletcd" required value="<%= tc == null ? "" : tc.getTitle()%>" class="form-control"/>
+                        <input name="titletcd" id="titletcd" required
+                               value="<%= tc == null ? "" : tc.getTitle()%>" class="form-control"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="" class="col-sm-3 control-label">Versi�n *:</label>
+                    <label class="col-sm-3 control-label">Versión *:</label>
                     <div class="col-sm-8">
                         <select name="versiontemp" class="form-control" required>
-                            <option>Seleccione una versi�n</option>
+                            <option>Seleccione una versión</option>
                             <%
                             if (null != tc) {
                                 Iterator<DocumentTemplate> it = SWBComparator.sortByCreated(tc.listTemplates(), false);
