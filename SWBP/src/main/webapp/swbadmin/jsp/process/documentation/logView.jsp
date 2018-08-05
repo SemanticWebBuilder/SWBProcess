@@ -15,9 +15,10 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Collections"%>
 <%@page import="java.util.Iterator"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
-    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").toString() : "";
+    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc") : "";
     SemanticObject semObj = SemanticObject.createSemanticObject(uritc);
     String title = "";
 

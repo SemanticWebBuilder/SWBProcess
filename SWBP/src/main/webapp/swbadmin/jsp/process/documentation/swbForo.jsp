@@ -13,6 +13,7 @@
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.TreeSet"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="paramRequest" scope="request" type="org.semanticwb.portal.api.SWBParamRequest"/>
 <%
 WebPage webpage = paramRequest.getWebPage();
@@ -52,7 +53,8 @@ if (action != null && action.equals("viewPost")) {
     String body = SWBUtils.TEXT.replaceAll(thread.getBody(),"\n","<br>");
     %>
     <div class="row no-margin swbp-button-ribbon text-right">
-        <a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW) %>" class="btn btn-swbp-action" >Regresar al foro</a>
+        <a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW) %>"
+           class="btn btn-swbp-action" >Regresar al foro</a>
     </div>
     <hr/>
     <div class="panel swbp-input-tray">
@@ -77,7 +79,7 @@ if (action != null && action.equals("viewPost")) {
                         <span class="col-lg-6 col-md-6 col-sm-12 col-xs-12 fa fa-pencil"></span>
                         <span class="col-lg-6 col-md-6 hidden-sm hidden-xs text-left">Editar</span>
                     </a>
-                    <a class="btn btn-default col-xs-6" onclick="if (!confirm('�Est� seguro de querer eliminar la entrada?')) return false;" href="<%=actionURL%>" role="button">
+                    <a class="btn btn-default col-xs-6" onclick="if (!confirm('¿Está seguro de querer eliminar la entrada?')) return false;" href="<%=actionURL%>" role="button">
                         <span class="col-lg-6 col-md-6 col-sm-12 col-xs-12 fa fa-trash-o"></span>
                         <span class="col-lg-6 col-md-6 hidden-sm hidden-xs text-left">Eliminar</span>
                     </a>
@@ -125,7 +127,8 @@ if (action != null && action.equals("viewPost")) {
                         <div class="form-group">
                             <label for="" class="col-sm-10 col-sm-offset-1"><h6>Captcha *</h6></label>
                             <div class="col-sm-10 col-sm-offset-1">
-                                <img src="<%= SWBPlatform.getContextPath() + "/swbadmin/jsp/securecode.jsp" %>" alt="" id="imgseccode" width="155" height="65"/>
+                                <img src="<%= SWBPlatform.getContextPath() + "/swbadmin/jsp/securecode.jsp" %>"
+                                     id="imgseccode" width="155" height="65"/>
                                 <input type="text" required name="cmnt_seccode" class="form-control" id="cmnt_seccode">
                             </div>
                         </div>
@@ -147,7 +150,7 @@ if (action != null && action.equals("viewPost")) {
         while (itPost.hasNext()) {
             isTheAuthor = false;
             Post post = itPost.next();
-            String creator = "An�nimo";
+            String creator = "Anónimo";
             if (null != post.getCreator()) {
                 creator = post.getCreator().getFullName();
                 isTheAuthor = post.getCreator().getURI().equals(user.getURI());
@@ -155,7 +158,8 @@ if (action != null && action.equals("viewPost")) {
             %>
             <div class="row swbp-comment">
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 text-center swbp-comment-user">
-                    <img src="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/commons/css/images/usuario-3.png" class="img-circle" alt="<%= creator %>"/>
+                    <img src="<%=SWBPortal.getContextPath()%>/swbadmin/jsp/process/commons/css/images/usuario-3.png"
+                         class="img-circle" alt="<%= creator %>"/>
                 </div>
                 <div class="col-lg-11 col-md-11 col-sm-11 col-xs-10 hidden-padding">
                     <h6><%= creator %></h6>
@@ -172,7 +176,7 @@ if (action != null && action.equals("viewPost")) {
                         %>
                         <div class="row hidden-margin">
                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6 pull-right swbp-panel-blog-button">
-                                <a class="btn btn-block" onclick="if (!confirm('�Est� seguro de querer eliminar el comentario?')) return false;" href="<%=actionURL%>" role="button">
+                                <a class="btn btn-block" onclick="if (!confirm('¿Está seguro de querer eliminar el comentario?')) return false;" href="<%=actionURL%>" role="button">
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 fa fa-trash-o icon"></div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 hidden-xs text">Eliminar</div>
                                 </a>

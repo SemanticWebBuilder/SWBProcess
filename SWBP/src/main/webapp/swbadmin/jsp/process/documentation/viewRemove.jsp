@@ -4,6 +4,7 @@
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.resources.documentation.model.DocumentSectionInstance"%>
 <%@page import="org.semanticwb.process.resources.documentation.model.Referable"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
   SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 
@@ -14,10 +15,13 @@
   String _rid = request.getParameter("_rid") != null ? request.getParameter("_rid") : "";
   String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
   String wp = request.getParameter("wp") != null ? request.getParameter("wp") : "";
-  //String link = request.getParameter("link") != null ? request.getParameter("link").toString() : "";
-  SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWBResourceURL.Action_REMOVE).setParameter("uridsi", uridsi).setParameter("urise", urise);
+  SWBResourceURL urlAction = paramRequest.getActionUrl()
+          .setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWBResourceURL.Action_REMOVE)
+          .setParameter("uridsi", uridsi).setParameter("urise", urise);
 
-  DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
+  DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology()
+          .getGenericObject(uridsi);
+
   SemanticClass type = dsi.getSecTypeDefinition().getSectionType().transformToSemanticClass();
 %>
 <div class="modal-dialog">
@@ -55,7 +59,6 @@
   </div>
 </div>
 
-<!--<iframe style="display:none;" name="UploadFrameR" id="UploadFrameR"></iframe>-->
 <script>
   (function() {
     var theForm = document.getElementById('formRemove');

@@ -47,10 +47,12 @@ if (model != null) {
         if (semanticCls.isSubClass(Referable.swpdoc_Referable, false)) {
             %>
             <div class="form-group" id="divconfigdata">
-                <label for="" class="col-lg-3 control-label"><%=paramRequest.getLocaleString("lblRepository")%><%=docSection==null?" *":""%>:</label>
+                <label class="col-lg-3 control-label"><%=paramRequest.getLocaleString("lblRepository")%><%=docSection==null?" *":""%>:</label>
                 <div class="col-lg-9">
                     <%if (docSection != null && docSection.getConfigData() != null){
-                        RepositoryDirectory rd = (RepositoryDirectory) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(docSection.getConfigData());
+                        RepositoryDirectory rd = (RepositoryDirectory) SWBPlatform.getSemanticMgr()
+                                .getOntology().getGenericObject(docSection.getConfigData());
+
                         if (rd != null) {
                             %>
                             <input type="text" name="configdata" class="form-control" disabled value="<%=rd.getTitle()%>"/>
@@ -106,7 +108,9 @@ if (model != null) {
         itSemProp = forMgr.getProperties().iterator();
         if (itSemProp.hasNext()) {
             %>
-            <h4><span class="fa fa-check-square-o fa-fw"></span><%=paramRequest.getLocaleString("btnInfo") + " " + paramRequest.getLocaleString("pagDelim") + " " + semanticCls.getDisplayName(lang)%></h4>
+            <h4>
+                <span class="fa fa-check-square-o fa-fw"></span><%=paramRequest.getLocaleString("btnInfo") + " " + paramRequest.getLocaleString("pagDelim") + " " + semanticCls.getDisplayName(lang)%>
+            </h4>
             <hr>
             <div class="table-responsive">
                 <table class="table table-hover swbp-table">
@@ -145,7 +149,8 @@ if (model != null) {
                                 <input type="text" name="label<%=idSemProp%>" value="<%=label%>" class="form-control">
                             </td>
                             <td class="swbp-icon-center">
-                                <input class="form-control" type="checkbox" name="<%=idSemProp%>" <%=(docSection != null && docSection.getVisibleProperties().contains(idSemProp))?"checked":""%>>
+                                <input class="form-control" type="checkbox"
+                                   name="<%=idSemProp%>" <%=(docSection != null && docSection.getVisibleProperties().contains(idSemProp))?"checked":""%>>
                             </td>
                         </tr>
                     <%

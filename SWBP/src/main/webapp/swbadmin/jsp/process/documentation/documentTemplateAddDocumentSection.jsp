@@ -10,12 +10,15 @@
 <%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
 <%@page import="org.semanticwb.process.resources.documentation.model.*"%>
-<%@page import="java.util.Iterator"%>
-<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource" %>
+<%@ page import="java.util.Iterator" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
-    SWBResourceURL act = paramRequest.getActionUrl().setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
+    SWBResourceURL act = paramRequest.getActionUrl()
+            .setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
+
     String uridt = request.getParameter("uridt") != null ? request.getParameter("uridt") : "";
     DocumentTemplate docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridt);
     
@@ -29,7 +32,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h5 class="modal-title">Agregar secci�n</h5>
+            <h5 class="modal-title">Agregar sección</h5>
         </div>
         <%
         if (null == docTemplate) {
@@ -54,13 +57,13 @@
                 <input type="hidden" name="uridt" value="<%= docTemplate.getURI() %>"/>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label">T�tulo: *</label>
+                        <label class="col-sm-4 control-label">Título: *</label>
                         <div class="col-sm-7">
                             <input name="titleSection" id="titltitleSectione" type="text" required class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label"><%=paramRequest.getLocaleString("lblSecType")%>*:</label>
+                        <label class="col-sm-4 control-label"><%=paramRequest.getLocaleString("lblSecType")%>*:</label>
                         <div class="col-sm-7">
                             <select required name="dstype" id="dstype" class="form-control">
                                 <option value="">Seleccione un tipo</option>

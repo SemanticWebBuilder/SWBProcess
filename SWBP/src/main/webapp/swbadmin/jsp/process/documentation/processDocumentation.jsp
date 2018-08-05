@@ -9,6 +9,7 @@
 <%@page import="java.io.DataOutput"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Iterator"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 SWBParamRequest paramRequest = (SWBParamRequest)request.getAttribute("paramRequest");
 String pid = request.getParameter("pid");
@@ -21,12 +22,12 @@ if (wp instanceof WrapperProcessWebPage) {
 }
 
 if (process != null) {
-    HashMap<String, SubProcess> subProcesses = new HashMap<String, SubProcess>();
-    HashMap<String, Role> roles = new HashMap<String, Role>();
-    HashMap<String, Task> tasks = new HashMap<String, Task>();
-    HashMap<String, ProcessRule> rules = new HashMap<String, ProcessRule>();
-    HashMap<String, Gateway> gateways = new HashMap<String, Gateway>();
-    HashMap<String, ItemAware> objects = new HashMap<String, ItemAware>();
+    HashMap<String, SubProcess> subProcesses = new HashMap<>();
+    HashMap<String, Role> roles = new HashMap<>();
+    HashMap<String, Task> tasks = new HashMap<>();
+    HashMap<String, ProcessRule> rules = new HashMap<>();
+    HashMap<String, Gateway> gateways = new HashMap<>();
+    HashMap<String, ItemAware> objects = new HashMap<>();
     
     String puri = process.getEncodedURI();
     String pName = process.getTitle();
@@ -115,7 +116,7 @@ if (process != null) {
                         Role rol = roles.get(key);
                         String rdesc = rol.getDescription();
                         
-                        if (rdesc == null || rdesc.equals("")) rdesc = "Sin descripci�n.";
+                        if (rdesc == null || rdesc.equals("")) rdesc = "Sin descripción.";
                         %>
                         <tr id="<%=key%>">
                             <td>

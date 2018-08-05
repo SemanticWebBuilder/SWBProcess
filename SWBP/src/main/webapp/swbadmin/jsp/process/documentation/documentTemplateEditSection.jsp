@@ -17,10 +17,13 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Iterator"%>
 <%@ page import="java.util.Map" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentTemplateResource.PARAM_REQUEST);
     String uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids") : "";
-    SWBResourceURL urlSave = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
+    SWBResourceURL urlSave = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
+
     String title = "";
     String lang = "es";
     if (paramRequest.getUser() != null && paramRequest.getUser().getLanguage() != null) lang = paramRequest.getUser().getLanguage();
