@@ -44,18 +44,21 @@
 	
 	String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP);
 	if (null == idpg) idpg = "";
+
+%>
+<div class="row no-margin swbp-button-ribbon text-right">
+    <a
+        href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW).setParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP, idpg) %>"
+        class="btn btn-swbp-action" title="<%= paramRequest.getLocaleString("lblBack") %>">
+        <%= paramRequest.getLocaleString("lblBack") %>
+    </a>
+</div>
+<hr>
+<%
 	if (null == di) {
 		String msg = null == process ? paramRequest.getLocaleString("msgModelError") :
                 paramRequest.getLocaleString("lblNoDocumentation");
 		%>
-		<div class="row no-margin swbp-button-ribbon text-right">
-			<a
-                href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW).setParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP, idpg) %>"
-                class="btn btn-swbp-action" title="<%= paramRequest.getLocaleString("lblBack") %>">
-				<%= paramRequest.getLocaleString("lblBack") %>
-			</a>
-		</div>
-		<hr>
 		<div class="alert alert-block alert-warning fade in">
 			<%= msg %>
 		</div>
@@ -81,7 +84,6 @@
 			<%
 		} else {
 			%>
-			<hr>
 			<div class="panel panel-default swbp-panel-head">
 				<div class="panel-heading text-center"><%= process.getTitle() %> (<%= actualVersion.getVersionValue() %>)
 					<div class="pull-right hidden-print">

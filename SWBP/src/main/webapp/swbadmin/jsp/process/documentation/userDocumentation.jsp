@@ -80,9 +80,6 @@ boolean isDocumenter = user.hasRole(docRole);
                data-target="#modalDialog">Crear proceso</a>
             <%
         }
-        %>
-        <a href="" class="btn btn-swbp-action" data-toggle="modal" data-target="#modalDialog">Crear grupo de procesos</a>
-        <%
     }
     %>
 </div>
@@ -168,7 +165,7 @@ if (list.isEmpty()) {
                     }
                     %>
                     <a class="btn btn-default col-xs-4" role="button"
-                       href="<%= docUrl %>" <%= !isDocumenter || !isAdmin ? "disabled=\"disabled\"" : "" %>>
+                       href="<%= docUrl %>" <%= !isDocumenter && !isAdmin ? "disabled=\"disabled\"" : "" %>>
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-file-text"></div>
                         <div class="col-lg-8 col-md-8 hidden-sm hidden-xs swbp-list-action-text">Documentar</div>
                     </a>
