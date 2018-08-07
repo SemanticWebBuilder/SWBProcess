@@ -1935,6 +1935,10 @@
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#TemplateContainer"/>
     <rdfs:range rdf:resource="#Process"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#hasProcessElementScope">
+    <rdfs:range rdf:resource="#ProcessElement"/>
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#SectionElement"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="hasSignalObserverInstance">
     <rdfs:range rdf:resource="#FlowNodeInstance"/>
     <rdfs:domain rdf:resource="#ProcessObserver"/>
@@ -2011,6 +2015,20 @@
         <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#parentSection">
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#SectionElement"/>
+    <rdfs:range>
+      <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocumentSection">
+        <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+        >true</swb:autogenId>
+        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+      </swb:Class>
+    </rdfs:range>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#hasSectionElementInv"/>
+    </owl:inverseOf>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="parent">
     <rdfs:domain rdf:resource="#GraphicalElement"/>
@@ -2290,6 +2308,10 @@
     <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Class"/>
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#ElementReference"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#lastTemplate">
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#TemplateContainer"/>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="hasTaskAction">
     <rdfs:domain rdf:resource="#UserTask"/>
     <rdfs:range rdf:resource="#TaskAction"/>
@@ -2304,6 +2326,10 @@
       </swbxf:DisplayProperty>
     </swb:displayProperty>
     <rdfs:label xml:lang="pt">Ações de tarefa</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#hasTemplate">
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#TemplateContainer"/>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#documentDefType">
     <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate"/>
@@ -2448,6 +2474,10 @@
     >true</swb:removeDependency>
     <rdfs:range rdf:resource="#ProcessRuleRef"/>
     <rdfs:domain rdf:resource="#ProcessRuleRefable"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#hasSectionElementInv">
+    <swb:propertyCodeName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >hasSectionElement</swb:propertyCodeName>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="hasMessageItemAware">
     <rdfs:label xml:lang="pt">Objetos da mensagem</rdfs:label>
@@ -2601,6 +2631,12 @@
       </swbxf:DisplayProperty>
     </swb:displayProperty>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#hasSectionElementRef">
+    <swb:removeDependency rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</swb:removeDependency>
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Activity"/>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#SectionElementRef"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="#hasFlowNodeInstanceInv">
     <swb:removeDependency rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:removeDependency>
@@ -2641,14 +2677,7 @@
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate"/>
     <swb:removeDependency rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >false</swb:removeDependency>
-    <rdfs:range>
-      <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocumentSection">
-        <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
-        >true</swb:autogenId>
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-      </swb:Class>
-    </rdfs:range>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentSection"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="activityInstanceInv">
     <swb:propertyCodeName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
@@ -2663,6 +2692,10 @@
     >true</swb:removeDependency>
     <swb:propertyCodeName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >hasInputConnectionObject</swb:propertyCodeName>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#nextTemplate">
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate"/>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="#hasProcessGroup">
     <swb:herarquicalRelation rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
