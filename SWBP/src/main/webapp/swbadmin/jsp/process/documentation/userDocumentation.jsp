@@ -45,11 +45,14 @@ String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP)
 ProcessGroup group1 = ProcessGroup.ClassMgr.getProcessGroup(idpg, model);
 
 SWBResourceURL urlDoc = paramRequest.getRenderUrl().setMode(SWBProcessManagerResource.MODE_VIEW_DOCUMENTATION);
-    SWBResourceURL createProcessUrl = paramRequest.getRenderUrl().setCallMethod(SWBResourceModes.Call_DIRECT);
+SWBResourceURL createProcessUrl = paramRequest.getRenderUrl().setCallMethod(SWBResourceModes.Call_DIRECT)
+        .setMode(SWBProcessManagerResource.MODE_CREATEPROCESS);
+SWBResourceURL createProcessGroupUrl = paramRequest.getRenderUrl().setCallMethod(SWBResourceModes.Call_DIRECT)
+        .setMode(SWBProcessManagerResource.MODE_CREATEPROCESSGROUP);
 
-createProcessUrl.setMode(SWBProcessManagerResource.MODE_CREATEPROCESS);
 if (null != idpg) {
     createProcessUrl.setParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP, idpg);
+    createProcessGroupUrl.setParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP, idpg);
 }
 
 String pag = request.getParameter("p") != null ? request.getParameter("p") : "";
@@ -80,6 +83,10 @@ boolean isDocumenter = user.hasRole(docRole);
                data-target="#modalDialog">Crear proceso</a>
             <%
         }
+        %>
+            <a href="<%= createProcessGroupUrl %>" class="btn btn-swbp-action" data-toggle="modal"
+               data-target="#modalDialog">Crear grupo de procesos</a>
+        <%
     }
     %>
 </div>

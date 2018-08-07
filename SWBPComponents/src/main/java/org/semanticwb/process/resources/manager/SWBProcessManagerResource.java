@@ -48,6 +48,7 @@ public class SWBProcessManagerResource extends GenericAdmResource {
     public static final String MODE_CREATEPG = "m_createpg";
     public static final String MODE_EXPORT = "export";
     public static final String MODE_CREATEPROCESS = "m_createprocess";
+    public static final String MODE_CREATEPROCESSGROUP = "m_createprocessgoup";
     public static final String MODE_RESPONSE = "m_response";
     public static final String MODE_GENERATESVG = "gensvg";
     public static final String PARAM_PROCESSGROUP = "pg";
@@ -63,6 +64,7 @@ public class SWBProcessManagerResource extends GenericAdmResource {
     public static final String LIST_PROCESSES = "listTemplates";
     public static final String ATT_PARAMREQUEST = "paramRequest";
     public static final String ACT_CREATEPROCESS = "a_createprocess";
+    public static final String ACT_CREATEPROCESSGROUP = "a_createprocessgroup";
     public static final String ACT_GETPROCESSJSON = "getProcessJSON";
     public static final String ACT_STOREPROCESS = "storeProcess";
     public static final String ACT_LOADFILE = "loadFile";
@@ -75,10 +77,10 @@ public class SWBProcessManagerResource extends GenericAdmResource {
     @Override
     public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
         String act = response.getAction();
+        String processGroupId = request.getParameter(PARAM_PROCESSGROUP);
         WebSite site = response.getWebPage().getWebSite();
 
         if (ACT_CREATEPROCESS.equals(act)) {
-            String processGroupId = request.getParameter(PARAM_PROCESSGROUP);
             if (null != processGroupId) {
                 String processName = request.getParameter(Process.swb_title.getName());
                 String processDescription = request.getParameter(Process.swb_description.getName());
@@ -90,12 +92,34 @@ public class SWBProcessManagerResource extends GenericAdmResource {
                         Process p = Process.ClassMgr.createProcess(processId, site);
                         p.setProcessGroup(pg);
                         p.setTitle(processName);
-                        p.setDescription(processDescription);
+                        p.setDescription(null != processDescription ? processDescription : "");
+                        p.setActive(true);
 
                         response.setRenderParameter(PARAM_PROCESSGROUP, processGroupId);
                         response.setRenderParameter("status", "ok");
                         response.setMode(MODE_RESPONSE);
                     }
+                }
+            }
+        } else if (ACT_CREATEPROCESSGROUP.equals(act)) {
+            if (null != processGroupId) {
+                ProcessGroup parentGroup = ProcessGroup.ClassMgr.getProcessGroup(processGroupId, site);
+                String groupName = request.getParameter(ProcessGroup.swb_title.getName());
+                String groupDescription = request.getParameter(ProcessGroup.swb_description.getName());
+
+                if (null != groupName && !groupName.isEmpty()) {
+                    ProcessGroup pg = ProcessGroup.ClassMgr.createProcessGroup(site);
+                    pg.setTitle(groupName);
+                    pg.setDescription(null != groupDescription ? groupDescription : "");
+                    pg.setActive(true);
+
+                    if (null != parentGroup) {
+                        pg.setParentGroup(parentGroup);
+                    }
+
+                    response.setRenderParameter(PARAM_PROCESSGROUP, processGroupId);
+                    response.setRenderParameter("status", "ok");
+                    response.setMode(MODE_RESPONSE);
                 }
             }
         } else {
@@ -109,6 +133,9 @@ public class SWBProcessManagerResource extends GenericAdmResource {
         switch (mode) {
             case MODE_VIEW_DOCUMENTATION:
                 doViewDocumentation(request, response, paramRequest);
+                break;
+            case MODE_CREATEPROCESSGROUP:
+                doCreateProcessGroup(request, response, paramRequest);
                 break;
             case MODE_EXPORT_MODEL:
                 doExportModel(request, response, paramRequest);
@@ -280,7 +307,20 @@ public class SWBProcessManagerResource extends GenericAdmResource {
             request.setAttribute(ATT_PARAMREQUEST, paramRequest);
             rd.include(request, response);
         } catch (ServletException ex) {
-            LOG.error("Error on doViewDocumentation", ex);
+            LOG.error("SWBProcessManagerResource. Error on doCreateProcess", ex);
+        }
+    }
+
+    public void doCreateProcessGroup(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
+        String path = "/swbadmin/jsp/process/manager/createProcessGroup.jsp";
+        RequestDispatcher rd = request.getRequestDispatcher(path);
+        try {
+            request.setAttribute(ATT_PARAMREQUEST, paramRequest);
+            rd.include(request, response);
+        } catch (ServletException ex) {
+            LOG.error("SWBProcessManagerResource. Error on doCreateProcessGroup", ex);
         }
     }
 
