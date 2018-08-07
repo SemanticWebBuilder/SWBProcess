@@ -19,10 +19,7 @@
 <%@page import="org.semanticwb.process.model.RepositoryElement"%>
 <%@page import="org.semanticwb.process.model.RepositoryURL"%>
 <%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.DocumentSection"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.DocumentSectionInstance"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.Referable"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.SectionElement"%>
+<%@page import="org.semanticwb.process.model.documentation.*"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
@@ -103,7 +100,7 @@
                                   } else {
                                       %>
                                       <div class="form-group" id="div<%= sp.getName() %>">
-                                          <label for="" class="col-sm-4 control-label"><%=titleprop%> <%if (required) {%>*<%}%></label>
+                                          <label class="col-sm-4 control-label"><%=titleprop%> <%if (required) {%>*<%}%></label>
                                           <div class="col-sm-7">
                                               <%
                                               String inputfm = mgr.renderElement(request, sp, mode);
@@ -125,7 +122,7 @@
                                   if (se == null) {//Archivo nuevo
                                       %>
                                       <div class="form-group">
-                                          <label for="" class="col-sm-4 control-label"><%=paramRequest.getLocaleString("msgFileType")%></label>
+                                          <label class="col-sm-4 control-label"><%=paramRequest.getLocaleString("msgFileType")%></label>
                                           <div class="col-sm-7">
                                               <label class="checkbox-inline">
                                                   <input type="radio" id="fileToggleRadio" checked name="hftype" value="file"/> <%=paramRequest.getLocaleString("msgFile")%>
@@ -142,7 +139,7 @@
                                           </div>
                                       </div>
                                       <div id="linkSelect" class="row form-group">
-                                          <label for="" class="col-sm-4 control-label"><%=paramRequest.getLocaleString("lblLink")%> *</label>
+                                          <label class="col-sm-4 control-label"><%=paramRequest.getLocaleString("lblLink")%> *</label>
                                           <div class="col-sm-7">
                                               <input type="url" name="lfile" id="lfile" class="form-control" placeholder="http://"/>
                                           </div>
@@ -167,7 +164,7 @@
                                               listvi = re.listVersions();
                                               %>
                                               <div class="form-group">
-                                                  <label for="" class="col-sm-4 control-label"><%= titleprop%></label>
+                                                  <label class="col-sm-4 control-label"><%= titleprop%></label>
                                                   <div class="col-sm-7">
                                                       <%
                                                       if (re instanceof org.semanticwb.process.model.RepositoryFile) {
@@ -180,7 +177,7 @@
                                               </div>
                                               <input type="hidden" name="urire" value="<%= re.getURI()%>">
                                               <div class="form-group">
-                                                  <label for="" class="col-sm-4 control-label"><%= paramRequest.getLocaleString("lblVersionAct")%> *</label>
+                                                  <label class="col-sm-4 control-label"><%= paramRequest.getLocaleString("lblVersionAct")%> *</label>
                                                   <div class="col-sm-7">
                                                       <%
                                                       if (null != se) {
@@ -211,7 +208,7 @@
                                       if (null == se) {
                                           %>
                                           <div class="form-group">
-                                              <label for="" class="col-sm-4 control-label"><%= configData %> *</label>
+                                              <label class="col-sm-4 control-label"><%= configData %> *</label>
                                               <div class="col-sm-7">
                                                   <select name="<%= semPropData.getName()%>" id="<%= semPropData.getName()%>" class="form-control" required>
                                                       <%=getRepoOptions((RepositoryDirectory)webpage, null, "-") %>

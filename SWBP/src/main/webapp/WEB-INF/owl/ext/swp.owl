@@ -2464,7 +2464,11 @@
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#sectionType">
     <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Class"/>
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_sectionType"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_sectionType">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentSection"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="parentWebPage">
@@ -2963,7 +2967,14 @@
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#prefix">
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Prefixeable"/>
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_prefix"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_prefix">
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >11</swb:index>
+        <rdfs:label xml:lang="en">Prefix</rdfs:label>
+        <rdfs:label xml:lang="es">Prefijo</rdfs:label>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
     <rdfs:label xml:lang="es">Prefijo</rdfs:label>
     <swb:localeable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:localeable>
@@ -3251,7 +3262,15 @@
     >true</swb:localeable>
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Format"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_relatedSubjects"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_relatedSubjects">
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >23</swb:index>
+        <rdfs:label xml:lang="es">Temas relacionados</rdfs:label>
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#TextBox"/>
+        <rdfs:label xml:lang="en">Related subjects</rdfs:label>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="connectionPoints">
     <rdfs:domain rdf:resource="#ConnectionObject"/>
@@ -3373,7 +3392,15 @@
     <rdfs:domain rdf:resource="#BPMNSerializable"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#typeReference">
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_typeReference"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_typeReference">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#TextBox"/>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >5</swb:index>
+        <rdfs:label xml:lang="es">Tipo de referencia</rdfs:label>
+        <rdfs:label xml:lang="en">Type of reference</rdfs:label>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
     <swb:localeable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:localeable>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
@@ -3467,7 +3494,15 @@
     <rdfs:label xml:lang="pt">Url para a definição do serviço web</rdfs:label>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#number">
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_number"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_number">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#TextBox"/>
+        <rdfs:label xml:lang="es">Numero</rdfs:label>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >11</swb:index>
+        <rdfs:label xml:lang="en">Number</rdfs:label>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
     <rdfs:label xml:lang="en">Number</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Numerable"/>
@@ -3476,7 +3511,12 @@
     <rdfs:label xml:lang="es">Numero</rdfs:label>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#file">
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_refFile"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_refFile">
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >27</swb:index>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
     <swb:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:required>
     <rdfs:label xml:lang="en">File</rdfs:label>
@@ -3573,7 +3613,15 @@
   <owl:DatatypeProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#responsible">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Indicator"/>
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_responsible"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_responsible">
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >25</swb:index>
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#TextBox"/>
+        <rdfs:label xml:lang="en">Responsible</rdfs:label>
+        <rdfs:label xml:lang="es">Responsable</rdfs:label>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="text">
     <rdfs:domain rdf:resource="#Documentation"/>
@@ -3714,7 +3762,15 @@
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Indicator"/>
     <swb:localeable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:localeable>
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_objetive"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_objetive">
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >19</swb:index>
+        <rdfs:label xml:lang="en">Objetive</rdfs:label>
+        <rdfs:label xml:lang="es">Objetivo</rdfs:label>
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#TextBox"/>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="interruptor">
@@ -3960,7 +4016,15 @@
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#methodVerification">
     <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Indicator"/>
-    <swb:displayProperty rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#dp_methodVerification"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_methodVerification">
+        <rdfs:label xml:lang="es">Metodo de verificacion</rdfs:label>
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#TextBox"/>
+        <rdfs:label xml:lang="en">Method of verification</rdfs:label>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >27</swb:index>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="storeRepNodeVarName">
@@ -4010,6 +4074,7 @@
     <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#ObjectElement_1"/>
     <swbxf:propGroup rdf:resource="#grp_Process"/>
   </swbxf:DisplayProperty>
+  <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_refRepository"/>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#BusinessRole">
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:autogenId>
@@ -4085,6 +4150,12 @@
     <rdfs:subClassOf rdf:resource="#FlowNodeInstance"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </swb:Class>
+  <swbxf:DisplayProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#dp_linkFile">
+    <rdfs:label xml:lang="es">Liga de archivo</rdfs:label>
+    <rdfs:label xml:lang="en">Link file</rdfs:label>
+    <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >28</swb:index>
+  </swbxf:DisplayProperty>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#Risk">
     <rdfs:label xml:lang="es">Riesgo</rdfs:label>
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"

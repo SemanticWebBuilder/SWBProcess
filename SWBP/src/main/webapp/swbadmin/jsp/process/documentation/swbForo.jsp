@@ -111,7 +111,7 @@ if (action != null && action.equals("viewPost")) {
                 <%=mgr.getFormHiddens()%>
                 <div class="panel-body">
                     <div class="form-group" id="div<%=Post.frm_pstBody.getName()%>">
-                        <label for="" class="col-sm-10 col-sm-offset-1 control-label"><h6>Deja un comentario</h6></label>
+                        <label class="col-sm-10 col-sm-offset-1 control-label"><h6>Deja un comentario</h6></label>
                         <div class="col-sm-10 col-sm-offset-1">
                         <%
                         String inputfm = mgr.renderElement(request, Post.frm_pstBody, SWBFormMgr.MODE_CREATE);
@@ -125,7 +125,7 @@ if (action != null && action.equals("viewPost")) {
                     if (showCaptcha) {
                         %>
                         <div class="form-group">
-                            <label for="" class="col-sm-10 col-sm-offset-1"><h6>Captcha *</h6></label>
+                            <label class="col-sm-10 col-sm-offset-1"><h6>Captcha *</h6></label>
                             <div class="col-sm-10 col-sm-offset-1">
                                 <img src="<%= SWBPlatform.getContextPath() + "/swbadmin/jsp/securecode.jsp" %>"
                                      id="imgseccode" width="155" height="65"/>

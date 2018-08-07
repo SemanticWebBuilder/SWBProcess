@@ -1,17 +1,10 @@
 package org.semanticwb.process.resources.documentation.writers;
 
-import static org.semanticwb.process.utils.SWPUtils.copyFile;
-import static org.semanticwb.process.utils.SWPUtils.saveFile;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Iterator;
-import java.util.List;
-
+import com.lowagie.text.*;
+import com.lowagie.text.rtf.RtfWriter2;
+import com.lowagie.text.rtf.field.RtfPageNumber;
+import com.lowagie.text.rtf.headerfooter.RtfHeaderFooter;
+import com.lowagie.text.rtf.style.RtfFont;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
@@ -23,37 +16,23 @@ import org.semanticwb.model.SWBComparator;
 import org.semanticwb.model.VersionInfo;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticProperty;
-import org.semanticwb.process.resources.documentation.model.Activity;
-import org.semanticwb.process.resources.documentation.model.DocumentSectionInstance;
-import org.semanticwb.process.resources.documentation.model.DocumentationInstance;
-import org.semanticwb.process.resources.documentation.model.FreeText;
-import org.semanticwb.process.resources.documentation.model.Instantiable;
-import org.semanticwb.process.resources.documentation.model.Model;
-import org.semanticwb.process.resources.documentation.model.Referable;
-import org.semanticwb.process.resources.documentation.model.SectionElement;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.RepositoryElement;
 import org.semanticwb.process.model.RepositoryFile;
 import org.semanticwb.process.model.RepositoryURL;
+import org.semanticwb.process.model.documentation.*;
 
-import com.lowagie.text.Anchor;
-import com.lowagie.text.Cell;
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.HeaderFooter;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Table;
-import com.lowagie.text.Utilities;
-import com.lowagie.text.rtf.RtfWriter2;
-import com.lowagie.text.rtf.field.RtfPageNumber;
-import com.lowagie.text.rtf.headerfooter.RtfHeaderFooter;
-import com.lowagie.text.rtf.style.RtfFont;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.semanticwb.process.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.utils.SWPUtils.saveFile;
 
 /**
  * Impmenents a RTF Writer for process documentation.

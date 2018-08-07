@@ -17,9 +17,9 @@
 <%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
 <%@page import="org.semanticwb.process.model.RepositoryElement"%>
 <%@page import="org.semanticwb.process.model.RepositoryURL"%>
+<%@page import="org.semanticwb.process.model.documentation.*"%>
 <%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.*"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

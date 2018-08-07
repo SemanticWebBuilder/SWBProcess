@@ -18,7 +18,7 @@
 <%@page import="org.semanticwb.process.model.RepositoryURL"%>
 <%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.*"%>
+<%@page import="org.semanticwb.process.model.documentation.*"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Map"%>

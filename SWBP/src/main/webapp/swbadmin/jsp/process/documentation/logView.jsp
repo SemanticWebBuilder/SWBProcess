@@ -9,8 +9,8 @@
 <%@page import="org.semanticwb.platform.SemanticObject"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.process.model.RepositoryElement"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.Documentation"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.Referable"%>
+<%@page import="org.semanticwb.process.model.documentation.Documentation"%>
+<%@page import="org.semanticwb.process.model.documentation.Referable"%>
 <%@page import="org.semanticwb.process.utils.SWPUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Collections"%>

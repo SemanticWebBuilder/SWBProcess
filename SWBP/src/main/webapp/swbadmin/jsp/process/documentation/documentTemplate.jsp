@@ -9,13 +9,13 @@
 <%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.DocumentTemplate"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.TemplateContainer"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentTemplate"%>
+<%@page import="org.semanticwb.process.model.documentation.TemplateContainer"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
+<%@page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Collections"%>
-<%@page import="java.util.List"%>
-<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource" %>
-<%@ page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%!
 private static void setVersionNumbers(DocumentTemplate lastTemplate) { // TO DEPRECATE in FUTURE VERSIONS

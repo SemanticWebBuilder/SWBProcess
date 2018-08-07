@@ -8,8 +8,8 @@
 <%@page import="org.semanticwb.model.WebPage"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
-<%@ page import="org.semanticwb.process.resources.documentation.model.SectionElement" %>
+<%@page import="org.semanticwb.process.model.documentation.SectionElement"%>
+<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
