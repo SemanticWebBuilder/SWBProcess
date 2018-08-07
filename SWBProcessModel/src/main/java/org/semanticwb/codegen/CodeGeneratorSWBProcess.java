@@ -34,6 +34,7 @@ public class CodeGeneratorSWBProcess {
             File dir = new File(SOURCECODE_BASE);
             CodeGenerator codeGeneration = new CodeGenerator();
             codeGeneration.generateCode(SWP_PREFIX, false, dir);
+            codeGeneration.generateCode(SWPDOC_PREFIX, false, dir);
             LOG.info("Class generation complete");
         } catch (CodeGeneratorException cge) {
             cge.printStackTrace();
