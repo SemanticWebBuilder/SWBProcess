@@ -2152,6 +2152,10 @@
       </swbxf:DisplayProperty>
     </swb:displayProperty>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#processActivity">
+    <rdfs:range rdf:resource="#Activity"/>
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#ActivityRef"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="processInv">
     <swb:propertyCodeName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >process</swb:propertyCodeName>
@@ -2162,6 +2166,10 @@
     </owl:inverseOf>
     <rdfs:range rdf:resource="#FlowNodeInstance"/>
     <rdfs:domain rdf:resource="#FlowNodeInstance"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#processRef">
+    <rdfs:range rdf:resource="#Process"/>
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationInstance"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:ID="target">
     <owl:inverseOf>
@@ -2341,6 +2349,10 @@
       </swb:Class>
     </rdfs:range>
     <rdfs:domain rdf:resource="#UserTask"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#process">
+    <rdfs:range rdf:resource="#Process"/>
+    <rdfs:domain rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Documentation"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://www.semanticwebbuilder.org/resources/documentation#hasTemplate">
     <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate"/>
