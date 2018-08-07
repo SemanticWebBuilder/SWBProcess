@@ -1,18 +1,5 @@
 package org.semanticwb.process.resources.documentation;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBUtils;
@@ -23,30 +10,17 @@ import org.semanticwb.model.WebSite;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticProperty;
-import org.semanticwb.portal.api.GenericResource;
-import org.semanticwb.portal.api.SWBActionResponse;
-import org.semanticwb.portal.api.SWBParamRequest;
-import org.semanticwb.portal.api.SWBResourceException;
-import org.semanticwb.portal.api.SWBResourceURL;
-import org.semanticwb.process.resources.documentation.model.Activity;
-import org.semanticwb.process.resources.documentation.model.ActivityRef;
-import org.semanticwb.process.resources.documentation.model.Definition;
-import org.semanticwb.process.resources.documentation.model.DocumentSection;
-import org.semanticwb.process.resources.documentation.model.DocumentSectionInstance;
-import org.semanticwb.process.resources.documentation.model.DocumentTemplate;
-import org.semanticwb.process.resources.documentation.model.DocumentationInstance;
-import org.semanticwb.process.resources.documentation.model.ElementReference;
-import org.semanticwb.process.resources.documentation.model.Format;
-import org.semanticwb.process.resources.documentation.model.FreeText;
-import org.semanticwb.process.resources.documentation.model.Indicator;
-import org.semanticwb.process.resources.documentation.model.Instantiable;
-import org.semanticwb.process.resources.documentation.model.Policy;
-import org.semanticwb.process.resources.documentation.model.Reference;
-import org.semanticwb.process.resources.documentation.model.Rule;
-import org.semanticwb.process.resources.documentation.model.SectionElement;
-import org.semanticwb.process.resources.documentation.model.SectionElementRef;
-import org.semanticwb.process.resources.documentation.model.TemplateContainer;
+import org.semanticwb.portal.api.*;
 import org.semanticwb.process.model.Process;
+import org.semanticwb.process.model.documentation.*;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * Componente que permite la administración de plantillas de documentación.

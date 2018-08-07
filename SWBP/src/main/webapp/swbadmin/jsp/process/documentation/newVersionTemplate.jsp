@@ -8,9 +8,9 @@
 <%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentTemplate"%>
+<%@page import="org.semanticwb.process.model.documentation.TemplateContainer"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.DocumentTemplate"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.TemplateContainer"%>
 <%@page import="org.semanticwb.process.utils.SWPUtils"%>
 <%@page import="java.util.Iterator"%>
 <%@ page contentType="text/html;charset=UTF-8" %>

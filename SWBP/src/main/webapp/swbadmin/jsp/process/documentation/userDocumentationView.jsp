@@ -10,8 +10,8 @@
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.Documentation"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.DocumentationInstance"%>
+<%@page import="org.semanticwb.process.model.documentation.Documentation"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentationInstance"%>
 <%@page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource"%>
 <%@page import="java.io.File"%>
 <%@ page import="java.io.FileInputStream" %>

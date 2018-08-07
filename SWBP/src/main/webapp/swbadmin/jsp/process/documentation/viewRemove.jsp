@@ -2,8 +2,8 @@
 <%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.DocumentSectionInstance"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.Referable"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSectionInstance"%>
+<%@page import="org.semanticwb.process.model.documentation.Referable"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
   SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");

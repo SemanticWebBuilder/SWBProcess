@@ -13,10 +13,10 @@
 <%@page import="org.semanticwb.portal.SWBFormMgr"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSection"%>
+<%@page import="org.semanticwb.process.model.documentation.Instantiable"%>
+<%@page import="org.semanticwb.process.model.documentation.Referable"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.DocumentSection"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.Instantiable"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.Referable"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Iterator"%>

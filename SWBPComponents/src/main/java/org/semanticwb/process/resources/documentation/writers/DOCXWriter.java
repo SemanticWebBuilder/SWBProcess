@@ -1,19 +1,5 @@
 package org.semanticwb.process.resources.documentation.writers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.docx4j.convert.in.xhtml.XHTMLImporter;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
@@ -24,45 +10,10 @@ import org.docx4j.model.table.TblFactory;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
-import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
-import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
-import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.*;
 import org.docx4j.relationships.Relationship;
 import org.docx4j.sharedtypes.STOnOff;
-import org.docx4j.wml.Br;
-import org.docx4j.wml.CTShd;
-import org.docx4j.wml.CTTblLook;
-import org.docx4j.wml.ContentAccessor;
-import org.docx4j.wml.Drawing;
-import org.docx4j.wml.FldChar;
-import org.docx4j.wml.FooterReference;
-import org.docx4j.wml.Ftr;
-import org.docx4j.wml.Hdr;
-import org.docx4j.wml.HdrFtrRef;
-import org.docx4j.wml.HeaderReference;
-import org.docx4j.wml.Jc;
-import org.docx4j.wml.JcEnumeration;
-import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.P;
-import org.docx4j.wml.PPr;
-import org.docx4j.wml.PPrBase;
-import org.docx4j.wml.R;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.STBrType;
-import org.docx4j.wml.STFldCharType;
-import org.docx4j.wml.STThemeColor;
-import org.docx4j.wml.SectPr;
-import org.docx4j.wml.Style;
-import org.docx4j.wml.Styles;
-import org.docx4j.wml.Tbl;
-import org.docx4j.wml.TblPr;
-import org.docx4j.wml.TblWidth;
-import org.docx4j.wml.Tc;
-import org.docx4j.wml.TcPr;
-import org.docx4j.wml.Text;
-import org.docx4j.wml.Tr;
+import org.docx4j.wml.*;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
@@ -73,14 +24,12 @@ import org.semanticwb.SWBUtils;
 import org.semanticwb.model.SWBComparator;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticProperty;
-import org.semanticwb.process.resources.documentation.model.Activity;
-import org.semanticwb.process.resources.documentation.model.DocumentSectionInstance;
-import org.semanticwb.process.resources.documentation.model.DocumentationInstance;
-import org.semanticwb.process.resources.documentation.model.FreeText;
-import org.semanticwb.process.resources.documentation.model.Instantiable;
-import org.semanticwb.process.resources.documentation.model.Model;
-import org.semanticwb.process.resources.documentation.model.Referable;
-import org.semanticwb.process.resources.documentation.model.SectionElement;
+import org.semanticwb.process.model.documentation.*;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *
@@ -124,7 +73,7 @@ public class DOCXWriter implements DocumentWriter {
 	 *            DocumentationInstance object
 	 * @param assetsPath
 	 *            Path to additional assets required in docx generation.
-	 * @param configParam
+	 * @param configParams
 	 *            Configuration parameters.
 	 */
 	public DOCXWriter(DocumentationInstance di, String assetsPath, Map configParams) {
@@ -170,7 +119,7 @@ public class DOCXWriter implements DocumentWriter {
 	 *
 	 * @param templatePath
 	 *            path to document template
-	 * @param includeHeaderFooterindica
+	 * @param includeHeaderFooter
 	 *            whether to process MergeFields in header and footer
 	 * @return WordprocessingMLPackage.
 	 */
@@ -474,7 +423,7 @@ public class DOCXWriter implements DocumentWriter {
 	/**
 	 * Sets style of paragraph
 	 *
-	 * @param paragraph
+	 * @param element
 	 *            Paragraph to style
 	 * @param styleName
 	 *            Style name
@@ -713,8 +662,6 @@ public class DOCXWriter implements DocumentWriter {
 	 *
 	 * @param doc
 	 *            MainDocumentPart
-	 * @param styleTable
-	 *            Style mapping table
 	 */
 	private void mapStyles(MainDocumentPart doc) {
 		if (null == this.styleNameMappings || this.styleNameMappings.isEmpty())

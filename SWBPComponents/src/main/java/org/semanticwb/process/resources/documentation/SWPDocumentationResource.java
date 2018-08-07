@@ -1,37 +1,5 @@
 package org.semanticwb.process.resources.documentation;
 
-import static org.semanticwb.process.utils.SWPUtils.copyFile;
-import static org.semanticwb.process.utils.SWPUtils.copyFileFromSWBAdmin;
-import static org.semanticwb.process.utils.SWPUtils.generateImageModel;
-import static org.semanticwb.process.utils.SWPUtils.FORMAT_PNG;
-import static org.semanticwb.process.utils.SWPUtils.FORMAT_SVG;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipOutputStream;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -41,40 +9,32 @@ import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
-import org.semanticwb.model.Descriptiveable;
-import org.semanticwb.model.SWBComparator;
-import org.semanticwb.model.Sortable;
-import org.semanticwb.model.User;
-import org.semanticwb.model.VersionInfo;
-import org.semanticwb.model.WebPage;
-import org.semanticwb.model.WebSite;
+import org.semanticwb.model.*;
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticProperty;
-import org.semanticwb.portal.api.GenericAdmResource;
-import org.semanticwb.portal.api.SWBActionResponse;
-import org.semanticwb.portal.api.SWBParamRequest;
-import org.semanticwb.portal.api.SWBResourceException;
-import org.semanticwb.portal.api.SWBResourceURL;
-import org.semanticwb.process.resources.documentation.model.Activity;
-import org.semanticwb.process.resources.documentation.model.Definition;
-import org.semanticwb.process.resources.documentation.model.DocumentSection;
-import org.semanticwb.process.resources.documentation.model.DocumentSectionInstance;
-import org.semanticwb.process.resources.documentation.model.Documentation;
-import org.semanticwb.process.resources.documentation.model.DocumentationInstance;
-import org.semanticwb.process.resources.documentation.model.Format;
-import org.semanticwb.process.resources.documentation.model.FreeText;
-import org.semanticwb.process.resources.documentation.model.Instantiable;
-import org.semanticwb.process.resources.documentation.model.Referable;
-import org.semanticwb.process.resources.documentation.model.Reference;
-import org.semanticwb.process.resources.documentation.model.SectionElement;
-import org.semanticwb.process.resources.documentation.model.SectionElementRef;
-import org.semanticwb.process.resources.documentation.writers.DOCXWriter;
+import org.semanticwb.portal.api.*;
 import org.semanticwb.process.model.RepositoryDirectory;
 import org.semanticwb.process.model.RepositoryElement;
 import org.semanticwb.process.model.RepositoryFile;
 import org.semanticwb.process.model.RepositoryURL;
+import org.semanticwb.process.model.documentation.*;
+import org.semanticwb.process.model.documentation.Reference;
+import org.semanticwb.process.resources.documentation.writers.DOCXWriter;
 import org.w3c.dom.Document;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
+import java.util.*;
+import java.util.zip.ZipOutputStream;
+
+import static org.semanticwb.process.utils.SWPUtils.*;
 
 /**
  * Componente que permite capturar la documentación de un proceso.
@@ -462,7 +422,8 @@ public class SWPDocumentationResource extends GenericAdmResource {
 				File index = new File(base + "/index.html");
 				FileOutputStream out = new FileOutputStream(index);
 				try {
-					Document dom = docInstance.getXMLDocument(request, null, false);
+					Document dom = Util.getXMLDocument(docInstance, request, null, false);
+							//docInstance.getXMLDocument(request, null, false);
 					if (dom != null) {
 						String tlpPath = "/swbadmin/jsp/process/documentation/documentation.xsl";
 						javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
@@ -812,7 +773,8 @@ public class SWPDocumentationResource extends GenericAdmResource {
 					}
 					SWBUtils.IO.copyStructure(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/images/", basePath + "/css/images/");
 					File index = new File(basePath + "/index.html");
-					Document dom = docInstance.getXMLDocument(request, basePath, true);
+					Document dom = Util.getXMLDocument(docInstance, request, basePath, true);
+                            //docInstance.getXMLDocument(request, basePath, true);
 					FileOutputStream out = null;
 
 					if (dom != null) {

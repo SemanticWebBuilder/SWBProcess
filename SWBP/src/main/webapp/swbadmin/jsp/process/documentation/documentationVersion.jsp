@@ -10,8 +10,8 @@
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.model.documentation.Documentation"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.process.resources.documentation.model.Documentation"%>
 <%@page import="java.util.Iterator"%>
 <%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

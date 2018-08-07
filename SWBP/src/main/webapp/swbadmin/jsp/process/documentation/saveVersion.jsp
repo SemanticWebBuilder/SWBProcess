@@ -26,7 +26,7 @@
             <input type="hidden" name="idp" value="<%= idp%>">
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="" class="col-sm-4 control-label">Comentarios *</label>
+                    <label class="col-sm-4 control-label">Comentarios *</label>
                     <div class="col-sm-7">
                         <input type="text" name="description" class="form-control">
                     </div>

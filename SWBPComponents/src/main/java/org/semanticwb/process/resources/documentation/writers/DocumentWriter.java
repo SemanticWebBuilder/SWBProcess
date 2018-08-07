@@ -8,6 +8,6 @@ import java.io.OutputStream;
  * @author hasdai
  */
 public interface DocumentWriter {
-    public void write(OutputStream ous);
-    public void write(String path) throws FileNotFoundException;
+    void write(OutputStream ous);
+    void write(String path) throws FileNotFoundException;
 }

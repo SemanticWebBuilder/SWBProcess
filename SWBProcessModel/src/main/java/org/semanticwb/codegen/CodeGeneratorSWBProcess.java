@@ -11,8 +11,9 @@ import java.io.File;
  */
 public class CodeGeneratorSWBProcess {
     private static final  String SWB_ONT = "https://raw.githubusercontent.com/SemanticWebBuilder/SWB/master/src/main/webapp/WEB-INF/owl/swb.owl";
-    private static final  String STARTER_ONT = "SWBP/src/main/webapp/WEB-INF/owl/ext/swp.owl";
-    private static final  String ONT_PREFIX = "swp";
+    private static final  String SWP_ONT = "SWBP/src/main/webapp/WEB-INF/owl/ext/swp.owl";
+    private static final  String SWP_PREFIX = "swp";
+    private static final  String SWPDOC_PREFIX = "swpdoc";
     private static final  String SOURCECODE_BASE = "SWBProcessModel/src/main/java";
     private static final Logger LOG = SWBUtils.getLogger(CodeGeneratorSWBProcess.class);
 
@@ -21,9 +22,9 @@ public class CodeGeneratorSWBProcess {
     }
 
     public void codeGen(String[] args) {
-        LOG.info("Starting code generation for ontology " + STARTER_ONT);
+        LOG.info("Starting code generation for ontology " + SWP_ONT);
         SWBPlatform.createInstance();
-        File f = new File(STARTER_ONT);
+        File f = new File(SWP_ONT);
         SWBPlatform.getSemanticMgr().addBaseOntology(SWB_ONT);
         SWBPlatform.getSemanticMgr().addBaseOntology(f.toURI().toString());
         SWBPlatform.getSemanticMgr().loadBaseVocabulary();
@@ -32,7 +33,8 @@ public class CodeGeneratorSWBProcess {
         try {
             File dir = new File(SOURCECODE_BASE);
             CodeGenerator codeGeneration = new CodeGenerator();
-            codeGeneration.generateCode(ONT_PREFIX, false, dir);
+            codeGeneration.generateCode(SWP_PREFIX, false, dir);
+            codeGeneration.generateCode(SWPDOC_PREFIX, false, dir);
             LOG.info("Class generation complete");
         } catch (CodeGeneratorException cge) {
             cge.printStackTrace();
