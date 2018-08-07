@@ -133,10 +133,12 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#SectionElement">
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Sortable"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Descriptiveable"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
+        <rdfs:subClassOf>
+          <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement">
+            <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
+            <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+          </swb:Class>
+        </rdfs:subClassOf>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
       </swb:Class>
     </rdfs:subClassOf>
@@ -327,6 +329,13 @@
   <owl:Class rdf:about="#StoreRepositoryNodeable">
     <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBInterface"/>
     <rdf:type rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Interface"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate">
+    <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</swb:autogenId>
+    <rdf:type rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
+    <rdfs:comment xml:lang="es">Plantilla de documentacion de procesos</rdfs:comment>
   </owl:Class>
   <owl:Class rdf:ID="ExclusiveIntermediateEventGateway">
     <rdfs:subClassOf>
@@ -3520,11 +3529,9 @@
     >org.semanticwb.process.model.documentation</swb:package>
   </swb:CodePackage>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocumentSectionInstance">
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:autogenId>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Sortable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </swb:Class>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#ActivityRef">
@@ -3532,8 +3539,7 @@
     >true</swb:autogenId>
     <rdfs:subClassOf>
       <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#ReferenceObject">
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
       </swb:Class>
     </rdfs:subClassOf>
@@ -3546,35 +3552,15 @@
     <swbxf:propGroup rdf:resource="#grp_Process"/>
   </swbxf:DisplayProperty>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#Documentation">
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:autogenId>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Descriptiveable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
-    <rdfs:subClassOf>
-      <swb:Interface rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocVersionable">
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBInterface"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-      </swb:Interface>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </swb:Class>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocumentationInstance">
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:autogenId>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </swb:Class>
-  <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocumentTemplate">
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Trashable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocVersionable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Descriptiveable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
-    <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
-    >true</swb:autogenId>
-    <rdfs:comment xml:lang="es">Plantilla de documentacion de procesos</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </swb:Class>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#FreeText">
@@ -3587,13 +3573,10 @@
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </swb:Class>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#TemplateContainer">
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Trashable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Descriptiveable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:autogenId>
     <rdfs:comment xml:lang="es">Contenedor para versionamiento de plantillas de documentacion</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </swb:Class>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#ElementReference">
@@ -3649,6 +3632,10 @@
       </swbxf:DisplayProperty>
     </swb:displayProperty>
   </rdf:Description>
+  <swb:Interface rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocVersionable">
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBInterface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </swb:Interface>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#Activity">
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:autogenId>
@@ -3715,15 +3702,10 @@
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </swb:Class>
   <swb:Class rdf:about="http://www.semanticwebbuilder.org/resources/documentation#DocumentSection">
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#Prefixeable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Activeable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Sortable"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
     >true</swb:autogenId>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Descriptiveable"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/resources/documentation#DocumentationElement"/>
   </swb:Class>
   <swb:Class rdf:ID="CalledSubProcessInstance">
     <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
