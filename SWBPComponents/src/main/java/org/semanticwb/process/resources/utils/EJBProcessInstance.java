@@ -20,7 +20,7 @@
  * dirección electrónica:
  *  http://www.semanticwebbuilder.org
  */
-package org.semanticwb.process.utils;
+package org.semanticwb.process.resources.utils;
 
 import org.semanticwb.process.model.ProcessInstance;
 

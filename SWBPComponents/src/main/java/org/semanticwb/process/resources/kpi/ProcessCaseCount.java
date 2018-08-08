@@ -20,38 +20,53 @@
  * dirección electrónica:
  *  http://www.semanticwebbuilder.org
  */
-package org.semanticwb.process.utils;
+package org.semanticwb.process.resources.kpi;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.semanticwb.process.resources.utils.Restriction;
 
 /**
  *
  * @author Sergio Téllez
  */
-public enum JasperTemplate {
+public class ProcessCaseCount {
 
-    /** The USE filter cases */
-    FILTER_CASES("/org/semanticwb/process/resources/templates/FilterCases.jasper"),
+    CaseCountSys casesys=null;
+    String processURI = null;
 
-    /** The USE process objects */
-    PROCESS_OBJECTS("/org/semanticwb/process/resources/templates/ProcessObjects.jasper");
-
-    /** The jasper file name. */
-    private final String jasperFileName;
-
-    /**
-     * Instantiates a new jasper template.
-     *
-     * @param jasperFileName the jasper file name
-     */
-    JasperTemplate(String jasperFileName){
-        this.jasperFileName = jasperFileName;
+    public ProcessCaseCount(String processURI) {
+        this.processURI = processURI;
+        casesys = new CaseCountSys();
+        casesys.addRestriction(new Restriction(CaseCountSys.PROCESS,processURI,null));
     }
 
-    /**
-     * Gets the template path.
-     *
-     * @return the template path
-     */
-    public String getTemplatePath() {
-        return jasperFileName;
+    public int totalProcessInstance() {
+        return casesys.totalProcessInstance();
+    }
+
+    public List listProcessInstance() {
+        return casesys.listProcessInstance();
+    }
+
+    public String getprocessURI() {
+        return this.processURI;
+    }
+
+    public void addRestriction(Restriction restriction) {
+        casesys.addRestriction(restriction);
+    }
+
+    public void addRestrictions(ArrayList restrictions) {
+        casesys.addRestrictions(restrictions);
+    }
+
+    public void removeRestriction(Restriction restriction) {
+        casesys.removeRestriction(restriction);
+    }
+
+    public void clear() {
+        casesys.clear();
     }
 }

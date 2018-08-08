@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static org.semanticwb.process.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.resources.utils.SWPUtils.copyFile;
 
 public class Util {
     private Util () {

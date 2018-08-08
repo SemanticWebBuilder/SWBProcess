@@ -31,8 +31,8 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.semanticwb.process.utils.SWPUtils.copyFile;
-import static org.semanticwb.process.utils.SWPUtils.saveFile;
+import static org.semanticwb.process.resources.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.resources.utils.SWPUtils.saveFile;
 
 /**
  * Impmenents a RTF Writer for process documentation.

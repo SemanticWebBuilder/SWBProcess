@@ -1,4 +1,4 @@
-package org.semanticwb.process.utils;
+package org.semanticwb.process.resources.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

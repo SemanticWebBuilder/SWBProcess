@@ -22,8 +22,8 @@
  */
 package org.semanticwb.process.resources;
 
-import static org.semanticwb.process.utils.SWPUtils.copyFile;
-import static org.semanticwb.process.utils.SWPUtils.copyFileFromSWBAdmin;
+import static org.semanticwb.process.resources.utils.SWPUtils.copyFile;
+import static org.semanticwb.process.resources.utils.SWPUtils.copyFileFromSWBAdmin;
 
 import java.io.File;
 import java.io.FileInputStream;

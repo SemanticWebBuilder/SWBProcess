@@ -19,7 +19,7 @@
  * dirección electrónica:
  *  http://www.semanticwebbuilder.org.mx
  */
-package org.semanticwb.process.kpi;
+package org.semanticwb.process.resources.kpi;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,9 +32,9 @@ import org.semanticwb.model.User;
 import org.semanticwb.model.UserRepository;
 import org.semanticwb.process.model.Instance;
 import org.semanticwb.process.model.ProcessInstance;
-import org.semanticwb.process.utils.DateInterval;
-import org.semanticwb.process.utils.Restriction;
-import org.semanticwb.process.utils.TimeInterval;
+import org.semanticwb.process.resources.utils.DateInterval;
+import org.semanticwb.process.resources.utils.Restriction;
+import org.semanticwb.process.resources.utils.TimeInterval;
 
 /**
  *

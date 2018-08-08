@@ -34,7 +34,7 @@ import org.semanticwb.process.model.Instance;
 import org.semanticwb.process.model.SubProcessInstance;
 
 import org.semanticwb.platform.SemanticProperty;
-import org.semanticwb.process.kpi.CaseProcessInstance;
+import org.semanticwb.process.resources.kpi.CaseProcessInstance;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,8 +50,8 @@ import org.semanticwb.SWBPlatform;
 import org.semanticwb.model.GenericObject;
 import org.semanticwb.model.SWBClass;
 import org.semanticwb.platform.SemanticOntology;
-import org.semanticwb.process.utils.Ajax;
-import org.semanticwb.process.kpi.CaseProcessObject;
+import org.semanticwb.process.resources.utils.Ajax;
+import org.semanticwb.process.resources.kpi.CaseProcessObject;
 import org.semanticwb.process.model.ItemAwareReference;
 
 /**

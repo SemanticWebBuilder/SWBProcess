@@ -18,7 +18,7 @@
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica: http://www.semanticwebbuilder.org.mx
  */
-package org.semanticwb.process.kpi;
+package org.semanticwb.process.resources.kpi;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,7 +35,7 @@ import org.semanticwb.process.model.ItemAwareReference;
 import org.semanticwb.process.model.ProcessInstance;
 import org.semanticwb.process.model.ProcessSite;
 import org.semanticwb.process.model.SubProcessInstance;
-import org.semanticwb.process.utils.Restriction;
+import org.semanticwb.process.resources.utils.Restriction;
 
 /**
  *

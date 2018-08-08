@@ -10,7 +10,7 @@
 <%@page import="org.semanticwb.process.model.documentation.DocumentTemplate"%>
 <%@page import="org.semanticwb.process.model.documentation.TemplateContainer"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.process.utils.SWPUtils"%>
+<%@page import="org.semanticwb.process.resources.utils.SWPUtils"%>
 <%@page import="java.util.Iterator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%

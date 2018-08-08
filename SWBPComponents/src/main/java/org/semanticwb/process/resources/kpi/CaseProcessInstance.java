@@ -6,7 +6,7 @@
  * procesada por personas y/o sistemas, es una creación original del Fondo de Información y Documentación
  * para la Industria INFOTEC, cuyo registro se encuentra actualmente en trámite.
  *
- * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público (‘open source’),
+ * INFOTEC pone a su disposición la herramienta SemanticWebBuilder a través de su licenciamiento abierto al público ('open source'),
  * en virtud del cual, usted podrá usarlo en las mismas condiciones con que INFOTEC lo ha diseñado y puesto a su disposición;
  * aprender de él; distribuirlo a terceros; acceder a su código fuente y modificarlo, y combinarlo o enlazarlo con otro software,
  * todo ello de conformidad con los términos y condiciones de la LICENCIA ABIERTA AL PÚBLICO que otorga INFOTEC para la utilización
@@ -17,56 +17,42 @@
  * de la misma.
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
- * dirección electrónica:
- *  http://www.semanticwebbuilder.org
+ * dirección electrónica: http://www.semanticwebbuilder.org
  */
-package org.semanticwb.process.kpi;
+package org.semanticwb.process.resources.kpi;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.semanticwb.process.utils.Restriction;
+import org.semanticwb.process.model.Instance;
+import org.semanticwb.process.model.Process;
+import org.semanticwb.process.model.ProcessInstance;
 
 /**
  *
  * @author Sergio Téllez
  */
-public class ProcessCaseCount {
 
-    CaseCountSys casesys=null;
-    String processURI = null;
+public class CaseProcessInstance {
 
-    public ProcessCaseCount(String processURI) {
-        this.processURI = processURI;
-        casesys = new CaseCountSys();
-        casesys.addRestriction(new Restriction(CaseCountSys.PROCESS,processURI,null));
+	private CaseProcessInstance() { }
+	
+    public static List<ProcessInstance> getClosedProcessInstance(Process process) {
+        ArrayList<ProcessInstance> ret=new ArrayList<>();
+        Iterator<ProcessInstance> it = process.listProcessInstances();
+        while (it.hasNext()) {
+            ProcessInstance processInstance = it.next();
+            if (processInstance.getStatus()==Instance.STATUS_CLOSED)
+                ret.add(processInstance);
+        }
+        return ret;
     }
 
-    public int totalProcessInstance() {
-        return casesys.totalProcessInstance();
-    }
-
-    public List listProcessInstance() {
-        return casesys.listProcessInstance();
-    }
-
-    public String getprocessURI() {
-        return this.processURI;
-    }
-
-    public void addRestriction(Restriction restriction) {
-        casesys.addRestriction(restriction);
-    }
-
-    public void addRestrictions(ArrayList restrictions) {
-        casesys.addRestrictions(restrictions);
-    }
-
-    public void removeRestriction(Restriction restriction) {
-        casesys.removeRestriction(restriction);
-    }
-
-    public void clear() {
-        casesys.clear();
+    public static ProcessInstance pop(Process process) {
+        Iterator<ProcessInstance> it = process.listProcessInstances();
+        if (it.hasNext())
+            return it.next();
+        return null;
     }
 }

@@ -11,7 +11,7 @@
 <%@page import="org.semanticwb.process.model.RepositoryElement"%>
 <%@page import="org.semanticwb.process.model.documentation.Documentation"%>
 <%@page import="org.semanticwb.process.model.documentation.Referable"%>
-<%@page import="org.semanticwb.process.utils.SWPUtils"%>
+<%@page import="org.semanticwb.process.resources.utils.SWPUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Collections"%>
 <%@page import="java.util.Iterator"%>

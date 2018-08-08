@@ -11,6 +11,7 @@
 
     <modules>
         <module>SWBProcessModel</module>
+        <module>SWBPEngine</module>
         <module>SWBPComponents</module>
         <module>SWBP</module>
     </modules>

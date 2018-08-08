@@ -22,13 +22,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <profiles>
         <profile>
             <id>Default</id>
@@ -51,11 +44,6 @@
             <dependencies>
                 <dependency>
                     <groupId>org.apache.xmlgraphics</groupId>
-                    <artifactId>batik-codec</artifactId>
-                    <version>1.9</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.xmlgraphics</groupId>
                     <artifactId>batik-transcoder</artifactId>
                     <version>1.9</version>
                 </dependency>
@@ -73,11 +61,6 @@
                     <groupId>org.beanshell</groupId>
                     <artifactId>bsh-core</artifactId>
                     <version>2.0b4</version>
-                </dependency>
-                <dependency>
-                    <groupId>net.sf.jxls</groupId>
-                    <artifactId>jxls-core</artifactId>
-                    <version>1.0.6</version>
                 </dependency>
                 <dependency>
                     <groupId>org.semanticwb</groupId>
@@ -98,21 +81,6 @@
                     <groupId>org.semanticwb</groupId>
                     <artifactId>SWBPortal</artifactId>
                     <version>5.0</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.semanticwb</groupId>
-                    <artifactId>SWBXMLRPCServer</artifactId>
-                    <version>5.0</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.github.SemanticWebBuilder</groupId>
-                    <artifactId>SWBXMLRPCClient</artifactId>
-                    <version>master-SNAPSHOT</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.github.SemanticWebBuilder</groupId>
-                    <artifactId>SWBWebServices</artifactId>
-                    <version>master-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                     <groupId>javax</groupId>

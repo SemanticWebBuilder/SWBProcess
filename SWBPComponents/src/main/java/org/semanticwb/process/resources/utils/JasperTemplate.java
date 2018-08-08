@@ -20,51 +20,38 @@
  * dirección electrónica:
  *  http://www.semanticwebbuilder.org
  */
-package org.semanticwb.process.utils;
-
-import java.util.HashMap;
-import java.util.Iterator;
+package org.semanticwb.process.resources.utils;
 
 /**
  *
  * @author Sergio Téllez
  */
-public class EJBProcessObject {
+public enum JasperTemplate {
 
-    private HashMap map;
-    private HashMap fields;
-    private String keys;
-    private String instance;
+    /** The USE filter cases */
+    FILTER_CASES("/org/semanticwb/process/resources/templates/FilterCases.jasper"),
 
-    public EJBProcessObject(HashMap map, HashMap fields) {
-        this.map = map;
-        this.fields = fields;
-        keys = instance = "";
-        build();
+    /** The USE process objects */
+    PROCESS_OBJECTS("/org/semanticwb/process/resources/templates/ProcessObjects.jasper");
+
+    /** The jasper file name. */
+    private final String jasperFileName;
+
+    /**
+     * Instantiates a new jasper template.
+     *
+     * @param jasperFileName the jasper file name
+     */
+    JasperTemplate(String jasperFileName){
+        this.jasperFileName = jasperFileName;
     }
 
-    public String getInstance() {
-        return instance;
-    }
-
-    public String getKeys() {
-        return keys;
-    }
-
-    private void build() {
-        StringBuffer names = new StringBuffer();
-        StringBuffer values = new StringBuffer();
-        names.append("<table>");
-        values.append("<table>");
-        Iterator<String> itkeys = map.keySet().iterator();
-        while (itkeys.hasNext()) {
-            String key = itkeys.next();
-            names.append("    <tr><td>" + (fields.containsKey(key) ? fields.get(key) : key) + "</td></tr>");
-            values.append("    <tr><td>" + Ajax.notNull((String)map.get(key)) + "</td></tr>");
-        }
-        names.append("</table>");
-        values.append("</table>");
-        keys = names.toString();
-        instance = values.toString();
+    /**
+     * Gets the template path.
+     *
+     * @return the template path
+     */
+    public String getTemplatePath() {
+        return jasperFileName;
     }
 }

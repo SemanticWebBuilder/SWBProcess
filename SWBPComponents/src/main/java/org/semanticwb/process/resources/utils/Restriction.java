@@ -20,11 +20,11 @@
  * dirección electrónica:
  *  http://www.semanticwebbuilder.org
  */
-package org.semanticwb.process.utils;
+package org.semanticwb.process.resources.utils;
 
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticProperty;
-import org.semanticwb.process.kpi.KProcessInstance;
+import org.semanticwb.process.resources.kpi.KProcessInstance;
 
 /**
  *

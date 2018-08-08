@@ -35,11 +35,11 @@ import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.Instance;
 import org.semanticwb.process.model.ProcessSite;
 
-import org.semanticwb.process.utils.Ajax;
-import org.semanticwb.process.utils.Restriction;
+import org.semanticwb.process.resources.utils.Ajax;
+import org.semanticwb.process.resources.utils.Restriction;
 
-import org.semanticwb.process.kpi.CaseCountSys;
-import org.semanticwb.process.kpi.ProcessCaseCount;
+import org.semanticwb.process.resources.kpi.CaseCountSys;
+import org.semanticwb.process.resources.kpi.ProcessCaseCount;
 
 import org.semanticwb.portal.api.SWBResourceURL;
 import org.semanticwb.portal.api.SWBParamRequest;

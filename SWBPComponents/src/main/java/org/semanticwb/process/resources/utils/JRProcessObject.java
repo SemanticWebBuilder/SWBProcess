@@ -20,13 +20,13 @@
  * dirección electrónica:
  *  http://www.semanticwebbuilder.org
  */
-package org.semanticwb.process.utils;
+package org.semanticwb.process.resources.utils;
 
 import java.util.List;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletResponse;
-import org.semanticwb.portal.api.SWBResourceURL;
 
 import org.semanticwb.portal.admin.resources.reports.jrresources.JRDataSourceable;
 import org.semanticwb.portal.admin.resources.reports.beans.IncompleteFilterException;
@@ -34,25 +34,23 @@ import org.semanticwb.portal.admin.resources.reports.beans.IncompleteFilterExcep
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-import org.semanticwb.process.model.ProcessInstance;
-
 /**
  *
  * @author Sergio Téllez
  */
-public class JRCaseDetail implements JRDataSourceable {
+public class JRProcessObject implements JRDataSourceable {
 
-    SWBResourceURL url = null;
-    Iterator<ProcessInstance> itpinst = null;
+    HashMap fields = null;
+    Iterator<HashMap> itobjs = null;
 
     /**
      * Instantiates a new jR case access data detail.
      *
      * @param filterReportBean the filter report bean
      */
-    public JRCaseDetail(Iterator<ProcessInstance> itpinst, SWBResourceURL url) {
-        this.url = url;
-        this.itpinst = itpinst;
+    public JRProcessObject(Iterator<HashMap> itobjs, HashMap fields){
+        this.fields = fields;
+        this.itobjs = itobjs;
     }
 
     /* (non-Javadoc)
@@ -78,9 +76,11 @@ public class JRCaseDetail implements JRDataSourceable {
 
     private List execute() {
         List ejbs = new ArrayList();
-        EJBProcessInstance ejb = null;
-        while (itpinst.hasNext()) {
-            ejb = new EJBProcessInstance(itpinst.next());
+        HashMap map = null;
+        EJBProcessObject ejb = null;
+        while (itobjs.hasNext()) {
+            map = itobjs.next();
+            ejb = new EJBProcessObject(map, fields);
             ejbs.add(ejb);
         }
         return ejbs;

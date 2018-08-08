@@ -41,12 +41,13 @@ import org.semanticwb.portal.api.GenericResource;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
 import org.semanticwb.portal.api.SWBResourceURL;
-import org.semanticwb.process.kpi.ResponseTimeStages;
+import org.semanticwb.process.resources.kpi.ResponseTimeStages;
 import org.semanticwb.process.model.FlowNodeInstance;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.ProcessInstance;
 import org.semanticwb.process.model.ProcessSite;
 import org.semanticwb.process.model.SubProcessInstance;
+import org.semanticwb.process.resources.kpi.CaseProcessInstance;
 
 /**
  *
@@ -427,7 +428,7 @@ public class ResponseTime extends GenericResource {
             while (itprocess.hasNext()) {
                 Process process = itprocess.next();
                 if (processId.equalsIgnoreCase(process.getId())) {
-                    return org.semanticwb.process.kpi.CaseProcessInstance.pop(process);
+                    return CaseProcessInstance.pop(process);
                 }
             }
         }

@@ -40,13 +40,10 @@ import org.semanticwb.portal.api.GenericResource;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
 
-import org.semanticwb.process.kpi.CaseCountSys;
-import org.semanticwb.process.kpi.KProcessInstance;
+import org.semanticwb.process.resources.kpi.CaseCountSys;
+import org.semanticwb.process.resources.kpi.KProcessInstance;
 
-import org.semanticwb.process.utils.Restriction;
-import org.semanticwb.process.utils.TimeInterval;
-import org.semanticwb.process.utils.DateInterval;
-import org.semanticwb.process.utils.JasperTemplate;
+import org.semanticwb.process.resources.utils.*;
 
 import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticObject;
@@ -69,14 +66,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.semanticwb.SWBPlatform;
 import org.semanticwb.model.*;
 
-import org.semanticwb.process.utils.JRCaseDetail;
 import org.semanticwb.portal.admin.resources.reports.jrresources.JRResource;
 import org.semanticwb.portal.admin.resources.reports.jrresources.JRPdfResource;
 import org.semanticwb.portal.admin.resources.reports.jrresources.JRRtfResource;
 import org.semanticwb.portal.admin.resources.reports.jrresources.JRDataSourceable;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.*;
-import org.semanticwb.process.utils.*;
 
 /**
  *

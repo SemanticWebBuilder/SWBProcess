@@ -34,7 +34,7 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.ZipOutputStream;
 
-import static org.semanticwb.process.utils.SWPUtils.*;
+import static org.semanticwb.process.resources.utils.SWPUtils.*;
 
 /**
  * Componente que permite capturar la documentación de un proceso.
