@@ -44,6 +44,11 @@
 
             <dependencies>
                 <dependency>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-transcoder</artifactId>
+                    <version>1.9</version>
+                </dependency>
+                <dependency>
                     <groupId>org.semanticwb</groupId>
                     <artifactId>SWBBase</artifactId>
                     <version>5.0</version>
