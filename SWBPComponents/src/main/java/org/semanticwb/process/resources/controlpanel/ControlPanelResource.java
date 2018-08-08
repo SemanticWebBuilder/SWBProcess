@@ -22,85 +22,60 @@
  */
 package org.semanticwb.process.resources.controlpanel;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPlatform;
 import org.semanticwb.SWBUtils;
-import org.semanticwb.model.SWBClass;
-import org.semanticwb.model.SWBComparator;
-import org.semanticwb.model.User;
-import org.semanticwb.model.UserGroup;
-import org.semanticwb.model.WebSite;
-import org.semanticwb.portal.api.*;
-import org.semanticwb.process.model.FlowNodeInstance;
-import org.semanticwb.process.model.ItemAware;
-import org.semanticwb.process.model.ItemAwareReference;
-import org.semanticwb.process.model.ProcessInstance;
+import org.semanticwb.model.*;
+import org.semanticwb.portal.api.SWBActionResponse;
+import org.semanticwb.portal.api.SWBParamRequest;
+import org.semanticwb.portal.api.SWBResourceException;
+import org.semanticwb.process.model.*;
 import org.semanticwb.process.model.Process;
-import org.semanticwb.process.model.ProcessGroup;
-import org.semanticwb.process.model.ProcessSite;
 import org.semanticwb.process.model.RepositoryFile;
-import org.semanticwb.process.model.SWBProcessMgr;
-import org.semanticwb.process.model.UserTask;
 import org.semanticwb.process.resources.taskinbox.UserTaskInboxResource;
-import static org.semanticwb.process.resources.taskinbox.UserTaskInboxResource.ATT_GRAPHSENGINE;
-import static org.semanticwb.process.resources.taskinbox.UserTaskInboxResource.ATT_INSTANCEGRAPH;
-import static org.semanticwb.process.resources.taskinbox.UserTaskInboxResource.ATT_PARTGRAPH;
-import static org.semanticwb.process.resources.taskinbox.UserTaskInboxResource.ATT_RESPONSEGRAPH;
-import static org.semanticwb.process.resources.taskinbox.UserTaskInboxResource.ATT_SHOWPERFORMANCE;
-import static org.semanticwb.process.resources.taskinbox.UserTaskInboxResource.ATT_STATUSGRAPH;
 import org.semanticwb.process.schema.File;
 import org.semanticwb.process.schema.FileCollection;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import static org.semanticwb.process.resources.taskinbox.UserTaskInboxResource.*;
 
 /***
  * Recurso Panel de Control para monitoreo de instancias de procesos.
  * @author Hasdai Pacheco {ebenezer.sanchez@infotec.com.mx}
  */
-public class ControlPanelResource extends org.semanticwb.process.resources.controlpanel.base.ControlPanelResourceBase 
-{
-    private static Logger log = SWBUtils.getLogger(ControlPanelResource.class);
+public class ControlPanelResource extends org.semanticwb.process.resources.controlpanel.base.ControlPanelResourceBase {
     public static final int SORT_DATE = 1;
     public static final int SORT_NAME = 2;
     public static final int STATUS_ALL = -1;
-    public static final String MODE_DETAIL="detail";
-    public static final String MODE_CONFIG="config";
-    public static final String MODE_SHOWFILES="showFiles";
-    private static final String paramCatalog = "idCol|priorityCol|nameCol|sdateCol|edateCol|pendingCol|rolesCol|actionsCol";
+    public static final String MODE_DETAIL = "detail";
+    public static final String MODE_CONFIG = "config";
+    public static final String MODE_SHOWFILES = "showFiles";
+    private static final String PARAM_CATALOG = "idCol|priorityCol|nameCol|sdateCol|edateCol|pendingCol|rolesCol|actionsCol";
+    public static final String PARAM_REQUEST = "paramRequest";
+    public static final String ITEMS_PER_PAGE = "itemsPerPage";
+    private static Logger log = SWBUtils.getLogger(ControlPanelResource.class);
     private Comparator processNameComparator = new Comparator() {
         String lang = "es";
-        public void Comparator (String lng) {
-            lang = lng;
-        }
-
         public int compare(Object t, Object t1) {
             return ((ProcessInstance)t).getProcessType().getDisplayTitle(lang).compareTo(((ProcessInstance)t1).getProcessType().getDisplayTitle(lang));
         }
     };
     private Comparator processNameComparatorDesc = new Comparator() {
         String lang = "es";
-        public void Comparator (String lng) {
-            lang = lng;
-        }
-
         public int compare(Object t, Object t1) {
             return ((ProcessInstance)t1).getProcessType().getDisplayTitle(lang).compareTo(((ProcessInstance)t).getProcessType().getDisplayTitle(lang));
         }
     };
     private Comparator processPriorityComparator = new Comparator() {
-        String lang = "es";
-        
         public int compare(Object t, Object t1) {
             int it1 = ((ProcessInstance)t).getPriority();
             int it2 = ((ProcessInstance)t1).getPriority();
@@ -112,16 +87,14 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         }
     };
 
-    public ControlPanelResource()
-    {
+    public ControlPanelResource() {
     }
 
    /**
    * Construye una nueva instancia de un ControlPanelResource dado un SemanticObject
    * @param base El SemanticObject con las propiedades para el ControlPanelResource
    */
-    public ControlPanelResource(org.semanticwb.platform.SemanticObject base)
-    {
+    public ControlPanelResource(org.semanticwb.platform.SemanticObject base) {
         super(base);
     }
 
@@ -147,7 +120,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
             String dCols = "";
             while(params.hasMoreElements()) {
                 String param = (String)params.nextElement();
-                if (paramCatalog.contains(param)) {
+                if (PARAM_CATALOG.contains(param)) {
                     dCols += param;
                     if (params.hasMoreElements()) {
                         dCols += "|";
@@ -176,7 +149,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                 log.error("UserTaskInboxResource",e);
             }
             setItemsPerPage(itemsPerPage);
-        } else if (action.equals(response.Action_REMOVE)) {
+        } else if (action.equals(SWBActionResponse.Action_REMOVE)) {
             String pid = request.getParameter("pid");
             if (pid != null && !pid.trim().equals("")) {
                 ProcessInstance instance = ProcessInstance.ClassMgr.getProcessInstance(pid, response.getWebPage().getWebSite());
@@ -218,21 +191,19 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         } else {
             getResourceBase().removeAttribute(UserTaskInboxResource.ATT_PARTGRAPH);
         }
-                
-        //String jsp = SWBPortal.getWebWorkPath() + "/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/process/controlPanel/businessControlPanel.jsp";
-        RequestDispatcher rd = request.getRequestDispatcher(jsp);
 
+        RequestDispatcher rd = request.getRequestDispatcher(jsp);
         if (getDisplayCols() == null || getDisplayCols().trim().equals("")) {
             setDisplayCols("idCol|nameCol|sdateCol|edateCol|pendingCol|actionsCol");
         }
 
         try {
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             request.setAttribute("instances", getProcessInstances(request, paramRequest));
             request.setAttribute("displayCols", getDisplayCols());
             request.setAttribute("statusWp", getDisplayMapWp());
             request.setAttribute("trackWp", getTrackWp());
-            request.setAttribute("itemsPerPage", getItemsPerPage());
+            request.setAttribute(ITEMS_PER_PAGE, getItemsPerPage());
             rd.include(request, response);
         } catch (Exception e) {
             log.error("ControlPanelResource: Error including view JSP", e);
@@ -244,11 +215,10 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         if (getViewJSP() != null && !getViewJSP().trim().equals("")) {
             jsp = getViewJSP();
         }
-        
-        //String jsp = SWBPortal.getWebWorkPath() + "/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/process/controlPanel/businessControlPanelConfig.jsp";
+
         RequestDispatcher rd = request.getRequestDispatcher(jsp);
         try {
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             request.setAttribute("displayCols", getDisplayCols());
             rd.include(request, response);
         } catch (Exception e) {
@@ -261,8 +231,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         if (getViewJSP() != null && !getViewJSP().trim().equals("")) {
             jsp = getViewJSP();
         }
-        
-        //String jsp = SWBPortal.getWebWorkPath() + "/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/process/controlPanel/businessControlPanelObjects.jsp";
+
         RequestDispatcher rd = request.getRequestDispatcher(jsp);
         String pid = request.getParameter("pid");
         ArrayList<ItemAware> iaw = null;
@@ -275,9 +244,9 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         }
         
         try {
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             request.setAttribute("itemawareList", iaw);
-            request.setAttribute("itemsPerPage", getItemsPerPage());
+            request.setAttribute(ITEMS_PER_PAGE, getItemsPerPage());
             rd.include(request, response);
         } catch (Exception e) {
             log.error("ControlPanelResource: Error including view JSP", e);
@@ -289,7 +258,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         if (getDocsJSP() != null && !getDocsJSP().trim().equals("")) {
             jsp = getDocsJSP();
         }
-        //String jsp = SWBPortal.getWebWorkPath() + "/models/" + paramRequest.getWebPage().getWebSiteId() + "/jsp/process/controlPanel/businessControlPanelFiles.jsp";
+
         RequestDispatcher rd = request.getRequestDispatcher(jsp);
         String pid = request.getParameter("pid");
         User user = paramRequest.getUser();
@@ -310,7 +279,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         }
         
         try {
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             request.setAttribute("docs", docs);
             if (pi != null) {
                 request.setAttribute("pName", pi.getProcessElementType().getTitle(lang));
@@ -326,11 +295,11 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
 
         try {
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             if (paramRequest.getCallMethod() == SWBParamRequest.Call_CONTENT) {
                 request.setAttribute("instances", getDetailProcessInstances(request, paramRequest));
                 request.setAttribute("statusWp", getDisplayMapWp());
-                request.setAttribute("itemsPerPage", getItemsPerPage());
+                request.setAttribute(ITEMS_PER_PAGE, getItemsPerPage());
                 request.setAttribute("base", getResourceBase());
                 request.setAttribute("graphConfig", getGraphsConfig());
             }
@@ -365,11 +334,11 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
      * @throws SWBResourceException 
      */
     public ArrayList<ProcessInstance> getDetailProcessInstances(HttpServletRequest request, SWBParamRequest paramRequest) throws SWBResourceException {
-        ArrayList<ProcessInstance> unpaged = new ArrayList<ProcessInstance>();
-        ArrayList<ProcessInstance> instances = new ArrayList<ProcessInstance>();
+        ArrayList<ProcessInstance> unpaged = new ArrayList<>();
+        ArrayList<ProcessInstance> instances = new ArrayList<>();
         String suri = request.getParameter("suri");
         Process p = (Process)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(suri);
-        HashMap<User, Integer> participantCount = new HashMap<User, Integer>();
+        HashMap<User, Integer> participantCount = new HashMap<>();
         
         if (p != null) {
             int page = 1;
@@ -389,20 +358,6 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                 
                 //Conteo de instancias
                 if (pi.getStatus() == ProcessInstance.STATUS_PROCESSING) {
-//                    if (pi.getCreator() != null) {
-//                        if (participantCount.get(pi.getCreator()) == null) {
-//                            participantCount.put(pi.getCreator(), new Integer(1));
-//                        } else {
-//                            participantCount.put(pi.getCreator(), participantCount.get(pi.getCreator())+1);
-//                        }
-//                    }
-//                    if (pi.getAssignedto()!= null) {
-//                        if (participantCount.get(pi.getAssignedto()) == null) {
-//                            participantCount.put(pi.getAssignedto(), new Integer(1));
-//                        } else {
-//                            participantCount.put(pi.getAssignedto(), participantCount.get(pi.getAssignedto())+1);
-//                        }
-//                    }
                     boolean isDelayed = false;
                     //Verifica retraso
                     Iterator<FlowNodeInstance> itfni = pi.listAllFlowNodeInstance();
@@ -410,21 +365,6 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                         FlowNodeInstance fni = itfni.next();
                         if (fni.getFlowNodeType() instanceof UserTask) {
                             if (fni.getStatus() == FlowNodeInstance.STATUS_PROCESSING) {
-//                                if (fni.getCreator() != null) {
-//                                    if (participantCount.get(fni.getCreator()) == null) {
-//                                        participantCount.put(fni.getCreator(), new Integer(1));
-//                                    } else {
-//                                        participantCount.put(fni.getCreator(), participantCount.get(fni.getCreator())+1);
-//                                    }
-//                                }
-//                                if (fni.getAssignedto()!= null) {
-//                                    if (participantCount.get(fni.getAssignedto()) == null) {
-//                                        participantCount.put(fni.getAssignedto(), new Integer(1));
-//                                    } else {
-//                                        participantCount.put(fni.getAssignedto(), participantCount.get(fni.getAssignedto())+1);
-//                                    }
-//                                }
-                                
                                 UserTask ut = (UserTask) fni.getFlowNodeType();
                                 int delay = ut.getNotificationTime();
 
@@ -437,13 +377,11 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                                 }
                             }
                             
-                            if (fni.getStatus() == FlowNodeInstance.STATUS_CLOSED) {
-                                if (fni.getEndedby() != null) {
-                                    if (participantCount.get(fni.getEndedby()) == null) {
-                                        participantCount.put(fni.getEndedby(), new Integer(1));
-                                    } else {
-                                        participantCount.put(fni.getEndedby(), participantCount.get(fni.getEndedby())+1);
-                                    }
+                            if (fni.getStatus() == FlowNodeInstance.STATUS_CLOSED && fni.getEndedby() != null) {
+                                if (participantCount.get(fni.getEndedby()) == null) {
+                                    participantCount.put(fni.getEndedby(), 1);
+                                } else {
+                                    participantCount.put(fni.getEndedby(), participantCount.get(fni.getEndedby())+1);
                                 }
                             }
                         }
@@ -460,7 +398,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                 if (pi.getStatus() == ProcessInstance.STATUS_CLOSED) {
                     if (pi.getEndedby() != null) {
                         if (participantCount.get(pi.getEndedby()) == null) {
-                            participantCount.put(pi.getEndedby(), new Integer(1));
+                            participantCount.put(pi.getEndedby(), 1);
                         } else {
                             participantCount.put(pi.getEndedby(), participantCount.get(pi.getEndedby())+1);
                         }
@@ -492,9 +430,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                 if (aborted > 0) dt.put(paramRequest.getLocaleString("lblAborted")).put(aborted);
                 if (closed > 0) dt.put(paramRequest.getLocaleString("lblClosed")).put(closed);
                 instanceInfo.put(dt);
-                //request.setAttribute("processing", processing);
-                //request.setAttribute("aborted", aborted);
-                //request.setAttribute("closed", closed);
+
                 try {
                     data.put("instanceData", instanceInfo);
                 } catch (JSONException ex) {}
@@ -511,8 +447,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                     dt.put(paramRequest.getLocaleString("lblOntime")).put(ontime);
                     statusInfo.put(dt);
                 }
-                //request.setAttribute("delayed", delayed);
-                //request.setAttribute("ontime", ontime);
+
                 try {
                     data.put("statusData", statusInfo);
                 } catch (JSONException ex) {}
@@ -528,14 +463,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                 try {
                     data.put("responseData", responseInfo);
                 } catch (JSONException ex) {}
-                /*request.setAttribute("minTime", TimeUnit.MILLISECONDS.toMinutes(minTime));
-                request.setAttribute("maxTime", TimeUnit.MILLISECONDS.toMinutes(maxTime));
-                request.setAttribute("avgTime", TimeUnit.MILLISECONDS.toMinutes(sumTime/closed));*/
-            }/* else {
-                request.setAttribute("minTime", 0L);
-                request.setAttribute("maxTime", 0L);
-                request.setAttribute("avgTime", 0L);
-            }*/
+            }
         
             //Realizar paginado de instancias
             int maxPages = 1;
@@ -614,7 +542,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
      * @return Lista de instancias de procesos filtradas y ordenadas.
      */
     private ArrayList<ProcessInstance> getProcessInstances(HttpServletRequest request, SWBParamRequest paramRequest) {
-        ArrayList<ProcessInstance> t_instances = new ArrayList<ProcessInstance>();
+        ArrayList<ProcessInstance> processInstances = new ArrayList<>();
         WebSite site = paramRequest.getWebPage().getWebSite();
         ProcessGroup group = null;
         User user = paramRequest.getUser();
@@ -653,32 +581,32 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
             while(processes.hasNext()) {
                 Process process = processes.next();
                 if (process.isValid()) {
-                    t_instances.addAll(_getProcessInstances((ProcessSite)site, process, statusFilter));
+                    processInstances.addAll(_getProcessInstances((ProcessSite)site, process, statusFilter));
                 }
             }
         }
 
-        Iterator<ProcessInstance> it_ins = null;
+        Iterator<ProcessInstance> itIns = null;
         if (sortType.equals("1")) {
-            it_ins = SWBComparator.sortByCreated(t_instances.iterator(), false);
+            itIns = SWBComparator.sortByCreated(processInstances.iterator(), false);
         } else if (sortType.equals("2")) {
-            it_ins = SWBComparator.sortByCreated(t_instances.iterator(), true);
+            itIns = SWBComparator.sortByCreated(processInstances.iterator(), true);
         } else if (sortType.equals("3")) {
-            Collections.sort(t_instances, processNameComparator);
-            it_ins = t_instances.iterator();
+            Collections.sort(processInstances, processNameComparator);
+            itIns = processInstances.iterator();
         } else if (sortType.equals("4")) {
-            Collections.sort(t_instances, processNameComparatorDesc);
-            it_ins = t_instances.iterator();
+            Collections.sort(processInstances, processNameComparatorDesc);
+            itIns = processInstances.iterator();
         } else if (sortType.equals("5")) {
-            Collections.sort(t_instances, processPriorityComparator);
-            it_ins = t_instances.iterator();
+            Collections.sort(processInstances, processPriorityComparator);
+            itIns = processInstances.iterator();
         }        
 
-        if (it_ins != null) {
-            t_instances = new ArrayList<ProcessInstance>();
+        if (itIns != null) {
+            processInstances = new ArrayList<>();
             
-            while (it_ins.hasNext()) {
-                ProcessInstance processInstance = it_ins.next();
+            while (itIns.hasNext()) {
+                ProcessInstance processInstance = itIns.next();
                 
                 if (isFilterByGroup()) { //Si hay que filtrar por grupo de usuarios
                     UserGroup iug = processInstance.getOwnerUserGroup();
@@ -686,35 +614,35 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
                     
                     if (iug != null && uug != null) { //Si la instancia y el usuario tienen grupo
                         if (user.getUserGroup().getURI().equals(processInstance.getOwnerUserGroup().getURI())) { //Si tienen el mismo grupo
-                            t_instances.add(processInstance);
+                            processInstances.add(processInstance);
                         }
                     } else if (iug == null && uug == null) { //Si el proceso y el usuario no tienen grupo
-                        t_instances.add(processInstance);
+                        processInstances.add(processInstance);
                     }
                 } else { //Si no hay que filtrar por grupo de usuarios
-                    t_instances.add(processInstance);
+                    processInstances.add(processInstance);
                 }
             }
         }
 
         int maxPages = 1;
-        if (t_instances.size() >= itemsPerPage) {
-            maxPages = (int)Math.ceil((double)t_instances.size() / itemsPerPage);
+        if (processInstances.size() >= itemsPerPage) {
+            maxPages = (int)Math.ceil((double)processInstances.size() / itemsPerPage);
         }
         if (page > maxPages) page = maxPages;
         
         int sIndex = (page - 1) * itemsPerPage;
-        if (t_instances.size() > itemsPerPage && sIndex > t_instances.size() - 1) {
-            sIndex = t_instances.size() - itemsPerPage;
+        if (processInstances.size() > itemsPerPage && sIndex > processInstances.size() - 1) {
+            sIndex = processInstances.size() - itemsPerPage;
         }
 
         int eIndex = sIndex + itemsPerPage;
-        if (eIndex >= t_instances.size()) eIndex = t_instances.size();
+        if (eIndex >= processInstances.size()) eIndex = processInstances.size();
 
         request.setAttribute("maxPages", maxPages);
-        ArrayList<ProcessInstance> instances = new ArrayList<ProcessInstance>();
+        ArrayList<ProcessInstance> instances = new ArrayList<>();
         for (int i = sIndex; i < eIndex; i++) {
-            ProcessInstance instance = t_instances.get(i);
+            ProcessInstance instance = processInstances.get(i);
             instances.add(instance);
         }
         return instances;
@@ -724,13 +652,12 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
      * Obtiene la lista de instancias de procesos de un sitio filtradas por 
      * grupo y/o estado.
      * @param site Sitio Web de Procesos del cual se listarán los procesos.
-     * @param group Grupo al que deberán pertenecer los procesos.
      * @param process Tipo de proceso del cual se recuperarán las instancias.
      * @param status Estado de las instancias que serán listadas.
      * @return Lista de instancias de procesos filtradas por grupo y/o estado.
      */
     ArrayList<ProcessInstance> _getProcessInstances(ProcessSite site, Process process, int status) {
-        ArrayList<ProcessInstance> instances = new ArrayList<ProcessInstance>();
+        ArrayList<ProcessInstance> instances = new ArrayList<>();
         Iterator<ProcessInstance> it=process.listProcessInstances();
         
         while (it.hasNext()) {
@@ -753,7 +680,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
      * @return Lista de objetos {@link ItemAware} relacionados con la instancia
      */
     public ArrayList<ItemAware> getProcessItemawareList(ProcessInstance pi) {
-        ArrayList<ItemAware> ret = new ArrayList<ItemAware>();
+        ArrayList<ItemAware> ret = new ArrayList<>();
         
         Iterator<ItemAwareReference> objit = pi.listAllItemAwareReferences();
         while (objit.hasNext()) {
@@ -769,7 +696,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
      * @return Lista de archivos relacionados con la instancia del proceso.
      */
     public ArrayList<RepositoryFile> getProcessRepositoryFiles(ProcessInstance pi) {
-        ArrayList<RepositoryFile> ret = new ArrayList<RepositoryFile>();
+        ArrayList<RepositoryFile> ret = new ArrayList<>();
         Iterator<ItemAwareReference> objit = pi.listAllItemAwareReferences();
         while (objit.hasNext()) {
             ItemAwareReference item=objit.next();

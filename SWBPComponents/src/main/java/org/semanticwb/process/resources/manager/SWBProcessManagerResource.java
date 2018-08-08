@@ -23,7 +23,6 @@ import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBActionResponse;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
-import org.semanticwb.process.SWBProcess;
 import org.semanticwb.process.model.*;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.xpdl.XPDLParser;
@@ -257,7 +256,7 @@ public class SWBProcessManagerResource extends GenericAdmResource {
                             for (int i = 0; i < jsarr.length(); i++) {
                                 try {
                                     jsobj = jsarr.getJSONObject(i);
-                                    str_uri = jsobj.getString(SWBProcess.JSONProperties.PROP_URI);
+                                    str_uri = jsobj.getString(Process.JSONProperties.PROP_URI);
                                     hmjson.put(str_uri, jsobj);
                                 } catch (Exception ej) {
                                     LOG.error("Error en elemento del JSON. ", ej);
@@ -667,8 +666,8 @@ public class SWBProcessManagerResource extends GenericAdmResource {
             while (it.hasNext()) {
                 String key = it.next();
                 JSONObject json = (JSONObject) hmjson.get(key);
-                uri = json.getString(SWBProcess.JSONProperties.PROP_URI);
-                sclass = json.getString(SWBProcess.JSONProperties.PROP_CLASS);
+                uri = json.getString(Process.JSONProperties.PROP_URI);
+                sclass = json.getString(Process.JSONProperties.PROP_CLASS);
                 semclass = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(PROCESS_PREFIX + "#" + sclass);
                 if (semclass == null) {
                     continue;
@@ -676,23 +675,23 @@ public class SWBProcessManagerResource extends GenericAdmResource {
                 try {
                     // primero se crean los elementos graficos del modelo
                     if (semclass.isSubClass(GraphicalElement.swp_GraphicalElement)) {
-                        title = json.optString(SWBProcess.JSONProperties.PROP_TITLE, "");//TODO: Sanitize title and description from JSON
-                        description = json.optString(SWBProcess.JSONProperties.PROP_DESCRIPTION, "");
-                        isMultiInstance = json.optBoolean(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, false);
-                        isLoop = json.optBoolean(SWBProcess.JSONProperties.PROP_ISLOOP, false);
-                        isForCompensation = json.optBoolean(SWBProcess.JSONProperties.PROP_ISCOMPENSATION, false);
-                        isInterrupting = json.optBoolean(SWBProcess.JSONProperties.PROP_ISINTERRUPTING, false);
-                        isCollection = json.optBoolean(SWBProcess.JSONProperties.PROP_ISCOLLECTION, false);
-                        index = json.optInt(SWBProcess.JSONProperties.PROP_INDEX, 1000);
+                        title = json.optString(Process.JSONProperties.PROP_TITLE, "");//TODO: Sanitize title and description from JSON
+                        description = json.optString(Process.JSONProperties.PROP_DESCRIPTION, "");
+                        isMultiInstance = json.optBoolean(Process.JSONProperties.PROP_ISMULTIINSTANCE, false);
+                        isLoop = json.optBoolean(Process.JSONProperties.PROP_ISLOOP, false);
+                        isForCompensation = json.optBoolean(Process.JSONProperties.PROP_ISCOMPENSATION, false);
+                        isInterrupting = json.optBoolean(Process.JSONProperties.PROP_ISINTERRUPTING, false);
+                        isCollection = json.optBoolean(Process.JSONProperties.PROP_ISCOLLECTION, false);
+                        index = json.optInt(Process.JSONProperties.PROP_INDEX, 1000);
 
-                        x = json.getInt(SWBProcess.JSONProperties.PROP_X);
-                        y = json.getInt(SWBProcess.JSONProperties.PROP_Y);
-                        w = json.getInt(SWBProcess.JSONProperties.PROP_W);
-                        h = json.getInt(SWBProcess.JSONProperties.PROP_H);
+                        x = json.getInt(Process.JSONProperties.PROP_X);
+                        y = json.getInt(Process.JSONProperties.PROP_Y);
+                        w = json.getInt(Process.JSONProperties.PROP_W);
+                        h = json.getInt(Process.JSONProperties.PROP_H);
 
-                        parent = json.optString(SWBProcess.JSONProperties.PROP_PARENT, "");
-                        container = json.optString(SWBProcess.JSONProperties.PROP_CONTAINER, "");
-                        labelSize = json.optInt(SWBProcess.JSONProperties.PROP_LABELSIZE, 10);
+                        parent = json.optString(Process.JSONProperties.PROP_PARENT, "");
+                        container = json.optString(Process.JSONProperties.PROP_CONTAINER, "");
+                        labelSize = json.optInt(Process.JSONProperties.PROP_LABELSIZE, 10);
 
                         // revisando si el elemento existe
                         if (hmori.get(uri) != null) {
@@ -961,8 +960,8 @@ public class SWBProcessManagerResource extends GenericAdmResource {
             while (it.hasNext()) {
                 String key = it.next();
                 JSONObject json = (JSONObject) hmjson.get(key);
-                uri = json.getString(SWBProcess.JSONProperties.PROP_URI);
-                sclass = json.getString(SWBProcess.JSONProperties.PROP_CLASS);
+                uri = json.getString(Process.JSONProperties.PROP_URI);
+                sclass = json.getString(Process.JSONProperties.PROP_CLASS);
 
                 semclass = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(PROCESS_PREFIX + "#" + sclass);
                 if (semclass == null) {
@@ -970,8 +969,8 @@ public class SWBProcessManagerResource extends GenericAdmResource {
                 }
 
                 if (semclass.isSubClass(GraphicalElement.swp_GraphicalElement)) {
-                    parent = json.optString(SWBProcess.JSONProperties.PROP_PARENT, "");
-                    container = json.optString(SWBProcess.JSONProperties.PROP_CONTAINER, "");
+                    parent = json.optString(Process.JSONProperties.PROP_PARENT, "");
+                    container = json.optString(Process.JSONProperties.PROP_CONTAINER, "");
                     go = ont.getGenericObject(hmnew.get(uri));
                     ge = null;
                     if (go instanceof GraphicalElement) {
@@ -1008,9 +1007,9 @@ public class SWBProcessManagerResource extends GenericAdmResource {
             while (it.hasNext()) {
                 String key = it.next();
                 JSONObject json = (JSONObject) hmjson.get(key);
-                uri = json.getString(SWBProcess.JSONProperties.PROP_URI);
+                uri = json.getString(Process.JSONProperties.PROP_URI);
 
-                sclass = json.getString(SWBProcess.JSONProperties.PROP_CLASS);
+                sclass = json.getString(Process.JSONProperties.PROP_CLASS);
 
                 semclass = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(PROCESS_PREFIX + "#" + sclass);
                 if (semclass == null) {
@@ -1018,18 +1017,18 @@ public class SWBProcessManagerResource extends GenericAdmResource {
                 }
 
                 if (semclass.isSubClass(ConnectionObject.swp_ConnectionObject)) {
-                    start = json.getString(SWBProcess.JSONProperties.PROP_START);
-                    end = json.getString(SWBProcess.JSONProperties.PROP_END);
+                    start = json.getString(Process.JSONProperties.PROP_START);
+                    end = json.getString(Process.JSONProperties.PROP_END);
 
-                    title = json.optString(SWBProcess.JSONProperties.PROP_TITLE, "");
+                    title = json.optString(Process.JSONProperties.PROP_TITLE, "");
                     try {
-                        description = json.optString(SWBProcess.JSONProperties.PROP_DESCRIPTION, "");
+                        description = json.optString(Process.JSONProperties.PROP_DESCRIPTION, "");
                     } catch (Exception e) {
                         description = "";
                     }
 
                     try {
-                        sconnpoints = json.getString(SWBProcess.JSONProperties.PROP_CONNPOINTS);
+                        sconnpoints = json.getString(Process.JSONProperties.PROP_CONNPOINTS);
                     } catch (Exception e) {
                         sconnpoints = "";
                     }

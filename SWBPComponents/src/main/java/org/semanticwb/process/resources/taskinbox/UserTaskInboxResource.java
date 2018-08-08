@@ -65,9 +65,7 @@ import org.semanticwb.process.model.UserTask;
  * Recurso Bandeja de Tareas de Usuario.
  * @author Hasdai Pacheco {ebenezer.sanchez@infotec.com.mx}
  */
-public class UserTaskInboxResource extends org.semanticwb.process.resources.taskinbox.base.UserTaskInboxResourceBase 
-{
-    private static Logger log = SWBUtils.getLogger(UserTaskInboxResource.class);
+public class UserTaskInboxResource extends org.semanticwb.process.resources.taskinbox.base.UserTaskInboxResourceBase {
     public static final int SORT_DATE = 1;
     public static final int SORT_NAME = 2;
     public static final int STATUS_ALL = -1;
@@ -112,14 +110,12 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
     public static final String MODE_CREATEPI = "createPi";
     public static final String MODE_PROCESSDETAIL = "processDetail";
     public static final String MODE_RESPONSE = "response";
+    public static final String PARAM_REQUEST = "paramRequest";
+    private static Logger log = SWBUtils.getLogger(UserTaskInboxResource.class);
     private HashMap<String, String> colNames;
     
     private Comparator taskNameComparator = new Comparator() {
         String lang = "es";
-        public void Comparator (String lng) {
-            lang = lng;
-        }
-
         @Override
         public int compare(Object t, Object t1) {
             return ((FlowNodeInstance)t).getFlowNodeType().getDisplayTitle(lang).compareTo(((FlowNodeInstance)t1).getFlowNodeType().getDisplayTitle(lang));
@@ -127,31 +123,29 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
     };
     private Comparator taskNameComparatorDesc = new Comparator() {
         String lang = "es";
-        public void Comparator (String lng) {
-            lang = lng;
-        }
 
         @Override
         public int compare(Object t, Object t1) {
             return ((FlowNodeInstance)t1).getFlowNodeType().getDisplayTitle(lang).compareTo(((FlowNodeInstance)t).getFlowNodeType().getDisplayTitle(lang));
         }
     };
-    /*private Comparator taskPriorityComparator = new Comparator() {
-        String lang = "es";
-        
-        public int compare(Object t, Object t1) {
-            int it1 = ((FlowNodeInstance)t).getFlowNodeType().ge
-            int it2 = ((ProcessInstance)t1).getPriority();
-            int ret = 0;
+    
+    public UserTaskInboxResource()
+    {
+        initColNames();
+    }
 
-            if (it1 > it2) ret = 1;
-            if (it1 < it2) ret = -1;
-            return ret;
-        }
-    };*/
+   /**
+   * Construye una nueva instancia de un UserTaskInboxResource dado un SemanticObject
+   * @param base El SemanticObject con las propiedades para el UserTaskInboxResource
+   */
+    public UserTaskInboxResource(org.semanticwb.platform.SemanticObject base) {
+        super(base);
+        initColNames();
+    }
     
     private void initColNames() {
-        colNames = new HashMap<String, String>();
+        colNames = new HashMap<>();
         colNames.put(COL_IDPROCESS, "ID de instancia de proceso");
         colNames.put(COL_IDTASK, "ID de instancia de tarea");
         colNames.put(COL_TASKSUBJECT, "Asunto de la instancia de tarea");
@@ -170,18 +164,13 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         colNames.put(COL_ASSIGNEDTO, "Usuario asignado");
     }
 
-    public UserTaskInboxResource()
-    {
-        initColNames();
-    }
-    
     /**
      * Establece la configuración inicial de la bandeja de tareas.
      */
     private void initTaskInbox() {
-        Resource base = getResourceBase(); 
+        Resource base = getResourceBase();
         boolean update = false;
-        
+
         //Establecer las columnas por defecto
         if (base.getAttribute(ATT_COLS+"1", "").equals("")) {
             base.setAttribute(ATT_COLS+"1", COL_IDPROCESS+"|Caso");
@@ -192,17 +181,17 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
             base.setAttribute(ATT_COLS+"6", COL_ACTIONS+"|Acciones");
             update = true;
         }
-        
+
         if (base.getAttribute(ATT_SHOWPERFORMANCE) == null) {
             base.setAttribute(ATT_SHOWPERFORMANCE, "yes");
         }
-        
+
         //Establecer el motor de graficado
         if (base.getAttribute(ATT_GRAPHSENGINE) == null) {
             base.setAttribute(ATT_GRAPHSENGINE, "google");
             update = true;
         }
-        
+
         //Establecer las gráficas por defecto
         if (base.getAttribute(ATT_INSTANCEGRAPH) == null) {
             base.setAttribute(ATT_INSTANCEGRAPH, "use");
@@ -220,7 +209,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
             base.setAttribute(ATT_PARTGRAPH, "use");
             update = true;
         }
-        
+
         if (update) {
             try {
                 base.updateAttributesToDB();
@@ -228,15 +217,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 log.error("UserTaskInboxResource - initTaskInbox", ex);
             }
         }
-    }
-
-   /**
-   * Construye una nueva instancia de un UserTaskInboxResource dado un SemanticObject
-   * @param base El SemanticObject con las propiedades para el UserTaskInboxResource
-   */
-    public UserTaskInboxResource(org.semanticwb.platform.SemanticObject base) {
-        super(base);
-        initColNames();
     }
 
     @Override
@@ -268,7 +248,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                     fni.setAssignedto(response.getUser());
                     UserTask task = (UserTask)fni.getFlowNodeType();
                     response.sendRedirect(task.getTaskWebPage().getUrl()+"?suri="+fni.getEncodedURI());
-                    return;
                 }
             }
         } else if (ACT_SETGRAPHS.equals(act)) {
@@ -391,7 +370,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
             
             if (idx != -1) {
                 int i = 1;
-                ArrayList<String> conf = new ArrayList<String>();
+                ArrayList<String> conf = new ArrayList<>();
                 while(!base.getAttribute(ATT_COLS+i, "").equals("")) {
                     String val = base.getAttribute(ATT_COLS+i);
 
@@ -418,7 +397,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
             }
         } else if (ACT_CONFIG.equals(act)) {
             int i = 1;
-            ArrayList<String> conf = new ArrayList<String>();
+            ArrayList<String> conf = new ArrayList<>();
             
             while(!base.getAttribute(ATT_COLS+i, "").equals("")) {
                 String val = base.getAttribute(ATT_COLS+i);
@@ -504,7 +483,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
 
         try {
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             request.setAttribute("instances", getUserTaskInstances(request, paramRequest));
             request.setAttribute("statusWp", getDisplayMapWp());
             request.setAttribute("itemsPerPage", getItemsPerPage());
@@ -543,7 +522,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         Resource base = getResourceBase();
         initTaskInbox();
         
-        HashMap<String, String> availableCols = new HashMap<String, String>();
+        HashMap<String, String> availableCols = new HashMap<>();
         availableCols.putAll(colNames);
         
         //Formulario de datos generales de la bandeja
@@ -638,7 +617,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         sb.append("<form id=\"").append(getId()).append("/addColsForm\" class=\"swbform\" action=\"").append(addColUrl).append("\" dojoType=\"dijit.form.Form\" method=\"post\" onSubmit=\"submitForm('").append(getId()).append("/addColsForm'); return false;\">");
         sb.append("  <fieldset>");
         int i = 1;
-        HashMap<String, String> selectedCols = new HashMap<String, String>();
+        HashMap<String, String> selectedCols = new HashMap<>();
         if (!base.getAttribute(ATT_COLS+i, "").equals("")) {
             while(!base.getAttribute(ATT_COLS+i, "").equals("")) {
                 String [] conf = base.getAttribute(ATT_COLS+i).split("\\|");
@@ -680,7 +659,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
 
             while(!base.getAttribute(ATT_COLS+i, "").equals("")) {
                 String val = base.getAttribute(ATT_COLS+i);
-                String cfg [] = val.split("\\|");
+                String [] cfg = val.split("\\|");
                 sb.append("      <tr>");
                 sb.append("        <td align=\"center\">");
                 
@@ -697,7 +676,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 sb.append("        </td>");
                 sb.append("        <td>").append(colNames.get(cfg[0])).append("</td>");
                 sb.append("        <td>");
-                //sb.append("          <input onkeyup=\"console.log(event); if (event.keyCode==13) {console.log(event); alert(event)}; return false;\" type=\"text\" dojoType=\"dijit.form.TextBox\" id=\"lbl_").append(i).append("\" name=\"lbl_").append(i).append("\" value=\"").append(cfg[1]).append("\" />");
                 sb.append("          <input type=\"text\" dojoType=\"dijit.form.TextBox\" id=\"lbl_").append(i).append("\" name=\"lbl_").append(i).append("\" value=\"").append(cfg[1]).append("\" />");
                 sb.append("          <a href=\"#\" title=\"").append(paramRequest.getLocaleString("admLblDel")).append("\" onclick=\"submitUrl('").append(delUrl).append("',this);\"><img src=\"").append(SWBPlatform.getContextPath()).append("/swbadmin/images/delete.gif\"/></a>");
                 sb.append("        </td>");
@@ -757,7 +735,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
 
         try {
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             rd.include(request, response);
         } catch (Exception e) {
             log.error("Error including jsp in new case", e);
@@ -769,7 +747,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
 
         try {
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             if (paramRequest.getCallMethod() == SWBParamRequest.Call_CONTENT) {
                 request.setAttribute("instances", getProcessInstances(request, paramRequest));
                 request.setAttribute("statusWp", getDisplayMapWp());
@@ -789,7 +767,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
 
         try {
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
-            request.setAttribute("paramRequest", paramRequest);
+            request.setAttribute(PARAM_REQUEST, paramRequest);
             request.setAttribute("isAdmin", isAdminUser(paramRequest.getUser()));
             rd.include(request, response);
         } catch (Exception e) {
@@ -821,11 +799,11 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
      * @throws SWBResourceException 
      */
     public ArrayList<ProcessInstance> getProcessInstances(HttpServletRequest request, SWBParamRequest paramRequest) throws SWBResourceException {
-        ArrayList<ProcessInstance> unpaged = new ArrayList<ProcessInstance>();
-        ArrayList<ProcessInstance> instances = new ArrayList<ProcessInstance>();
+        ArrayList<ProcessInstance> unpaged = new ArrayList<>();
+        ArrayList<ProcessInstance> instances = new ArrayList<>();
         String suri = request.getParameter("suri");
         Process p = (Process)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(suri);
-        HashMap<User, Integer> participantCount = new HashMap<User, Integer>();
+        HashMap<User, Integer> participantCount = new HashMap<>();
         
         if (p != null) {
             int page = 1;
@@ -845,20 +823,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 
                 //Conteo de instancias
                 if (pi.getStatus() == ProcessInstance.STATUS_PROCESSING) {
-//                    if (pi.getCreator() != null) {
-//                        if (participantCount.get(pi.getCreator()) == null) {
-//                            participantCount.put(pi.getCreator(), new Integer(1));
-//                        } else {
-//                            participantCount.put(pi.getCreator(), participantCount.get(pi.getCreator())+1);
-//                        }
-//                    }
-//                    if (pi.getAssignedto()!= null) {
-//                        if (participantCount.get(pi.getAssignedto()) == null) {
-//                            participantCount.put(pi.getAssignedto(), new Integer(1));
-//                        } else {
-//                            participantCount.put(pi.getAssignedto(), participantCount.get(pi.getAssignedto())+1);
-//                        }
-//                    }
                     boolean isDelayed = false;
                     //Verifica retraso
                     Iterator<FlowNodeInstance> itfni = pi.listAllFlowNodeInstance();
@@ -866,20 +830,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                         FlowNodeInstance fni = itfni.next();
                         if (fni.getFlowNodeType() instanceof UserTask) {
                             if (fni.getStatus() == FlowNodeInstance.STATUS_PROCESSING) {
-//                                if (fni.getCreator() != null) {
-//                                    if (participantCount.get(fni.getCreator()) == null) {
-//                                        participantCount.put(fni.getCreator(), new Integer(1));
-//                                    } else {
-//                                        participantCount.put(fni.getCreator(), participantCount.get(fni.getCreator())+1);
-//                                    }
-//                                }
-//                                if (fni.getAssignedto()!= null) {
-//                                    if (participantCount.get(fni.getAssignedto()) == null) {
-//                                        participantCount.put(fni.getAssignedto(), new Integer(1));
-//                                    } else {
-//                                        participantCount.put(fni.getAssignedto(), participantCount.get(fni.getAssignedto())+1);
-//                                    }
-//                                }
                                 
                                 UserTask ut = (UserTask) fni.getFlowNodeType();
                                 int delay = ut.getNotificationTime();
@@ -893,13 +843,11 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                                 }
                             }
                             
-                            if (fni.getStatus() == FlowNodeInstance.STATUS_CLOSED) {
-                                if (fni.getEndedby() != null) {
-                                    if (participantCount.get(fni.getEndedby()) == null) {
-                                        participantCount.put(fni.getEndedby(), new Integer(1));
-                                    } else {
-                                        participantCount.put(fni.getEndedby(), participantCount.get(fni.getEndedby())+1);
-                                    }
+                            if (fni.getStatus() == FlowNodeInstance.STATUS_CLOSED && fni.getEndedby() != null) {
+                                if (participantCount.get(fni.getEndedby()) == null) {
+                                    participantCount.put(fni.getEndedby(), 1);
+                                } else {
+                                    participantCount.put(fni.getEndedby(), participantCount.get(fni.getEndedby())+1);
                                 }
                             }
                         }
@@ -916,7 +864,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 if (pi.getStatus() == ProcessInstance.STATUS_CLOSED) {
                     if (pi.getEndedby() != null) {
                         if (participantCount.get(pi.getEndedby()) == null) {
-                            participantCount.put(pi.getEndedby(), new Integer(1));
+                            participantCount.put(pi.getEndedby(), 1);
                         } else {
                             participantCount.put(pi.getEndedby(), participantCount.get(pi.getEndedby())+1);
                         }
@@ -948,9 +896,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 if (aborted > 0) dt.put(paramRequest.getLocaleString("lblAborted")).put(aborted);
                 if (closed > 0) dt.put(paramRequest.getLocaleString("lblClosed")).put(closed);
                 instanceInfo.put(dt);
-                //request.setAttribute("processing", processing);
-                //request.setAttribute("aborted", aborted);
-                //request.setAttribute("closed", closed);
+
                 try {
                     data.put("instanceData", instanceInfo);
                 } catch (JSONException ex) {}
@@ -967,8 +913,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                     dt.put(paramRequest.getLocaleString("lblOntime")).put(ontime);
                     statusInfo.put(dt);
                 }
-                //request.setAttribute("delayed", delayed);
-                //request.setAttribute("ontime", ontime);
                 try {
                     data.put("statusData", statusInfo);
                 } catch (JSONException ex) {}
@@ -984,14 +928,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 try {
                     data.put("responseData", responseInfo);
                 } catch (JSONException ex) {}
-                /*request.setAttribute("minTime", TimeUnit.MILLISECONDS.toMinutes(minTime));
-                request.setAttribute("maxTime", TimeUnit.MILLISECONDS.toMinutes(maxTime));
-                request.setAttribute("avgTime", TimeUnit.MILLISECONDS.toMinutes(sumTime/closed));*/
-            }/* else {
-                request.setAttribute("minTime", 0L);
-                request.setAttribute("maxTime", 0L);
-                request.setAttribute("avgTime", 0L);
-            }*/
+            }
         
             //Realizar paginado de instancias
             int maxPages = 1;
@@ -1053,7 +990,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                     processInfo.put("theUser", theUser.getFullName()==null?"Anónimo":theUser.getFullName());
                     
                     data.put("partData", processInfo);
-                    //request.setAttribute("participation", processInfo.toString());
+
                 } catch (JSONException ex) {
                     log.error("UserTaskInboxResource - Error al generar JSON", ex);
                 }
@@ -1071,7 +1008,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
      * @return Lista de instancias de tareas de usuario filtradas y ordenadas.
      */
     private ArrayList<FlowNodeInstance> getUserTaskInstances(HttpServletRequest request, SWBParamRequest paramRequest) {
-        ArrayList<FlowNodeInstance> unpaged = new ArrayList<FlowNodeInstance>();
+        ArrayList<FlowNodeInstance> unpaged = new ArrayList<>();
         WebSite site = paramRequest.getWebPage().getWebSite();
         User user = paramRequest.getUser();
         String sortType = request.getParameter("sort");
@@ -1153,7 +1090,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         if (eIndex >= unpaged.size()) eIndex = unpaged.size();
 
         request.setAttribute("maxPages", maxPages);
-        ArrayList<FlowNodeInstance> instances = new ArrayList<FlowNodeInstance>();
+        ArrayList<FlowNodeInstance> instances = new ArrayList<>();
         for (int i = sIndex; i < eIndex; i++) {
             FlowNodeInstance instance = unpaged.get(i);
             instances.add(instance);
@@ -1166,28 +1103,23 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         boolean hasStatus = false;
         
         Process pType = fni.getProcessInstance().getProcessType();
-        //System.out.println("Validating instance "+fni.getURI()+" - "+pType.getTitle());
         if (!pType.isValid()) {
             return false;
         }
         
-        if (null == fni.getProcessInstance().getCreator() && !isShowAutoCreated()) { 
-        //if (fni.getProcessInstance().getCreator() == null) {
+        if (null == fni.getProcessInstance().getCreator() && !isShowAutoCreated()) {
             return false;
         }
-        //System.out.println("  La instancia tiene creador y está activado la opción mostrar");
+
         if (isAdminUser(user)) return true;
         boolean canAccess = fni.haveAccess(user);
-        
-        //System.out.println("  El usuario tiene acceso: "+canAccess);
+
         if (canAccess) {
             //Verificar filtrado por grupo
             if (isFilterByGroup()) {
                 UserGroup iug = fni.getProcessInstance().getOwnerUserGroup();
 
-                if (iug == null) { //Si la instancia no tiene grupo, cualquiera la puede ver
-                    hasGroup = true;
-                } else if (user.hasUserGroup(iug)) { // la instancia tiene el mismo grupo que el usuario
+                if (iug == null || user.hasUserGroup(iug)) { //Si la instancia no tiene grupo, cualquiera la puede ver
                     hasGroup = true;
                 }
             } else {
@@ -1199,7 +1131,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 hasStatus = true;
             }
         }
-        //System.out.println("canAccess: "+canAccess+", hasGroup: "+hasGroup+", hasStatus: "+hasStatus);
         return canAccess && (hasGroup && hasStatus);
     }
     

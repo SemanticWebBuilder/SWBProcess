@@ -38,9 +38,9 @@ import org.semanticwb.process.model.WrapperProcessWebPage;
 
 public class ProcessTracer extends org.semanticwb.process.resources.tracer.base.ProcessTracerBase 
 {
-    private static final Logger LOG = SWBUtils.getLogger(ProcessTracer.class);
     public static final int MODE_OVERVIEW = 1;
     public static final int MODE_TRACKING = 2;
+    private static final Logger LOG = SWBUtils.getLogger(ProcessTracer.class);
     
     public ProcessTracer() {}
 
@@ -82,7 +82,7 @@ public class ProcessTracer extends org.semanticwb.process.resources.tracer.base.
      * @return Lista con las instancias de procesos.
      */
     private ArrayList<ProcessInstance> getProcessInstances(HttpServletRequest request, SWBParamRequest paramRequest) {
-        ArrayList<ProcessInstance> _ret = new ArrayList<ProcessInstance>();
+        ArrayList<ProcessInstance> result = new ArrayList<>();
         String piid = request.getParameter("prid");
         WebSite site = paramRequest.getWebPage().getWebSite();
         Process process = null;
@@ -131,28 +131,28 @@ public class ProcessTracer extends org.semanticwb.process.resources.tracer.base.
         if (it != null) {
             while (it.hasNext()) {
                 ProcessInstance processInstance = it.next();
-                _ret.add(processInstance);
+                result.add(processInstance);
             }
         }
         
         int maxPages = 1;
-        if (_ret.size() >= itemsPerPage) {
-            maxPages = (int)Math.ceil((double)_ret.size() / itemsPerPage);
+        if (result.size() >= itemsPerPage) {
+            maxPages = (int)Math.ceil((double)result.size() / itemsPerPage);
         }
         if (page > maxPages) page = maxPages;
 
         int sIndex = (page - 1) * itemsPerPage;
-        if (_ret.size() > itemsPerPage && sIndex > _ret.size() - 1) {
-            sIndex = _ret.size() - itemsPerPage;
+        if (result.size() > itemsPerPage && sIndex > result.size() - 1) {
+            sIndex = result.size() - itemsPerPage;
         }
 
         int eIndex = sIndex + itemsPerPage;
-        if (eIndex >= _ret.size()) eIndex = _ret.size();
+        if (eIndex >= result.size()) eIndex = result.size();
 
         request.setAttribute("maxPages", maxPages);
-        ArrayList<ProcessInstance> ret = new ArrayList<ProcessInstance>();
+        ArrayList<ProcessInstance> ret = new ArrayList<>();
         for (int i = sIndex; i < eIndex; i++) {
-            ProcessInstance instance = _ret.get(i);
+            ProcessInstance instance = result.get(i);
             ret.add(instance);
         }
         return ret;

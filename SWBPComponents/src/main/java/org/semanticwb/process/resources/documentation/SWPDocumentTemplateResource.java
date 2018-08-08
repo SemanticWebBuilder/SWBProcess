@@ -28,7 +28,6 @@ import java.util.*;
  * @author carlos.alvarez
  */
 public class SWPDocumentTemplateResource extends GenericResource {
-	private static final Logger log = SWBUtils.getLogger(SWPDocumentTemplateResource.class);
 	public static final String MODE_EDIT_DOCUMENT_SECTION = "m_eds";// Modo EDITAR de sección de documentación
 	public static final String ACTION_ADD_DOCUMENT_SECTION = "a_ads";// Acción GUARDAR NUEVA sección de documentación
 	public static final String ACTION_ADD_VERSION_TEMPLATE = "a_anvt";// Acción GUARDAR NUEVA sección de documentación
@@ -55,7 +54,71 @@ public class SWPDocumentTemplateResource extends GenericResource {
 	public static final String PARAM_URIDS = "urids";
 	public static final String PARAM_STATUS = "status";
 	public static final String PARAM_DESCRIPTION = "description";
-	
+    private static final Logger log = SWBUtils.getLogger(SWPDocumentTemplateResource.class);
+    public static final String TITLE_SECTION = "titleSection";
+    public static final String ERROR = "error";
+
+    /**
+	 * Obtiene la lista de {@code TemplateContainers} del sitio.
+	 *
+	 * @param request
+	 * @param paramRequest
+	 * @return
+	 */
+	 public static List<TemplateContainer> listTemplateContainers(HttpServletRequest request,
+			SWBParamRequest paramRequest) {
+		ArrayList<TemplateContainer> unpaged = new ArrayList<>();
+		WebSite model = paramRequest.getWebPage().getWebSite();
+		String lang = "es";
+		User user = paramRequest.getUser();
+		if (user != null && user.getLanguage() != null) {
+			lang = user.getLanguage();
+		}
+		int page = 1;
+		int itemsPerPage = 10;
+		Iterator<TemplateContainer> tplContainersIt = SWBComparator
+				.sortByCreated(TemplateContainer.ClassMgr.listTemplateContainers(model), false);
+		if (tplContainersIt != null && tplContainersIt.hasNext()) {
+			Iterator<TemplateContainer> it = SWBComparator.sortByDisplayName(tplContainersIt, lang);
+			while (it.hasNext()) {
+				TemplateContainer dt = it.next();
+				unpaged.add(dt);
+			}
+		}
+		// Realizar paginado de instancias
+		int maxPages = 1;
+		if (request.getParameter("p") != null && !request.getParameter("p").trim().equals("")) {
+			page = Integer.valueOf(request.getParameter("p"));
+			if (page < 0) {
+				page = 1;
+			}
+		}
+		if (itemsPerPage < 10) {
+			itemsPerPage = 10;
+		}
+		if (unpaged.size() >= itemsPerPage) {
+			maxPages = (int) Math.ceil((double) unpaged.size() / itemsPerPage);
+		}
+		if (page > maxPages) {
+			page = maxPages;
+		}
+		int sIndex = (page - 1) * itemsPerPage;
+		if (unpaged.size() > itemsPerPage && sIndex > unpaged.size() - 1) {
+			sIndex = unpaged.size() - itemsPerPage;
+		}
+		int eIndex = sIndex + itemsPerPage;
+		if (eIndex >= unpaged.size()) {
+			eIndex = unpaged.size();
+		}
+		request.setAttribute("maxPages", maxPages);
+		ArrayList<TemplateContainer> ret = new ArrayList<>();
+		for (int i = sIndex; i < eIndex; i++) {
+			TemplateContainer dt = unpaged.get(i);
+			ret.add(dt);
+		}
+		return ret;
+	}
+
 	@Override
 	public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
 		String action = response.getAction();
@@ -98,7 +161,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 				response.setRenderParameter(PARAM_URITC, templateCont.getURI());
 				response.setRenderParameter(PARAM_STATUS, "ok");
 			} else {
-				response.setRenderParameter(PARAM_STATUS, "error");
+				response.setRenderParameter(PARAM_STATUS, ERROR);
 			}
 			response.setMode(MODE_RESPONSE);
 		} else if (action.equals(SWBResourceURL.Action_EDIT)) { // Editar plantilla de documentación
@@ -202,9 +265,9 @@ public class SWPDocumentTemplateResource extends GenericResource {
 									docInstanceNew.addDocumentSectionInstance(docSectionInstanceNew);
 									docSectionInstanceNew.setDocumentationInstance(docInstanceNew);
 
-									Map<SectionElement, SectionElement> replySe = new HashMap<SectionElement, SectionElement>();
+									Map<SectionElement, SectionElement> replySe = new HashMap<>();
 									//Almacenar elementos relacionados
-									docSection = (DocumentSection) map
+									docSection = map
 											.get(docSectionInstance.getSecTypeDefinition().getURI());
 									docSectionInstanceNew.setSecTypeDefinition(docSection);
 									docSectionInstance.setIndex(docSection.getIndex());
@@ -314,7 +377,6 @@ public class SWPDocumentTemplateResource extends GenericResource {
 
 				docTemplateNew.setTitle(docTemplate.getTitle());
 				docTemplateNew.setVersionComment(!description.equals("") ? description : null);
-				// docTemplateNew.setTemplateContainer(templateCont);
 				docTemplateNew.setVersionValue(DocumentTemplate.getNextVersionValue(docTemplate.getVersionValue()));
 				docTemplateNew.setPreviousTemplate(templateCont.getLastTemplate());
 				DocumentTemplate lastTemplate = templateCont.getLastTemplate();
@@ -327,7 +389,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 				response.setRenderParameter(PARAM_STATUS, "ok");
 				response.setRenderParameter("uridtn", docTemplateNew.getURI());
 			} else {
-				response.setRenderParameter(PARAM_STATUS, "error");
+				response.setRenderParameter(PARAM_STATUS, ERROR);
 			}
 			response.setRenderParameter(PARAM_URIDTP, uridtp);
 			response.setRenderParameter(PARAM_URITC, uriTemplateCont);
@@ -373,7 +435,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 					.getGenericObject(uriDocTemplate);
 			SemanticClass semCls = SWBPlatform.getSemanticMgr().getVocabulary()
 					.getSemanticClass(request.getParameter("dstype"));
-			String titleSection = request.getParameter("titleSection");
+			String titleSection = request.getParameter(TITLE_SECTION);
 
 			if (null != docTemplate && null != semCls && null != titleSection && !titleSection.isEmpty()) {
 				StringBuilder ip = new StringBuilder();
@@ -416,7 +478,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 				response.setRenderParameter(PARAM_URIDS, docSection.getURI());
 				response.setRenderParameter(PARAM_URIDT, docTemplate.getURI());
 			} else {
-				response.setRenderParameter(PARAM_STATUS, "error");
+				response.setRenderParameter(PARAM_STATUS, ERROR);
 			}
 			response.setMode(MODE_RESPONSE);
 		} else if (action.equals(ACTION_DEFINE_VERSION_TEMPLATE)) {
@@ -468,7 +530,7 @@ public class SWPDocumentTemplateResource extends GenericResource {
 		} else if (action.equals(ACTION_EDIT_DOCUMENT_SECTION)) {
 			String urids = request.getParameter(PARAM_URIDS);
 			DocumentSection ds = (DocumentSection) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urids);
-			String titleSection = request.getParameter("titleSection") != null ? request.getParameter("titleSection")
+			String titleSection = request.getParameter(TITLE_SECTION) != null ? request.getParameter(TITLE_SECTION)
 					: "";
 			String configData = request.getParameter("configData");
 
@@ -729,67 +791,6 @@ public class SWPDocumentTemplateResource extends GenericResource {
 		} catch (ServletException ex) {
 			log.error("Error on doAddTemplate, " + path + ", " + ex.getMessage());
 		}
-	}
-
-	/**
-	 * Obtiene la lista de {@code TemplateContainers} del sitio.
-	 * 
-	 * @param request
-	 * @param paramRequest
-	 * @return
-	 */
-	 public static List<TemplateContainer> listTemplateContainers(HttpServletRequest request,
-			SWBParamRequest paramRequest) {
-		ArrayList<TemplateContainer> unpaged = new ArrayList<>();
-		WebSite model = paramRequest.getWebPage().getWebSite();
-		String lang = "es";
-		User user = paramRequest.getUser();
-		if (user != null && user.getLanguage() != null) {
-			lang = user.getLanguage();
-		}
-		int page = 1;
-		int itemsPerPage = 10;
-		Iterator<TemplateContainer> tplContainersIt = SWBComparator
-				.sortByCreated(TemplateContainer.ClassMgr.listTemplateContainers(model), false);
-		if (tplContainersIt != null && tplContainersIt.hasNext()) {
-			Iterator<TemplateContainer> it = SWBComparator.sortByDisplayName(tplContainersIt, lang);
-			while (it.hasNext()) {
-				TemplateContainer dt = it.next();
-				unpaged.add(dt);
-			}
-		}
-		// Realizar paginado de instancias
-		int maxPages = 1;
-		if (request.getParameter("p") != null && !request.getParameter("p").trim().equals("")) {
-			page = Integer.valueOf(request.getParameter("p"));
-			if (page < 0) {
-				page = 1;
-			}
-		}
-		if (itemsPerPage < 10) {
-			itemsPerPage = 10;
-		}
-		if (unpaged.size() >= itemsPerPage) {
-			maxPages = (int) Math.ceil((double) unpaged.size() / itemsPerPage);
-		}
-		if (page > maxPages) {
-			page = maxPages;
-		}
-		int sIndex = (page - 1) * itemsPerPage;
-		if (unpaged.size() > itemsPerPage && sIndex > unpaged.size() - 1) {
-			sIndex = unpaged.size() - itemsPerPage;
-		}
-		int eIndex = sIndex + itemsPerPage;
-		if (eIndex >= unpaged.size()) {
-			eIndex = unpaged.size();
-		}
-		request.setAttribute("maxPages", maxPages);
-		ArrayList<TemplateContainer> ret = new ArrayList<>();
-		for (int i = sIndex; i < eIndex; i++) {
-			TemplateContainer dt = unpaged.get(i);
-			ret.add(dt);
-		}
-		return ret;
 	}
 
 	public void doResponse(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)

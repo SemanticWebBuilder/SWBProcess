@@ -34,11 +34,15 @@ import java.util.Map;
 import static org.semanticwb.process.resources.utils.SWPUtils.copyFile;
 
 public class Util {
+    private static final Logger LOG = SWBUtils.getLogger(Util.class);
+    public static final String TITLE = "title";
+    public static final String CLASS_NAME = "className";
+    public static final String PROPID = "propid";
+
     private Util () {
         //This class is not intended to be instantiated
     }
 
-    private static final Logger LOG = SWBUtils.getLogger(Util.class);
     /**
      * Obtiene un documento XML con la información de la instancia de la documentación.
      * @param request Obheto HTTPServletRequest para construir URLS
@@ -50,7 +54,7 @@ public class Util {
         Document doc = SWBUtils.XML.getNewDocument();
         Process p = inst.getProcessRef();
         Element root = doc.createElement("root");
-        root.setAttribute("title", p.getTitle());
+        root.setAttribute(TITLE, p.getTitle());
         root.setAttribute("uri", p.getURI());
         root.setAttribute("export", String.valueOf(export));
         root.setAttribute("contextPath", SWBPortal.getContextPath());
@@ -75,8 +79,8 @@ public class Util {
                     root.appendChild(doc.createTextNode("\n\t"));
                     Element section = doc.createElement("section");
                     root.appendChild(section);
-                    section.setAttribute("className", cls.getName());
-                    section.setAttribute("title", dsi.getSecTypeDefinition().getTitle());
+                    section.setAttribute(CLASS_NAME, cls.getName());
+                    section.setAttribute(TITLE, dsi.getSecTypeDefinition().getTitle());
                     section.setAttribute("uri", dsi.getURI());
                     section.setAttribute("idSection", dsi.getId());
                     section.setAttribute("url", cls.getName() + dsi.getId());
@@ -87,31 +91,28 @@ public class Util {
                         boolean addInstance = true;
                         section.appendChild(doc.createTextNode("\n\t\t"));
                         SectionElement se = itse.next();
-//                        System.out.println("Procesando elemento "+se.getURI());
+
                         Element instance = doc.createElement("instance");
                         instance.setAttribute("id", se.getId());
                         instance.setAttribute("uri", se.getURI());
-                        instance.setAttribute("className", cls.getName());
+                        instance.setAttribute(CLASS_NAME, cls.getName());
                         if (cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {//Elements Instantiable
-//                            System.out.println("  Es un instanciable");
+
                             String[] props = dsi.getSecTypeDefinition().getVisibleProperties().split("\\|");
                             for (String propt : props) {
-//                                System.out.println("  -Agregando propiedad "+propt);
-                                String idprop = propt.substring(propt.indexOf(";") + 1, propt.length());
-                                String titleprop = propt.substring(0, propt.indexOf(";"));
+
+                                String idprop = propt.substring(propt.indexOf(';') + 1, propt.length());
+                                String titleprop = propt.substring(0, propt.indexOf(';'));
                                 SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
                                 String value = "";
                                 Element property = doc.createElement("property");
                                 instance.appendChild(property);
-                                property.setAttribute("title", titleprop);
-                                property.setAttribute("propid", idprop);
-//                                System.out.println("  -SemanticProperty: "+prop);
+                                property.setAttribute(TITLE, titleprop);
+                                property.setAttribute(PROPID, idprop);
+
                                 if (prop != null && !prop.getPropId().equals(Referable.swpdoc_file.getPropId())) {
-//                                    System.out.println("  -Prop is not file ref");
                                     value = (se.getSemanticObject().getProperty(prop) != null ? se.getSemanticObject().getProperty(prop) : "");
-//                                    System.out.println("  -Prop value: "+value);
                                 } else {//Show URL download file
-//                                    System.out.println("  -Prop is file ref");
                                     if (se instanceof ElementReference) {
                                         ElementReference er = (ElementReference) se;
                                         if (er.getElementRef() == null) {
@@ -123,14 +124,12 @@ public class Util {
                                     }
                                     Referable ref = (Referable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
                                     if (!ref.hasRepositoryReference()) addInstance = false;
-//                                    System.out.println("addInstance: "+addInstance);
                                     if (!addInstance) continue;
 
-//                                    System.out.println("  ...Continue adding element");
                                     RepositoryDirectory rd = ref.getRefRepository().getRepositoryDirectory();
                                     SWBResourceURL urld = new SWBResourceURLImp(request, rd.getResource(), rd, SWBResourceModes.UrlType_RENDER);
 
-                                    RepositoryElement re = (RepositoryElement) ref.getRefRepository();
+                                    RepositoryElement re = ref.getRefRepository();
                                     VersionInfo vi = ref.getVersion() != null ? ref.getVersion() : re.getLastVersion();
                                     urld.setMode(ProcessFileRepository.MODE_GETFILE).setCallMethod(SWBResourceURL.Call_DIRECT).setParameter("fid", ref.getRefRepository().getId());
                                     urld.setParameter("verNum", vi.getVersionNumber() + "");
@@ -162,7 +161,6 @@ public class Util {
                                     }
 
                                 }
-//                                System.out.println("Adding property with val: "+value);
                                 property.appendChild(doc.createTextNode(value));
                             }
 
@@ -199,14 +197,14 @@ public class Util {
                             Activity a = (Activity) se;
                             Element property = doc.createElement("property");
                             instance.appendChild(property);
-                            property.setAttribute("title", Descriptiveable.swb_title.getLabel());
-                            property.setAttribute("propid", Descriptiveable.swb_title.getPropId());
+                            property.setAttribute(TITLE, Descriptiveable.swb_title.getLabel());
+                            property.setAttribute(PROPID, Descriptiveable.swb_title.getPropId());
                             property.appendChild(doc.createTextNode(a.getTitle() != null ? a.getTitle() : ""));
 
                             Element propertyd = doc.createElement("propertyd");
                             instance.appendChild(propertyd);
-                            propertyd.setAttribute("title", Descriptiveable.swb_description.getLabel());
-                            propertyd.setAttribute("propid", Descriptiveable.swb_description.getPropId());
+                            propertyd.setAttribute(TITLE, Descriptiveable.swb_description.getLabel());
+                            propertyd.setAttribute(PROPID, Descriptiveable.swb_description.getPropId());
 
                             String html = a.getDescription();
                             org.jsoup.nodes.Document d = null;
@@ -237,7 +235,6 @@ public class Util {
                             instance.setAttribute("fill", a.getFill());
                             instance.setAttribute("id", a.getActivityRef().getProcessActivity().getId());
 
-                            //Activity act = (Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
                             if (a.getFill() != null) {
                                 if (colorTask.length() > 0) {
                                     colorTask += "|";
@@ -271,7 +268,7 @@ public class Util {
                                 eds.setAttribute("uri", e.getKey().toString());
                                 DocumentSection ds = (DocumentSection) e.getKey();
                                 String[] props = ds.getVisibleProperties().split("\\|");
-                                eds.setAttribute("title", ds.getTitle());
+                                eds.setAttribute(TITLE, ds.getTitle());
                                 eds.setAttribute("url", "related" + ds.getId() + "act" + a.getId());
 
                                 String[] uris = e.getValue().toString().split("\\|");
@@ -283,18 +280,18 @@ public class Util {
                                     SemanticClass scls = ds.getSectionType().transformToSemanticClass();
                                     eds.appendChild(related);
                                     related.setAttribute("uri", uri);
-                                    related.setAttribute("className", scls.getName());
+                                    related.setAttribute(CLASS_NAME, scls.getName());
                                     SectionElement ser = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uri);
                                     SemanticObject so = SemanticObject.createSemanticObject(uri);
                                     if (so != null) {
                                         for (String propt : props) {
-                                            String idprop = propt.substring(propt.indexOf(";") + 1, propt.length());
-                                            String titleprop = propt.substring(0, propt.indexOf(";"));
+                                            String idprop = propt.substring(propt.indexOf(';') + 1, propt.length());
+                                            String titleprop = propt.substring(0, propt.indexOf(';'));
                                             SemanticProperty prop = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
                                             Element erprop = doc.createElement("relatedprop");
                                             related.appendChild(erprop);
-                                            erprop.setAttribute("title", titleprop);
-                                            erprop.setAttribute("propid", idprop);
+                                            erprop.setAttribute(TITLE, titleprop);
+                                            erprop.setAttribute(PROPID, idprop);
                                             String value = "";
                                             if (prop != null && !prop.getPropId().equals(Referable.swpdoc_file.getPropId())) {
                                                 value = ser.getSemanticObject().getProperty(prop) != null ? ser.getSemanticObject().getProperty(prop) : "";
@@ -312,7 +309,7 @@ public class Util {
                                                 RepositoryDirectory rd = ref.getRefRepository().getRepositoryDirectory();
                                                 SWBResourceURL urld = new SWBResourceURLImp(request, rd.getResource(), rd, SWBResourceModes.UrlType_RENDER);
                                                 urld.setMode(ProcessFileRepository.MODE_GETFILE).setCallMethod(SWBResourceURL.Call_DIRECT).setParameter("fid", ref.getRefRepository().getId());
-                                                RepositoryElement re = (RepositoryElement) ref.getRefRepository();
+                                                RepositoryElement re = ref.getRefRepository();
                                                 VersionInfo vi = ref.getVersion() != null ? ref.getVersion() : re.getLastVersion();
                                                 urld.setParameter("verNum", vi.getVersionNumber() + "");
 
@@ -339,11 +336,6 @@ public class Util {
                                                 } else if (re instanceof RepositoryURL) {
                                                     value = "<a target=\"_blank\" href=\"" + vi.getVersionFile() + "\">" + ref.getRefRepository().getTitle() + " <i class=\"fa fa-external-link\"></i></a>";
                                                 }
-//                                                if (re instanceof RepositoryFile) {
-//                                                    value = "<a href=\"" + urld + "\">" + ref.getRefRepository().getTitle() + " <i class=\"fa fa-download\"></i></a>";
-//                                                } else if (re instanceof RepositoryURL) {
-//                                                    value = "<a target=\"_blank\" href=\"" + vi.getVersionFile() + "\">" + ref.getRefRepository().getTitle() + " <i class=\"fa fa-external-link\"></i></a>";
-//                                                }
                                             }
                                             erprop.appendChild(doc.createTextNode(value));
                                         }
@@ -373,8 +365,8 @@ public class Util {
                     String[] tasks = colorTask.split("\\|");
                     for (String task : tasks) {
                         Element colorTaskE = doc.createElement("colorTask");
-                        colorTaskE.setAttribute("id", task.substring(0, task.lastIndexOf(";")));
-                        colorTaskE.setAttribute("color", task.substring(task.lastIndexOf(";") + 1, task.length()));
+                        colorTaskE.setAttribute("id", task.substring(0, task.lastIndexOf(';')));
+                        colorTaskE.setAttribute("color", task.substring(task.lastIndexOf(';') + 1, task.length()));
                         root.appendChild(colorTaskE);
                     }
                 }

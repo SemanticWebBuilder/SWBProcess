@@ -42,8 +42,6 @@ import static org.semanticwb.process.resources.utils.SWPUtils.*;
  * @author carlos.alvarez
  */
 public class SWPDocumentationResource extends GenericAdmResource {
-	private static final Logger log = SWBUtils.getLogger(SWPDocumentationResource.class);
-
 	public static final String ACTION_ADD_INSTANTIABLE = "a_ain";
 	public static final String ACTION_EDIT_INSTANTIABLE = "a_ein";
 	public static final String ACTION_ADD_RELATE = "a_arel";
@@ -76,6 +74,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	public static final String CONFIG_TPL = "template";
 	public static final String CONFIG_FIRSTPAGE = "includeFirstPage";
 	public static final String CONFIG_FORCETBLSTYLES = "forceTableStyles";
+	private static final Logger log = SWBUtils.getLogger(SWPDocumentationResource.class);
 	private static final String PARAM_FFILE = "ffile";
 	private static final String PARAM_URIDSI = "uridsi";
 	private static final String PARAM_URISE = "urise";
@@ -85,10 +84,28 @@ public class SWPDocumentationResource extends GenericAdmResource {
 	private static final String PARAM_URIDOC = "uridoc";
 	private static final String HTMLCONTENTTYPE = "text/html";
 	private static final String UTF8 = "UTF-8";
+	static List<RepositoryDirectory> list = new ArrayList<>();
+
+	public static List<RepositoryDirectory> listRepositoryDerectoryByParent(WebPage webpage, boolean clear) {
+		if (clear) {
+			list.clear();
+		}
+		Iterator<RepositoryDirectory> it = SWBComparator.sortByCreated(RepositoryDirectory.ClassMgr.listRepositoryDirectoryByParent(webpage), true);
+		while (it.hasNext()) {
+			RepositoryDirectory rep = it.next();
+			Iterator<RepositoryDirectory> itRep = SWBComparator.sortByCreated(RepositoryDirectory.ClassMgr.listRepositoryDirectoryByParent(rep), true);
+			while (itRep.hasNext()) {
+				RepositoryDirectory repDir = itRep.next();
+				list.add(repDir);
+				listRepositoryDerectoryByParent(repDir, false);
+			}
+			list.add(rep);
+		}
+		return list;
+	}
 
 	@Override
-	public void processAction(HttpServletRequest request, SWBActionResponse response)
-			throws SWBResourceException, IOException {
+	public void processAction(HttpServletRequest request, SWBActionResponse response) throws SWBResourceException, IOException {
 		String action = response.getAction();
 		boolean isMultiPart = ServletFileUpload.isMultipartContent(request);
 		HashMap<String, Object> params = new HashMap<>();
@@ -141,13 +158,13 @@ public class SWPDocumentationResource extends GenericAdmResource {
 					if (null != rd) {
 						if (clsId.equals(Definition.sclass.getClassId())) { // Definition
 							Definition definition = Definition.ClassMgr.createDefinition(model);
-							se = (SectionElement) definition;
+							se = definition;
 						} else if (clsId.equals(Format.sclass.getClassId())) {
 							Format format = Format.ClassMgr.createFormat(model);
-							se = (SectionElement) format;
+							se = format;
 						} else {
 							Reference reference = Reference.ClassMgr.createReference(model);
-							se = (SectionElement) reference;
+							se = reference;
 						}
 					}
 				} else {
@@ -288,7 +305,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 				response.setRenderParameter(PARAM_STATUS, "ok");
 			}
 			response.setRenderParameter(PARAM_URIDSI, (String) params.get(PARAM_URIDSI));
-			response.setRenderParameter(PARAM_URISE, (String) params.get(PARAM_URISE));
+            response.setRenderParameter(PARAM_URISE, (String) params.get(PARAM_URISE));
 			response.setRenderParameter("idp", request.getParameter("idp"));
 			response.setRenderParameter("wp", request.getParameter("wp"));
 			response.setRenderParameter("_rid", request.getParameter("_rid"));
@@ -340,7 +357,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 								sectElementRef.setActivity(act);
 								act.addSectionElementRef(sectElementRef);
 							} else if (map.containsKey(sectElement) && !params.containsKey(sectElement.getURI())) { // Remove SER
-								SectionElementRef sectElementRef = (SectionElementRef) map.get(sectElement);
+								SectionElementRef sectElementRef = map.get(sectElement);
 								if (sectElementRef != null) {
 									sectElementRef.remove();
 									act.removeSectionElementRef(sectElementRef);
@@ -423,7 +440,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
 				FileOutputStream out = new FileOutputStream(index);
 				try {
 					Document dom = Util.getXMLDocument(docInstance, request, null, false);
-							//docInstance.getXMLDocument(request, null, false);
 					if (dom != null) {
 						String tlpPath = "/swbadmin/jsp/process/documentation/documentation.xsl";
 						javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(SWBUtils.getApplicationPath() + tlpPath));
@@ -774,12 +790,9 @@ public class SWPDocumentationResource extends GenericAdmResource {
 					SWBUtils.IO.copyStructure(SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/commons/css/images/", basePath + "/css/images/");
 					File index = new File(basePath + "/index.html");
 					Document dom = Util.getXMLDocument(docInstance, request, basePath, true);
-                            //docInstance.getXMLDocument(request, basePath, true);
-					FileOutputStream out = null;
 
 					if (dom != null) {
-						try {
-							out = new FileOutputStream(index);
+						try (FileOutputStream out = new FileOutputStream(index)) {
 							String tlpPath = SWBUtils.getApplicationPath() + "/swbadmin/jsp/process/documentation/documentation.xsl";
 							javax.xml.transform.Templates tpl = SWBUtils.XML.loadTemplateXSLT(new FileInputStream(tlpPath));
 							out.write(SWBUtils.XML.transformDom(tpl, dom).getBytes());
@@ -796,9 +809,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
 							}
 							SWBUtils.IO.removeDirectory(basePath);
 							out.flush();
-						} finally {
-							if (null != out)
-								out.close();
 						}
 					}
 				} else if (format.equals(FORMAT_WORD)) {
@@ -814,7 +824,7 @@ public class SWPDocumentationResource extends GenericAdmResource {
 						params.put(CONFIG_ACTTABLE, "true");
 					if (null != getResourceBase().getAttribute(CONFIG_TPL))
 						params.put(CONFIG_TPL, SWBPortal.getWorkPath() + getResourceBase().getWorkPath() + "/"
-								+ getResourceBase().getAttribute("template"));
+								+ getResourceBase().getAttribute(CONFIG_TPL));
 					if (null != getResourceBase().getAttribute(CONFIG_FORCETBLSTYLES))
 						params.put(CONFIG_FORCETBLSTYLES, "true");
 
@@ -826,26 +836,6 @@ public class SWPDocumentationResource extends GenericAdmResource {
 				log.error("Error on doDownload", ex);
 			}
 		}
-	}
-
-	static List<RepositoryDirectory> list = new ArrayList<>();
-
-	public static List<RepositoryDirectory> listRepositoryDerectoryByParent(WebPage webpage, boolean clear) {
-		if (clear) {
-			list.clear();
-		}
-		Iterator<RepositoryDirectory> it = SWBComparator.sortByCreated(RepositoryDirectory.ClassMgr.listRepositoryDirectoryByParent(webpage), true);
-		while (it.hasNext()) {
-			RepositoryDirectory rep = it.next();
-			Iterator<RepositoryDirectory> itRep = SWBComparator.sortByCreated(RepositoryDirectory.ClassMgr.listRepositoryDirectoryByParent(rep), true);
-			while (itRep.hasNext()) {
-				RepositoryDirectory repDir = itRep.next();
-				list.add(repDir);
-				listRepositoryDerectoryByParent(repDir, false);
-			}
-			list.add(rep);
-		}
-		return list;
 	}
 
 	/**

@@ -1,21 +1,15 @@
 package org.semanticwb.process.resources.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.semanticwb.Logger;
 import org.semanticwb.SWBPortal;
 import org.semanticwb.SWBUtils;
+
+import java.io.*;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 
 /**
  * Clase utilitaria para los componentes de documentación de procesos.
@@ -26,8 +20,8 @@ import org.semanticwb.SWBUtils;
 public class SWPUtils {
 	public static final String FORMAT_PNG = "png";
 	public static final String FORMAT_SVG = "svg";
+	public final SimpleDateFormat DateFormatter = new SimpleDateFormat("dd/MMM/yyyy - hh:mm:ss");
 	private static final Logger LOG = SWBUtils.getLogger(SWPUtils.class);
-	public static final SimpleDateFormat DateFormatter = new SimpleDateFormat("dd/MMM/yyyy - hh:mm:ss");
 
 	/**
 	 * Copies a resource from SWBAdmin jar package loaded into memory.
@@ -50,9 +44,7 @@ public class SWPUtils {
 			}
 
 			File file = new File(f.getAbsolutePath() + fileName);
-			OutputStream outputStream = null;
-			try {
-				outputStream = new FileOutputStream(file);
+			try (OutputStream outputStream = new FileOutputStream(file)) {
 				byte[] buffer = new byte[1024];
 				int len;
 				while ((len = inputStream.read(buffer)) != -1) {
@@ -61,11 +53,6 @@ public class SWPUtils {
 			} catch (IOException ioex) {
 				LOG.error(ioex);
 				throw ioex;
-			} finally {
-				inputStream.close();
-				if (null != outputStream) {
-					outputStream.close();
-				}
 			}
 		}
 	}
@@ -97,7 +84,7 @@ public class SWPUtils {
 			inStream.close();
 			outStream.close();
 		} catch (IOException e) {
-			System.err.println("Error to copy file " + sourceFile + ", " + e.getMessage());
+			LOG.error("Error to copy file " + sourceFile, e);
 		} finally {
 			if (null != inStream) {
 				inStream.close();
@@ -114,9 +101,6 @@ public class SWPUtils {
 		FileOutputStream out = null;
 
 		try {
-			// String basePathDest = SWBPortal.getWorkPath() + "/models/" +
-			// p.getProcessSite().getId() + "/Resource/" + p.getId() +
-			// "/download/rep_files/";
 			File baseDir = new File(path);
 			if (!baseDir.exists()) {
 				baseDir.mkdirs();
@@ -170,11 +154,9 @@ public class SWPUtils {
 
 	public static void saveFile(String src, String dest) throws IOException {
 		InputStream is = null;
-		OutputStream os = null;
-		try {
+		try (OutputStream os = new FileOutputStream(dest)) {
 			URL url = new URL(src);
 			is = url.openStream();
-			os = new FileOutputStream(dest);
 
 			byte[] b = new byte[2048];
 			int length;
@@ -183,14 +165,8 @@ public class SWPUtils {
 				os.write(b, 0, length);
 			}
 			is.close();
-			os.close();
 		} catch (Exception e) {
 			LOG.error("Error on saveFile, " + e.getMessage() + ", " + e.getCause());
-		} finally {
-			if (null != is)
-				is.close();
-			if (null != os)
-				os.close();
 		}
 	}
 }

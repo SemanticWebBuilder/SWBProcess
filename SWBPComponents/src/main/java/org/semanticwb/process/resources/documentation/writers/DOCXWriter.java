@@ -99,7 +99,7 @@ public class DOCXWriter implements DocumentWriter {
 			this.fieldValues = (HashMap<String, String>)fieldValues;
 		} else {
 			// Add default field value mappings
-			this.fieldValues = new HashMap<String, String>();
+			this.fieldValues = new HashMap<>();
 			this.fieldValues.put("processName", this.process.getTitle());
 		}
 		this.styleNameMappings = new HashMap<>();
@@ -244,7 +244,7 @@ public class DOCXWriter implements DocumentWriter {
 							cellProps.getTcW().setType(TblWidth.TYPE_DXA);
 
 							Text colText = objectFactory.createText();
-							colText.setValue(prop.substring(0, prop.indexOf(";")));
+							colText.setValue(prop.substring(0, prop.indexOf(';')));
 							R colRun = objectFactory.createR();
 							colRun.getContent().add(colText);
 
@@ -668,7 +668,7 @@ public class DOCXWriter implements DocumentWriter {
 			return;
 
 		StyleDefinitionsPart sdp = doc.getStyleDefinitionsPart();
-		Styles docStyles = (Styles) sdp.getJaxbElement();
+		Styles docStyles = sdp.getJaxbElement();
 
 		for (Style s : docStyles.getStyle()) {
 			if (s.getStyleId().equals("Ttulo1")) {

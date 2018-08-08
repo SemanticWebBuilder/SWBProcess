@@ -22,155 +22,74 @@
  */
 package org.semanticwb.script.util;
 
+import javax.tools.*;
+import javax.tools.JavaFileObject.Kind;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.tools.FileObject;
-import javax.tools.ForwardingJavaFileManager;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject.Kind;
-import javax.tools.SimpleJavaFileObject;
-import javax.tools.ToolProvider;
-import org.semanticwb.Logger;
-import org.semanticwb.SWBUtils;
+import java.util.*;
 
-
-public final class MemoryClassLoader extends ClassLoader 
-{
-    private static Logger log=SWBUtils.getLogger(MemoryClassLoader.class);
-    
-    Map<String, Class> classes = Collections.synchronizedMap(new HashMap<String, Class>());
+public final class MemoryClassLoader extends ClassLoader {
     private final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     private final MemoryFileManager manager = new MemoryFileManager(this.compiler);
-    
-    
-    /*public MemoryClassLoader(String classname, String filecontent) {
-        this(Collections.singletonMap(classname, filecontent));
+    Map<String, Class> classes = Collections.synchronizedMap(new HashMap<>());
+
+    public MemoryClassLoader(ClassLoader parent) {
+        super(parent);
     }
-    
-
-    public MemoryClassLoader(Map<String, String> map) {
-
-        List<Source> list = new ArrayList<Source>();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            list.add(new Source(entry.getKey(), Kind.SOURCE, entry.getValue()));
-        }
-        this.compiler.getTask(null, this.manager, null, null, null, list).call();
-    }*/
-
-    /*
-    @Override
-    public Class<?> loadClass(String name) throws ClassNotFoundException
-    {
-        Class cls=null;
-        ClassNotFoundException notf=null;
-        try
-        {    
-            cls=super.loadClass(name);
-        }catch(ClassNotFoundException noe)
-        {
-            notf=noe;
-        }   
-        
-        if(cls==null)
-        {
-            try
-            {
-                SemanticClass scls=SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClassByVirtualJavaName(name);
-                if(scls!=null && scls.isSWBVirtualClass())
-                {    
-                    System.out.println("Compiling Class:"+name);
-                    HashMap<String,String> classes=new HashMap<String, String>();
-                    CodeGenerator cg=new CodeGenerator();
-                    cg.setGenerateVirtualClasses(true);
-                    String code=cg.createClassBase(scls,false);
-                    classes.put(name, code);
-                    addAll(classes);
-                    System.out.println("Compiled Class:"+name);
-                }    
-            }catch(Exception e)
-            {
-                log.error("Error compiling:" +name,e);
-            }
-
-            cls=super.loadClass(name);
-        }
-        //if(cls==null)throw notf;
-        return cls;
-    }   
-    */    
 
     @Override
-    protected synchronized Class loadClass(String name, boolean resolve)
-            throws ClassNotFoundException
-    {
+    protected synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
         // First, check if the class has already been loaded
-        //System.out.println("Enter loadClass:"+name);
         Class c = findLoadedClass(name);
-        if(c==null)
-        {
+        if (null == c) {
             c = findClass(name);
-            if (c == null)
-            {
-                c=getParentClass(name);
+            if (c == null) {
+                c = getParentClass(name);
             }
-            if (resolve)
-            {
+            if (resolve) {
                 resolveClass(c);
             }
         }
         return c;
     }
-
-    private synchronized Class getParentClass(String name) throws ClassNotFoundException
-    {
-        Class c=null;
-        if (getParent() != null)
-        {
+    
+    private synchronized Class getParentClass(String name) throws ClassNotFoundException {
+        Class c;
+        if (getParent() != null) {
             c = getParent().loadClass(name);
-        } else
-        {
+        } else {
             c = findSystemClass(name);
         }
         return c;
     }
-    
-    public MemoryClassLoader(ClassLoader parent) {
-        super(parent);
-    }
 
-
-    public void addAll(Map<String, String> map)
-    {
-        List<Source> list = new ArrayList<Source>();
+    public void addAll(Map<String, String> map) {
+        List<Source> list = new ArrayList<>();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             list.add(new Source(entry.getKey(), Kind.SOURCE, entry.getValue()));
         }
 
         URLClassLoader urlClassLoader = (URLClassLoader) this.getParent();
         StringBuilder sb = new StringBuilder();
-        List<String> options = new ArrayList<String>();
+        List<String> options = new ArrayList<>();
         options.add("-classpath");
 
-        for (URL url : urlClassLoader.getURLs())
+        for (URL url : urlClassLoader.getURLs()) {
             sb.append(url.getFile()).append(File.pathSeparator);
+        }
 
         options.add(sb.toString());
 
-        JavaCompiler.CompilationTask task=this.compiler.getTask(null, this.manager, null, options, null, list);
+        JavaCompiler.CompilationTask task = this.compiler.getTask(null,
+                this.manager, null, options, null, list);
+
         task.call();
     }
 
-    public Class<?> findDynamicClass(String name) throws ClassNotFoundException
-    {
+    public Class<?> findDynamicClass(String name) throws ClassNotFoundException {
         synchronized (this.manager) {
             Output mc = this.manager.map.remove(name);
             if (mc != null) {
@@ -183,18 +102,12 @@ public final class MemoryClassLoader extends ClassLoader
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-
-       if (classes.containsKey(name))
-        {
+       if (classes.containsKey(name)) {
             return classes.get(name);
-        }
-        else
-        {
-            synchronized (this.manager)
-            {
+        } else {
+            synchronized (this.manager) {
                 Output mc = this.manager.map.remove(name);
-                if (mc != null)
-                {
+                if (mc != null) {
                     byte[] array = mc.toByteArray();
                     Class _clazz=defineClass(name, array, 0, array.length);
                     classes.put(name, _clazz);
@@ -202,28 +115,24 @@ public final class MemoryClassLoader extends ClassLoader
                 }
             }
         }
-        if(getParent()!=null)
-        {
+
+        if(getParent()!=null) {
             return getParent().loadClass(name);
-        }
-        else
-        {
+        } else {
             return super.findClass(name);
         }
 
     }
-    public String[] getClasses()
-    {
-        ArrayList<String> names=new ArrayList<String>();
-        for(String name : this.manager.map.keySet())
-        {
+
+    public String[] getClasses() {
+        ArrayList<String> names=new ArrayList<>();
+        for(String name : this.manager.map.keySet()) {
             names.add(name);
         }
         return names.toArray(new String[names.size()]);
     }
 
-    public byte[] getCode(String name)
-    {
+    public byte[] getCode(String name) {
         synchronized (this.manager) {
             Output mc = this.manager.map.get(name);
             if (mc != null) {
@@ -235,7 +144,7 @@ public final class MemoryClassLoader extends ClassLoader
     }
 
     private static final class MemoryFileManager extends ForwardingJavaFileManager<JavaFileManager> {
-        private final Map<String, Output> map = new HashMap<String, Output>();
+        private final Map<String, Output> map = new HashMap<>();
 
         MemoryFileManager(JavaCompiler compiler) {
             super(compiler.getStandardFileManager(null, null, null));

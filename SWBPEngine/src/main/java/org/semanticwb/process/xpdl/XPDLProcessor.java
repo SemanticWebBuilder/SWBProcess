@@ -32,6 +32,8 @@ import org.json.JSONObject;
  * @author Hasdai Pacheco {ebenezer.sanchez@infotec.com.mx}
  */
 public class XPDLProcessor {
+    public static final String CLASS = "class";
+    public static final String CONTAINER = "container";
     String strings = "URI|TITLE|DESCRIPTION|CLASS|PARENT|CONNECTIONPOINTS|START|END|CONTAINER|EXCLUSIVETYPE|GATEWAYTYPE|DATASTOREREF|ACTIVITYSETID|CATCHTHROW|SOURCE|TARGET";
     String booleans = "ISFORCOMPENSATION|ISINTERRUPTING|ISLOOP|ISMULTIINSTANCE|ISSEQUENTIALMULTIINSTANCE|PARALLELEVENTBASED|INSTANTIATE|ISCOLLECTION|BOUNDARYVISIBLE";
     String numbers = "W|H|X|Y|LABELSIZE";
@@ -53,8 +55,8 @@ public class XPDLProcessor {
         if (tags.peek().equals(XPDLEntities.ACTIVITIES)) {
             JSONObject obj = new JSONObject();
             
-            atts.put("class",XPDLEntities.ACTIVITY);
-            atts.put("container",context);
+            atts.put(CLASS,XPDLEntities.ACTIVITY);
+            atts.put(CONTAINER,context);
             
             setAttributes(obj, atts);            
             elements.push(obj);
@@ -89,9 +91,9 @@ public class XPDLProcessor {
         if (tags.peek().equals(XPDLEntities.ACTIVITYSETS)) {
             JSONObject obj = new JSONObject();
             
-            atts.put("class",XPDLEntities.ACTIVITYSET);
+            atts.put(CLASS,XPDLEntities.ACTIVITYSET);
             atts.put("_class","SubProcess");
-            atts.put("container",context);
+            atts.put(CONTAINER,context);
             
             setAttributes(obj, atts);
             elements.push(obj);
@@ -109,8 +111,8 @@ public class XPDLProcessor {
     public void processLane(String context, Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
         if (tags.peek().equals(XPDLEntities.LANES)) {
             JSONObject obj = new JSONObject();
-            atts.put("class",XPDLEntities.LANE);
-            atts.put("container",context);
+            atts.put(CLASS,XPDLEntities.LANE);
+            atts.put(CONTAINER,context);
             
             setAttributes(obj, atts);
             elements.push(obj);
@@ -128,8 +130,8 @@ public class XPDLProcessor {
     public void processPool(String context, Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
         if (tags.peek().equals(XPDLEntities.POOLS)) {
             JSONObject obj = new JSONObject();
-            atts.put("class",XPDLEntities.POOL);
-            atts.put("container",context);
+            atts.put(CLASS,XPDLEntities.POOL);
+            atts.put(CONTAINER,context);
             
             setAttributes(obj, atts);
             elements.push(obj);
@@ -149,8 +151,8 @@ public class XPDLProcessor {
             JSONObject obj = new JSONObject();
             String cls = atts.get(XPDLAttributes.ARTIFACTTYPE);
             
-            atts.put("class",XPDLEntities.ARTIFACT);
-            atts.put("container",context);
+            atts.put(CLASS,XPDLEntities.ARTIFACT);
+            atts.put(CONTAINER,context);
             if (cls != null) {
                 obj.put("_class",cls+XPDLEntities.ARTIFACT);
             }
@@ -172,8 +174,8 @@ public class XPDLProcessor {
         if (tags.peek().equals(XPDLEntities.TRANSITIONS)) {
             JSONObject obj = new JSONObject();
             
-            atts.put("class",XPDLEntities.TRANSITION);
-            atts.put("container",context);
+            atts.put(CLASS,XPDLEntities.TRANSITION);
+            atts.put(CONTAINER,context);
             setAttributes(obj, atts);
             elements.push(obj);
         }
@@ -187,22 +189,20 @@ public class XPDLProcessor {
      * @throws JSONException 
      */
     public void processConditionType(Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
-        if (tags.peek().equals(XPDLEntities.TRANSITION)) {
-            if (!elements.isEmpty()) {
-                JSONObject obj = elements.pop();
-                
-                String cls = atts.get(XPDLAttributes.TYPE);
-                if (cls == null) cls = "SequenceFlow";
+        if (tags.peek().equals(XPDLEntities.TRANSITION) && !elements.isEmpty()) {
+            JSONObject obj = elements.pop();
 
-                if ("CONDITION".equalsIgnoreCase(cls)) {
-                    cls = "ConditionalFlow";
-                } else if ("OTHERWISE".equalsIgnoreCase(cls)) {
-                    cls = "DefaultFlow";
-                }
-                
-                obj.put("_class", cls);
-                elements.push(obj);
+            String cls = atts.get(XPDLAttributes.TYPE);
+            if (cls == null) cls = "SequenceFlow";
+
+            if ("CONDITION".equalsIgnoreCase(cls)) {
+                cls = "ConditionalFlow";
+            } else if ("OTHERWISE".equalsIgnoreCase(cls)) {
+                cls = "DefaultFlow";
             }
+
+            obj.put("_class", cls);
+            elements.push(obj);
         }
     }
     
@@ -214,12 +214,10 @@ public class XPDLProcessor {
      * @throws JSONException 
      */
     public void processNodeGraphicsInfo(Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
-        if (tags.peek().equals(XPDLEntities.NODEGRAPHICSINFOS)) {
-            if (!elements.isEmpty()) {
-                JSONObject obj = elements.pop();
-                setAttributes(obj, atts);
-                elements.push(obj);
-            }
+        if (tags.peek().equals(XPDLEntities.NODEGRAPHICSINFOS) && !elements.isEmpty()) {
+            JSONObject obj = elements.pop();
+            setAttributes(obj, atts);
+            elements.push(obj);
         }
     }
     
@@ -232,22 +230,20 @@ public class XPDLProcessor {
      * @throws JSONException 
      */
     public void processEvent(String localName, Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
-        if (tags.peek().equals(XPDLEntities.EVENT)) {
-            if (!elements.isEmpty()) {
-                JSONObject obj = elements.pop();
-                String cls = obj.optString("class","");
-                
-                if (XPDLEntities.ACTIVITY.equals(cls)) {
-                    obj.put("_class", localName);
-                    if (XPDLEntities.ENDEVENT.equals(localName)) {
-                        obj.put(XPDLAttributes.TRIGGER, atts.get(XPDLAttributes.RESULT));
-                    } else {
-                        obj.put(XPDLAttributes.TRIGGER, atts.get(XPDLAttributes.TRIGGER));
-                    }
+        if (tags.peek().equals(XPDLEntities.EVENT) && !elements.isEmpty()) {
+            JSONObject obj = elements.pop();
+            String cls = obj.optString(CLASS,"");
+
+            if (XPDLEntities.ACTIVITY.equals(cls)) {
+                obj.put("_class", localName);
+                if (XPDLEntities.ENDEVENT.equals(localName)) {
+                    obj.put(XPDLAttributes.TRIGGER, atts.get(XPDLAttributes.RESULT));
+                } else {
+                    obj.put(XPDLAttributes.TRIGGER, atts.get(XPDLAttributes.TRIGGER));
                 }
-                setAttributes(obj, atts);
-                elements.push(obj);
             }
+            setAttributes(obj, atts);
+            elements.push(obj);
         }
     }
     
@@ -259,13 +255,10 @@ public class XPDLProcessor {
      * @throws JSONException 
      */
     public void processInterEventResult(Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
-        if (tags.peek().equals(XPDLEntities.INTERMEDIATEEVENT)) {
-            if (!elements.isEmpty()) {
-                JSONObject obj = elements.pop();
-                
-                setAttributes(obj, atts);
-                elements.push(obj);
-            }
+        if (tags.peek().equals(XPDLEntities.INTERMEDIATEEVENT) && !elements.isEmpty()) {
+            JSONObject obj = elements.pop();
+            setAttributes(obj, atts);
+            elements.push(obj);
         }
     }
     
@@ -277,17 +270,15 @@ public class XPDLProcessor {
      * @throws JSONException 
      */
     public void processGateway(Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
-        if (tags.peek().equals(XPDLEntities.ACTIVITY)) {
-            if (!elements.isEmpty()) {
-                JSONObject obj = elements.pop();
-                String cls = obj.optString("class","");
-                
-                if (XPDLEntities.ACTIVITY.equals(cls)) {
-                    obj.put("_class", XPDLEntities.ROUTE);
-                    setAttributes(obj, atts);
-                }
-                elements.push(obj);
+        if (tags.peek().equals(XPDLEntities.ACTIVITY) && !elements.isEmpty()) {
+            JSONObject obj = elements.pop();
+            String cls = obj.optString(CLASS,"");
+
+            if (XPDLEntities.ACTIVITY.equals(cls)) {
+                obj.put("_class", XPDLEntities.ROUTE);
+                setAttributes(obj, atts);
             }
+            elements.push(obj);
         }
     }
     
@@ -299,12 +290,10 @@ public class XPDLProcessor {
      * @throws JSONException 
      */
     public void processDataField(Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
-        if (tags.peek().equals(XPDLEntities.DATAOBJECT)) {
-            if (!elements.isEmpty()) {
-                JSONObject obj = elements.pop();
-                setAttributes(obj, atts);
-                elements.push(obj);
-            }
+        if (tags.peek().equals(XPDLEntities.DATAOBJECT) && !elements.isEmpty()) {
+            JSONObject obj = elements.pop();
+            setAttributes(obj, atts);
+            elements.push(obj);
         }
     }
     
@@ -318,11 +307,11 @@ public class XPDLProcessor {
      */
     public void processDataObject(String context, Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
         JSONObject obj = new JSONObject();
-        atts.put("container",context);
+        atts.put(CONTAINER, context);
         
-        if (tags.peek().equals(XPDLEntities.DATASTOREREFERENCES)) atts.put("class",XPDLEntities.DATASTOREREFERENCE);
-        if (tags.peek().equals(XPDLEntities.DATAOBJECTS)) atts.put("class",XPDLEntities.DATAOBJECT);
-        if (tags.peek().equals(XPDLEntities.DATASTORES)) atts.put("class",XPDLEntities.DATASTORE);
+        if (tags.peek().equals(XPDLEntities.DATASTOREREFERENCES)) atts.put(CLASS,XPDLEntities.DATASTOREREFERENCE);
+        if (tags.peek().equals(XPDLEntities.DATAOBJECTS)) atts.put(CLASS,XPDLEntities.DATAOBJECT);
+        if (tags.peek().equals(XPDLEntities.DATASTORES)) atts.put(CLASS,XPDLEntities.DATASTORE);
         
         setAttributes(obj, atts);
         elements.push(obj);
@@ -374,8 +363,8 @@ public class XPDLProcessor {
         if (tags.peek().equals(XPDLEntities.ASSOCIATIONS)) {
             JSONObject obj = new JSONObject();
             
-            atts.put("container",context);
-            obj.put("class", XPDLEntities.ASSOCIATION);
+            atts.put(CONTAINER,context);
+            obj.put(CLASS, XPDLEntities.ASSOCIATION);
             
             setAttributes(obj, atts);
             elements.push(obj);
@@ -392,7 +381,7 @@ public class XPDLProcessor {
     public void processWorkFlow(Stack<String> tags, Stack<JSONObject> elements, HashMap<String,String> atts) throws JSONException {
         if (tags.peek().equals(XPDLEntities.WORKFLOWPROCESSES)) {
             JSONObject obj = new JSONObject();
-            obj.put("class", XPDLEntities.WORKFLOWPROCESS);
+            obj.put(CLASS, XPDLEntities.WORKFLOWPROCESS);
             obj.put("_class", "Process");
             setAttributes(obj, atts);
             elements.push(obj);
@@ -455,7 +444,6 @@ public class XPDLProcessor {
     private String mapKeyAttribute(String attName) {
         String ret = attName;
         if (XPDLAttributes.PARENTPOOL.equals(attName)) ret = "parent";
-        //if (XPDLAttributes.PROCESS.equals(attName)) ret = "container";
         if (XPDLAttributes.ID.equals(attName)) ret = "uri";
         if (XPDLAttributes.XCOORDINATE.equals(attName)) ret = "x";
         if (XPDLAttributes.YCOORDINATE.equals(attName)) ret = "y";
@@ -466,7 +454,6 @@ public class XPDLProcessor {
         if (XPDLAttributes.HEIGHT.equals(attName)) ret = "h";
         if (XPDLAttributes.NAME.equals(attName)) ret = "title";
         if (XPDLAttributes.ISARRAY.equals(attName)) ret = "isCollection";
-        //if (XPDLAttributes.TARGET.equals(attName)) ret = "parent";
         if (XPDLAttributes.TEXTANNOTATION.equals(attName)) ret = "title";
 
         return ret;

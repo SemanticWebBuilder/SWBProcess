@@ -22,10 +22,7 @@
  */
 package org.semanticwb.process.xpdl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,18 +49,17 @@ public class XPDLParser extends DefaultHandler {
     static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
     static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
     static final String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
-    private static final Logger log = SWBUtils.getLogger(XPDLParser.class);
-    
+    private static final Logger LOG = SWBUtils.getLogger(XPDLParser.class);
+    public static final String CLASS = "class";
+
     private String xsdPath;
     private SAXParserFactory spf;
-    private SAXParser parser;
-    private Stack<String> XMLElementNames;
-    private Stack<JSONObject> XMLElementObjects;
+    private Stack<String> xmlElementNames;
+    private Stack<JSONObject> xmlElementObjects;
     private HashMap<String, JSONObject>  elements;
     private XPDLProcessor processor;
     private JSONObject processModel;
     private boolean validate = false;
-    private boolean namespaceAware = true;
     private Stack<String> contextStack;
     
     /**
@@ -89,7 +85,6 @@ public class XPDLParser extends DefaultHandler {
      */
     private void initialize(boolean validate, boolean nsAware, String xsdPath) {
         this.validate = validate;
-        this.namespaceAware = nsAware;
         this.xsdPath = xsdPath;
         
         spf = SAXParserFactory.newInstance();
@@ -106,7 +101,7 @@ public class XPDLParser extends DefaultHandler {
      */
     public JSONObject parse(InputStream istream, boolean normalize) {
         try {
-            parser = spf.newSAXParser();
+            SAXParser parser = spf.newSAXParser();
             
             if (validate) {
                 parser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
@@ -122,27 +117,24 @@ public class XPDLParser extends DefaultHandler {
                 parser.parse(istream, this);
             }
         } catch (ParserConfigurationException ex) {
-            log.error("Error de configuración del parser", ex);
+            LOG.error("Error de configuración del parser", ex);
             try {
                 processModel = new JSONObject();
                 processModel.put("error", "Ocurrió un problema al procesar el archivo del modelo");
             } catch (JSONException ex1) { }
         } catch (SAXException ex) {
-            log.error("Error al crear el parser", ex);
+            LOG.error("Error al crear el parser", ex);
             try {
                 processModel = new JSONObject();
                 processModel.put("error", "Ocurrió un problema al procesar el archivo del modelo, verifique que el archivo XPDL está bien formado");
             } catch (JSONException ex1) { }
         } catch (IOException ex) {
-            log.error("Error al leer el archivo del modelo", ex);
+            LOG.error("Error al leer el archivo del modelo", ex);
             try {
                 processModel = new JSONObject();
                 processModel.put("error", "Ocurrió un problema al leer el archivo del modelo");
             } catch (JSONException ex1) { }
         }
-        // catch (SAXNotRecognizedException ex) {
-        //    log.error("Error: JAXP SAXParser property not recognized: " + JAXP_SCHEMA_LANGUAGE +" Check to see if parser conforms to the JAXP spec.");
-        //}
         return processModel;
     }
     
@@ -162,17 +154,17 @@ public class XPDLParser extends DefaultHandler {
      * @return JSON del modelo del proceso.
      * @throws Exception 
      */
-    public JSONObject parse(String file) throws Exception {
+    public JSONObject parse(String file) throws FileNotFoundException {
         InputStream xmlStream = new FileInputStream(new File(file));
         return parse(xmlStream);
     }
     
     @Override
     public void startDocument() throws SAXException {
-        XMLElementNames = new Stack<>();
-        XMLElementObjects = new Stack<>();
+        xmlElementNames = new Stack<>();
+        xmlElementObjects = new Stack<>();
         contextStack = new Stack<>();
-        elements = new HashMap<String, JSONObject>();
+        elements = new HashMap<>();
         processModel = null;
     }
 
@@ -183,7 +175,7 @@ public class XPDLParser extends DefaultHandler {
         try {
             processElement(context, uri, localName, qName, attributes);
         } catch (JSONException ex) {
-            log.error("Ocurrió un error procesando el elemento", ex);
+            LOG.error("Ocurrió un error procesando el elemento", ex);
         }
         
         if ("ActivitySet".equals(localName)) contextStack.push(attributes.getValue("Id"));
@@ -193,9 +185,9 @@ public class XPDLParser extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if ("ActivitySet".equals(localName) && !contextStack.isEmpty()) contextStack.pop();
         
-        if (!XMLElementNames.isEmpty()) {
-            if (XMLElementNames.peek().equals(localName)) {
-                XMLElementNames.pop();
+        if (!xmlElementNames.isEmpty()) {
+            if (xmlElementNames.peek().equals(localName)) {
+                xmlElementNames.pop();
             } else {
                 //Unmatched closing tag
             }
@@ -203,25 +195,25 @@ public class XPDLParser extends DefaultHandler {
             //Unmatched opening tag
         }
         
-        if (!XMLElementObjects.isEmpty()) {
-            JSONObject obj = XMLElementObjects.pop();//null;
-            String type = obj.optString("class","");
+        if (!xmlElementObjects.isEmpty()) {
+            JSONObject obj = xmlElementObjects.pop();
+            String type = obj.optString(CLASS,"");
             
             if (localName.equalsIgnoreCase(type)) {
                 elements.put(obj.optString("uri",""), obj);
             } else {
-                XMLElementObjects.push(obj);
+                xmlElementObjects.push(obj);
             }
         }
     }
 
     @Override
     public void endDocument() throws SAXException {
-        if (XMLElementNames.isEmpty()) {
+        if (xmlElementNames.isEmpty()) {
             try {
                 processModel = createProcessJSON(elements);
             } catch (JSONException ex) {
-                log.error(ex);
+                LOG.error(ex);
             }
         }
     }
@@ -234,17 +226,17 @@ public class XPDLParser extends DefaultHandler {
      */
     private JSONObject createProcessJSON(HashMap<String, JSONObject> elements) throws JSONException {
         JSONObject ret = new JSONObject();
-        ret.put("class","Process");
+        ret.put(CLASS,"Process");
         ret.put("title","NewProcess");
         ret.put("uri","Process:1");
         
         if (elements != null && !elements.isEmpty()) {
             JSONArray nodes = new JSONArray();
-            HashMap<String, ArrayList<JSONObject>> pools = new HashMap<String, ArrayList<JSONObject>>();
+            HashMap<String, ArrayList<JSONObject>> pools = new HashMap<>();
             
             for(String key : elements.keySet()) {
                 JSONObject el = elements.get(key);
-                String cls = el.optString("class", "");
+                String cls = el.optString(CLASS, "");
                 String fcls = el.optString("_class", cls);
                 String _cls = fcls;
                 String impl = el.optString(XPDLProcessor.XPDLEntities.IMPLEMENTATION, "");
@@ -264,7 +256,6 @@ public class XPDLParser extends DefaultHandler {
                             el.put("y", el.getDouble("y")+15);
                             el.remove("w");
                             el.remove("h");
-                            //generateEventJSON(el, fcls);
                         } else if (XPDLProcessor.XPDLEntities.ROUTE.equals(fcls)) {
                             String gtwType = el.optString(XPDLProcessor.XPDLAttributes.GATEWAYTYPE,"");
                             String excType = el.optString(XPDLProcessor.XPDLAttributes.EXCLUSIVETYPE,"");
@@ -273,7 +264,6 @@ public class XPDLParser extends DefaultHandler {
                             
                             if ("Complex".equals(gtwType)) { //Compleja
                                 _cls = "ComplexGateway";
-                                //el.put("class", "ComplexGateway");
                             } else if ("Parallel".equals(gtwType)) { //Paralela
                                 _cls = "ParallelGateway";
                                 if (instantiate) {
@@ -336,10 +326,10 @@ public class XPDLParser extends DefaultHandler {
                     String targetCls = "";
                     
                     if (source != null) {
-                        sourceCls = source.optString("_class", source.optString("class", ""));
+                        sourceCls = source.optString("_class", source.optString(CLASS, ""));
                     }
                     if (target != null) {
-                        targetCls = target.optString("_class", target.optString("class", ""));
+                        targetCls = target.optString("_class", target.optString(CLASS, ""));
                     }
                     
                     if (XPDLProcessor.XPDLEntities.DATAOBJECT.equals(sourceCls) || XPDLProcessor.XPDLEntities.DATAOBJECT.equals(targetCls)
@@ -369,13 +359,13 @@ public class XPDLParser extends DefaultHandler {
                     el.put("labelSize", 12);
                     el.put("index", 0);
                 }
-                if (!XPDLProcessor.XPDLEntities.WORKFLOWPROCESS.equals(cls)) {// && !XPDLProcessor.XPDLEntities.POOL.equals(cls) && !XPDLProcessor.XPDLEntities.LANE.equals(cls)) {
+                if (!XPDLProcessor.XPDLEntities.WORKFLOWPROCESS.equals(cls)) {
                     if (XPDLProcessor.XPDLEntities.LANE.equals(cls)) {
                         String poolId = el.optString("parent", "");
                         if (!"".equals(poolId)) {
                             ArrayList<JSONObject> lanes = pools.get(poolId);
                             if (lanes == null) {
-                                lanes = new ArrayList<JSONObject>();
+                                lanes = new ArrayList<>();
                             }
                             lanes.add(el);
                             pools.put(poolId, lanes);
@@ -396,7 +386,7 @@ public class XPDLParser extends DefaultHandler {
                     }
                 }
                 
-                el.put("class", _cls);
+                el.put(CLASS, _cls);
                 if ("GroupArtifact".equals(_cls) || "AnnotationArtifact".equals(_cls)) {
                     //Offset artifact
                     el.put("x", el.getDouble("x")+(el.getDouble("w")/2));
@@ -495,31 +485,12 @@ public class XPDLParser extends DefaultHandler {
     }
     
     /**
-     * Modifica el elemento proporcionado para representar en un evento de BPMN.
-     * @param element Elemento en el parseo del archivo XPDL.
-     * @param finalClass clase definitiva para el elemento.
-     * @throws JSONException 
-     */
-//    private void generateEventJSON(JSONObject element, String finalClass) throws JSONException {
-//        JSONObject ret = element;
-//        String prefix = ret.optString(XPDLProcessor.XPDLAttributes.TRIGGER, "");
-//        String catchThrow = ret.optString(XPDLProcessor.XPDLAttributes.CATCHTHROW, "");        
-//        String cls = getEventType(finalClass, prefix, catchThrow);
-//        
-//        element.put("class",cls);
-//        element.remove(XPDLProcessor.XPDLAttributes.CATCHTHROW);
-//        element.remove(XPDLProcessor.XPDLAttributes.TRIGGER);
-//        element.remove("w");
-//        element.remove("h");
-//    }
-    
-    /**
      * Crea un hashmap con los atributos de un tag en el parseo del archivo XPDL.
      * @param attributes Lista de atributos.
      * @return Mapa de atributos en llave, valor.
      */
     private HashMap<String, String> getAttributeMap(Attributes attributes) {
-        HashMap<String, String> ret = new HashMap<String, String>();
+        HashMap<String, String> ret = new HashMap<>();
         for (int i = 0; i < attributes.getLength(); i++) {
             ret.put(attributes.getLocalName(i), attributes.getValue(i));
         }
@@ -538,68 +509,68 @@ public class XPDLParser extends DefaultHandler {
         HashMap<String, String> atts = getAttributeMap(attributes);
         
         if (XPDLProcessor.XPDLEntities.ACTIVITY.equals(localName)) {
-            processor.processActivity(context, XMLElementNames, XMLElementObjects, atts);
+            processor.processActivity(context, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.BLOCKACTIVITY.equals(localName)) {
-            processor.processBlockActivity(XMLElementNames, XMLElementObjects, atts);
+            processor.processBlockActivity(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.LANE.equals(localName)) {
-            processor.processLane(context, XMLElementNames, XMLElementObjects, atts);
+            processor.processLane(context, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.POOL.equals(localName)) {
-            processor.processPool(context, XMLElementNames, XMLElementObjects, atts);
+            processor.processPool(context, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.NODEGRAPHICSINFO.equals(localName)) {
-            processor.processNodeGraphicsInfo(XMLElementNames, XMLElementObjects, atts);
+            processor.processNodeGraphicsInfo(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.COORDINATES.equals(localName)) {
-            processor.processCoordinates(XMLElementNames, XMLElementObjects, atts);
+            processor.processCoordinates(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.STARTEVENT.equals(localName) || XPDLProcessor.XPDLEntities.INTERMEDIATEEVENT.equals(localName) || XPDLProcessor.XPDLEntities.ENDEVENT.equals(localName)) {
-            processor.processEvent(localName, XMLElementNames, XMLElementObjects, atts);
+            processor.processEvent(localName, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.TRIGGERRESULTMESSAGE.equals(localName) || XPDLProcessor.XPDLEntities.TRIGGERRESULTSIGNAL.equals(localName)
                 || XPDLProcessor.XPDLEntities.TRIGGERRESULTLINK.equals(localName)) {
-            processor.processInterEventResult(XMLElementNames, XMLElementObjects, atts);
+            processor.processInterEventResult(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.ROUTE.equals(localName)) {
-            processor.processGateway(XMLElementNames, XMLElementObjects, atts);
+            processor.processGateway(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.DATASTOREREFERENCE.equals(localName) || XPDLProcessor.XPDLEntities.DATASTORE.equals(localName) || XPDLProcessor.XPDLEntities.DATAOBJECT.equals(localName)) {
-            processor.processDataObject(context, XMLElementNames, XMLElementObjects, atts);
+            processor.processDataObject(context, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.DATAFIELD.equals(localName)) {
-            processor.processDataField(XMLElementNames, XMLElementObjects, atts);
+            processor.processDataField(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.TASKUSER.equals(localName) || XPDLProcessor.XPDLEntities.TASKSERVICE.equals(localName) 
                 || XPDLProcessor.XPDLEntities.TASKRECEIVE.equals(localName) || XPDLProcessor.XPDLEntities.TASKSEND.equals(localName)
                 || XPDLProcessor.XPDLEntities.TASKSCRIPT.equals(localName) || XPDLProcessor.XPDLEntities.TASKMANUAL.equals(localName)
                 || XPDLProcessor.XPDLEntities.TASKBUSINESSRULE.equals(localName)) {
-            processor.processTaskImplementation(localName, XMLElementNames, XMLElementObjects, atts);
+            processor.processTaskImplementation(localName, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.LOOP.equals(localName)) {
-            processor.processLoopType(XMLElementNames, XMLElementObjects, atts);
+            processor.processLoopType(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.ARTIFACT.equals(localName)) {
-            processor.processArtifact(context, XMLElementNames, XMLElementObjects, atts);
+            processor.processArtifact(context, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.TRANSITION.equals(localName)) {
-            processor.processTransition(context, XMLElementNames, XMLElementObjects, atts);
+            processor.processTransition(context, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.CONDITION.equals(localName)) {
-            processor.processConditionType(XMLElementNames, XMLElementObjects, atts);
+            processor.processConditionType(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.WORKFLOWPROCESS.equals(localName)) {
-            processor.processWorkFlow(XMLElementNames, XMLElementObjects, atts);
+            processor.processWorkFlow(xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.ACTIVITYSET.equals(localName)) {
-            processor.processActivitySet(context, XMLElementNames, XMLElementObjects, atts);
+            processor.processActivitySet(context, xmlElementNames, xmlElementObjects, atts);
         }
         if (XPDLProcessor.XPDLEntities.ASSOCIATION.equals(localName)) {
-            processor.processAssociation(context, XMLElementNames, XMLElementObjects, atts);
+            processor.processAssociation(context, xmlElementNames, xmlElementObjects, atts);
         }
         //Put current tag on top of the stack
-        XMLElementNames.push(localName);
+        xmlElementNames.push(localName);
     }
     
     /**

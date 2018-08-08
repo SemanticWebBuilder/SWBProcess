@@ -141,7 +141,7 @@ public class RTFWriter implements DocumentWriter {
 								} else { // Reference
 									Anchor anchor = new Anchor(se.getTitle(), FONTS.td);
 									Referable ref = (Referable) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(se.getURI());
-									RepositoryElement re = (RepositoryElement) ref.getRefRepository();
+									RepositoryElement re = ref.getRefRepository();
 									VersionInfo versionInfo = ref.getVersion() != null ? ref.getVersion()
 											: re.getLastVersion();
 
@@ -283,13 +283,14 @@ public class RTFWriter implements DocumentWriter {
 	 * Static class for Font definitions.
 	 */
 	private static class FONTS {
-		public static final Font body = new RtfFont("Arial", 10);
-		public static final Font h = new RtfFont("Arial", 8);
-		public static final Font h1 = new RtfFont("Arial", 16, Font.BOLD);
-		public static final Font h2 = new RtfFont("Arial", 14, Font.BOLDITALIC);
-		public static final Font h3 = new RtfFont("Arial", 13, Font.BOLD);
-		public static final Font th = new RtfFont("Arial", 10, Font.BOLD);
-		public static final Font td = new RtfFont("Arial", 9);
+		public static final String ARIAL = "Arial";
+		public static final Font body = new RtfFont(ARIAL, 10);
+		public static final Font h = new RtfFont(ARIAL, 8);
+		public static final Font h1 = new RtfFont(ARIAL, 16, Font.BOLD);
+		public static final Font h2 = new RtfFont(ARIAL, 14, Font.BOLDITALIC);
+		public static final Font h3 = new RtfFont(ARIAL, 13, Font.BOLD);
+		public static final Font th = new RtfFont(ARIAL, 10, Font.BOLD);
+		public static final Font td = new RtfFont(ARIAL, 9);
 
 		private FONTS() {
 			throw new IllegalStateException("FONTS Class cannot be instantiated");
