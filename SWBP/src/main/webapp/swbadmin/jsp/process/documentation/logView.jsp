@@ -47,13 +47,13 @@
             creator = tr.getCreator().getFullName();
         }
         if (tr.getCreated() != null) {
-            created = SWPUtils.DateFormatter.format(tr.getCreated());
+            created = SWPUtils.getDateFormatter().format(tr.getCreated());
         }
         if (tr.getModifiedBy() != null) {
             modifiedby = tr.getModifiedBy().getFullName();
         }
         if (tr.getUpdated() != null) {
-            modified = SWPUtils.DateFormatter.format(tr.getUpdated());
+            modified = SWPUtils.getDateFormatter().format(tr.getUpdated());
         }
         
         if (tr instanceof Referable) {

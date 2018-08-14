@@ -20,8 +20,15 @@ import java.text.SimpleDateFormat;
 public class SWPUtils {
 	public static final String FORMAT_PNG = "png";
 	public static final String FORMAT_SVG = "svg";
-	public final SimpleDateFormat DateFormatter = new SimpleDateFormat("dd/MMM/yyyy - hh:mm:ss");
 	private static final Logger LOG = SWBUtils.getLogger(SWPUtils.class);
+
+	/**
+	 * Gets default date formatter for SWBProcess.
+	 * @return SimpleDateFormat
+	 */
+	public static SimpleDateFormat getDateFormatter() {
+		return new SimpleDateFormat("dd/MMM/yyyy - hh:mm:ss");
+	}
 
 	/**
 	 * Copies a resource from SWBAdmin jar package loaded into memory.

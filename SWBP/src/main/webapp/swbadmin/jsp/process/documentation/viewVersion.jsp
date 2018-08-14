@@ -10,8 +10,8 @@
 <%@page import="org.semanticwb.process.model.documentation.DocumentTemplate"%>
 <%@page import="org.semanticwb.process.model.documentation.TemplateContainer"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.process.resources.utils.SWPUtils"%>
 <%@page import="java.util.Iterator"%>
+<%@ page import="org.semanticwb.process.resources.utils.SWPUtils" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
@@ -56,7 +56,7 @@
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 swbp-list-title">
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 swbp-list-number"><%= dt.getVersionValue() %></div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-10 swbp-list-text"><%= dt.getVersionComment() !=null ? dt.getVersionComment() : "" %></div>
-                        <div class="col-lg-5 col-md-5 col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-2 swbp-list-date"><%= SWPUtils.DateFormatter.format(dt.getCreated()) %></div>
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-2 swbp-list-date"><%= SWPUtils.getDateFormatter().format(dt.getCreated()) %></div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 swbp-list-action">
                         <a

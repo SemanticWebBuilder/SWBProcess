@@ -58,7 +58,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Fecha de creación</label>
                                 <div class="col-sm-7">
-                                    <p class="form-control-static"><%= SWPUtils.DateFormatter.format(dt.getCreated()) %></p>
+                                    <p class="form-control-static"><%= SWPUtils.getDateFormatter().format(dt.getCreated()) %></p>
                                 </div>
                             </div>
                             <%
