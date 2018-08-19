@@ -145,7 +145,7 @@
                     <%
                 }
                 %>
-                <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-arrow-left"></span><span class="hidden-xs"> <%=paramRequest.getLocaleString("btnCancel")%></span></button>
+                <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-times"></span><span class="hidden-xs"> <%=paramRequest.getLocaleString("btnCancel")%></span></button>
             </div>
         </form>
     </div>

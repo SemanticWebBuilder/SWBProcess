@@ -77,7 +77,7 @@
                 <span class="fa fa-save fa-fw"></span><%=paramRequest.getLocaleString("send")%>
             </button>
             <button type="button" class="btn btn-default" onclick="window.location='<%=paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW).setAction("viewPost").setParameter("threadUri", threadUri)%>'"> 
-                <span class="fa fa-arrow-left fa-fw"></span><%=paramRequest.getLocaleString("cancel")%>
+                <span class="fa fa-times fa-fw"></span><%=paramRequest.getLocaleString("cancel")%>
             </button>
         </div>
     </form>

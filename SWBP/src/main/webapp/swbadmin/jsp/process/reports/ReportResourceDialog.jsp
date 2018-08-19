@@ -36,7 +36,7 @@ SWBResourceURL urlReport = paramRequest.getRenderUrl().setMode("generate").setCa
                     <span class="fa fa-download fa-fw"></span><span class="hidden-xs">Descargar</span>
                 </button>
                 <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                    <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs">Cancelar</span>
+                    <span class="fa fa-times fa-fw"></span><span class="hidden-xs">Cancelar</span>
                 </button>
             </div>
         </form>

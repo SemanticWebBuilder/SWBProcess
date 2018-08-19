@@ -58,7 +58,7 @@ if (!user.isSigned()) {
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6"><span class="fa fa-plus fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("msgAdd")%></span></button>
-                    <button type="button" data-dismiss="modal" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6"><span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("msgBTNCancel")%></span></button>                  
+                    <button type="button" data-dismiss="modal" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6"><span class="fa fa-times fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("msgBTNCancel")%></span></button>
                 </div>
             </form>
         </div>
