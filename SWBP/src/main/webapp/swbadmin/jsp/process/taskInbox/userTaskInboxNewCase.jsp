@@ -34,7 +34,7 @@ while(startEvents.hasNext()) {
     //Si el usuario tiene permisos en el evento
     if (sevt.getContainer() != null && sevt.getContainer() instanceof Process && user.haveAccess(sevt)) {
         Process itp = sevt.getProcess();
-        //Si el proceso al que pertenece el evento y es v�lido
+        //Si el proceso al que pertenece el evento y es válido
         if (itp != null && itp.isValid() && itp.isExecutable()) {
             if(itp.getProcessGroup() != null) {
                 String pg = itp.getProcessGroup().getDisplayTitle(lang);
@@ -68,7 +68,7 @@ Iterator<String> keys = groups.keySet().iterator();
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 swbp-modal-property">
-                                <label for="pid">Proceso:</label>
+                                <label>Proceso:</label>
                             </div>
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
                                 <select class="form-control" name="pid" required>
@@ -93,8 +93,8 @@ Iterator<String> keys = groups.keySet().iterator();
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6"><span class="fa fa-save fa-fw"></span><%=paramRequest.getLocaleString("btnOk")%></button>
-                        <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-arrow-left fa-fw"></span><%=paramRequest.getLocaleString("btnCancel")%></button>
+                        <button type="submit" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6"><span class="fa fa-check fa-fw"></span><%=paramRequest.getLocaleString("btnOk")%></button>
+                        <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-times fa-fw"></span><%=paramRequest.getLocaleString("btnCancel")%></button>
                     </div>
                 </form>
             </div>
@@ -141,7 +141,7 @@ Iterator<String> keys = groups.keySet().iterator();
                     <div class="text-center"><%=paramRequest.getLocaleString("msgNoProcess")%></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-arrow-left fa-fw"></span><%=paramRequest.getLocaleString("btnCancel")%></button>
+                    <button type="button" class="btn pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-times fa-fw"></span><%=paramRequest.getLocaleString("btnCancel")%></button>
                 </div>
             <%
         }

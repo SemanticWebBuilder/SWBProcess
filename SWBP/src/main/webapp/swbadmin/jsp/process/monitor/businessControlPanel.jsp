@@ -322,7 +322,7 @@
 
                                                         if (statusWp != null) {
                                                             %>
-                                                            <a href="<%=statusWp.getUrl()%>?suri=<%=instance.getProcessInstance().getProcessType().getEncodedURI()%>" class="btn btn-default col-lg-4 col-md-4" title="<%=paramRequest.getLocaleString("actMap")%>"><span class="fa fa-sitemap fa-rotate-270"></span></a>
+                                                            <a href="<%=statusWp.getUrl()%>?suri=<%=instance.getProcessInstance().getProcessType().getEncodedURI()%>" class="btn btn-default col-lg-4 col-md-4" title="<%=paramRequest.getLocaleString("actMap")%>"><span class="fa fa-eye"></span></a>
                                                             <%
                                                         }
                                                         %>
