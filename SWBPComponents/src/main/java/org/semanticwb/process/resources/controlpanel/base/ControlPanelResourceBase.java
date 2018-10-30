@@ -1,27 +1,26 @@
 package org.semanticwb.process.resources.controlpanel.base;
 
 
-public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api.GenericSemResource 
+public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api.GenericSemResource implements org.semanticwb.process.resources.ProcessResourceConfigurable,org.semanticwb.process.resources.PagingConfigurable
 {
-    public static final org.semanticwb.platform.SemanticProperty cpanel_showPartGraph=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#showPartGraph");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_showInstanceGraph=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#showInstanceGraph");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_docsJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#docsJSP");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_itemsPerPage=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#itemsPerPage");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_showResponseGraph=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#showResponseGraph");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_configJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#configJSP");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_showStatusGraph=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#showStatusGraph");
+    public static final org.semanticwb.platform.SemanticProperty swpres_showStatusChart=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showStatusChart");
+    public static final org.semanticwb.platform.SemanticProperty swpres_docsJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#docsJSP");
+    public static final org.semanticwb.platform.SemanticProperty swpres_itemsPerPage=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#itemsPerPage");
+    public static final org.semanticwb.platform.SemanticProperty swpres_showCharts=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showCharts");
+    public static final org.semanticwb.platform.SemanticProperty swpres_configJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#configJSP");
+    public static final org.semanticwb.platform.SemanticProperty swpres_chartsEngine=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#chartsEngine");
+    public static final org.semanticwb.platform.SemanticProperty swpres_showInstanceChart=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showInstanceChart");
     public static final org.semanticwb.platform.SemanticClass swb_Resource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/ontology#Resource");
     public static final org.semanticwb.platform.SemanticProperty swb_semanticResourceInv=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/ontology#semanticResourceInv");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_showGraphs=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#showGraphs");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_filterByGroup=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#filterByGroup");
+    public static final org.semanticwb.platform.SemanticProperty swpres_showPartChart=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showPartChart");
+    public static final org.semanticwb.platform.SemanticProperty swpres_filterByGroup=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#filterByGroup");
+    public static final org.semanticwb.platform.SemanticProperty swpres_showResponseChart=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showResponseChart");
+    public static final org.semanticwb.platform.SemanticProperty swpres_viewJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#viewJSP");
+    public static final org.semanticwb.platform.SemanticProperty swpres_displayCols=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#displayCols");
     public static final org.semanticwb.platform.SemanticClass swb_WebPage=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/ontology#WebPage");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_trackWp=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#trackWp");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_viewJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#viewJSP");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_displayCols=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#displayCols");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_displayMapWp=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#displayMapWp");
-    public static final org.semanticwb.platform.SemanticProperty cpanel_graphsEngine=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/ControlPanel#graphsEngine");
-    public static final org.semanticwb.platform.SemanticClass cpanel_ControlPanelResource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/process/resources/ControlPanel#ControlPanelResource");
-    public static final org.semanticwb.platform.SemanticClass sclass=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/process/resources/ControlPanel#ControlPanelResource");
+    public static final org.semanticwb.platform.SemanticProperty swpres_displayMapWp=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#displayMapWp");
+    public static final org.semanticwb.platform.SemanticClass swpres_ControlPanelResource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/process/resources#ControlPanelResource");
+    public static final org.semanticwb.platform.SemanticClass sclass=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/process/resources#ControlPanelResource");
 
     public ControlPanelResourceBase()
     {
@@ -56,39 +55,21 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     }
 
 /**
-* Gets the ShowPartGraph property
-* @return boolean with the ShowPartGraph
+* Gets the ShowStatusChart property
+* @return boolean with the ShowStatusChart
 */
-    public boolean isShowPartGraph()
+    public boolean isShowStatusChart()
     {
-        return getSemanticObject().getBooleanProperty(cpanel_showPartGraph);
+        return getSemanticObject().getBooleanProperty(swpres_showStatusChart);
     }
 
 /**
-* Sets the ShowPartGraph property
-* @param value long with the ShowPartGraph
+* Sets the ShowStatusChart property
+* @param value long with the ShowStatusChart
 */
-    public void setShowPartGraph(boolean value)
+    public void setShowStatusChart(boolean value)
     {
-        getSemanticObject().setBooleanProperty(cpanel_showPartGraph, value);
-    }
-
-/**
-* Gets the ShowInstanceGraph property
-* @return boolean with the ShowInstanceGraph
-*/
-    public boolean isShowInstanceGraph()
-    {
-        return getSemanticObject().getBooleanProperty(cpanel_showInstanceGraph);
-    }
-
-/**
-* Sets the ShowInstanceGraph property
-* @param value long with the ShowInstanceGraph
-*/
-    public void setShowInstanceGraph(boolean value)
-    {
-        getSemanticObject().setBooleanProperty(cpanel_showInstanceGraph, value);
+        getSemanticObject().setBooleanProperty(swpres_showStatusChart, value);
     }
 
 /**
@@ -97,7 +78,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public String getDocsJSP()
     {
-        return getSemanticObject().getProperty(cpanel_docsJSP);
+        return getSemanticObject().getProperty(swpres_docsJSP);
     }
 
 /**
@@ -106,7 +87,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public void setDocsJSP(String value)
     {
-        getSemanticObject().setProperty(cpanel_docsJSP, value);
+        getSemanticObject().setProperty(swpres_docsJSP, value);
     }
 
 /**
@@ -115,7 +96,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public int getItemsPerPage()
     {
-        return getSemanticObject().getIntProperty(cpanel_itemsPerPage);
+        return getSemanticObject().getIntProperty(swpres_itemsPerPage);
     }
 
 /**
@@ -124,25 +105,25 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public void setItemsPerPage(int value)
     {
-        getSemanticObject().setIntProperty(cpanel_itemsPerPage, value);
+        getSemanticObject().setIntProperty(swpres_itemsPerPage, value);
     }
 
 /**
-* Gets the ShowResponseGraph property
-* @return boolean with the ShowResponseGraph
+* Gets the ShowCharts property
+* @return boolean with the ShowCharts
 */
-    public boolean isShowResponseGraph()
+    public boolean isShowCharts()
     {
-        return getSemanticObject().getBooleanProperty(cpanel_showResponseGraph);
+        return getSemanticObject().getBooleanProperty(swpres_showCharts);
     }
 
 /**
-* Sets the ShowResponseGraph property
-* @param value long with the ShowResponseGraph
+* Sets the ShowCharts property
+* @param value long with the ShowCharts
 */
-    public void setShowResponseGraph(boolean value)
+    public void setShowCharts(boolean value)
     {
-        getSemanticObject().setBooleanProperty(cpanel_showResponseGraph, value);
+        getSemanticObject().setBooleanProperty(swpres_showCharts, value);
     }
 
 /**
@@ -151,7 +132,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public String getConfigJSP()
     {
-        return getSemanticObject().getProperty(cpanel_configJSP);
+        return getSemanticObject().getProperty(swpres_configJSP);
     }
 
 /**
@@ -160,25 +141,43 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public void setConfigJSP(String value)
     {
-        getSemanticObject().setProperty(cpanel_configJSP, value);
+        getSemanticObject().setProperty(swpres_configJSP, value);
     }
 
 /**
-* Gets the ShowStatusGraph property
-* @return boolean with the ShowStatusGraph
+* Gets the ChartsEngine property
+* @return String with the ChartsEngine
 */
-    public boolean isShowStatusGraph()
+    public String getChartsEngine()
     {
-        return getSemanticObject().getBooleanProperty(cpanel_showStatusGraph);
+        return getSemanticObject().getProperty(swpres_chartsEngine);
     }
 
 /**
-* Sets the ShowStatusGraph property
-* @param value long with the ShowStatusGraph
+* Sets the ChartsEngine property
+* @param value long with the ChartsEngine
 */
-    public void setShowStatusGraph(boolean value)
+    public void setChartsEngine(String value)
     {
-        getSemanticObject().setBooleanProperty(cpanel_showStatusGraph, value);
+        getSemanticObject().setProperty(swpres_chartsEngine, value);
+    }
+
+/**
+* Gets the ShowInstanceChart property
+* @return boolean with the ShowInstanceChart
+*/
+    public boolean isShowInstanceChart()
+    {
+        return getSemanticObject().getBooleanProperty(swpres_showInstanceChart);
+    }
+
+/**
+* Sets the ShowInstanceChart property
+* @param value long with the ShowInstanceChart
+*/
+    public void setShowInstanceChart(boolean value)
+    {
+        getSemanticObject().setBooleanProperty(swpres_showInstanceChart, value);
     }
    /**
    * Sets the value for the property Resource
@@ -220,21 +219,21 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     }
 
 /**
-* Gets the ShowGraphs property
-* @return boolean with the ShowGraphs
+* Gets the ShowPartChart property
+* @return boolean with the ShowPartChart
 */
-    public boolean isShowGraphs()
+    public boolean isShowPartChart()
     {
-        return getSemanticObject().getBooleanProperty(cpanel_showGraphs);
+        return getSemanticObject().getBooleanProperty(swpres_showPartChart);
     }
 
 /**
-* Sets the ShowGraphs property
-* @param value long with the ShowGraphs
+* Sets the ShowPartChart property
+* @param value long with the ShowPartChart
 */
-    public void setShowGraphs(boolean value)
+    public void setShowPartChart(boolean value)
     {
-        getSemanticObject().setBooleanProperty(cpanel_showGraphs, value);
+        getSemanticObject().setBooleanProperty(swpres_showPartChart, value);
     }
 
 /**
@@ -243,7 +242,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public boolean isFilterByGroup()
     {
-        return getSemanticObject().getBooleanProperty(cpanel_filterByGroup);
+        return getSemanticObject().getBooleanProperty(swpres_filterByGroup);
     }
 
 /**
@@ -252,45 +251,25 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public void setFilterByGroup(boolean value)
     {
-        getSemanticObject().setBooleanProperty(cpanel_filterByGroup, value);
-    }
-   /**
-   * Sets the value for the property TrackWp
-   * @param value TrackWp to set
-   */
-
-    public void setTrackWp(org.semanticwb.model.WebPage value)
-    {
-        if(value!=null)
-        {
-            getSemanticObject().setObjectProperty(cpanel_trackWp, value.getSemanticObject());
-        }else
-        {
-            removeTrackWp();
-        }
-    }
-   /**
-   * Remove the value for TrackWp property
-   */
-
-    public void removeTrackWp()
-    {
-        getSemanticObject().removeProperty(cpanel_trackWp);
+        getSemanticObject().setBooleanProperty(swpres_filterByGroup, value);
     }
 
-   /**
-   * Gets the TrackWp
-   * @return a org.semanticwb.model.WebPage
-   */
-    public org.semanticwb.model.WebPage getTrackWp()
+/**
+* Gets the ShowResponseChart property
+* @return boolean with the ShowResponseChart
+*/
+    public boolean isShowResponseChart()
     {
-         org.semanticwb.model.WebPage ret=null;
-         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(cpanel_trackWp);
-         if(obj!=null)
-         {
-             ret=(org.semanticwb.model.WebPage)obj.createGenericInstance();
-         }
-         return ret;
+        return getSemanticObject().getBooleanProperty(swpres_showResponseChart);
+    }
+
+/**
+* Sets the ShowResponseChart property
+* @param value long with the ShowResponseChart
+*/
+    public void setShowResponseChart(boolean value)
+    {
+        getSemanticObject().setBooleanProperty(swpres_showResponseChart, value);
     }
 
 /**
@@ -299,7 +278,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public String getViewJSP()
     {
-        return getSemanticObject().getProperty(cpanel_viewJSP);
+        return getSemanticObject().getProperty(swpres_viewJSP);
     }
 
 /**
@@ -308,7 +287,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public void setViewJSP(String value)
     {
-        getSemanticObject().setProperty(cpanel_viewJSP, value);
+        getSemanticObject().setProperty(swpres_viewJSP, value);
     }
 
 /**
@@ -317,7 +296,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public String getDisplayCols()
     {
-        return getSemanticObject().getProperty(cpanel_displayCols);
+        return getSemanticObject().getProperty(swpres_displayCols);
     }
 
 /**
@@ -326,7 +305,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 */
     public void setDisplayCols(String value)
     {
-        getSemanticObject().setProperty(cpanel_displayCols, value);
+        getSemanticObject().setProperty(swpres_displayCols, value);
     }
    /**
    * Sets the value for the property DisplayMapWp
@@ -337,7 +316,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     {
         if(value!=null)
         {
-            getSemanticObject().setObjectProperty(cpanel_displayMapWp, value.getSemanticObject());
+            getSemanticObject().setObjectProperty(swpres_displayMapWp, value.getSemanticObject());
         }else
         {
             removeDisplayMapWp();
@@ -349,7 +328,7 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
 
     public void removeDisplayMapWp()
     {
-        getSemanticObject().removeProperty(cpanel_displayMapWp);
+        getSemanticObject().removeProperty(swpres_displayMapWp);
     }
 
    /**
@@ -359,29 +338,11 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     public org.semanticwb.model.WebPage getDisplayMapWp()
     {
          org.semanticwb.model.WebPage ret=null;
-         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(cpanel_displayMapWp);
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpres_displayMapWp);
          if(obj!=null)
          {
              ret=(org.semanticwb.model.WebPage)obj.createGenericInstance();
          }
          return ret;
-    }
-
-/**
-* Gets the GraphsEngine property
-* @return String with the GraphsEngine
-*/
-    public String getGraphsEngine()
-    {
-        return getSemanticObject().getProperty(cpanel_graphsEngine);
-    }
-
-/**
-* Sets the GraphsEngine property
-* @param value long with the GraphsEngine
-*/
-    public void setGraphsEngine(String value)
-    {
-        getSemanticObject().setProperty(cpanel_graphsEngine, value);
     }
 }

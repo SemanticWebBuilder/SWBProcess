@@ -1,7 +1,7 @@
 package org.semanticwb.process.model.documentation.base;
 
 
-public abstract class FormatBase extends org.semanticwb.process.model.documentation.SectionElement implements org.semanticwb.model.Sortable,org.semanticwb.model.Traceable,org.semanticwb.process.model.documentation.Instantiable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.model.documentation.ElementReferable,org.semanticwb.process.model.documentation.Referable
+public abstract class FormatBase extends org.semanticwb.process.model.documentation.SectionElement implements org.semanticwb.model.Sortable,org.semanticwb.process.model.documentation.ElementReferable,org.semanticwb.model.Traceable,org.semanticwb.process.model.documentation.Instantiable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.model.documentation.Referable
 {
     public static final org.semanticwb.platform.SemanticProperty swpdoc_relatedSubjects=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#relatedSubjects");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_documentType=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#documentType");

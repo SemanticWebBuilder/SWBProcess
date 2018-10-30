@@ -1,4 +1,5 @@
-package org.semanticwb.process.resources.manager;
+package org.semanticwb.process.resources.processmanager;
+
 
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
@@ -19,7 +20,6 @@ import org.semanticwb.platform.SemanticClass;
 import org.semanticwb.platform.SemanticModel;
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticOntology;
-import org.semanticwb.portal.api.GenericAdmResource;
 import org.semanticwb.portal.api.SWBActionResponse;
 import org.semanticwb.portal.api.SWBParamRequest;
 import org.semanticwb.portal.api.SWBResourceException;
@@ -34,13 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 
-/**
- * Componente que permite la navegación entre los procesos y su documentación.
- * @author carlos.alvarez
- * @author Hasdai Pacheco
- */
-public class SWBProcessManagerResource extends GenericAdmResource {
-    public static final String MODE_VIEW_DOCUMENTATION = "m_vdoc";
+public class SWBProcessManagerResource extends org.semanticwb.process.resources.processmanager.base.SWBProcessManagerResourceBase 
+{public static final String MODE_VIEW_DOCUMENTATION = "m_vdoc";
     public static final String MODE_EXPORT_MODEL = "m_expm";
     public static final String MODE_SWBPMODELER = "m_modeler";
     public static final String MODE_GATEWAY = "gateway";
@@ -62,6 +57,7 @@ public class SWBProcessManagerResource extends GenericAdmResource {
     private static final String ERRORSTRING = "{\"error\":\"_JSONERROR_\"}";
     public static final String LIST_PROCESSES = "listTemplates";
     public static final String ATT_PARAMREQUEST = "paramRequest";
+    public static final String ATT_RESOURCEINSTANCE = "resourceInance";
     public static final String ACT_CREATEPROCESS = "a_createprocess";
     public static final String ACT_CREATEPROCESSGROUP = "a_createprocessgroup";
     public static final String ACT_GETPROCESSJSON = "getProcessJSON";
@@ -172,6 +168,7 @@ public class SWBProcessManagerResource extends GenericAdmResource {
         try {
             request.setAttribute(ATT_PARAMREQUEST, paramRequest);
             request.setAttribute(LIST_PROCESSES, getItems(ProcessGroup.ClassMgr.getProcessGroup(idpg, paramRequest.getWebPage().getWebSite())));
+            request.setAttribute(ATT_RESOURCEINSTANCE, this);
             rd.include(request, response);
         } catch (ServletException ex) {
             LOG.error("Error on doView", ex);
@@ -291,6 +288,7 @@ public class SWBProcessManagerResource extends GenericAdmResource {
         RequestDispatcher rd = request.getRequestDispatcher(path);
         try {
             request.setAttribute(ATT_PARAMREQUEST, paramRequest);
+            request.setAttribute(ATT_RESOURCEINSTANCE, this);
             rd.include(request, response);
         } catch (ServletException ex) {
             LOG.error("Error on doViewDocumentation", ex);

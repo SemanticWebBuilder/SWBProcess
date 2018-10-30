@@ -1,7 +1,7 @@
 package org.semanticwb.process.model.documentation.base;
 
 
-public abstract class DocumentSectionBase extends org.semanticwb.process.model.documentation.DocumentationElement implements org.semanticwb.model.Sortable,org.semanticwb.process.model.documentation.Prefixeable,org.semanticwb.model.Activeable,org.semanticwb.model.Traceable,org.semanticwb.model.Descriptiveable
+public abstract class DocumentSectionBase extends org.semanticwb.process.model.documentation.DocumentationElement implements org.semanticwb.process.model.documentation.Prefixeable,org.semanticwb.model.Sortable,org.semanticwb.model.Traceable,org.semanticwb.model.Activeable,org.semanticwb.model.Descriptiveable
 {
     public static final org.semanticwb.platform.SemanticProperty swpdoc_configData=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#configData");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_visibleProperties=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#visibleProperties");

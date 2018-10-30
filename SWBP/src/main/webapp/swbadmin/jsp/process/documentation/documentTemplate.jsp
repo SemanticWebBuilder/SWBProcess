@@ -12,8 +12,8 @@
 <%@page import="org.semanticwb.process.model.documentation.DocumentTemplate"%>
 <%@page import="org.semanticwb.process.model.documentation.TemplateContainer"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource"%>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" %>

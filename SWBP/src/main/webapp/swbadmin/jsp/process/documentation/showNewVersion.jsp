@@ -7,7 +7,7 @@
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
-<%@ page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource" %>
+<%@ page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = request.getAttribute(SWPDocumentationResource.PARAM_REQUEST) != null ? (SWBParamRequest) request.getAttribute(SWPDocumentationResource.PARAM_REQUEST) : null;

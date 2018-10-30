@@ -1,7 +1,7 @@
 package org.semanticwb.process.model.base;
 
 
-public abstract class ProcessBase extends org.semanticwb.process.model.ProcessElement implements org.semanticwb.model.FilterableClass,org.semanticwb.model.Referensable,org.semanticwb.model.RuleRefable,org.semanticwb.model.UserGroupRefable,org.semanticwb.model.Expirable,org.semanticwb.model.Trashable,org.semanticwb.model.FilterableNode,org.semanticwb.model.Resourceable,org.semanticwb.model.Activeable,org.semanticwb.model.Filterable,org.semanticwb.model.RoleRefable,org.semanticwb.process.model.Containerable,org.semanticwb.process.model.Callable,org.semanticwb.model.Traceable,org.semanticwb.model.TemplateRefable,org.semanticwb.process.model.BPMNSerializable,org.semanticwb.model.CalendarRefable,org.semanticwb.model.Descriptiveable,org.semanticwb.process.model.OwnerPropertyable
+public abstract class ProcessBase extends org.semanticwb.process.model.ProcessElement implements org.semanticwb.process.model.Containerable,org.semanticwb.model.Referensable,org.semanticwb.model.Indexable,org.semanticwb.model.Expirable,org.semanticwb.model.Traceable,org.semanticwb.model.TemplateRefable,org.semanticwb.model.RuleRefable,org.semanticwb.model.Activeable,org.semanticwb.model.Resourceable,org.semanticwb.model.RoleRefable,org.semanticwb.process.model.Callable,org.semanticwb.model.Searchable,org.semanticwb.model.Filterable,org.semanticwb.model.FilterableClass,org.semanticwb.process.model.OwnerPropertyable,org.semanticwb.model.CalendarRefable,org.semanticwb.model.FilterableNode,org.semanticwb.model.UserGroupRefable,org.semanticwb.process.model.BPMNSerializable,org.semanticwb.model.Trashable,org.semanticwb.model.Descriptiveable
 {
    /**
    * Objeto que define un Role dentro de un repositorio de usuarios aplicable a un Usuario para filtrar componente, seccion, plantillas, etc.
@@ -1381,6 +1381,24 @@ public abstract class ProcessBase extends org.semanticwb.process.model.ProcessEl
     public void setNotInheritRoleRef(boolean value)
     {
         getSemanticObject().setBooleanProperty(swb_notInheritRoleRef, value);
+    }
+
+/**
+* Gets the Indexable property
+* @return boolean with the Indexable
+*/
+    public boolean isIndexable()
+    {
+        return getSemanticObject().getBooleanProperty(swb_indexable);
+    }
+
+/**
+* Sets the Indexable property
+* @param value long with the Indexable
+*/
+    public void setIndexable(boolean value)
+    {
+        getSemanticObject().setBooleanProperty(swb_indexable, value);
     }
    /**
    * Gets all the org.semanticwb.model.Resource

@@ -9,9 +9,9 @@
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.model.Process"%>
 <%@page import="org.semanticwb.process.model.ProcessGroup"%>
-<%@page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource"%>
+<%@page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Collections"%>
+<%@ page import="java.util.Collections" %>
 <%@ page import="java.util.Comparator" %>
 <%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,19 +29,18 @@
     }
 %>
 <%
+SWBProcessManagerResource res = (SWBProcessManagerResource) request.getAttribute(SWBProcessManagerResource.ATT_RESOURCEINSTANCE);
 SWBParamRequest paramRequest = request.getAttribute(SWBProcessManagerResource.ATT_PARAMREQUEST) != null ? (SWBParamRequest) request.getAttribute(SWBProcessManagerResource.ATT_PARAMREQUEST) : null;
 WebSite model = paramRequest.getWebPage().getWebSite();
 User user = paramRequest.getUser();
 String lang = user.getLanguage();
 WebPage webpage = paramRequest.getWebPage();
-Role docRole = webpage.getWebSite().getUserRepository()
-        .getRole(paramRequest.getResourceBase().getAttribute("docRole"));//TODO: Hacer cnfigurable el rol
+Role docRole = res.getDocumenterRole();
+Role adminRole = res.getAdminRole();
 
-Role adminRole = webpage.getWebSite().getUserRepository().getRole("admin");//TODO: Hacer cnfigurable el rol
-Resource base = paramRequest.getResourceBase();
 List<Descriptiveable> list = request.getAttribute(SWBProcessManagerResource.LIST_PROCESSES) != null ? (List<Descriptiveable>) request.getAttribute(SWBProcessManagerResource.LIST_PROCESSES) : null;
-
 String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP) != null ? request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP) : null;
+
 ProcessGroup group1 = ProcessGroup.ClassMgr.getProcessGroup(idpg, model);
 
 SWBResourceURL urlDoc = paramRequest.getRenderUrl().setMode(SWBProcessManagerResource.MODE_VIEW_DOCUMENTATION);
@@ -56,8 +55,8 @@ if (null != idpg) {
 }
 
 String pag = request.getParameter("p") != null ? request.getParameter("p") : "";
-WebPage templatesPage = webpage.getWebSite().getWebPage(base.getAttribute("templatePage"));
-WebPage contentsPage = webpage.getWebSite().getWebPage(base.getAttribute("contentPage"));
+WebPage templatesPage = res.getTemplatesPage();
+WebPage contentsPage = res.getEditDocumentationPage();
 
 if (null == templatesPage) templatesPage = webpage;
 if (null == contentsPage) contentsPage = webpage;
