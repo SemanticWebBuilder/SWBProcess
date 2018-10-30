@@ -20,13 +20,14 @@
 <%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
 <%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
 <%@page import="org.semanticwb.process.model.documentation.*"%>
-<%@page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
+<%@ page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+
 	SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentationResource.PARAM_REQUEST);
 	User user = paramRequest.getUser();
 	Resource base = paramRequest.getResourceBase();

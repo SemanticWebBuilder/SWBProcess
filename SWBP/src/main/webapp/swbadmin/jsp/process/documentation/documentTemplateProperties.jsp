@@ -33,7 +33,7 @@ if (model != null) {
     String uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids") : "";
     DocumentSection docSection = (DocumentSection) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSection);
     String classUri = request.getParameter("classuri") != null ? request.getParameter("classuri") : "";
-    SemanticClass semanticCls = (SemanticClass) SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(classUri);
+    SemanticClass semanticCls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(classUri);
     if (semanticCls != null && semanticCls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {
         SWBFormMgr forMgr = new SWBFormMgr(semanticCls, model.getSemanticObject(), SWBFormMgr.MODE_EDIT);
         forMgr.clearProperties();

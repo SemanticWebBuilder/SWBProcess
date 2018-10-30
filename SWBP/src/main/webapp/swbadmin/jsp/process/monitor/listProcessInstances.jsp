@@ -40,161 +40,129 @@
         }
         return ret;
     }
-    
-    /*public String _getStatusInstances(FlowNodeInstance fi, int status) {
-        String ret = "";
-        if (fi instanceof SubProcessInstance) {
-            SubProcessInstance pi = (SubProcessInstance) fi;
-            Iterator<FlowNodeInstance> acit = pi.listFlowNodeInstances();
-            if (acit.hasNext()) {
-                while (acit.hasNext()) {
-                    FlowNodeInstance actinst = acit.next();
-                    ret += _getStatusInstances(actinst, status);
-                }
-            }
-        } else if (fi.getFlowNodeType() instanceof Activity && fi.getStatus() == status) {
-            Iterator<FlowNodeInstance> fnii = fi.getFlowNodeType().listFlowObjectInstances();
-            int c = 0;
-            while (fnii.hasNext()) {
-                c++;
-                fnii.next();
-            }
-            ret += fi.getFlowNodeType().getURI() + "(" + c + ")|";
-        }
-        return ret;
-    }*/
 %>
 
 <%!    public void printActivityInstance(WebPage page, FlowNodeInstance ai, JspWriter out) throws IOException {
-        String baseimg = SWBPortal.getWebWorkPath() + "/models/" + page.getWebSiteId() + "/css/images/";
-        if (!(ai.getFlowNodeType() instanceof Activity)) {
-            return;
-        }
-        
-        String stat = "";
-        String color = "";
-        String actions="";
-        String tOwner = "--";
-        String tCreator = "--";
-        
-        if (ai.getCreator() != null && ai.getCreator().getFullName() != null) {
-            tCreator = ai.getCreator().getFullName();
-        }
+    String baseimg = SWBPortal.getWebWorkPath() + "/models/" + page.getWebSiteId() + "/css/images/";
+    if (!(ai.getFlowNodeType() instanceof Activity)) {
+        return;
+    }
 
+    String stat = "";
+    String color = "";
+    String actions="";
+    String tOwner = "--";
+    String tCreator = "--";
+
+    if (ai.getCreator() != null && ai.getCreator().getFullName() != null) {
+        tCreator = ai.getCreator().getFullName();
+    }
+
+    if (ai.getFlowNodeType() instanceof UserTask) {
+        UserTask tsk = (UserTask) ai.getFlowNodeType();
+        Iterator<RoleRef> roles = tsk.listRoleRefs();
+        if (roles.hasNext()) tOwner = roles.next().getRole().getDisplayTitle("lang");
+    }
+
+    if (ai.getStatus() == Instance.STATUS_INIT) {
+        stat = "Iniciada";
+    }
+    if (ai.getStatus() == Instance.STATUS_ABORTED) {
+        stat = "Abortada";
+    }
+    if (ai.getStatus() == Instance.STATUS_CLOSED) {
+        stat = "<img title=\"Completada\" src=\"" + baseimg + "icono-terminado.gif\">";
+        color = "color=\"#50b050\"";
         if (ai.getFlowNodeType() instanceof UserTask) {
-            UserTask tsk = (UserTask) ai.getFlowNodeType();
-            Iterator<RoleRef> roles = tsk.listRoleRefs();
-            if (roles.hasNext()) tOwner = roles.next().getRole().getDisplayTitle("lang");
-            //tOwner = tsk.getRole().getDisplayTitle("es");
+            actions="--";
+        } else {
+            actions="-";
         }
+    }
+    if (ai.getStatus() == Instance.STATUS_OPEN) {
+        stat = "Abierta";
+    }
+    if (ai.getStatus() == Instance.STATUS_PROCESSING) {
+        stat = "<img src=\"" + baseimg + "icono-iniciado.gif\">";
+        color = "color=\"red\"";
+        if (ai.getFlowNodeType() instanceof UserTask) {
+            actions = "<a class=\"acc-atender\" href=\"" + ((UserTask)ai.getFlowNodeType()).getTaskWebPage().getUrl() + "?suri=" + ai.getEncodedURI()+ "\">Atender</a>";
+        } else {
+            actions="-";
+        }
+    }
+    if (ai.getStatus() == Instance.STATUS_STOPED) {
+        stat = "Detenida";
+    }
+    out.println("<tr><td class=\"tban-id\">" + stat + "</td>");
+    out.println("<td class=\"tban-tarea\">");
+    if (ai.getStatus() == Instance.STATUS_PROCESSING) {
+        out.println("<font " + color + ">");
+    }
+    out.println(ai.getFlowNodeType().getTitle());
+    if (ai.getStatus() == Instance.STATUS_PROCESSING) {
+        out.println("</font>");
+    }
+    out.println("</td>"
+            + "<td class=\"tban-tarea\">" + tCreator + "</td>"
+            + "<td class=\"tban-inicia\">" + SWBUtils.TEXT.getStrDate(ai.getCreated(), "es", "dd/mm/yyyy - hh:mm:ss") + "</td>");
+    if (ai.getStatus() == Instance.STATUS_CLOSED) {
+        out.println("<td class=\"tban-cerrada\">" + SWBUtils.TEXT.getStrDate(ai.getEnded(), "es", "dd/mm/yyyy - hh:mm:ss") + "</td>");
+    } else {
+        out.println("<td class=\"tban-cerrada\">-</td>");
+    }
+    out.println("<td class=\"tban-tarea\">" + tOwner + "</td>");
+    out.println("</tr>");
+    if (ai instanceof SubProcessInstance) {
+        SubProcessInstance pi = (SubProcessInstance) ai;
+        Iterator<FlowNodeInstance> acit = pi.listFlowNodeInstances();
+        if (acit.hasNext()) {
+            while (acit.hasNext()) {
+                FlowNodeInstance actinst = acit.next();
+                printActivityInstance(page, actinst, out);
+            }
+        }
+    }
+}
+%>
 
-        if (ai.getStatus() == Instance.STATUS_INIT) {
-            stat = "Iniciada";
+<%
+    SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
+    int mode = (Integer) request.getAttribute("viewMode");
+    ArrayList<ProcessInstance> instances = (ArrayList<ProcessInstance>) request.getAttribute("instances");
+    WebPage topic = paramRequest.getWebPage();
+
+    Iterator<ProcessInstance> it = null;
+    if (instances != null) it = instances.iterator();
+
+    if (mode == ProcessTracer.MODE_TRACKING) {
+        if (it != null && it.hasNext()) {
+            while (it.hasNext()) {
+                ProcessInstance pi = it.next();
+%>
+<table class="tabla-bandeja">
+    <thead>
+    <th class="tban-id">Estatus</th>
+    <th class="tban-tarea">Tarea</th>
+    <th class="tban-tarea">Creador</th>
+    <th class="tban-inicia">Iniciado</th>
+    <th class="tban-cerrada">Terminado</th>
+    <th class="tban-tarea">Responsable</th>
+    </thead>
+    <tbody>
+    <%
+        Iterator<FlowNodeInstance> actit = SWBComparator.sortByCreated(pi.listFlowNodeInstances());
+        while (actit.hasNext()) {
+            FlowNodeInstance obj = actit.next();
+            if (obj.getStatus() == Instance.STATUS_PROCESSING)
+                printActivityInstance(topic, obj, out);
         }
-        if (ai.getStatus() == Instance.STATUS_ABORTED) {
-            stat = "Abortada";
-        }
-        if (ai.getStatus() == Instance.STATUS_CLOSED) {
-            stat = "<img title=\"Completada\" src=\"" + baseimg + "icono-terminado.gif\">";
-            color = "color=\"#50b050\"";
-            if (ai.getFlowNodeType() instanceof UserTask) {
-                //actions="<a href=\"\"><img alt=\"Detalle\" src=\""+baseimg+"detail_icon.gif\"/></a>";
-                actions="--";
-            } else {
-                actions="-";
-            }
-        }
-        if (ai.getStatus() == Instance.STATUS_OPEN) {
-            stat = "Abierta";
-        }
-        if (ai.getStatus() == Instance.STATUS_PROCESSING) {
-            stat = "<img src=\"" + baseimg + "icono-iniciado.gif\">";
-            color = "color=\"red\"";
-            if (ai.getFlowNodeType() instanceof UserTask) {
-                actions = "<a class=\"acc-atender\" href=\"" + ((UserTask)ai.getFlowNodeType()).getTaskWebPage().getUrl() + "?suri=" + ai.getEncodedURI()+ "\">Atender</a>";
-                //actions="<a target=\"_new\" href=\"\"><img alt=\"Detalle\" src=\""+baseimg+"detail_icon.gif\"/></a>" +
-                //        " <a target=\"_new\" href=\"/swb/process/Diagrama_de_estado/_rid/196/_mto/3/_mod/applet?suri="+ ai.getProcessInstance().getProcessType().getEncodedURI() +"&mode=view&pending="+URLEncoder.encode(getStatusInstances(ai.getProcessInstance(), Instance.STATUS_PROCESSING))+"\"><img src=\""+baseimg + "diagram_icon.jpg\"></a>";
-            } else {
-                actions="-";
-            }
-        }
-        if (ai.getStatus() == Instance.STATUS_STOPED) {
-            stat = "Detenida";
-        }
-        out.println("<tr><td class=\"tban-id\">" + stat + "</td>");
-        out.println("<td class=\"tban-tarea\">");
-        if (ai.getStatus() == Instance.STATUS_PROCESSING) {
-            out.println("<font " + color + ">");
-        }
-        out.println(ai.getFlowNodeType().getTitle());
-        if (ai.getStatus() == Instance.STATUS_PROCESSING) {
-            out.println("</font>");
-        }
-        out.println("</td>"
-                + "<td class=\"tban-tarea\">" + tCreator + "</td>"
-                + "<td class=\"tban-inicia\">" + SWBUtils.TEXT.getStrDate(ai.getCreated(), "es", "dd/mm/yyyy - hh:mm:ss") + "</td>");
-                if (ai.getStatus() == Instance.STATUS_CLOSED) {
-                    out.println("<td class=\"tban-cerrada\">" + SWBUtils.TEXT.getStrDate(ai.getEnded(), "es", "dd/mm/yyyy - hh:mm:ss") + "</td>");
-                } else {
-                    out.println("<td class=\"tban-cerrada\">-</td>");
-                }
-                out.println("<td class=\"tban-tarea\">" + tOwner + "</td>");
-                //out.println("<td class=\"tban-accion\">" + actions + "</td>");
-                out.println("</tr>");
-        if (ai instanceof SubProcessInstance) {
-            SubProcessInstance pi = (SubProcessInstance) ai;
-            Iterator<FlowNodeInstance> acit = pi.listFlowNodeInstances();
-            if (acit.hasNext()) {
-                //out.println("<tr><td style=\"border-bottom:1px solid #666666\">");
-                while (acit.hasNext()) {
-                    FlowNodeInstance actinst = acit.next();
-                    printActivityInstance(page, actinst, out);
-                }
+    %>
+    </tbody>
+</table>
+<a href="#" onclick="history.go(-1);">Regresar</a>
+<%
             }
         }
     }
 %>
-
-<%
-SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
-//WebPage statusWp = (WebPage) request.getAttribute("statusWP");
-int mode = (Integer) request.getAttribute("viewMode");
-ArrayList<ProcessInstance> instances = (ArrayList<ProcessInstance>) request.getAttribute("instances");
-WebPage topic = paramRequest.getWebPage();
-
-Iterator<ProcessInstance> it = null;
-if (instances != null) it = instances.iterator();
-
-//String baseimg = SWBPortal.getWebWorkPath() + "/models/" + topic.getWebSiteId() + "/css/images/";
-if (mode == ProcessTracer.MODE_TRACKING) {
-    if (it != null && it.hasNext()) {
-        while (it.hasNext()) {
-            ProcessInstance pi = it.next();
-            %>
-            <table class="tabla-bandeja">
-                <thead>
-                    <th class="tban-id">Estatus</th>
-                    <th class="tban-tarea">Tarea</th>
-                    <th class="tban-tarea">Creador</th>
-                    <th class="tban-inicia">Iniciado</th>
-                    <th class="tban-cerrada">Terminado</th>
-                    <th class="tban-tarea">Responsable</th>
-                </thead>
-                <tbody>
-                    <%
-                        Iterator<FlowNodeInstance> actit = SWBComparator.sortByCreated(pi.listFlowNodeInstances());
-                        while (actit.hasNext()) {
-                            FlowNodeInstance obj = actit.next();
-                            if (obj.getStatus() == Instance.STATUS_PROCESSING)
-                            printActivityInstance(topic, obj, out);
-                        }
-                    %>
-                </tbody>
-            </table>
-                <a href="#" onclick="history.go(-1);">Regresar</a>
-            <%
-        }
-    }
-}
-    %>
-<!--meta http-equiv="refresh" content="20"/-->

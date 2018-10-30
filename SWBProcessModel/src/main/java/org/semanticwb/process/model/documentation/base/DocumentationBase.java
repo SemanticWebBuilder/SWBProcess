@@ -1,7 +1,7 @@
 package org.semanticwb.process.model.documentation.base;
 
 
-public abstract class DocumentationBase extends org.semanticwb.process.model.documentation.DocumentSectionInstance implements org.semanticwb.model.Sortable,org.semanticwb.process.model.documentation.DocVersionable,org.semanticwb.model.Traceable,org.semanticwb.model.Descriptiveable
+public abstract class DocumentationBase extends org.semanticwb.process.model.documentation.DocumentSectionInstance implements org.semanticwb.process.model.documentation.DocVersionable,org.semanticwb.model.Sortable,org.semanticwb.model.Traceable,org.semanticwb.model.Descriptiveable
 {
     public static final org.semanticwb.platform.SemanticProperty swpdoc_nameVersion=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#nameVersion");
     public static final org.semanticwb.platform.SemanticProperty swpdoc_actualVersion=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/resources/documentation#actualVersion");

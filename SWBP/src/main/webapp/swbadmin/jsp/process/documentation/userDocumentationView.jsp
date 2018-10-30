@@ -12,11 +12,12 @@
 <%@page import="org.semanticwb.process.model.Process"%>
 <%@page import="org.semanticwb.process.model.documentation.Documentation"%>
 <%@page import="org.semanticwb.process.model.documentation.DocumentationInstance"%>
-<%@page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource"%>
-<%@page import="java.io.File"%>
+<%@page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource"%>
+<%@ page import="java.io.File" %>
 <%@ page import="java.io.FileInputStream" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+	SWBProcessManagerResource res = (SWBProcessManagerResource) request.getAttribute(SWBProcessManagerResource.ATT_RESOURCEINSTANCE);
 	SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 	User user = paramRequest.getUser();
 	WebSite site = paramRequest.getWebPage().getWebSite();
@@ -36,10 +37,8 @@
 		di = null != actualVersion ? actualVersion.getDocumentationInstance() : null;
 	}
 	
-	Role docRole = site.getUserRepository().getRole(paramRequest.getResourceBase()
-            .getAttribute("docRole"));//TODO: Hacer cnfigurable el rol
-
-	Role adminRole = site.getUserRepository().getRole("admin");//TODO: Hacer cnfigurable el rol
+	Role docRole = res.getDocumenterRole();
+	Role adminRole = res.getAdminRole();
 	boolean isDocumenter = user.hasRole(docRole) || user.hasRole(adminRole);
 	
 	String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP);

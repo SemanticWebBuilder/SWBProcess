@@ -1,24 +1,25 @@
 package org.semanticwb.process.resources.taskinbox.base;
 
 
-public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.api.GenericSemResource 
+public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.api.GenericSemResource implements org.semanticwb.process.resources.RoleAdminConfigurable,org.semanticwb.process.resources.ProcessResourceConfigurable,org.semanticwb.process.resources.PagingConfigurable
 {
-    public static final org.semanticwb.platform.SemanticProperty utinbox_itemsPerPage=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#itemsPerPage");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_showAutoCreated=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#showAutoCreated");
+    public static final org.semanticwb.platform.SemanticProperty swpres_itemsPerPage=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#itemsPerPage");
+    public static final org.semanticwb.platform.SemanticProperty swpres_showAutoCreated=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showAutoCreated");
     public static final org.semanticwb.platform.SemanticClass swb_Role=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/ontology#Role");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_adminRole=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#adminRole");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_configJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#configJSP");
+    public static final org.semanticwb.platform.SemanticProperty swpres_adminRole=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#adminRole");
+    public static final org.semanticwb.platform.SemanticProperty swpres_configJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#configJSP");
     public static final org.semanticwb.platform.SemanticClass swb_Resource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/ontology#Resource");
     public static final org.semanticwb.platform.SemanticProperty swb_semanticResourceInv=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/ontology#semanticResourceInv");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_allowForward=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#allowForward");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_showProcessWPLink=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#showProcessWPLink");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_filterByGroup=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#filterByGroup");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_viewJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#viewJSP");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_displayCols=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#displayCols");
+    public static final org.semanticwb.platform.SemanticProperty swpres_allowForward=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#allowForward");
+    public static final org.semanticwb.platform.SemanticProperty swpres_showProcessWPLink=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showProcessWPLink");
+    public static final org.semanticwb.platform.SemanticProperty swpres_filterByGroup=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#filterByGroup");
+    public static final org.semanticwb.platform.SemanticProperty swpres_viewJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#viewJSP");
+    public static final org.semanticwb.platform.SemanticProperty swpres_displayCols=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#displayCols");
     public static final org.semanticwb.platform.SemanticClass swb_WebPage=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/ontology#WebPage");
-    public static final org.semanticwb.platform.SemanticProperty utinbox_displayMapWp=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#displayMapWp");
-    public static final org.semanticwb.platform.SemanticClass utinbox_UserTaskInboxResource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#UserTaskInboxResource");
-    public static final org.semanticwb.platform.SemanticClass sclass=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/process/resources/UserTaskInbox#UserTaskInboxResource");
+    public static final org.semanticwb.platform.SemanticProperty swpres_displayMapWp=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#displayMapWp");
+    public static final org.semanticwb.platform.SemanticProperty swpres_viewRole=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#viewRole");
+    public static final org.semanticwb.platform.SemanticClass swpres_UserTaskInboxResource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/process/resources#UserTaskInboxResource");
+    public static final org.semanticwb.platform.SemanticClass sclass=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/process/resources#UserTaskInboxResource");
 
     public UserTaskInboxResourceBase()
     {
@@ -58,7 +59,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public int getItemsPerPage()
     {
-        return getSemanticObject().getIntProperty(utinbox_itemsPerPage);
+        return getSemanticObject().getIntProperty(swpres_itemsPerPage);
     }
 
 /**
@@ -67,7 +68,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public void setItemsPerPage(int value)
     {
-        getSemanticObject().setIntProperty(utinbox_itemsPerPage, value);
+        getSemanticObject().setIntProperty(swpres_itemsPerPage, value);
     }
 
 /**
@@ -76,7 +77,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public boolean isShowAutoCreated()
     {
-        return getSemanticObject().getBooleanProperty(utinbox_showAutoCreated);
+        return getSemanticObject().getBooleanProperty(swpres_showAutoCreated);
     }
 
 /**
@@ -85,7 +86,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public void setShowAutoCreated(boolean value)
     {
-        getSemanticObject().setBooleanProperty(utinbox_showAutoCreated, value);
+        getSemanticObject().setBooleanProperty(swpres_showAutoCreated, value);
     }
    /**
    * Sets the value for the property AdminRole
@@ -96,7 +97,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
     {
         if(value!=null)
         {
-            getSemanticObject().setObjectProperty(utinbox_adminRole, value.getSemanticObject());
+            getSemanticObject().setObjectProperty(swpres_adminRole, value.getSemanticObject());
         }else
         {
             removeAdminRole();
@@ -108,7 +109,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 
     public void removeAdminRole()
     {
-        getSemanticObject().removeProperty(utinbox_adminRole);
+        getSemanticObject().removeProperty(swpres_adminRole);
     }
 
    /**
@@ -118,7 +119,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
     public org.semanticwb.model.Role getAdminRole()
     {
          org.semanticwb.model.Role ret=null;
-         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(utinbox_adminRole);
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpres_adminRole);
          if(obj!=null)
          {
              ret=(org.semanticwb.model.Role)obj.createGenericInstance();
@@ -132,7 +133,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public String getConfigJSP()
     {
-        return getSemanticObject().getProperty(utinbox_configJSP);
+        return getSemanticObject().getProperty(swpres_configJSP);
     }
 
 /**
@@ -141,7 +142,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public void setConfigJSP(String value)
     {
-        getSemanticObject().setProperty(utinbox_configJSP, value);
+        getSemanticObject().setProperty(swpres_configJSP, value);
     }
    /**
    * Sets the value for the property Resource
@@ -188,7 +189,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public boolean isAllowForward()
     {
-        return getSemanticObject().getBooleanProperty(utinbox_allowForward);
+        return getSemanticObject().getBooleanProperty(swpres_allowForward);
     }
 
 /**
@@ -197,7 +198,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public void setAllowForward(boolean value)
     {
-        getSemanticObject().setBooleanProperty(utinbox_allowForward, value);
+        getSemanticObject().setBooleanProperty(swpres_allowForward, value);
     }
 
 /**
@@ -206,7 +207,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public boolean isShowProcessWPLink()
     {
-        return getSemanticObject().getBooleanProperty(utinbox_showProcessWPLink);
+        return getSemanticObject().getBooleanProperty(swpres_showProcessWPLink);
     }
 
 /**
@@ -215,7 +216,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public void setShowProcessWPLink(boolean value)
     {
-        getSemanticObject().setBooleanProperty(utinbox_showProcessWPLink, value);
+        getSemanticObject().setBooleanProperty(swpres_showProcessWPLink, value);
     }
 
 /**
@@ -224,7 +225,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public boolean isFilterByGroup()
     {
-        return getSemanticObject().getBooleanProperty(utinbox_filterByGroup);
+        return getSemanticObject().getBooleanProperty(swpres_filterByGroup);
     }
 
 /**
@@ -233,7 +234,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public void setFilterByGroup(boolean value)
     {
-        getSemanticObject().setBooleanProperty(utinbox_filterByGroup, value);
+        getSemanticObject().setBooleanProperty(swpres_filterByGroup, value);
     }
 
 /**
@@ -242,7 +243,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public String getViewJSP()
     {
-        return getSemanticObject().getProperty(utinbox_viewJSP);
+        return getSemanticObject().getProperty(swpres_viewJSP);
     }
 
 /**
@@ -251,7 +252,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public void setViewJSP(String value)
     {
-        getSemanticObject().setProperty(utinbox_viewJSP, value);
+        getSemanticObject().setProperty(swpres_viewJSP, value);
     }
 
 /**
@@ -260,7 +261,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public String getDisplayCols()
     {
-        return getSemanticObject().getProperty(utinbox_displayCols);
+        return getSemanticObject().getProperty(swpres_displayCols);
     }
 
 /**
@@ -269,7 +270,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 */
     public void setDisplayCols(String value)
     {
-        getSemanticObject().setProperty(utinbox_displayCols, value);
+        getSemanticObject().setProperty(swpres_displayCols, value);
     }
    /**
    * Sets the value for the property DisplayMapWp
@@ -280,7 +281,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
     {
         if(value!=null)
         {
-            getSemanticObject().setObjectProperty(utinbox_displayMapWp, value.getSemanticObject());
+            getSemanticObject().setObjectProperty(swpres_displayMapWp, value.getSemanticObject());
         }else
         {
             removeDisplayMapWp();
@@ -292,7 +293,7 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
 
     public void removeDisplayMapWp()
     {
-        getSemanticObject().removeProperty(utinbox_displayMapWp);
+        getSemanticObject().removeProperty(swpres_displayMapWp);
     }
 
    /**
@@ -302,10 +303,48 @@ public abstract class UserTaskInboxResourceBase extends org.semanticwb.portal.ap
     public org.semanticwb.model.WebPage getDisplayMapWp()
     {
          org.semanticwb.model.WebPage ret=null;
-         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(utinbox_displayMapWp);
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpres_displayMapWp);
          if(obj!=null)
          {
              ret=(org.semanticwb.model.WebPage)obj.createGenericInstance();
+         }
+         return ret;
+    }
+   /**
+   * Sets the value for the property ViewRole
+   * @param value ViewRole to set
+   */
+
+    public void setViewRole(org.semanticwb.model.Role value)
+    {
+        if(value!=null)
+        {
+            getSemanticObject().setObjectProperty(swpres_viewRole, value.getSemanticObject());
+        }else
+        {
+            removeViewRole();
+        }
+    }
+   /**
+   * Remove the value for ViewRole property
+   */
+
+    public void removeViewRole()
+    {
+        getSemanticObject().removeProperty(swpres_viewRole);
+    }
+
+   /**
+   * Gets the ViewRole
+   * @return a org.semanticwb.model.Role
+   */
+    public org.semanticwb.model.Role getViewRole()
+    {
+         org.semanticwb.model.Role ret=null;
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swpres_viewRole);
+         if(obj!=null)
+         {
+             ret=(org.semanticwb.model.Role)obj.createGenericInstance();
          }
          return ret;
     }

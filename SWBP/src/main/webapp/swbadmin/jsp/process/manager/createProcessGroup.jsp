@@ -7,7 +7,7 @@
 <%@ page import="org.semanticwb.portal.api.SWBResourceModes" %>
 <%@ page import="org.semanticwb.portal.api.SWBResourceURL" %>
 <%@ page import="org.semanticwb.process.model.ProcessGroup" %>
-<%@ page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource" %>
+<%@ page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWBProcessManagerResource.ATT_PARAMREQUEST);

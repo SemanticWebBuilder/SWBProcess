@@ -128,7 +128,7 @@
             <div class="row form-group swbp-filters">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 ">
                     <div class="col-lg-4 col-md-4 hidden-sm hidden-xs text-right">
-                        <label for="">Mostrar:</label>
+                        <label>Mostrar:</label>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding">
                         <select id="groupSelect" class="form-control">
@@ -151,7 +151,7 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                     <div class="col-lg-4 col-md-4 hidden-sm hidden-xs text-right">
-                        <label for="">Ordenar:</label>
+                        <label>Ordenar:</label>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding">
                          <select id="sortSelect" class="form-control">
@@ -168,7 +168,7 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                     <div class="col-lg-4 col-md-4 hidden-sm hidden-xs text-right">
-                        <label for="">Filtrar:</label>
+                        <label>Filtrar:</label>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding">
                         <select id="statusSelect" class="form-control">

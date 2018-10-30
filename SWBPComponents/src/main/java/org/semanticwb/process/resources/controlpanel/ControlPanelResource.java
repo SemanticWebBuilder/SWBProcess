@@ -168,25 +168,25 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         }
 
         //Asignaciones de compatibilidad con JSP anterior
-        if (isShowInstanceGraph()) {
+        if (isShowInstanceChart()) {
             getResourceBase().setAttribute(UserTaskInboxResource.ATT_INSTANCEGRAPH, "use");
         } else {
             getResourceBase().removeAttribute(UserTaskInboxResource.ATT_INSTANCEGRAPH);
         }
         
-        if (isShowResponseGraph()) {
+        if (isShowResponseChart()) {
             getResourceBase().setAttribute(UserTaskInboxResource.ATT_RESPONSEGRAPH, "use");
         } else {
             getResourceBase().removeAttribute(UserTaskInboxResource.ATT_RESPONSEGRAPH);
         }
                 
-        if (isShowStatusGraph()) {
+        if (isShowStatusChart()) {
             getResourceBase().setAttribute(UserTaskInboxResource.ATT_STATUSGRAPH, "use");
         } else {
             getResourceBase().removeAttribute(UserTaskInboxResource.ATT_STATUSGRAPH);
         }
                 
-        if (isShowPartGraph()) {
+        if (isShowPartChart()) {
             getResourceBase().setAttribute(UserTaskInboxResource.ATT_PARTGRAPH, "use");
         } else {
             getResourceBase().removeAttribute(UserTaskInboxResource.ATT_PARTGRAPH);
@@ -202,7 +202,6 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
             request.setAttribute("instances", getProcessInstances(request, paramRequest));
             request.setAttribute("displayCols", getDisplayCols());
             request.setAttribute("statusWp", getDisplayMapWp());
-            request.setAttribute("trackWp", getTrackWp());
             request.setAttribute(ITEMS_PER_PAGE, getItemsPerPage());
             rd.include(request, response);
         } catch (Exception e) {
@@ -316,12 +315,12 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
     private String getGraphsConfig() {
         StringBuilder ret = new StringBuilder();
         
-        if (isShowGraphs()) ret.append(ATT_SHOWPERFORMANCE).append("|");
-        if (isShowInstanceGraph()) ret.append(ATT_INSTANCEGRAPH).append("|");
-        if (isShowPartGraph()) ret.append(ATT_PARTGRAPH).append("|");
-        if (isShowResponseGraph()) ret.append(ATT_RESPONSEGRAPH).append("|");
-        if (isShowStatusGraph()) ret.append(ATT_STATUSGRAPH).append("|");
-        if (null != getGraphsEngine()) ret.append(ATT_GRAPHSENGINE).append(":").append(getGraphsEngine()).append("|");
+        if (isShowCharts()) ret.append(ATT_SHOWPERFORMANCE).append("|");
+        if (isShowInstanceChart()) ret.append(ATT_INSTANCEGRAPH).append("|");
+        if (isShowPartChart()) ret.append(ATT_PARTGRAPH).append("|");
+        if (isShowResponseChart()) ret.append(ATT_RESPONSEGRAPH).append("|");
+        if (isShowStatusChart()) ret.append(ATT_STATUSGRAPH).append("|");
+        if (null != getChartsEngine()) ret.append(ATT_GRAPHSENGINE).append(":").append(getChartsEngine()).append("|");
         
         return ret.toString();
     }
