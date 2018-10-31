@@ -20,6 +20,7 @@ import org.semanticwb.process.model.RepositoryFile;
 import org.semanticwb.process.model.RepositoryURL;
 import org.semanticwb.process.model.documentation.*;
 import org.semanticwb.process.model.documentation.Reference;
+import org.semanticwb.process.resources.documentation.base.SWPDocumentationResourceBase;
 import org.semanticwb.process.resources.documentation.writers.DOCXWriter;
 import org.w3c.dom.Document;
 
@@ -41,7 +42,7 @@ import static org.semanticwb.process.resources.utils.SWPUtils.*;
  * 
  * @author carlos.alvarez
  */
-public class SWPDocumentationResource extends GenericAdmResource {
+public class SWPDocumentationResource extends SWPDocumentationResourceBase {
 	public static final String ACTION_ADD_INSTANTIABLE = "a_ain";
 	public static final String ACTION_EDIT_INSTANTIABLE = "a_ein";
 	public static final String ACTION_ADD_RELATE = "a_arel";
@@ -814,19 +815,22 @@ public class SWPDocumentationResource extends GenericAdmResource {
 				} else if (format.equals(FORMAT_WORD)) {
 					response.setContentType("application/msword");
 					response.setHeader("Content-Disposition", "attachment; filename=\"" + p.getId() + ".docx\"");
+                    HashMap<String, String> params = new HashMap<>();
 
-					HashMap<String, String> params = new HashMap<>();
-					if (null != getResourceBase().getAttribute(CONFIG_INCLUDEHF))
-						params.put(CONFIG_INCLUDEHF, "true");
-					if (null != getResourceBase().getAttribute(CONFIG_FIRSTPAGE))
-						params.put(CONFIG_FIRSTPAGE, "true");
-					if (null != getResourceBase().getAttribute(CONFIG_ACTTABLE))
-						params.put(CONFIG_ACTTABLE, "true");
-					if (null != getResourceBase().getAttribute(CONFIG_TPL))
-						params.put(CONFIG_TPL, SWBPortal.getWorkPath() + getResourceBase().getWorkPath() + "/"
-								+ getResourceBase().getAttribute(CONFIG_TPL));
-					if (null != getResourceBase().getAttribute(CONFIG_FORCETBLSTYLES))
-						params.put(CONFIG_FORCETBLSTYLES, "true");
+					params.put(CONFIG_INCLUDEHF, Boolean.toString(isWordIncludeHeaderFooter()));
+                    params.put(CONFIG_FIRSTPAGE, Boolean.toString(isWordIncludeCoverPage()));
+                    if ("table".equals(getWordActivtyDisplayMode())) {
+                        params.put(CONFIG_ACTTABLE, "true");
+                    } else {
+                        params.put(CONFIG_ACTTABLE, "false");
+                    }
+
+                    String tplName = getWordTemplateFile();
+                    if (null != tplName && (tplName.endsWith(".doc") || tplName.endsWith(".docx"))) {
+                        tplName = SWBPortal.getWorkPath() + getResourceBase().getWorkPath() + "/"
+                                + getWordTemplateFile();
+                        params.put(CONFIG_TPL, tplName);
+                    }
 
 					DOCXWriter docxw = new DOCXWriter(docInstance, basePath + "rep_files", params);
 					docxw.write(response.getOutputStream());
