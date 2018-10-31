@@ -15,6 +15,7 @@
 <%@page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource"%>
 <%@ page import="java.io.File" %>
 <%@ page import="java.io.FileInputStream" %>
+<%@ page import="org.semanticwb.process.resources.SWPResourcesConfig" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 	SWBProcessManagerResource res = (SWBProcessManagerResource) request.getAttribute(SWBProcessManagerResource.ATT_RESOURCEINSTANCE);
@@ -37,8 +38,8 @@
 		di = null != actualVersion ? actualVersion.getDocumentationInstance() : null;
 	}
 	
-	Role docRole = res.getDocumenterRole();
-	Role adminRole = res.getAdminRole();
+	Role docRole = SWPResourcesConfig.getConfgurationInstance(site).getDocumenterRole();
+	Role adminRole = SWPResourcesConfig.getConfgurationInstance(site).getAdminRole();
 	boolean isDocumenter = user.hasRole(docRole) || user.hasRole(adminRole);
 	
 	String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP);

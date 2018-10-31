@@ -60,6 +60,7 @@ import org.semanticwb.process.model.ProcessInstance;
 import org.semanticwb.process.model.ProcessSite;
 import org.semanticwb.process.model.SWBProcessMgr;
 import org.semanticwb.process.model.UserTask;
+import org.semanticwb.process.resources.SWPResourcesConfig;
 
 /***
  * Recurso Bandeja de Tareas de Usuario.
@@ -242,7 +243,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         
         if (ACT_CLAIM.equals(act)) {
             String suri = request.getParameter("suri");
-            if (null != suri && !suri.isEmpty() && response.getUser().isSigned() && isAdminUser(response.getUser())) {
+            if (null != suri && !suri.isEmpty() && response.getUser().isSigned() && isAdminUser(response.getUser(), response.getWebPage().getWebSite())) {
                 FlowNodeInstance fni = (FlowNodeInstance)SWBPlatform.getSemanticMgr().getOntology().getGenericObject(suri);
                 if (null != fni) {
                     fni.setAssignedto(response.getUser());
@@ -569,14 +570,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         sb.append("      </tr>");
         sb.append("      <tr>");
         sb.append("        <td width=\"200px\" align=\"right\">");
-        sb.append(mgr.renderLabel(request, swpres_filterByGroup, SWBFormMgr.MODE_VIEW));
-        sb.append("        </td>");
-        sb.append("        <td>");
-        sb.append(mgr.renderElement(request, swpres_filterByGroup, SWBFormMgr.MODE_EDIT));
-        sb.append("        </td>");
-        sb.append("      </tr>");
-        sb.append("      <tr>");
-        sb.append("        <td width=\"200px\" align=\"right\">");
         sb.append(mgr.renderLabel(request, swpres_showProcessWPLink, SWBFormMgr.MODE_VIEW));
         sb.append("        </td>");
         sb.append("        <td>");
@@ -597,14 +590,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         sb.append("        </td>");
         sb.append("        <td>");
         sb.append(mgr.renderElement(request, swpres_showAutoCreated, SWBFormMgr.MODE_EDIT));
-        sb.append("        </td>");
-        sb.append("      </tr>");
-        sb.append("      <tr>");
-        sb.append("        <td width=\"200px\" align=\"right\">");
-        sb.append(mgr.renderLabel(request, swpres_adminRole, SWBFormMgr.MODE_VIEW));
-        sb.append("        </td>");
-        sb.append("        <td>");
-        sb.append(mgr.renderElement(request, swpres_adminRole, SWBFormMgr.MODE_EDIT));
         sb.append("        </td>");
         sb.append("      </tr>");
         sb.append("    </table>");
@@ -768,7 +753,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         try {
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
             request.setAttribute(PARAM_REQUEST, paramRequest);
-            request.setAttribute("isAdmin", isAdminUser(paramRequest.getUser()));
+            request.setAttribute("isAdmin", isAdminUser(paramRequest.getUser(), paramRequest.getWebPage().getWebSite()));
             rd.include(request, response);
         } catch (Exception e) {
             log.error("Error including jsp in forward mode", e);
@@ -1111,12 +1096,12 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
             return false;
         }
 
-        if (isAdminUser(user)) return true;
+        if (isAdminUser(user, fni.getProcessSite())) return true;
         boolean canAccess = fni.haveAccess(user);
 
         if (canAccess) {
             //Verificar filtrado por grupo
-            if (isFilterByGroup()) {
+            if (SWPResourcesConfig.getConfgurationInstance(fni.getProcessSite()).isFilterByGroup()) {
                 UserGroup iug = fni.getProcessInstance().getOwnerUserGroup();
 
                 if (iug == null || user.hasUserGroup(iug)) { //Si la instancia no tiene grupo, cualquiera la puede ver
@@ -1154,9 +1139,9 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         return url;
     }
     
-    private boolean isAdminUser(User user) {
+    private boolean isAdminUser(User user, WebSite site) {
         if (user == null) return false;
-        Role admRole = this.getAdminRole();
+        Role admRole = SWPResourcesConfig.getConfgurationInstance(site).getAdminRole();
         return admRole != null && user.hasRole(admRole);
     }
 }

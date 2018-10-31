@@ -35,6 +35,7 @@ import org.semanticwb.portal.api.SWBResourceException;
 import org.semanticwb.process.model.*;
 import org.semanticwb.process.model.Process;
 import org.semanticwb.process.model.RepositoryFile;
+import org.semanticwb.process.resources.SWPResourcesConfig;
 import org.semanticwb.process.resources.taskinbox.UserTaskInboxResource;
 import org.semanticwb.process.schema.File;
 import org.semanticwb.process.schema.FileCollection;
@@ -607,7 +608,7 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
             while (itIns.hasNext()) {
                 ProcessInstance processInstance = itIns.next();
                 
-                if (isFilterByGroup()) { //Si hay que filtrar por grupo de usuarios
+                if (SWPResourcesConfig.getConfgurationInstance(site).isFilterByGroup()) { //Si hay que filtrar por grupo de usuarios
                     UserGroup iug = processInstance.getOwnerUserGroup();
                     UserGroup uug = user.getUserGroup();
                     
