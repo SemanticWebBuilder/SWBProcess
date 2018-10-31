@@ -1,4 +1,4 @@
-package org.semanticwb.process.resources;
+package org.semanticwb.process.codegen;
 
 import org.semanticwb.Logger;
 import org.semanticwb.SWBUtils;
@@ -18,7 +18,7 @@ public class CodeGenSWPResources {
         List<String> owls = new ArrayList<>();
         List<String> prefixes = new ArrayList<>();
 
-        owls.add("SWBPComponents/src/main/java/org/semanticwb/process/resources/swpresources.owl");
+        owls.add("SWBPComponents/src/main/java/org/semanticwb/process/codegen/swpresources.owl");
 
         prefixes.add("swpres");
 
