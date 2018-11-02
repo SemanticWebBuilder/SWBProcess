@@ -67,15 +67,6 @@ boolean isDocumenter = user.hasRole(docRole);
 %>
 <div class="row no-margin swbp-button-ribbon text-right">
     <%
-    if (isDocumenter || isAdmin) {
-        %>
-        <a href="<%= templatesPage.getUrl() %>?<%= SWBProcessManagerResource.PARAM_PROCESSGROUP %>=<%= idpg %>"
-           class="btn btn-swbp-action" title="Plantillas">
-            Plantillas
-        </a>
-        <%
-    }
-
     if (isAdmin) {
         if (null != group1) {
             %>

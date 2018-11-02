@@ -1,7 +1,7 @@
 package org.semanticwb.process.resources.base;
 
 
-public abstract class SWPResourcesConfigBase extends org.semanticwb.model.SWBClass 
+public abstract class SWPResourcesConfigBase extends org.semanticwb.model.SWBClass implements org.semanticwb.model.Traceable
 {
     public static final org.semanticwb.platform.SemanticProperty swpres_inheritProcessAccessRoles=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#inheritProcessAccessRoles");
    /**
@@ -164,6 +164,52 @@ public abstract class SWPResourcesConfigBase extends org.semanticwb.model.SWBCla
             return it;
         }
        /**
+       * Gets all org.semanticwb.process.resources.SWPResourcesConfig with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * @param model Model of the org.semanticwb.process.resources.SWPResourcesConfig
+       * @return Iterator with all the org.semanticwb.process.resources.SWPResourcesConfig
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.resources.SWPResourcesConfig> listSWPResourcesConfigByModifiedBy(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.resources.SWPResourcesConfig> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.resources.SWPResourcesConfig with a determined ModifiedBy
+       * @param value ModifiedBy of the type org.semanticwb.model.User
+       * @return Iterator with all the org.semanticwb.process.resources.SWPResourcesConfig
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.resources.SWPResourcesConfig> listSWPResourcesConfigByModifiedBy(org.semanticwb.model.User value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.resources.SWPResourcesConfig> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_modifiedBy,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.resources.SWPResourcesConfig with a determined Creator
+       * @param value Creator of the type org.semanticwb.model.User
+       * @param model Model of the org.semanticwb.process.resources.SWPResourcesConfig
+       * @return Iterator with all the org.semanticwb.process.resources.SWPResourcesConfig
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.resources.SWPResourcesConfig> listSWPResourcesConfigByCreator(org.semanticwb.model.User value,org.semanticwb.model.SWBModel model)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.resources.SWPResourcesConfig> it=new org.semanticwb.model.GenericIterator(model.getSemanticObject().getModel().listSubjectsByClass(swb_creator, value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
+       * Gets all org.semanticwb.process.resources.SWPResourcesConfig with a determined Creator
+       * @param value Creator of the type org.semanticwb.model.User
+       * @return Iterator with all the org.semanticwb.process.resources.SWPResourcesConfig
+       */
+
+        public static java.util.Iterator<org.semanticwb.process.resources.SWPResourcesConfig> listSWPResourcesConfigByCreator(org.semanticwb.model.User value)
+        {
+            org.semanticwb.model.GenericIterator<org.semanticwb.process.resources.SWPResourcesConfig> it=new org.semanticwb.model.GenericIterator(value.getSemanticObject().getModel().listSubjectsByClass(swb_creator,value.getSemanticObject(),sclass));
+            return it;
+        }
+       /**
        * Gets all org.semanticwb.process.resources.SWPResourcesConfig with a determined EditDocumentationPage
        * @param value EditDocumentationPage of the type org.semanticwb.model.WebPage
        * @param model Model of the org.semanticwb.process.resources.SWPResourcesConfig
@@ -303,6 +349,24 @@ public abstract class SWPResourcesConfigBase extends org.semanticwb.model.SWBCla
          }
          return ret;
     }
+
+/**
+* Gets the Created property
+* @return java.util.Date with the Created
+*/
+    public java.util.Date getCreated()
+    {
+        return getSemanticObject().getDateProperty(swb_created);
+    }
+
+/**
+* Sets the Created property
+* @param value long with the Created
+*/
+    public void setCreated(java.util.Date value)
+    {
+        getSemanticObject().setDateProperty(swb_created, value);
+    }
    /**
    * Sets the value for the property AdminRole
    * @param value AdminRole to set
@@ -340,6 +404,24 @@ public abstract class SWPResourcesConfigBase extends org.semanticwb.model.SWBCla
              ret=(org.semanticwb.model.Role)obj.createGenericInstance();
          }
          return ret;
+    }
+
+/**
+* Gets the Updated property
+* @return java.util.Date with the Updated
+*/
+    public java.util.Date getUpdated()
+    {
+        return getSemanticObject().getDateProperty(swb_updated);
+    }
+
+/**
+* Sets the Updated property
+* @param value long with the Updated
+*/
+    public void setUpdated(java.util.Date value)
+    {
+        getSemanticObject().setDateProperty(swb_updated, value);
     }
    /**
    * Sets the value for the property DocumenterRole
@@ -379,6 +461,44 @@ public abstract class SWPResourcesConfigBase extends org.semanticwb.model.SWBCla
          }
          return ret;
     }
+   /**
+   * Sets the value for the property ModifiedBy
+   * @param value ModifiedBy to set
+   */
+
+    public void setModifiedBy(org.semanticwb.model.User value)
+    {
+        if(value!=null)
+        {
+            getSemanticObject().setObjectProperty(swb_modifiedBy, value.getSemanticObject());
+        }else
+        {
+            removeModifiedBy();
+        }
+    }
+   /**
+   * Remove the value for ModifiedBy property
+   */
+
+    public void removeModifiedBy()
+    {
+        getSemanticObject().removeProperty(swb_modifiedBy);
+    }
+
+   /**
+   * Gets the ModifiedBy
+   * @return a org.semanticwb.model.User
+   */
+    public org.semanticwb.model.User getModifiedBy()
+    {
+         org.semanticwb.model.User ret=null;
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swb_modifiedBy);
+         if(obj!=null)
+         {
+             ret=(org.semanticwb.model.User)obj.createGenericInstance();
+         }
+         return ret;
+    }
 
 /**
 * Gets the FilterByGroup property
@@ -396,6 +516,44 @@ public abstract class SWPResourcesConfigBase extends org.semanticwb.model.SWBCla
     public void setFilterByGroup(boolean value)
     {
         getSemanticObject().setBooleanProperty(swpres_filterByGroup, value);
+    }
+   /**
+   * Sets the value for the property Creator
+   * @param value Creator to set
+   */
+
+    public void setCreator(org.semanticwb.model.User value)
+    {
+        if(value!=null)
+        {
+            getSemanticObject().setObjectProperty(swb_creator, value.getSemanticObject());
+        }else
+        {
+            removeCreator();
+        }
+    }
+   /**
+   * Remove the value for Creator property
+   */
+
+    public void removeCreator()
+    {
+        getSemanticObject().removeProperty(swb_creator);
+    }
+
+   /**
+   * Gets the Creator
+   * @return a org.semanticwb.model.User
+   */
+    public org.semanticwb.model.User getCreator()
+    {
+         org.semanticwb.model.User ret=null;
+         org.semanticwb.platform.SemanticObject obj=getSemanticObject().getObjectProperty(swb_creator);
+         if(obj!=null)
+         {
+             ret=(org.semanticwb.model.User)obj.createGenericInstance();
+         }
+         return ret;
     }
    /**
    * Sets the value for the property EditDocumentationPage

@@ -9,475 +9,466 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
   xml:base="http://www.semanticwebbuilder.org/swb4/process/resources">
   <owl:Ontology rdf:about="">
-    <owl:imports rdf:resource="http://www.semanticwebbuilder.org/swb4/process"/>
     <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Created with TopBraid Composer</owl:versionInfo>
+    <owl:imports rdf:resource="http://www.semanticwebbuilder.org/swb4/process"/>
   </owl:Ontology>
-  <owl:Class rdf:ID="UserTaskInboxResource">
+  <owl:Class rdf:ID="SWPDocumentationResource">
     <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBSemanticResource"/>
-    <rdfs:comment xml:lang="es">Recurso que despliega labandeja de entrada del usuario</rdfs:comment>
-    <rdfs:comment xml:lang="en">Resource that displays the user task inbox</rdfs:comment>
-    <rdfs:subClassOf>
-      <owl:Class rdf:ID="PagingConfigurable"/>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Class rdf:ID="ProcessResourceConfigurable"/>
-    </rdfs:subClassOf>
+    <rdfs:label xml:lang="es">Recurso para gestión de documentación de procesos</rdfs:label>
+    <rdfs:label xml:lang="en">Process documentation management resource</rdfs:label>
     <swb:classCodePackage rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >org.semanticwb.process.resources.taskinbox</swb:classCodePackage>
+    >org.semanticwb.process.resources.documentation</swb:classCodePackage>
     <rdf:type rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SemanticResource"/>
   </owl:Class>
-  <owl:Class rdf:about="#PagingConfigurable">
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBInterface"/>
-    <rdfs:comment xml:lang="es">Interfaz común para elementos con configuración para paginación</rdfs:comment>
-    <rdf:type rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Interface"/>
-  </owl:Class>
-  <owl:Class rdf:ID="SWBProcessManagerResource">
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBSemanticResource"/>
-    <rdfs:label xml:lang="es">Explorador de procesos</rdfs:label>
-    <rdfs:label xml:lang="en">Process Manager</rdfs:label>
+  <owl:Class rdf:ID="ControlPanelResource">
+    <rdfs:subClassOf>
+      <swb:Interface rdf:ID="ProcessResourceConfigurable">
+        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBInterface"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+      </swb:Interface>
+    </rdfs:subClassOf>
     <swb:classCodePackage rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >org.semanticwb.process.resources.processmanager</swb:classCodePackage>
+    >org.semanticwb.process.resources.controlpanel</swb:classCodePackage>
+    <rdfs:subClassOf>
+      <swb:Interface rdf:ID="PagingConfigurable">
+        <rdfs:comment xml:lang="es">Interfaz común para elementos con configuración para paginación</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBInterface"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+      </swb:Interface>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBSemanticResource"/>
+    <rdfs:label xml:lang="en">Control Panel</rdfs:label>
+    <rdfs:label xml:lang="es">Panel de Control</rdfs:label>
     <rdf:type rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SemanticResource"/>
-  </owl:Class>
-  <owl:Class rdf:about="#ProcessResourceConfigurable">
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBInterface"/>
-    <rdf:type rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Interface"/>
-  </owl:Class>
-  <owl:Class rdf:ID="SWPResourcesConfig">
-    <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
-    >true</swb:autogenId>
-    <rdf:type rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Class"/>
-    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
   </owl:Class>
   <owl:ObjectProperty rdf:ID="viewRole">
-    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
-    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Role"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_viewRole">
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >30</swb:index>
+        <rdfs:label xml:lang="en">View role</rdfs:label>
+        <rdfs:label xml:lang="es">Rol visualizador</rdfs:label>
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneUserRepWithBlank"/>
         <swbxf:propGroup>
           <swbxf:PropertyGroup rdf:ID="pg_docUserPermissions">
+            <rdfs:label xml:lang="en">Access configuration</rdfs:label>
+            <rdfs:label xml:lang="es">Configuración de permisos</rdfs:label>
             <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
             >20</swb:index>
-            <rdfs:label xml:lang="es">Configuración de permisos</rdfs:label>
-            <rdfs:label xml:lang="en">Access configuration</rdfs:label>
           </swbxf:PropertyGroup>
         </swbxf:propGroup>
-        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneUserRepWithBlank"/>
-        <rdfs:label xml:lang="es">Rol visualizador</rdfs:label>
-        <rdfs:label xml:lang="en">View role</rdfs:label>
-      </swbxf:DisplayProperty>
-    </swb:displayProperty>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="editDocumentationPage">
-    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
-    <swb:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
-    >true</swb:required>
-    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#WebPage"/>
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_editDocumentationPage">
-        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >20</swb:index>
-        <rdfs:label xml:lang="en">Documentation Web page</rdfs:label>
-        <rdfs:label xml:lang="es">Página Web para captura de documentación</rdfs:label>
-      </swbxf:DisplayProperty>
-    </swb:displayProperty>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="adminRole">
-    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
-    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Role"/>
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_adminRole">
-        <swbxf:propGroup rdf:resource="#pg_docUserPermissions"/>
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >10</swb:index>
-        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneUserRepWithBlank"/>
-        <rdfs:label xml:lang="es">Rol de administración</rdfs:label>
-        <rdfs:label xml:lang="en">Admin role</rdfs:label>
-      </swbxf:DisplayProperty>
-    </swb:displayProperty>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="templatesPage">
-    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
-    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#WebPage"/>
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_templatesPage">
-        <rdfs:label xml:lang="es">Página Web de administración de plantillas</rdfs:label>
-        <rdfs:label xml:lang="en">Template manager Web page</rdfs:label>
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >10</swb:index>
-        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
-      </swbxf:DisplayProperty>
-    </swb:displayProperty>
-    <swb:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
-    >true</swb:required>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="displayMapWp">
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_displayMapWp">
-        <rdfs:label xml:lang="es">Página de Mapa de estado</rdfs:label>
-        <rdfs:label xml:lang="en">Status map page</rdfs:label>
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >50</swb:index>
-        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
-      </swbxf:DisplayProperty>
-    </swb:displayProperty>
-    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#WebPage"/>
-    <swb:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
-    >true</swb:required>
-    <rdfs:domain rdf:resource="#ProcessResourceConfigurable"/>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="documenterRole">
-    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_documenterRole">
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >20</swb:index>
-        <swbxf:propGroup rdf:resource="#pg_docUserPermissions"/>
-        <rdfs:label xml:lang="es">Rol de documentador</rdfs:label>
-        <rdfs:label xml:lang="en">Documenter role</rdfs:label>
-        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneUserRepWithBlank"/>
-      </swbxf:DisplayProperty>
-    </swb:displayProperty>
-    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Role"/>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="configPage">
-    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
-    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#WebPage"/>
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_configPage">
-        <rdfs:label xml:lang="es">Página Web de configuración</rdfs:label>
-        <rdfs:label xml:lang="en">Configuration Web Page</rdfs:label>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >30</swb:index>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Role"/>
+    <rdfs:domain>
+      <swb:Class rdf:ID="SWPResourcesConfig">
+        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Traceable"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBClass"/>
+        <swb:autogenId rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+        >true</swb:autogenId>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+      </swb:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editDocumentationPage">
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:ID="dp_editDocumentationPage">
+        <rdfs:label xml:lang="es">Página Web para captura de documentación</rdfs:label>
+        <rdfs:label xml:lang="en">Documentation Web page</rdfs:label>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >20</swb:index>
         <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#WebPage"/>
+    <swb:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</swb:required>
+    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="adminRole">
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:ID="dp_adminRole">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneUserRep"/>
+        <rdfs:label xml:lang="es">Rol de administración</rdfs:label>
+        <rdfs:label xml:lang="en">Admin role</rdfs:label>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >10</swb:index>
+        <swbxf:propGroup rdf:resource="#pg_docUserPermissions"/>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Role"/>
+    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="templatesPage">
+    <swb:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</swb:required>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:ID="dp_templatesPage">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >10</swb:index>
+        <rdfs:label xml:lang="en">Template manager Web page</rdfs:label>
+        <rdfs:label xml:lang="es">Página Web de administración de plantillas</rdfs:label>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#WebPage"/>
+    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="displayMapWp">
+    <rdfs:domain rdf:resource="#ProcessResourceConfigurable"/>
+    <swb:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</swb:required>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#WebPage"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:ID="dp_displayMapWp">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >50</swb:index>
+        <rdfs:label xml:lang="en">Status map page</rdfs:label>
+        <rdfs:label xml:lang="es">Página de Mapa de estado</rdfs:label>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="documenterRole">
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#Role"/>
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:ID="dp_documenterRole">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneUserRep"/>
+        <rdfs:label xml:lang="en">Documenter role</rdfs:label>
+        <rdfs:label xml:lang="es">Rol de documentador</rdfs:label>
+        <swbxf:propGroup rdf:resource="#pg_docUserPermissions"/>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >20</swb:index>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
+    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="configPage">
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:ID="dp_configPage">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModelWithBlank"/>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >30</swb:index>
+        <rdfs:label xml:lang="en">Configuration Web Page</rdfs:label>
+        <rdfs:label xml:lang="es">Página Web de configuración</rdfs:label>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#WebPage"/>
+    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
   </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:ID="displayCols">
-    <rdfs:label xml:lang="es">Propiedades de despliegue</rdfs:label>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#ProcessResourceConfigurable"/>
+    <rdfs:label xml:lang="en">Display Properties</rdfs:label>
     <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Almacena, separados por pipes, los nombres de las propiedades a desplegar como columnas en el panel de monitoreo.</rdfs:comment>
-    <rdfs:label xml:lang="en">Display Properties</rdfs:label>
-    <rdfs:domain rdf:resource="#ProcessResourceConfigurable"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="es">Propiedades de despliegue</rdfs:label>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="wordTemplateFile">
-    <rdfs:domain>
-      <swb:SemanticResource rdf:ID="SWPDocumentationResource">
-        <swb:classCodePackage rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >org.semanticwb.process.resources.documentation</swb:classCodePackage>
-        <rdfs:label xml:lang="en">Process documentation management resource</rdfs:label>
-        <rdfs:label xml:lang="es">Recurso para gestión de documentación de procesos</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBSemanticResource"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-      </swb:SemanticResource>
-    </rdfs:domain>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="en">Template file</rdfs:label>
+    <rdfs:label xml:lang="es">Archivo de plantilla</rdfs:label>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_templateFile">
         <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#fe_DojoFileUpload"/>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
-    <rdfs:label xml:lang="es">Archivo de plantilla</rdfs:label>
-    <rdfs:label xml:lang="en">Template file</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="showInstanceChart">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdfs:domain>
-      <swb:SemanticResource rdf:ID="ControlPanelResource">
-        <rdfs:label xml:lang="es">Panel de Control</rdfs:label>
-        <rdfs:label xml:lang="en">Control Panel</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBSemanticResource"/>
-        <rdfs:subClassOf rdf:resource="#PagingConfigurable"/>
-        <swb:classCodePackage rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >org.semanticwb.process.resources.controlpanel</swb:classCodePackage>
-        <rdfs:subClassOf rdf:resource="#ProcessResourceConfigurable"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-      </swb:SemanticResource>
-    </rdfs:domain>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_showInstanceChart">
-        <rdfs:label xml:lang="es">Mostrar gráfica de instancias</rdfs:label>
-        <rdfs:label xml:lang="en">Show instances graph</rdfs:label>
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >20</swb:index>
         <swbxf:propGroup>
           <swbxf:PropertyGroup rdf:ID="pg_Charts">
-            <rdfs:label xml:lang="es">Configuración de gráficas</rdfs:label>
-            <rdfs:label xml:lang="en">Charts config</rdfs:label>
             <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
             >200</swb:index>
+            <rdfs:label xml:lang="en">Charts config</rdfs:label>
+            <rdfs:label xml:lang="es">Configuración de gráficas</rdfs:label>
           </swbxf:PropertyGroup>
         </swbxf:propGroup>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >20</swb:index>
+        <rdfs:label xml:lang="en">Show instances graph</rdfs:label>
+        <rdfs:label xml:lang="es">Mostrar gráfica de instancias</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:domain rdf:resource="#ControlPanelResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="configJSP">
+    <rdfs:domain rdf:resource="#ProcessResourceConfigurable"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_configJSP">
-        <rdfs:label xml:lang="en">Path to config JSP</rdfs:label>
-        <rdfs:label xml:lang="es">Ruta a JSP de configuración</rdfs:label>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >10</swb:index>
+        <rdfs:label xml:lang="es">Ruta a JSP de configuración</rdfs:label>
+        <rdfs:label xml:lang="en">Path to config JSP</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:domain rdf:resource="#ProcessResourceConfigurable"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="enableWordExport">
-    <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >false</swb:defaultValue>
-    <rdfs:label xml:lang="en">Enable MSWord export</rdfs:label>
-    <rdfs:label xml:lang="es">Habilitar exportación a MSWord</rdfs:label>
+    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_enableWordExport">
         <swbxf:propGroup>
           <swbxf:PropertyGroup rdf:ID="pg_MSWordExport">
-            <rdfs:label xml:lang="en">MSWord export configuration</rdfs:label>
-            <rdfs:label xml:lang="es">Configuración de exportación a MSWord</rdfs:label>
             <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
             >10</swb:index>
+            <rdfs:label xml:lang="es">Configuración de exportación a MSWord</rdfs:label>
+            <rdfs:label xml:lang="en">MSWord export configuration</rdfs:label>
           </swbxf:PropertyGroup>
         </swbxf:propGroup>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <rdfs:label xml:lang="es">Habilitar exportación a MSWord</rdfs:label>
+    <rdfs:label xml:lang="en">Enable MSWord export</rdfs:label>
+    <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >false</swb:defaultValue>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="instancesGraphType">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="showStatusChart">
-    <rdfs:domain rdf:resource="#ControlPanelResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_showStatusChart">
-        <rdfs:label xml:lang="es">Mostrar gráfica de estados</rdfs:label>
-        <rdfs:label xml:lang="en">Show status chart</rdfs:label>
+        <swbxf:propGroup rdf:resource="#pg_Charts"/>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >50</swb:index>
-        <swbxf:propGroup rdf:resource="#pg_Charts"/>
+        <rdfs:label xml:lang="en">Show status chart</rdfs:label>
+        <rdfs:label xml:lang="es">Mostrar gráfica de estados</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#ControlPanelResource"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="showAutoCreated">
-    <rdfs:domain rdf:resource="#UserTaskInboxResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_showAutoCreated">
-        <rdfs:label xml:lang="es">Mostrar tareas creadas automáticamente</rdfs:label>
         <rdfs:label xml:lang="en">Show tasks generated automatically</rdfs:label>
+        <rdfs:label xml:lang="es">Mostrar tareas creadas automáticamente</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain>
+      <swb:SemanticResource rdf:ID="UserTaskInboxResource">
+        <swb:classCodePackage rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >org.semanticwb.process.resources.taskinbox</swb:classCodePackage>
+        <rdfs:subClassOf rdf:resource="#ProcessResourceConfigurable"/>
+        <rdfs:subClassOf rdf:resource="#PagingConfigurable"/>
+        <rdfs:comment xml:lang="en">Resource that displays the user task inbox</rdfs:comment>
+        <rdfs:comment xml:lang="es">Recurso que despliega labandeja de entrada del usuario</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBSemanticResource"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+      </swb:SemanticResource>
+    </rdfs:domain>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="useAdvancedEditor">
-    <rdfs:label xml:lang="en">Use advanced editor options</rdfs:label>
+    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label xml:lang="es">Utilizar opciones avanzadas de edición</rdfs:label>
+    <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >false</swb:defaultValue>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_useAdvanceEditor"/>
     </swb:displayProperty>
-    <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >false</swb:defaultValue>
-    <rdfs:label xml:lang="es">Utilizar opciones avanzadas de edición</rdfs:label>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <rdfs:label xml:lang="en">Use advanced editor options</rdfs:label>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="showPartChart">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdfs:domain rdf:resource="#ControlPanelResource"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_showPartChart">
-        <rdfs:label xml:lang="es">Mostrar gráfico de participación</rdfs:label>
-        <rdfs:label xml:lang="en">Show participation chart</rdfs:label>
+        <swbxf:propGroup rdf:resource="#pg_Charts"/>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >30</swb:index>
-        <swbxf:propGroup rdf:resource="#pg_Charts"/>
+        <rdfs:label xml:lang="en">Show participation chart</rdfs:label>
+        <rdfs:label xml:lang="es">Mostrar gráfico de participación</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:domain rdf:resource="#ControlPanelResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="itemsPerPage">
-    <rdfs:domain rdf:resource="#PagingConfigurable"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_itemsPerPage">
-        <rdfs:label xml:lang="es">Elementos por página</rdfs:label>
-        <rdfs:label xml:lang="en">Items per page</rdfs:label>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >70</swb:index>
+        <rdfs:label xml:lang="en">Items per page</rdfs:label>
+        <rdfs:label xml:lang="es">Elementos por página</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:domain rdf:resource="#PagingConfigurable"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="wordActivtyDisplayMode">
+    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_wordActivityDisplayMode">
+        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SelectOne_1"/>
+        <swbxf:propGroup rdf:resource="#pg_MSWordExport"/>
         <swbxf:propSelectValues rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
         >section:Como secciones|table:Como tabla</swbxf:propSelectValues>
-        <swbxf:propGroup rdf:resource="#pg_MSWordExport"/>
-        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SelectOne_1"/>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="wordUseSectionPageBreak">
-    <rdfs:label xml:lang="en">Add page break after each section</rdfs:label>
-    <rdfs:label xml:lang="es">Agregar salto de página entre secciones</rdfs:label>
+    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >false</swb:defaultValue>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_wordUseSectionPageBreak">
         <swbxf:propGroup rdf:resource="#pg_MSWordExport"/>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
-    <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >false</swb:defaultValue>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="chartsEngine">
-    <rdfs:domain rdf:resource="#ControlPanelResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_chartsEngine">
-        <rdfs:label xml:lang="en">Charts engine</rdfs:label>
-        <rdfs:label xml:lang="es">Motor para gráficos</rdfs:label>
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >100</swb:index>
-        <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
-        <swbxf:propSelectValues rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >google:Google|d3:D3|c3:C3|highcharts|HighCharts</swbxf:propSelectValues>
-        <swbxf:propGroup rdf:resource="#pg_Charts"/>
-      </swbxf:DisplayProperty>
-    </swb:displayProperty>
+    <rdfs:label xml:lang="es">Agregar salto de página entre secciones</rdfs:label>
+    <rdfs:label xml:lang="en">Add page break after each section</rdfs:label>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="docsJSP">
-    <rdfs:domain rdf:resource="#ControlPanelResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_docsJSP">
-        <rdfs:label xml:lang="en">Path to docs view JSP</rdfs:label>
-        <rdfs:label xml:lang="es">Ruta al JSP de vista de documentos</rdfs:label>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >20</swb:index>
+        <rdfs:label xml:lang="es">Ruta al JSP de vista de documentos</rdfs:label>
+        <rdfs:label xml:lang="en">Path to docs view JSP</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#ControlPanelResource"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="showResponseChart">
-    <rdfs:domain rdf:resource="#ControlPanelResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_showResponseChart">
-        <rdfs:label xml:lang="es">Mostrar gráfica de tiempos de respuesta</rdfs:label>
-        <rdfs:label xml:lang="en">Show response time chart</rdfs:label>
+        <swbxf:propGroup rdf:resource="#pg_Charts"/>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >40</swb:index>
-        <swbxf:propGroup rdf:resource="#pg_Charts"/>
+        <rdfs:label xml:lang="en">Show response time chart</rdfs:label>
+        <rdfs:label xml:lang="es">Mostrar gráfica de tiempos de respuesta</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#ControlPanelResource"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="filterByGroup">
-    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_filterByGroup">
-        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >Objeto utilizado para definir caracteristicas visuales de una propiedad dentro de la administracion de SWB</rdfs:comment>
-        <rdfs:label xml:lang="es">Filtrar po grupo deusuario</rdfs:label>
-        <rdfs:label xml:lang="en">ilter by user group</rdfs:label>
+        <rdfs:label xml:lang="es">Filtrar por grupo de usuario</rdfs:label>
+        <rdfs:label xml:lang="en">Filter by user group</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="allowForward">
-    <rdfs:domain rdf:resource="#UserTaskInboxResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_allowForward">
-        <rdfs:label xml:lang="en">Allow task forwarding</rdfs:label>
         <rdfs:label xml:lang="es">Permitir reasignación de tareas</rdfs:label>
+        <rdfs:label xml:lang="en">Allow task forwarding</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#UserTaskInboxResource"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="wordIncludeCoverPage">
-    <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >false</swb:defaultValue>
-    <rdfs:label xml:lang="en">Include cover page</rdfs:label>
-    <rdfs:label xml:lang="es">Incluir portada</rdfs:label>
+    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_wordincludeCoverPage">
         <swbxf:propGroup rdf:resource="#pg_MSWordExport"/>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="inheritProcessAccessRoles">
-    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <swb:displayProperty>
-      <swbxf:DisplayProperty rdf:ID="dp_inheritProcessAccessRoles">
-        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >40</swb:index>
-        <swbxf:propGroup rdf:resource="#pg_docUserPermissions"/>
-        <rdfs:label xml:lang="es">Heredar restricción de roles del proceso</rdfs:label>
-        <rdfs:label xml:lang="en">Inherit process role restrictions</rdfs:label>
-      </swbxf:DisplayProperty>
-    </swb:displayProperty>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="wordIncludeHeaderFooter">
-    <rdfs:label xml:lang="en">Include header and footer</rdfs:label>
-    <rdfs:label xml:lang="es">Incluir encabezado y pie de página</rdfs:label>
+    <rdfs:label xml:lang="es">Incluir portada</rdfs:label>
+    <rdfs:label xml:lang="en">Include cover page</rdfs:label>
     <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >false</swb:defaultValue>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="inheritProcessAccessRoles">
+    <swb:displayProperty>
+      <swbxf:DisplayProperty rdf:ID="dp_inheritProcessAccessRoles">
+        <rdfs:label xml:lang="en">Inherit process role restrictions</rdfs:label>
+        <rdfs:label xml:lang="es">Heredar restricción de roles del proceso</rdfs:label>
+        <swbxf:propGroup rdf:resource="#pg_docUserPermissions"/>
+        <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >40</swb:index>
+      </swbxf:DisplayProperty>
+    </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#SWPResourcesConfig"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="wordIncludeHeaderFooter">
+    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_wordIncludeHeaderFooter">
         <swbxf:propGroup rdf:resource="#pg_MSWordExport"/>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdfs:domain rdf:resource="#SWPDocumentationResource"/>
+    <swb:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >false</swb:defaultValue>
+    <rdfs:label xml:lang="es">Incluir encabezado y pie de página</rdfs:label>
+    <rdfs:label xml:lang="en">Include header and footer</rdfs:label>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="showProcessWPLink">
-    <rdfs:domain rdf:resource="#UserTaskInboxResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_showProcessWPLink">
-        <rdfs:label xml:lang="es">Mostrar enlace a la página Web del proceso</rdfs:label>
         <rdfs:label xml:lang="en">Show link to process Web page</rdfs:label>
+        <rdfs:label xml:lang="es">Mostrar enlace a la página Web del proceso</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#UserTaskInboxResource"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="viewJSP">
+    <rdfs:domain rdf:resource="#ProcessResourceConfigurable"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_viewJSP">
-        <rdfs:label xml:lang="es">Ruta a JSP de vista</rdfs:label>
-        <rdfs:label xml:lang="en">Path to view JSP</rdfs:label>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >30</swb:index>
+        <rdfs:label xml:lang="en">Path to view JSP</rdfs:label>
+        <rdfs:label xml:lang="es">Ruta a JSP de vista</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:domain rdf:resource="#ProcessResourceConfigurable"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="showCharts">
-    <rdfs:domain rdf:resource="#ControlPanelResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <swb:displayProperty>
       <swbxf:DisplayProperty rdf:ID="dp_showCharts">
-        <rdfs:label xml:lang="es">Mostrar gráficas de desempeño</rdfs:label>
-        <rdfs:label xml:lang="en">Show performance graphs</rdfs:label>
+        <swbxf:propGroup rdf:resource="#pg_Charts"/>
         <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >10</swb:index>
-        <swbxf:propGroup rdf:resource="#pg_Charts"/>
+        <rdfs:label xml:lang="en">Show performance graphs</rdfs:label>
+        <rdfs:label xml:lang="es">Mostrar gráficas de desempeño</rdfs:label>
       </swbxf:DisplayProperty>
     </swb:displayProperty>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#ControlPanelResource"/>
   </owl:DatatypeProperty>
   <swb:CodePackage rdf:ID="pkg">
-    <swb:prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >swpres</swb:prefix>
     <swb:package rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >org.semanticwb.process.resources</swb:package>
+    <swb:prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >swpres</swb:prefix>
   </swb:CodePackage>
+  <swbxf:DisplayProperty rdf:ID="dp_chartsEngine">
+    <swbxf:propGroup rdf:resource="#pg_Charts"/>
+    <swbxf:propSelectValues rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >google:Google|d3:D3|c3:C3|highcharts|HighCharts</swbxf:propSelectValues>
+    <swbxf:formElement rdf:resource="http://www.semanticwebbuilder.org/swb4/xforms/ontology#selectOneModel"/>
+    <swb:index rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >100</swb:index>
+    <rdfs:label xml:lang="es">Motor para gráficos</rdfs:label>
+    <rdfs:label xml:lang="en">Charts engine</rdfs:label>
+  </swbxf:DisplayProperty>
+  <swb:SemanticResource rdf:ID="SWBProcessManagerResource">
+    <swb:classCodePackage rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >org.semanticwb.process.resources.processmanager</swb:classCodePackage>
+    <rdfs:label xml:lang="en">Process Manager</rdfs:label>
+    <rdfs:label xml:lang="es">Explorador de procesos</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticwebbuilder.org/swb4/ontology#SWBSemanticResource"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </swb:SemanticResource>
 </rdf:RDF>
 
 <!-- Created with TopBraid -->

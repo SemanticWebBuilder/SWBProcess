@@ -321,7 +321,6 @@ public class ControlPanelResource extends org.semanticwb.process.resources.contr
         if (isShowPartChart()) ret.append(ATT_PARTGRAPH).append("|");
         if (isShowResponseChart()) ret.append(ATT_RESPONSEGRAPH).append("|");
         if (isShowStatusChart()) ret.append(ATT_STATUSGRAPH).append("|");
-        if (null != getChartsEngine()) ret.append(ATT_GRAPHSENGINE).append(":").append(getChartsEngine()).append("|");
         
         return ret.toString();
     }

@@ -66,22 +66,11 @@
     optsUrl1.setParameter("sf", String.valueOf(FlowNodeInstance.STATUS_PROCESSING));
     String pNum = request.getParameter("p");
     String suri = request.getParameter("suri");
-    //String suriInstance = request.getParameter("suriInstance");
-    //ProcessInstance instance = (ProcessInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(suriInstance);
-    String engine = "d3";//harcoded to always use D3
     
     boolean showGraphs = false;
     if (_config.contains(UserTaskInboxResource.ATT_SHOWPERFORMANCE)) {
         showGraphs = true;
     }
-    /*if (base != null && base.getAttribute(UserTaskInboxResource.ATT_SHOWPERFORMANCE, "").equals("yes")) {
-        showGraphs = true;
-    }*/
-
-    
-    /*if (base != null && base.getAttribute(UserTaskInboxResource.ATT_GRAPHSENGINE, "").equals("d3")) {
-        engine = "d3";
-    }*/
 
     int pageNum = 1;
     if (user != null && user.getLanguage() != null) {
@@ -144,15 +133,9 @@
         <hr>
         <%
         if (tinstancesPI != null && !tinstancesPI.isEmpty() && showGraphs) {
-        %>
+            %>
             <div class="row no-margin">
-                <%
-                if (engine.equals("google")) {
-                    %><jsp:include page="/swbadmin/jsp/process/taskInbox/userTaskInboxGoogleGraphs.jsp" flush="true"/><%
-                } else {
-                    %><jsp:include page="/swbadmin/jsp/process/taskInbox/userTaskInboxD3Graphs.jsp" flush="true"/><%
-                }
-                %>
+                <jsp:include page="/swbadmin/jsp/process/taskInbox/userTaskInboxD3Graphs.jsp" flush="true"/>
             </div>
             <%
         }

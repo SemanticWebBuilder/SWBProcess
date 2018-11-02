@@ -8,7 +8,6 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     public static final org.semanticwb.platform.SemanticProperty swpres_itemsPerPage=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#itemsPerPage");
     public static final org.semanticwb.platform.SemanticProperty swpres_showCharts=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showCharts");
     public static final org.semanticwb.platform.SemanticProperty swpres_configJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#configJSP");
-    public static final org.semanticwb.platform.SemanticProperty swpres_chartsEngine=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#chartsEngine");
     public static final org.semanticwb.platform.SemanticProperty swpres_showInstanceChart=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showInstanceChart");
     public static final org.semanticwb.platform.SemanticClass swb_Resource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/ontology#Resource");
     public static final org.semanticwb.platform.SemanticProperty swb_semanticResourceInv=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/ontology#semanticResourceInv");
@@ -141,24 +140,6 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     public void setConfigJSP(String value)
     {
         getSemanticObject().setProperty(swpres_configJSP, value);
-    }
-
-/**
-* Gets the ChartsEngine property
-* @return String with the ChartsEngine
-*/
-    public String getChartsEngine()
-    {
-        return getSemanticObject().getProperty(swpres_chartsEngine);
-    }
-
-/**
-* Sets the ChartsEngine property
-* @param value long with the ChartsEngine
-*/
-    public void setChartsEngine(String value)
-    {
-        getSemanticObject().setProperty(swpres_chartsEngine, value);
     }
 
 /**

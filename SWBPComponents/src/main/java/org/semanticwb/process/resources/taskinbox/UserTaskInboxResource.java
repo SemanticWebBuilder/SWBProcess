@@ -88,7 +88,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
     public static final String COL_FLAGTASK = "flagTask";
     public static final String ATT_COLS = "cols";
     public static final String ATT_SHOWPERFORMANCE = "showPerformance";
-    public static final String ATT_GRAPHSENGINE = "graphsEngine";
     public static final String ATT_INSTANCEGRAPH = "instanceGraph";
     public static final String ATT_RESPONSEGRAPH = "responseGraph";
     public static final String ATT_STATUSGRAPH = "statusGraph";
@@ -171,6 +170,7 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
     private void initTaskInbox() {
         Resource base = getResourceBase();
         boolean update = false;
+        SWPResourcesConfig conf = SWPResourcesConfig.getConfgurationInstance(getResourceBase().getWebSite());
 
         //Establecer las columnas por defecto
         if (base.getAttribute(ATT_COLS+"1", "").equals("")) {
@@ -185,12 +185,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
 
         if (base.getAttribute(ATT_SHOWPERFORMANCE) == null) {
             base.setAttribute(ATT_SHOWPERFORMANCE, "yes");
-        }
-
-        //Establecer el motor de graficado
-        if (base.getAttribute(ATT_GRAPHSENGINE) == null) {
-            base.setAttribute(ATT_GRAPHSENGINE, "google");
-            update = true;
         }
 
         //Establecer las gráficas por defecto
@@ -252,7 +246,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 }
             }
         } else if (ACT_SETGRAPHS.equals(act)) {
-            String engine = request.getParameter(ATT_GRAPHSENGINE);
             String instances = request.getParameter(ATT_INSTANCEGRAPH);
             String resp = request.getParameter(ATT_RESPONSEGRAPH);
             String status = request.getParameter(ATT_STATUSGRAPH);
@@ -263,10 +256,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
                 base.setAttribute(ATT_SHOWPERFORMANCE, "yes");
             } else {
                 base.setAttribute(ATT_SHOWPERFORMANCE, "n");
-            }
-            
-            if (engine != null && !base.getAttribute(ATT_GRAPHSENGINE,"").equals(engine)) {
-                base.setAttribute(ATT_GRAPHSENGINE, engine);
             }
             
             if (instances != null) {
@@ -511,7 +500,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         if (base.getAttribute(ATT_PARTGRAPH, "--").equals("use")) ret.append(ATT_PARTGRAPH).append("|");
         if (base.getAttribute(ATT_RESPONSEGRAPH, "--").equals("use")) ret.append(ATT_RESPONSEGRAPH).append("|");
         if (base.getAttribute(ATT_STATUSGRAPH, "--").equals("use")) ret.append(ATT_STATUSGRAPH).append("|");
-        if (!base.getAttribute(ATT_GRAPHSENGINE, "--").equals("--")) ret.append(ATT_GRAPHSENGINE).append("|");
         
         return ret.toString();
     }
@@ -687,13 +675,6 @@ public class UserTaskInboxResource extends org.semanticwb.process.resources.task
         sb.append("        <td width=\"200px\" align=\"right\">").append("").append(paramRequest.getLocaleString("admLblShowPerformance")).append(":&nbsp;").append("</td>");
         sb.append("        <td>");
         sb.append("          <input dojoType=\"dijit.form.CheckBox\" ").append(base.getAttribute(ATT_SHOWPERFORMANCE,"").equals("yes")?"checked":"").append(" type=\"checkbox\" name=\"").append(ATT_SHOWPERFORMANCE).append("\" />");
-        sb.append("        <td>");
-        sb.append("      </tr>");
-        sb.append("      <tr>");
-        sb.append("        <td width=\"200px\" align=\"right\">").append("").append(paramRequest.getLocaleString("admLblEngine")).append(":&nbsp;").append("</td>");
-        sb.append("        <td>");
-        sb.append("          <input dojoType=\"dijit.form.RadioButton\" ").append(disableControls).append(base.getAttribute(ATT_GRAPHSENGINE,"").equals("google")?"checked":"").append(" type=\"radio\" name=\"").append(ATT_GRAPHSENGINE).append("\" value=\"google\" id=\"radioGoogle\"/><label for=\"radioGoogle\">Google Graphs</label><br>");
-        sb.append("          <input dojoType=\"dijit.form.RadioButton\" ").append(disableControls).append(base.getAttribute(ATT_GRAPHSENGINE,"").equals("d3")?"checked":"").append(" type=\"radio\" name=\"").append(ATT_GRAPHSENGINE).append("\" value=\"d3\" id=\"radioD3\"/><label for=\"radioD3\">D3</label>");
         sb.append("        <td>");
         sb.append("      </tr>");
         sb.append("      <tr>");
