@@ -84,6 +84,7 @@ public class SWPDocumentationResource extends SWPDocumentationResourceBase {
 	private static final String PARAM_URIDI = "uridi";
 	private static final String PARAM_URIDOC = "uridoc";
 	private static final String HTMLCONTENTTYPE = "text/html";
+    public static final String ATT_RESOURCE = "docResource";
 	private static final String UTF8 = "UTF-8";
 	static List<RepositoryDirectory> list = new ArrayList<>();
 
@@ -569,6 +570,7 @@ public class SWPDocumentationResource extends SWPDocumentationResourceBase {
 
 		try {
 			request.setAttribute(PARAM_REQUEST, paramRequest);
+			request.setAttribute(ATT_RESOURCE, this);
 			rd.forward(request, response);
 		} catch (ServletException ex) {
 			log.error("Error on doView, ", ex);

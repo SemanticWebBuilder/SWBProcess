@@ -17,7 +17,7 @@
 <%@ page import="org.semanticwb.process.resources.SWPResourcesConfig" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%!
-    ArrayList<ProcessGroup> getNavPath (WebSite site, ProcessGroup current) {
+    ArrayList<ProcessGroup> getNavPath (ProcessGroup current) {
         ArrayList<ProcessGroup> ret = new ArrayList<>();
         if (current != null) {
             ProcessGroup pivot = current;
@@ -59,9 +59,7 @@ String pag = request.getParameter("p") != null ? request.getParameter("p") : "";
 WebPage templatesPage = SWPResourcesConfig.getConfgurationInstance(model).getTemplatesPage();
 WebPage contentsPage = SWPResourcesConfig.getConfgurationInstance(model).getEditDocumentationPage();
 
-if (null == templatesPage) templatesPage = webpage;
 if (null == contentsPage) contentsPage = webpage;
-
 boolean isAdmin = user.hasRole(adminRole);
 boolean isDocumenter = user.hasRole(docRole);
 %>
@@ -85,7 +83,7 @@ boolean isDocumenter = user.hasRole(docRole);
 <ol class="breadcrumb swbp-breadcrumb">
     <li><a href="<%= paramRequest.getRenderUrl() %>"><span class="fa fa-file-text"></span></a></li>
     <%
-    ArrayList<ProcessGroup> nPath = getNavPath(model, group1);
+    ArrayList<ProcessGroup> nPath = getNavPath(group1);
     if (!nPath.isEmpty()) {
         Collections.reverse(nPath);
         for (ProcessGroup _pg : nPath) {
