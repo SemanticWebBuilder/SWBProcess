@@ -18,11 +18,14 @@
 <%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
 <%@page import="org.semanticwb.process.model.RepositoryElement"%>
 <%@page import="org.semanticwb.process.model.RepositoryURL"%>
-<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
-<%@page import="org.semanticwb.process.model.documentation.*"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSection"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSectionInstance"%>
+<%@page import="org.semanticwb.process.model.documentation.Referable"%>
+<%@page import="org.semanticwb.process.model.documentation.SectionElement"%>
+<%@ page import="org.semanticwb.process.resources.ProcessFileRepository" %>
 <%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%!
     String getRepoOptions(RepositoryDirectory root, RepositoryDirectory actual, String indentChar) {
@@ -49,8 +52,8 @@
     WebSite model = paramRequest.getWebPage().getWebSite();
     String lang = paramRequest.getUser().getLanguage();
 
-    String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi").toString() : "";
-    String urise = request.getParameter("urise") != null ? request.getParameter("urise").toString() : "";
+    String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+    String urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
     DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
     SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
     String related = request.getParameter("related") != null ? request.getParameter("related") : "";
@@ -85,7 +88,7 @@
                       for (String props : propst) {
                           if (null != props && !props.isEmpty()) {
                               String titleprop = props.substring(0, props.indexOf(";"));
-                              String idprop = props.substring(props.indexOf(";") + 1, props.length());
+                              String idprop = props.substring(props.indexOf(";") + 1);
                               SemanticProperty sp = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
                               boolean required = sp != null && sp.isRequired();
 
@@ -106,7 +109,7 @@
                                               String inputfm = mgr.renderElement(request, sp, mode);
                                               inputfm = inputfm.replaceFirst(">", " id=\"" + sp.getName() + "\" " + (required ? "required" : "") + " class=\"form-control\">");
                                               inputfm = inputfm.replace("name=\"" + sp.getName() + "\"", "name=\"" + idprop + "\"");
-                                              if (inputfm.indexOf("style") > -1) {
+                                              if (inputfm.contains("style")) {
                                                   inputfm = inputfm.replace(inputfm.substring(inputfm.indexOf("style"), (inputfm.indexOf("px;\"") + 4)), "");
                                               }
                                               out.println(inputfm);

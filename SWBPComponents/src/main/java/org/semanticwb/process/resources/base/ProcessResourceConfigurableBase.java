@@ -3,7 +3,6 @@ package org.semanticwb.process.resources.base;
 public interface ProcessResourceConfigurableBase extends org.semanticwb.model.GenericObject
 {
     public static final org.semanticwb.platform.SemanticProperty swpres_configJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#configJSP");
-    public static final org.semanticwb.platform.SemanticProperty swpres_filterByGroup=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#filterByGroup");
     public static final org.semanticwb.platform.SemanticProperty swpres_viewJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#viewJSP");
    /**
    * Almacena, separados por pipes, los nombres de las propiedades a desplegar como columnas en el panel de monitoreo. 
@@ -19,10 +18,6 @@ public interface ProcessResourceConfigurableBase extends org.semanticwb.model.Ge
     public String getConfigJSP();
 
     public void setConfigJSP(String value);
-
-    public boolean isFilterByGroup();
-
-    public void setFilterByGroup(boolean value);
 
     public String getViewJSP();
 

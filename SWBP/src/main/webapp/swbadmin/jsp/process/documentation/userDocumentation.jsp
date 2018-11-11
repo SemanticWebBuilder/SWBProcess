@@ -14,9 +14,10 @@
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.Comparator" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.semanticwb.process.resources.SWPResourcesConfig" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%!
-    ArrayList<ProcessGroup> getNavPath (WebSite site, ProcessGroup current) {
+    ArrayList<ProcessGroup> getNavPath (ProcessGroup current) {
         ArrayList<ProcessGroup> ret = new ArrayList<>();
         if (current != null) {
             ProcessGroup pivot = current;
@@ -35,8 +36,8 @@ WebSite model = paramRequest.getWebPage().getWebSite();
 User user = paramRequest.getUser();
 String lang = user.getLanguage();
 WebPage webpage = paramRequest.getWebPage();
-Role docRole = res.getDocumenterRole();
-Role adminRole = res.getAdminRole();
+Role docRole = SWPResourcesConfig.getConfgurationInstance(model).getDocumenterRole();
+Role adminRole = SWPResourcesConfig.getConfgurationInstance(model).getAdminRole();
 
 List<Descriptiveable> list = request.getAttribute(SWBProcessManagerResource.LIST_PROCESSES) != null ? (List<Descriptiveable>) request.getAttribute(SWBProcessManagerResource.LIST_PROCESSES) : null;
 String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP) != null ? request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP) : null;
@@ -55,26 +56,15 @@ if (null != idpg) {
 }
 
 String pag = request.getParameter("p") != null ? request.getParameter("p") : "";
-WebPage templatesPage = res.getTemplatesPage();
-WebPage contentsPage = res.getEditDocumentationPage();
+WebPage templatesPage = SWPResourcesConfig.getConfgurationInstance(model).getTemplatesPage();
+WebPage contentsPage = SWPResourcesConfig.getConfgurationInstance(model).getEditDocumentationPage();
 
-if (null == templatesPage) templatesPage = webpage;
 if (null == contentsPage) contentsPage = webpage;
-
 boolean isAdmin = user.hasRole(adminRole);
 boolean isDocumenter = user.hasRole(docRole);
 %>
 <div class="row no-margin swbp-button-ribbon text-right">
     <%
-    if (isDocumenter || isAdmin) {
-        %>
-        <a href="<%= templatesPage.getUrl() %>?<%= SWBProcessManagerResource.PARAM_PROCESSGROUP %>=<%= idpg %>"
-           class="btn btn-swbp-action" title="Plantillas">
-            Plantillas
-        </a>
-        <%
-    }
-
     if (isAdmin) {
         if (null != group1) {
             %>
@@ -93,7 +83,7 @@ boolean isDocumenter = user.hasRole(docRole);
 <ol class="breadcrumb swbp-breadcrumb">
     <li><a href="<%= paramRequest.getRenderUrl() %>"><span class="fa fa-file-text"></span></a></li>
     <%
-    ArrayList<ProcessGroup> nPath = getNavPath(model, group1);
+    ArrayList<ProcessGroup> nPath = getNavPath(group1);
     if (!nPath.isEmpty()) {
         Collections.reverse(nPath);
         for (ProcessGroup _pg : nPath) {

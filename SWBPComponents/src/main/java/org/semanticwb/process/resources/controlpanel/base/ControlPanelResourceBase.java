@@ -8,12 +8,10 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     public static final org.semanticwb.platform.SemanticProperty swpres_itemsPerPage=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#itemsPerPage");
     public static final org.semanticwb.platform.SemanticProperty swpres_showCharts=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showCharts");
     public static final org.semanticwb.platform.SemanticProperty swpres_configJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#configJSP");
-    public static final org.semanticwb.platform.SemanticProperty swpres_chartsEngine=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#chartsEngine");
     public static final org.semanticwb.platform.SemanticProperty swpres_showInstanceChart=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showInstanceChart");
     public static final org.semanticwb.platform.SemanticClass swb_Resource=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass("http://www.semanticwebbuilder.org/swb4/ontology#Resource");
     public static final org.semanticwb.platform.SemanticProperty swb_semanticResourceInv=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/ontology#semanticResourceInv");
     public static final org.semanticwb.platform.SemanticProperty swpres_showPartChart=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showPartChart");
-    public static final org.semanticwb.platform.SemanticProperty swpres_filterByGroup=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#filterByGroup");
     public static final org.semanticwb.platform.SemanticProperty swpres_showResponseChart=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#showResponseChart");
     public static final org.semanticwb.platform.SemanticProperty swpres_viewJSP=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#viewJSP");
     public static final org.semanticwb.platform.SemanticProperty swpres_displayCols=org.semanticwb.SWBPlatform.getSemanticMgr().getVocabulary().getSemanticProperty("http://www.semanticwebbuilder.org/swb4/process/resources#displayCols");
@@ -145,24 +143,6 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     }
 
 /**
-* Gets the ChartsEngine property
-* @return String with the ChartsEngine
-*/
-    public String getChartsEngine()
-    {
-        return getSemanticObject().getProperty(swpres_chartsEngine);
-    }
-
-/**
-* Sets the ChartsEngine property
-* @param value long with the ChartsEngine
-*/
-    public void setChartsEngine(String value)
-    {
-        getSemanticObject().setProperty(swpres_chartsEngine, value);
-    }
-
-/**
 * Gets the ShowInstanceChart property
 * @return boolean with the ShowInstanceChart
 */
@@ -234,24 +214,6 @@ public abstract class ControlPanelResourceBase extends org.semanticwb.portal.api
     public void setShowPartChart(boolean value)
     {
         getSemanticObject().setBooleanProperty(swpres_showPartChart, value);
-    }
-
-/**
-* Gets the FilterByGroup property
-* @return boolean with the FilterByGroup
-*/
-    public boolean isFilterByGroup()
-    {
-        return getSemanticObject().getBooleanProperty(swpres_filterByGroup);
-    }
-
-/**
-* Sets the FilterByGroup property
-* @param value long with the FilterByGroup
-*/
-    public void setFilterByGroup(boolean value)
-    {
-        getSemanticObject().setBooleanProperty(swpres_filterByGroup, value);
     }
 
 /**
