@@ -597,7 +597,7 @@ public class SWPDocumentationResource extends SWPDocumentationResourceBase {
                     repositoryUrl.setTitle(se.getSemanticObject().getProperty(Descriptiveable.swb_title));
                     repositoryUrl.setDescription(se.getSemanticObject().getProperty(Descriptiveable.swb_description));
                     repositoryUrl.setOwnerUserGroup(user.getUserGroup());
-                    repositoryUrl.storeFile(url.startsWith("http://") ? url : "http://" + url, null, Boolean.TRUE, null);
+                    repositoryUrl.storeFile(url, null, Boolean.TRUE, null);
                 }
             }
             response.setRenderParameter(PARAM_STATUS, "ok");
