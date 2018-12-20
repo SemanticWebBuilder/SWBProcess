@@ -4,18 +4,21 @@
     Author     : Hasdai Pacheco <ebenezer.sanchez@infotec.mx>
 --%>
 <%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="java.io.FileInputStream"%>
-<%@page import="java.io.File"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPUserDocumentationResource"%>
 <%@page import="org.semanticwb.model.Role"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.process.documentation.model.Documentation"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentationInstance"%>
-<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.model.documentation.Documentation"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentationInstance"%>
+<%@page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource"%>
+<%@ page import="java.io.File" %>
+<%@ page import="java.io.FileInputStream" %>
+<%@ page import="org.semanticwb.process.resources.SWPResourcesConfig" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+	SWBProcessManagerResource res = (SWBProcessManagerResource) request.getAttribute(SWBProcessManagerResource.ATT_RESOURCEINSTANCE);
 	SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 	User user = paramRequest.getUser();
 	WebSite site = paramRequest.getWebPage().getWebSite();
@@ -35,21 +38,27 @@
 		di = null != actualVersion ? actualVersion.getDocumentationInstance() : null;
 	}
 	
-	Role docRole = site.getUserRepository().getRole(paramRequest.getResourceBase().getAttribute("docRole"));//TODO: Hacer cnfigurable el rol
-	Role adminRole = site.getUserRepository().getRole("admin");//TODO: Hacer cnfigurable el rol
+	Role docRole = SWPResourcesConfig.getConfgurationInstance(site).getDocumenterRole();
+	Role adminRole = SWPResourcesConfig.getConfgurationInstance(site).getAdminRole();
 	boolean isDocumenter = user.hasRole(docRole) || user.hasRole(adminRole);
 	
-	String idpg = request.getParameter(SWPUserDocumentationResource.PARAM_PROCESSGROUP);
+	String idpg = request.getParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP);
 	if (null == idpg) idpg = "";
+
+%>
+<div class="row no-margin swbp-button-ribbon text-right">
+    <a
+        href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW).setParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP, idpg) %>"
+        class="btn btn-swbp-action" title="<%= paramRequest.getLocaleString("lblBack") %>">
+        <%= paramRequest.getLocaleString("lblBack") %>
+    </a>
+</div>
+<hr>
+<%
 	if (null == di) {
-		String msg = null == process ? paramRequest.getLocaleString("msgModelError") : paramRequest.getLocaleString("lblNoDocumentation");
+		String msg = null == process ? paramRequest.getLocaleString("msgModelError") :
+                paramRequest.getLocaleString("lblNoDocumentation");
 		%>
-		<div class="row no-margin swbp-button-ribbon text-right">
-			<a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW).setParameter(SWPUserDocumentationResource.PARAM_PROCESSGROUP, idpg) %>" class="btn btn-swbp-action" title="<%= paramRequest.getLocaleString("lblBack") %>">
-				<%= paramRequest.getLocaleString("lblBack") %>
-			</a>
-		</div>
-		<hr>
 		<div class="alert alert-block alert-warning fade in">
 			<%= msg %>
 		</div>
@@ -62,7 +71,9 @@
 		if (!file.exists()) {
 			%>
 			<div class="row no-margin swbp-button-ribbon text-right">
-				<a href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW).setParameter(SWPUserDocumentationResource.PARAM_PROCESSGROUP, idpg) %>" class="btn btn-swbp-action" title="<%= paramRequest.getLocaleString("lblBack") %>">
+				<a
+                    href="<%= paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW).setParameter(SWBProcessManagerResource.PARAM_PROCESSGROUP, idpg) %>"
+                    class="btn btn-swbp-action" title="<%= paramRequest.getLocaleString("lblBack") %>">
 					<%= paramRequest.getLocaleString("lblBack") %>
 				</a>
 			</div>
@@ -73,11 +84,11 @@
 			<%
 		} else {
 			%>
-			<hr>
 			<div class="panel panel-default swbp-panel-head">
 				<div class="panel-heading text-center"><%= process.getTitle() %> (<%= actualVersion.getVersionValue() %>)
 					<div class="pull-right hidden-print">
-						<a class="accordion-toggle fa fa-bars fa-lg" data-toggle="collapse" data-parent="#UniqueName" href="#SWBP-MENU-PROCESO"></a>  
+						<a class="accordion-toggle fa fa-bars fa-lg" data-toggle="collapse"
+                           data-parent="#UniqueName" href="#SWBP-MENU-PROCESO"></a>
 					</div>
 				</div>
 				<%
@@ -119,7 +130,8 @@
 						draggingSVG = false;
 					});
 					
-					urllocation = (urllocation.lastIndexOf('#') > 0) ? urllocation.substring((urllocation.lastIndexOf('#') + 1), urllocation.length) : null;
+					urllocation = (urllocation.lastIndexOf('#') > 0) ?
+                        urllocation.substring((urllocation.lastIndexOf('#') + 1), urllocation.length) : null;
 					
 					if (urllocation) {
 						$('#myTab0 a[href=#' + urllocation + ']').tab('show');
@@ -191,7 +203,7 @@
 			</script>
 			<%
 			SWBResourceURL exportUrl = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT);
-			exportUrl.setMode(SWPUserDocumentationResource.MODE_EXPORT_MODEL);
+			exportUrl.setMode(SWBProcessManagerResource.MODE_EXPORT_MODEL);
 			%>
 			<form id="svgform" accept-charset="utf-8" method="post" action="<%= exportUrl %>">
 				<input type="hidden" id="output_format" name="output_format" value="">

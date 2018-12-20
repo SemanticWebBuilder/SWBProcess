@@ -539,7 +539,7 @@
                 }
                 ]]></style>
             <defs id="globalDef">
-                <!--Definiciï¿½n de gradientes para las figuras-->
+                <!--Definición de gradientes para las figuras-->
                 <linearGradient id="linearGradientStartEvent" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="10%" style="stop-color:#ffffff;stop-opacity:1" />
                     <stop offset="90%" style="stop-color:#ccffaa;stop-opacity:1" />
@@ -566,7 +566,7 @@
                 </linearGradient>
                 <circle id="resizeBox" cx="0" cy="0" r="5" class="resizeBox"/>
                 <rect id="lineHandler" x="0" y="0" width="10" height="10" class="lineHandler"/>
-                <!--definiciï¿½n de marcadores para las figuras-->
+                <!--definición de marcadores para las figuras-->
                 <path id="errorMarker" d="m 0.5,1051.8622 17.0774,-39.6847 15.0444,21.9792 19.5171,-27.474 L 34.8582,1048.199 19.8137,1029.6795 0.5,1051.8622 z" transform="scale(0.35,0.35) translate(-26, -1030)" />
                 <g id="ruleMarker">
                     <path d="m 0,0 0,43.9063 46.75,0 0,-43.9063 z m 4.25,9.875 18.5,0 0,4.8438 -18.5,0 z m 20,0 18.5,0 0,4.8438 -18.5,0 z m -20,8 18.5,0 0,4.8438 -18.5,0 z m 20,0 18.5,0 0,4.8438 -18.5,0 z m -20,8 18.5,0 0,4.8438 -18.5,0 z m 20,0 18.5,0 0,4.8438 -18.5,0 z m -20,8 18.5,0 0,4.8438 -18.5,0 z m 20,0 18.5,0 0,4.8438 -18.5,0 z" transform="scale(0.32,0.32) translate(-23.5,-23.5)"/>
@@ -666,7 +666,7 @@
                 <marker id="messageTail" viewBox="-5 -5 12 12" refX="3" refY="0" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="0">
                     <circle r="3" />
                 </marker>
-                <!--Definiciï¿½n de eventos iniciales-->
+                <!--Definición de eventos iniciales-->
                 <circle id="startEvent" r="15" bclass="startEvent" oclass="startEvent_o"/>
                 <g id="messageStartEvent" bclass="startEvent" oclass="startEvent_o">
                     <use xlink:href="#startEvent" x="0" y="0"/>
@@ -704,7 +704,7 @@
                     <use xlink:href="#startEvent" x="0" y="0"/>
                     <use xlink:href="#compensaMarker" x="0" y="0" class="startMarker"/>
                 </g>
-                <!--Definiciï¿½n de eventos intermedios-->
+                <!--Definición de eventos intermedios-->
                 <g id="intermediateEvent" bclass="intermediateEvent" oclass="intermediateEvent_o">
                     <circle r="15"/>
                     <circle r="12" class="intermediateEvent1"/>
@@ -777,7 +777,7 @@
                     <use xlink:href="#intermediateEvent" x="0" y="0"/>
                     <use xlink:href="#parallelMarker" x="0" y="0" class="intermediateMarker"/>
                 </g>
-                <!--Definiciï¿½n de eventos finales-->
+                <!--Definición de eventos finales-->
                 <circle id="endEvent" r="15" bclass="endEvent" oclass="endEvent_o"/>
 
                 <g id="messageEndEvent" bclass="endEvent" oclass="endEvent_o">
@@ -812,7 +812,7 @@
                     <use xlink:href="#endEvent" x="0" y="0"/>
                     <use xlink:href="#compensaMarker" x="0" y="0" class="endFilledMarked"/>
                 </g>
-                <!--Definiciï¿½n de compuertas-->
+                <!--Definición de compuertas-->
                 <rect id="gateway" x="-17.5" y="-17.5" width="35" height="35" bclass="gateway" oclass="gateway_o" transform="rotate(45,0,0)"/>
                 <g id="exclusiveDataGateway" bclass="gateway" oclass="gateway_o" >
                     <use xlink:href="#gateway" x="0" y="0"/>
@@ -846,7 +846,7 @@
                     <use xlink:href="#gateway" x="0" y="0"/>
                     <use xlink:href="#complexMarker" x="0" y="0" style="stroke:none;fill:#d4aa00" transform="scale(0.7,0.7)"/>
                 </g>
-                <!--Definiciï¿½n de objetos de datos-->
+                <!--Definición de objetos de datos-->
                 <g id="dataObject" bclass="itemaware" oclass="itemaware_o">
                     <path transform="scale(0.7,0.7) translate(-3,-10)" d="m -25,-25 0,74.61135 58.22841,0 0,-55.2509 -19.88426,-19.36045 -38.34415,0 z"/>
                     <path transform="scale(0.7,0.7) translate(-2,-10)" d="m 12.5,-24 0,19.5625 20.0601,0"/>
@@ -863,7 +863,7 @@
                     <use xlink:href="#dataObject" x="0" y="0"/>
                     <use xlink:href="#linkMarker" x="-12" y="-17" style="fill:#666666;stroke:none;stroke-width:2.5;" transform="scale(0.8,0.8)"/>
                 </g>
-                <!--Definiciï¿½n de tareas-->
+                <!--Definición de tareas-->
                 <g id="task" styled="stroke:#2c5aa0">
                     <rect x="-50" y="-30" rx="10" ry="10" width="100" height="60" class="task"/>
                 </g>
@@ -895,7 +895,7 @@
                     <use xlink:href="#task" x="0" y="0"/>
                     <use xlink:href="#manualMarker" transform="scale(0.7,0.7) translate(-60, -35)" style="fill:none;stroke:#2c5aa0;stroke-width:4;"/>
                 </g>
-                <!--Definiciï¿½n de swimlanes-->
+                <!--Definición de swimlanes-->
                 <g id="pool" bclass="swimlane" oclass="swimlane_o">
                     <rect width="600" x="-300" y="-100" height="200" style="fill:#E8E8FF;stroke-width:2"/>
                     <path d="m -280,-100 l 0,200" style="fill:none;stroke-width:2;"/>

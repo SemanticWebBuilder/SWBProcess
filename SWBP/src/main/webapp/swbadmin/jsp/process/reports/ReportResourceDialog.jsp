@@ -7,7 +7,6 @@
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.resources.reports.Report"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 Report report = Report.ClassMgr.getReport(request.getAttribute("idReport").toString(), paramRequest.getWebPage().getWebSite());
@@ -37,7 +36,7 @@ SWBResourceURL urlReport = paramRequest.getRenderUrl().setMode("generate").setCa
                     <span class="fa fa-download fa-fw"></span><span class="hidden-xs">Descargar</span>
                 </button>
                 <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                    <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs">Cancelar</span>
+                    <span class="fa fa-times fa-fw"></span><span class="hidden-xs">Cancelar</span>
                 </button>
             </div>
         </form>

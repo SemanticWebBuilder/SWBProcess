@@ -3,23 +3,21 @@
     Created on : 4/07/2013, 10:14:08 PM
     Author     : Hasdai Pacheco <ebenezer.sanchez@infotec.com.mx>
 --%>
-<%@page import="org.semanticwb.model.Resource"%>
-<%@page import="org.semanticwb.process.model.Activity"%>
-<%@page import="org.semanticwb.process.model.ProcessSite"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.process.model.SWBProcessMgr"%>
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
-<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.SWBUtils"%>
+<%@page import="org.semanticwb.model.Resource"%>
+<%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.platform.SemanticOntology"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.model.Process"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.Activity"%>
+<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.model.ProcessInstance"%>
+<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Iterator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");

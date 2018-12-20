@@ -4,10 +4,10 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPUserDocumentationResource"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
+<%@ page import="org.semanticwb.process.resources.processmanager.SWBProcessManagerResource" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = request.getAttribute(SWPDocumentationResource.PARAM_REQUEST) != null ? (SWBParamRequest) request.getAttribute(SWPDocumentationResource.PARAM_REQUEST) : null;
@@ -15,6 +15,8 @@
     String uridi = request.getParameter("uridi") != null ? request.getParameter("uridi") : "";
     String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
 
-    SWBResourceURL urlDoc = paramRequest.getRenderUrl().setMode(SWPUserDocumentationResource.MODE_VIEW_DOCUMENTATION);
+    SWBResourceURL urlDoc = paramRequest.getRenderUrl().setMode(SWBProcessManagerResource.MODE_VIEW_DOCUMENTATION);
 %>
-<a href="<%= urlDoc.setParameter("idp", idp)%>" data-toggle="tooltip" data-placement="bottom" data-original-title="<%=paramRequest.getLocaleString("lblDocumentation")%>" title="<%=paramRequest.getLocaleString("lblDocumentation")%>" class="btn btn-default fa fa-eye"></a>
+<a href="<%= urlDoc.setParameter("idp", idp)%>" data-toggle="tooltip"
+   data-placement="bottom" data-original-title="<%=paramRequest.getLocaleString("lblDocumentation")%>"
+   title="<%=paramRequest.getLocaleString("lblDocumentation")%>" class="btn btn-default fa fa-eye"></a>

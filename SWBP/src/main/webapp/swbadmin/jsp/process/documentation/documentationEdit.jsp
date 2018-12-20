@@ -4,28 +4,29 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.process.model.RepositoryURL"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceModes"%>
-<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURLImp"%>
-<%@page import="org.semanticwb.process.model.RepositoryElement"%>
+<%@page import="org.semanticwb.SWBPlatform"%>
 <%@page import="org.semanticwb.model.VersionInfo"%>
-<%@page import="java.util.List"%>
-<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
-<%@page import="org.semanticwb.process.documentation.model.Referable"%>
+<%@page import="org.semanticwb.model.WebPage"%>
+<%@page import="org.semanticwb.model.WebSite"%>
+<%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.platform.SemanticProperty"%>
 <%@page import="org.semanticwb.portal.SWBFormMgr"%>
-<%@page import="org.semanticwb.platform.SemanticClass"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSectionInstance"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceModes"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURLImp"%>
+<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
+<%@page import="org.semanticwb.process.model.RepositoryElement"%>
+<%@page import="org.semanticwb.process.model.RepositoryURL"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSection"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSectionInstance"%>
+<%@page import="org.semanticwb.process.model.documentation.Referable"%>
+<%@page import="org.semanticwb.process.model.documentation.SectionElement"%>
+<%@ page import="org.semanticwb.process.resources.ProcessFileRepository" %>
+<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.List" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%!
     String getRepoOptions(RepositoryDirectory root, RepositoryDirectory actual, String indentChar) {
         StringBuilder ret = new StringBuilder();
@@ -51,8 +52,8 @@
     WebSite model = paramRequest.getWebPage().getWebSite();
     String lang = paramRequest.getUser().getLanguage();
 
-    String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi").toString() : "";
-    String urise = request.getParameter("urise") != null ? request.getParameter("urise").toString() : "";
+    String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+    String urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
     DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
     SectionElement se = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
     String related = request.getParameter("related") != null ? request.getParameter("related") : "";
@@ -87,7 +88,7 @@
                       for (String props : propst) {
                           if (null != props && !props.isEmpty()) {
                               String titleprop = props.substring(0, props.indexOf(";"));
-                              String idprop = props.substring(props.indexOf(";") + 1, props.length());
+                              String idprop = props.substring(props.indexOf(";") + 1);
                               SemanticProperty sp = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticPropertyById(idprop);
                               boolean required = sp != null && sp.isRequired();
 
@@ -102,13 +103,13 @@
                                   } else {
                                       %>
                                       <div class="form-group" id="div<%= sp.getName() %>">
-                                          <label for="" class="col-sm-4 control-label"><%=titleprop%> <%if (required) {%>*<%}%></label>
+                                          <label class="col-sm-4 control-label"><%=titleprop%> <%if (required) {%>*<%}%></label>
                                           <div class="col-sm-7">
                                               <%
                                               String inputfm = mgr.renderElement(request, sp, mode);
                                               inputfm = inputfm.replaceFirst(">", " id=\"" + sp.getName() + "\" " + (required ? "required" : "") + " class=\"form-control\">");
                                               inputfm = inputfm.replace("name=\"" + sp.getName() + "\"", "name=\"" + idprop + "\"");
-                                              if (inputfm.indexOf("style") > -1) {
+                                              if (inputfm.contains("style")) {
                                                   inputfm = inputfm.replace(inputfm.substring(inputfm.indexOf("style"), (inputfm.indexOf("px;\"") + 4)), "");
                                               }
                                               out.println(inputfm);
@@ -124,7 +125,7 @@
                                   if (se == null) {//Archivo nuevo
                                       %>
                                       <div class="form-group">
-                                          <label for="" class="col-sm-4 control-label"><%=paramRequest.getLocaleString("msgFileType")%></label>
+                                          <label class="col-sm-4 control-label"><%=paramRequest.getLocaleString("msgFileType")%></label>
                                           <div class="col-sm-7">
                                               <label class="checkbox-inline">
                                                   <input type="radio" id="fileToggleRadio" checked name="hftype" value="file"/> <%=paramRequest.getLocaleString("msgFile")%>
@@ -141,13 +142,13 @@
                                           </div>
                                       </div>
                                       <div id="linkSelect" class="row form-group">
-                                          <label for="" class="col-sm-4 control-label"><%=paramRequest.getLocaleString("lblLink")%> *</label>
+                                          <label class="col-sm-4 control-label"><%=paramRequest.getLocaleString("lblLink")%> *</label>
                                           <div class="col-sm-7">
                                               <input type="url" name="lfile" id="lfile" class="form-control" placeholder="http://"/>
                                           </div>
                                       </div>
                                       <%
-                                  } else { // Es edici�n
+                                  } else { // Es edición
                                       List<VersionInfo> listvi = null;
                                       VersionInfo vi = null;
 
@@ -166,7 +167,7 @@
                                               listvi = re.listVersions();
                                               %>
                                               <div class="form-group">
-                                                  <label for="" class="col-sm-4 control-label"><%= titleprop%></label>
+                                                  <label class="col-sm-4 control-label"><%= titleprop%></label>
                                                   <div class="col-sm-7">
                                                       <%
                                                       if (re instanceof org.semanticwb.process.model.RepositoryFile) {
@@ -179,7 +180,7 @@
                                               </div>
                                               <input type="hidden" name="urire" value="<%= re.getURI()%>">
                                               <div class="form-group">
-                                                  <label for="" class="col-sm-4 control-label"><%= paramRequest.getLocaleString("lblVersionAct")%> *</label>
+                                                  <label class="col-sm-4 control-label"><%= paramRequest.getLocaleString("lblVersionAct")%> *</label>
                                                   <div class="col-sm-7">
                                                       <%
                                                       if (null != se) {
@@ -210,7 +211,7 @@
                                       if (null == se) {
                                           %>
                                           <div class="form-group">
-                                              <label for="" class="col-sm-4 control-label"><%= configData %> *</label>
+                                              <label class="col-sm-4 control-label"><%= configData %> *</label>
                                               <div class="col-sm-7">
                                                   <select name="<%= semPropData.getName()%>" id="<%= semPropData.getName()%>" class="form-control" required>
                                                       <%=getRepoOptions((RepositoryDirectory)webpage, null, "-") %>
@@ -244,7 +245,7 @@
                   }
                 %>
                 <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                    <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnCancel")%></span>
+                    <span class="fa fa-times fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnCancel")%></span>
                 </button>
                     <%
                   } else {

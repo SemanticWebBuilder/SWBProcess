@@ -34,7 +34,6 @@ import org.semanticwb.model.Sortable;
 import org.semanticwb.model.User;
 import org.semanticwb.platform.SemanticObject;
 import org.semanticwb.platform.SemanticObserver;
-import org.semanticwb.process.SWBProcess;
 
 /**
  * Clase que encapsula las propiedades y funciones de un proceso.
@@ -232,34 +231,34 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 				GraphicalElement obj = itFo.next();
 				ele = new JSONObject();
 				nodes.put(ele);
-				ele.put(SWBProcess.JSONProperties.PROP_CLASS, obj.getSemanticObject().getSemanticClass().getClassCodeName());
-				ele.put(SWBProcess.JSONProperties.PROP_TITLE, obj.getTitle());
-				ele.put(SWBProcess.JSONProperties.PROP_DESCRIPTION, obj.getDescription());
-				ele.put(SWBProcess.JSONProperties.PROP_URI, obj.getURI());
-				ele.put(SWBProcess.JSONProperties.PROP_X, obj.getX());
-				ele.put(SWBProcess.JSONProperties.PROP_Y, obj.getY());
-				ele.put(SWBProcess.JSONProperties.PROP_W, obj.getWidth());
-				ele.put(SWBProcess.JSONProperties.PROP_H, obj.getHeight());
+				ele.put(JSONProperties.PROP_CLASS, obj.getSemanticObject().getSemanticClass().getClassCodeName());
+				ele.put(JSONProperties.PROP_TITLE, obj.getTitle());
+				ele.put(JSONProperties.PROP_DESCRIPTION, obj.getDescription());
+				ele.put(JSONProperties.PROP_URI, obj.getURI());
+				ele.put(JSONProperties.PROP_X, obj.getX());
+				ele.put(JSONProperties.PROP_Y, obj.getY());
+				ele.put(JSONProperties.PROP_W, obj.getWidth());
+				ele.put(JSONProperties.PROP_H, obj.getHeight());
 				if (obj.getContainer() != null) {
-					ele.put(SWBProcess.JSONProperties.PROP_CONTAINER, obj.getContainer().getURI());
+					ele.put(JSONProperties.PROP_CONTAINER, obj.getContainer().getURI());
 				} else {
-					ele.put(SWBProcess.JSONProperties.PROP_CONTAINER, "");
+					ele.put(JSONProperties.PROP_CONTAINER, "");
 				}
 				if (obj.getParent() != null) {
-					ele.put(SWBProcess.JSONProperties.PROP_PARENT, obj.getParent().getURI());
+					ele.put(JSONProperties.PROP_PARENT, obj.getParent().getURI());
 				} else {
-					ele.put(SWBProcess.JSONProperties.PROP_PARENT, "");
+					ele.put(JSONProperties.PROP_PARENT, "");
 				}
 
 				if (obj.getLabelSize() != 0) {
-					ele.put(SWBProcess.JSONProperties.PROP_LABELSIZE, obj.getLabelSize());
+					ele.put(JSONProperties.PROP_LABELSIZE, obj.getLabelSize());
 				} else {
-					ele.put(SWBProcess.JSONProperties.PROP_LABELSIZE, 10);
+					ele.put(JSONProperties.PROP_LABELSIZE, 10);
 				}
 
 				if (obj instanceof Sortable) {
 					Sortable sorble = (Sortable) obj;
-					ele.put(SWBProcess.JSONProperties.PROP_INDEX, sorble.getIndex());
+					ele.put(JSONProperties.PROP_INDEX, sorble.getIndex());
 				}
 
 				if (obj instanceof ActivityConfable) {
@@ -267,27 +266,27 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 					if (tsk.getLoopCharacteristics() != null) {
 						LoopCharacteristics loopC = tsk.getLoopCharacteristics();
 						if (loopC instanceof MultiInstanceLoopCharacteristics) {
-							ele.put(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, true);
+							ele.put(JSONProperties.PROP_ISMULTIINSTANCE, true);
 						} else {
-							ele.put(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, false);
+							ele.put(JSONProperties.PROP_ISMULTIINSTANCE, false);
 						}
 
 						if (loopC instanceof StandarLoopCharacteristics) {
-							ele.put(SWBProcess.JSONProperties.PROP_ISLOOP, true);
+							ele.put(JSONProperties.PROP_ISLOOP, true);
 						} else {
-							ele.put(SWBProcess.JSONProperties.PROP_ISLOOP, false);
+							ele.put(JSONProperties.PROP_ISLOOP, false);
 						}
 					}
-					ele.put(SWBProcess.JSONProperties.PROP_ISCOMPENSATION,
+					ele.put(JSONProperties.PROP_ISCOMPENSATION,
 							Boolean.toString(tsk.isForCompensation()));
 				}
 
 				if (obj instanceof Collectionable) {
 					Collectionable colble = (Collectionable) obj;
 					if (colble.isCollection()) {
-						ele.put(SWBProcess.JSONProperties.PROP_ISCOLLECTION, true);
+						ele.put(JSONProperties.PROP_ISCOLLECTION, true);
 					} else {
-						ele.put(SWBProcess.JSONProperties.PROP_ISCOLLECTION, false);
+						ele.put(JSONProperties.PROP_ISCOLLECTION, false);
 					}
 				}
 
@@ -303,12 +302,12 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 					if (null != connectionObject.getSource() && null != connectionObject.getTarget()) {
 						coele = new JSONObject();
 						nodes.put(coele);
-						coele.put(SWBProcess.JSONProperties.PROP_CLASS, connectionObject.getSemanticObject().getSemanticClass().getClassCodeName());
-						coele.put(SWBProcess.JSONProperties.PROP_URI, connectionObject.getURI());
-						coele.put(SWBProcess.JSONProperties.PROP_START, connectionObject.getSource().getURI());
-						coele.put(SWBProcess.JSONProperties.PROP_END, connectionObject.getTarget().getURI());
-						coele.put(SWBProcess.JSONProperties.PROP_TITLE, connectionObject.getTitle());
-						coele.put(SWBProcess.JSONProperties.PROP_CONNPOINTS, connectionObject.getConnectionPoints());
+						coele.put(JSONProperties.PROP_CLASS, connectionObject.getSemanticObject().getSemanticClass().getClassCodeName());
+						coele.put(JSONProperties.PROP_URI, connectionObject.getURI());
+						coele.put(JSONProperties.PROP_START, connectionObject.getSource().getURI());
+						coele.put(JSONProperties.PROP_END, connectionObject.getTarget().getURI());
+						coele.put(JSONProperties.PROP_TITLE, connectionObject.getTitle());
+						coele.put(JSONProperties.PROP_CONNPOINTS, connectionObject.getConnectionPoints());
 					} else {
 						connectionObject.remove();
 					}
@@ -336,10 +335,10 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 
 		try {
 			ret = new JSONObject();
-			ret.put(SWBProcess.JSONProperties.PROP_URI, getURI());
-			ret.put(SWBProcess.JSONProperties.PROP_TITLE, getTitle());
-			ret.put(SWBProcess.JSONProperties.PROP_DESCRIPTION, getDescription());
-			ret.put(SWBProcess.JSONProperties.PROP_CLASS, getSemanticObject().getSemanticClass().getClassCodeName());
+			ret.put(JSONProperties.PROP_URI, getURI());
+			ret.put(JSONProperties.PROP_TITLE, getTitle());
+			ret.put(JSONProperties.PROP_DESCRIPTION, getDescription());
+			ret.put(JSONProperties.PROP_CLASS, getSemanticObject().getSemanticClass().getClassCodeName());
 			nodes = new JSONArray();
 			ret.putOpt("nodes", nodes);
 
@@ -348,39 +347,39 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 				GraphicalElement obj = itFo.next();
 				ele = new JSONObject();
 				nodes.put(ele);
-				ele.put(SWBProcess.JSONProperties.PROP_CLASS, obj.getSemanticObject().getSemanticClass().getClassCodeName());
-				ele.put(SWBProcess.JSONProperties.PROP_TITLE, obj.getTitle());
-				ele.put(SWBProcess.JSONProperties.PROP_DESCRIPTION, obj.getDescription());
-				ele.put(SWBProcess.JSONProperties.PROP_URI, obj.getURI());
-				ele.put(SWBProcess.JSONProperties.PROP_X, obj.getX());
-				ele.put(SWBProcess.JSONProperties.PROP_Y, obj.getY());
-				ele.put(SWBProcess.JSONProperties.PROP_W, obj.getWidth());
-				ele.put(SWBProcess.JSONProperties.PROP_H, obj.getHeight());
+				ele.put(JSONProperties.PROP_CLASS, obj.getSemanticObject().getSemanticClass().getClassCodeName());
+				ele.put(JSONProperties.PROP_TITLE, obj.getTitle());
+				ele.put(JSONProperties.PROP_DESCRIPTION, obj.getDescription());
+				ele.put(JSONProperties.PROP_URI, obj.getURI());
+				ele.put(JSONProperties.PROP_X, obj.getX());
+				ele.put(JSONProperties.PROP_Y, obj.getY());
+				ele.put(JSONProperties.PROP_W, obj.getWidth());
+				ele.put(JSONProperties.PROP_H, obj.getHeight());
 				if (obj.getContainer() != null) {
-					ele.put(SWBProcess.JSONProperties.PROP_CONTAINER, obj.getContainer().getURI());
+					ele.put(JSONProperties.PROP_CONTAINER, obj.getContainer().getURI());
 				} else {
-					ele.put(SWBProcess.JSONProperties.PROP_CONTAINER, "");
+					ele.put(JSONProperties.PROP_CONTAINER, "");
 				}
 				if (obj.getParent() != null) {
-					ele.put(SWBProcess.JSONProperties.PROP_PARENT, obj.getParent().getURI());
+					ele.put(JSONProperties.PROP_PARENT, obj.getParent().getURI());
 				} else {
-					ele.put(SWBProcess.JSONProperties.PROP_PARENT, "");
+					ele.put(JSONProperties.PROP_PARENT, "");
 				}
 
 				if (obj.getLabelSize() != 0) {
-					ele.put(SWBProcess.JSONProperties.PROP_LABELSIZE, obj.getLabelSize());
+					ele.put(JSONProperties.PROP_LABELSIZE, obj.getLabelSize());
 				} else {
-					ele.put(SWBProcess.JSONProperties.PROP_LABELSIZE, 10);
+					ele.put(JSONProperties.PROP_LABELSIZE, 10);
 				}
 
 				if (obj instanceof Sortable) {
 					Sortable sorble = (Sortable) obj;
-					ele.put(SWBProcess.JSONProperties.PROP_INDEX, sorble.getIndex());
+					ele.put(JSONProperties.PROP_INDEX, sorble.getIndex());
 				}
 
 				if (obj instanceof IntermediateCatchEvent) {
 					IntermediateCatchEvent ice = (IntermediateCatchEvent) obj;
-					ele.put(SWBProcess.JSONProperties.PROP_ISINTERRUPTING, ice.isInterruptor());
+					ele.put(JSONProperties.PROP_ISINTERRUPTING, ice.isInterruptor());
 				}
 
 				if (obj instanceof ActivityConfable) {
@@ -388,26 +387,26 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 					if (tsk.getLoopCharacteristics() != null) {
 						LoopCharacteristics loopC = tsk.getLoopCharacteristics();
 						if (loopC instanceof MultiInstanceLoopCharacteristics) {
-							ele.put(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, true);
+							ele.put(JSONProperties.PROP_ISMULTIINSTANCE, true);
 						} else {
-							ele.put(SWBProcess.JSONProperties.PROP_ISMULTIINSTANCE, false);
+							ele.put(JSONProperties.PROP_ISMULTIINSTANCE, false);
 						}
 
 						if (loopC instanceof StandarLoopCharacteristics) {
-							ele.put(SWBProcess.JSONProperties.PROP_ISLOOP, true);
+							ele.put(JSONProperties.PROP_ISLOOP, true);
 						} else {
-							ele.put(SWBProcess.JSONProperties.PROP_ISLOOP, false);
+							ele.put(JSONProperties.PROP_ISLOOP, false);
 						}
 					}
-					ele.put(SWBProcess.JSONProperties.PROP_ISCOMPENSATION, Boolean.toString(tsk.isForCompensation()));
+					ele.put(JSONProperties.PROP_ISCOMPENSATION, Boolean.toString(tsk.isForCompensation()));
 				}
 
 				if (obj instanceof Collectionable) {
 					Collectionable colble = (Collectionable) obj;
 					if (colble.isCollection()) {
-						ele.put(SWBProcess.JSONProperties.PROP_ISCOLLECTION, true);
+						ele.put(JSONProperties.PROP_ISCOLLECTION, true);
 					} else {
-						ele.put(SWBProcess.JSONProperties.PROP_ISCOLLECTION, false);
+						ele.put(JSONProperties.PROP_ISCOLLECTION, false);
 					}
 				}
 
@@ -422,12 +421,12 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 					if (null != connectionObject.getSource() && null != connectionObject.getTarget()) {
 						coele = new JSONObject();
 						nodes.put(coele);
-						coele.put(SWBProcess.JSONProperties.PROP_CLASS, connectionObject.getSemanticObject().getSemanticClass().getClassCodeName());
-						coele.put(SWBProcess.JSONProperties.PROP_URI, connectionObject.getURI());
-						coele.put(SWBProcess.JSONProperties.PROP_START, connectionObject.getSource().getURI());
-						coele.put(SWBProcess.JSONProperties.PROP_END, connectionObject.getTarget().getURI());
-						coele.put(SWBProcess.JSONProperties.PROP_TITLE, connectionObject.getTitle());
-						coele.put(SWBProcess.JSONProperties.PROP_CONNPOINTS, connectionObject.getConnectionPoints());
+						coele.put(JSONProperties.PROP_CLASS, connectionObject.getSemanticObject().getSemanticClass().getClassCodeName());
+						coele.put(JSONProperties.PROP_URI, connectionObject.getURI());
+						coele.put(JSONProperties.PROP_START, connectionObject.getSource().getURI());
+						coele.put(JSONProperties.PROP_END, connectionObject.getTarget().getURI());
+						coele.put(JSONProperties.PROP_TITLE, connectionObject.getTitle());
+						coele.put(JSONProperties.PROP_CONNPOINTS, connectionObject.getConnectionPoints());
 					} else {
 						connectionObject.remove();
 					}
@@ -445,4 +444,30 @@ public class Process extends org.semanticwb.process.model.base.ProcessBase {
 		}
 		return ret;
 	}
+
+	public static class JSONProperties {
+        public static final String PROP_CLASS = "class";
+        public static final String PROP_TITLE = "title";
+        public static final String PROP_DESCRIPTION = "description";
+        public static final String PROP_CONNPOINTS = "connectionPoints";
+        public static final String PROP_URI = "uri";
+        public static final String PROP_X = "x";
+        public static final String PROP_Y = "y";
+        public static final String PROP_W = "w";
+        public static final String PROP_H = "h";
+        public static final String PROP_START = "start";
+        public static final String PROP_END = "end";
+        public static final String PROP_PARENT = "parent";
+        public static final String PROP_CONTAINER = "container";
+        public static final String PROP_ISMULTIINSTANCE = "isMultiInstance";
+        public static final String PROP_ISSEQMULTIINSTANCE = "isSequentialMultiInstance";
+        public static final String PROP_ISCOLLECTION = "isCollection";
+        public static final String PROP_ISLOOP = "isLoop";
+        public static final String PROP_ISCOMPENSATION = "isForCompensation";
+        public static final String PROP_ISADHOC = "isAdHoc";
+        public static final String PROP_ISTRANSACTION = "isTransaction";
+        public static final String PROP_ISINTERRUPTING = "isInterrupting";
+        public static final String PROP_LABELSIZE = "labelSize";
+        public static final String PROP_INDEX = "index";
+    }
 }

@@ -1,13 +1,11 @@
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
 <%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
 <%@page import="org.semanticwb.model.SWBContext"%>
-<%@page import="org.semanticwb.SWBPortal"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.ProcessInstance"%>
 <%@page import="org.semanticwb.process.resources.SWBAProcessInstanceList"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.model.GenericObject"%>
 <jsp:useBean id="paramRequest" scope="request" type="org.semanticwb.portal.api.SWBParamRequest"/>
 <%
 Iterator<ProcessInstance> instances = (Iterator<ProcessInstance>) request.getAttribute(SWBAProcessInstanceList.ATT_INSTANCES);

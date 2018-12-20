@@ -1,25 +1,27 @@
-<%@page import="org.semanticwb.process.documentation.model.DocumentSectionInstance"%>
-<%@page import="org.semanticwb.process.documentation.model.Referable"%>
-<%@page import="org.semanticwb.model.RepositoryFile"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
+<%@page import="org.semanticwb.SWBPlatform"%>
 <%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSectionInstance"%>
+<%@page import="org.semanticwb.process.model.documentation.Referable"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
   SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 
-  String urise = request.getParameter("urise") != null ? request.getParameter("urise").toString() : "";
-  String fileSe = request.getParameter("fileSe") != null ? request.getParameter("fileSe").toString() : "";
-  String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi").toString() : "";
-  String title = request.getParameter("title") != null ? request.getParameter("title").toString() : "";
-  String _rid = request.getParameter("_rid") != null ? request.getParameter("_rid").toString() : "";
-  String idp = request.getParameter("idp") != null ? request.getParameter("idp").toString() : "";
-  String wp = request.getParameter("wp") != null ? request.getParameter("wp").toString() : "";
-  //String link = request.getParameter("link") != null ? request.getParameter("link").toString() : "";
-  SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWBResourceURL.Action_REMOVE).setParameter("uridsi", uridsi).setParameter("urise", urise);
+  String urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
+  String fileSe = request.getParameter("fileSe") != null ? request.getParameter("fileSe") : "";
+  String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+  String title = request.getParameter("title") != null ? request.getParameter("title") : "";
+  String _rid = request.getParameter("_rid") != null ? request.getParameter("_rid") : "";
+  String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
+  String wp = request.getParameter("wp") != null ? request.getParameter("wp") : "";
+  SWBResourceURL urlAction = paramRequest.getActionUrl()
+          .setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWBResourceURL.Action_REMOVE)
+          .setParameter("uridsi", uridsi).setParameter("urise", urise);
 
-  DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
+  DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology()
+          .getGenericObject(uridsi);
+
   SemanticClass type = dsi.getSecTypeDefinition().getSectionType().transformToSemanticClass();
 %>
 <div class="modal-dialog">
@@ -46,7 +48,7 @@
           <span class="fa fa-trash-o fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnRemove")%></span>
         </button>
         <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-          <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnCancel")%></span>
+          <span class="fa fa-times fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnCancel")%></span>
         </button>
       </div>
       <input type="hidden" name="_rid" value="<%=_rid%>">
@@ -57,7 +59,6 @@
   </div>
 </div>
 
-<!--<iframe style="display:none;" name="UploadFrameR" id="UploadFrameR"></iframe>-->
 <script>
   (function() {
     var theForm = document.getElementById('formRemove');

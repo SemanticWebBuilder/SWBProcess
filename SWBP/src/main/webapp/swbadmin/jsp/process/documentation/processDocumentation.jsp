@@ -1,51 +1,16 @@
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.process.model.ParallelStartEventGateway"%>
-<%@page import="org.semanticwb.process.model.ComplexGateway"%>
-<%@page import="org.semanticwb.process.model.ParallelStartEvent"%>
-<%@page import="org.semanticwb.process.model.ParallelGateway"%>
-<%@page import="org.semanticwb.process.model.ExclusiveStartEventGateway"%>
-<%@page import="org.semanticwb.process.model.EventBasedGateway"%>
-<%@page import="org.semanticwb.process.model.InclusiveGateway"%>
-<%@page import="org.semanticwb.process.model.ExclusiveGateway"%>
-<%@page import="org.semanticwb.process.model.BusinessRuleTask"%>
-<%@page import="org.semanticwb.process.model.ReceiveTask"%>
-<%@page import="org.semanticwb.process.model.SendTask"%>
-<%@page import="org.semanticwb.process.model.ServiceTask"%>
-<%@page import="org.semanticwb.process.model.ScriptTask"%>
-<%@page import="org.semanticwb.process.model.ManualTask"%>
-<%@page import="org.semanticwb.process.model.UserTask"%>
-<%@page import="org.semanticwb.process.model.Activity"%>
-<%@page import="org.semanticwb.process.model.DataStore"%>
-<%@page import="java.io.DataOutput"%>
-<%@page import="java.io.DataInput"%>
-<%@page import="org.semanticwb.process.model.ItemAware"%>
-<%@page import="org.semanticwb.process.model.ItemAwareReference"%>
-<%@page import="org.semanticwb.process.model.DataObject"%>
-<%@page import="org.semanticwb.process.model.ProcessRuleRef"%>
-<%@page import="org.semanticwb.process.model.ConditionalFlow"%>
-<%@page import="org.semanticwb.process.model.ConnectionObject"%>
-<%@page import="org.semanticwb.model.RoleRefable"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.model.GraphicalElement"%>
-<%@page import="org.semanticwb.process.model.FlowNode"%>
-<%@page import="org.semanticwb.process.model.Gateway"%>
-<%@page import="org.semanticwb.process.model.ProcessRule"%>
-<%@page import="org.semanticwb.model.Rule"%>
-<%@page import="org.semanticwb.model.RoleRef"%>
-<%@page import="org.semanticwb.process.model.Task"%>
 <%@page import="org.semanticwb.model.Role"%>
-<%@page import="org.semanticwb.process.model.SubProcess"%>
-<%@page import="java.util.HashMap"%>
+<%@page import="org.semanticwb.model.RoleRef"%>
+<%@page import="org.semanticwb.model.RoleRefable"%>
 <%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.process.model.WrapperProcessWebPage"%>
-<%@page import="org.semanticwb.portal.api.SWBParamRequest" %>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL" %>
-<%@page import="org.semanticwb.process.model.Process" %>
-
+<%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.process.model.*"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="java.io.DataInput"%>
+<%@page import="java.io.DataOutput"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Iterator"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    
-    
 SWBParamRequest paramRequest = (SWBParamRequest)request.getAttribute("paramRequest");
 String pid = request.getParameter("pid");
 WebPage wp = paramRequest.getWebPage();
@@ -57,12 +22,12 @@ if (wp instanceof WrapperProcessWebPage) {
 }
 
 if (process != null) {
-    HashMap<String, SubProcess> subProcesses = new HashMap<String, SubProcess>();
-    HashMap<String, Role> roles = new HashMap<String, Role>();
-    HashMap<String, Task> tasks = new HashMap<String, Task>();
-    HashMap<String, ProcessRule> rules = new HashMap<String, ProcessRule>();
-    HashMap<String, Gateway> gateways = new HashMap<String, Gateway>();
-    HashMap<String, ItemAware> objects = new HashMap<String, ItemAware>();
+    HashMap<String, SubProcess> subProcesses = new HashMap<>();
+    HashMap<String, Role> roles = new HashMap<>();
+    HashMap<String, Task> tasks = new HashMap<>();
+    HashMap<String, ProcessRule> rules = new HashMap<>();
+    HashMap<String, Gateway> gateways = new HashMap<>();
+    HashMap<String, ItemAware> objects = new HashMap<>();
     
     String puri = process.getEncodedURI();
     String pName = process.getTitle();
@@ -151,7 +116,7 @@ if (process != null) {
                         Role rol = roles.get(key);
                         String rdesc = rol.getDescription();
                         
-                        if (rdesc == null || rdesc.equals("")) rdesc = "Sin descripción.";
+                        if (rdesc == null || rdesc.equals("")) rdesc = "Sin descripciÃ³n.";
                         %>
                         <tr id="<%=key%>">
                             <td>

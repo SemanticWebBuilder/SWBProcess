@@ -89,7 +89,7 @@
                 <span class="fa fa-save fa-fw"></span><span class="hidden-xs">Guardar</span>
             </button>
             <button type="button" class="btn btn-default" onclick="window.location='<%=backUrl%>';"> 
-                <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("cancel")%></span>
+                <span class="fa fa-times fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("cancel")%></span>
             </button>
         </div>
     </form>

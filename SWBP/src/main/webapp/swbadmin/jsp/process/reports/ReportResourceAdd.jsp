@@ -5,15 +5,10 @@
 --%>
 <%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.model.SWBContext"%>
-<%@page import="org.semanticwb.process.resources.reports.Report"%>
-<%@page import="org.semanticwb.process.model.Process"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.portal.SWBFormButton"%>
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
-<%@page import="java.util.Iterator"%>
 <%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="java.util.Iterator"%>
 <%@page contentType="text/html"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
@@ -66,7 +61,7 @@
                     <span class="fa fa-save fa-fw"></span><span class="hidden-xs"><%= paramRequest.getLocaleString("save") %></span>
                 </button>
                 <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                    <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs">Cancelar</span>
+                    <span class="fa fa-times fa-fw"></span><span class="hidden-xs">Cancelar</span>
                 </button>
             </div>
         </form>

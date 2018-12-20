@@ -4,24 +4,26 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.platform.SemanticProperty"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.process.documentation.model.Instantiable"%>
-<%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
 <%@page import="org.semanticwb.model.Traceable"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.platform.SemanticClass"%>
+<%@page import="org.semanticwb.platform.SemanticProperty"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSection"%>
+<%@page import="org.semanticwb.process.model.documentation.Instantiable"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Iterator"%>
+<%@ page import="java.util.Map" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentTemplateResource.PARAM_REQUEST);
     String uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids") : "";
-    SWBResourceURL urlSave = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
+    SWBResourceURL urlSave = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
+
     String title = "";
     String lang = "es";
     if (paramRequest.getUser() != null && paramRequest.getUser().getLanguage() != null) lang = paramRequest.getUser().getLanguage();

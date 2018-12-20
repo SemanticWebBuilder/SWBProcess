@@ -4,30 +4,23 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.process.documentation.model.Instantiable"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.process.documentation.model.Referable"%>
-<%@page import="org.semanticwb.process.model.ProcessSite"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
-<%@page import="org.semanticwb.process.documentation.model.Reference"%>
-<%@page import="org.semanticwb.process.documentation.model.Definition"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.process.documentation.model.Format"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.platform.SemanticProperty"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.model.WebPage"%>
+<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.platform.SemanticClass"%>
+<%@page import="org.semanticwb.platform.SemanticProperty"%>
+<%@page import="org.semanticwb.portal.SWBFormMgr"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
 <%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentSection"%>
+<%@page import="org.semanticwb.process.model.documentation.Instantiable"%>
+<%@page import="org.semanticwb.process.model.documentation.Referable"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Iterator"%>
+<%@ page import="java.util.Map" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
@@ -40,7 +33,7 @@ if (model != null) {
     String uriDocSection = request.getParameter("urids") != null ? request.getParameter("urids") : "";
     DocumentSection docSection = (DocumentSection) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uriDocSection);
     String classUri = request.getParameter("classuri") != null ? request.getParameter("classuri") : "";
-    SemanticClass semanticCls = (SemanticClass) SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(classUri);
+    SemanticClass semanticCls = SWBPlatform.getSemanticMgr().getVocabulary().getSemanticClass(classUri);
     if (semanticCls != null && semanticCls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {
         SWBFormMgr forMgr = new SWBFormMgr(semanticCls, model.getSemanticObject(), SWBFormMgr.MODE_EDIT);
         forMgr.clearProperties();
@@ -54,10 +47,12 @@ if (model != null) {
         if (semanticCls.isSubClass(Referable.swpdoc_Referable, false)) {
             %>
             <div class="form-group" id="divconfigdata">
-                <label for="" class="col-lg-3 control-label"><%=paramRequest.getLocaleString("lblRepository")%><%=docSection==null?" *":""%>:</label>
+                <label class="col-lg-3 control-label"><%=paramRequest.getLocaleString("lblRepository")%><%=docSection==null?" *":""%>:</label>
                 <div class="col-lg-9">
                     <%if (docSection != null && docSection.getConfigData() != null){
-                        RepositoryDirectory rd = (RepositoryDirectory) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(docSection.getConfigData());
+                        RepositoryDirectory rd = (RepositoryDirectory) SWBPlatform.getSemanticMgr()
+                                .getOntology().getGenericObject(docSection.getConfigData());
+
                         if (rd != null) {
                             %>
                             <input type="text" name="configdata" class="form-control" disabled value="<%=rd.getTitle()%>"/>
@@ -113,7 +108,9 @@ if (model != null) {
         itSemProp = forMgr.getProperties().iterator();
         if (itSemProp.hasNext()) {
             %>
-            <h4><span class="fa fa-check-square-o fa-fw"></span><%=paramRequest.getLocaleString("btnInfo") + " " + paramRequest.getLocaleString("pagDelim") + " " + semanticCls.getDisplayName(lang)%></h4>
+            <h4>
+                <span class="fa fa-check-square-o fa-fw"></span><%=paramRequest.getLocaleString("btnInfo") + " " + paramRequest.getLocaleString("pagDelim") + " " + semanticCls.getDisplayName(lang)%>
+            </h4>
             <hr>
             <div class="table-responsive">
                 <table class="table table-hover swbp-table">
@@ -152,7 +149,8 @@ if (model != null) {
                                 <input type="text" name="label<%=idSemProp%>" value="<%=label%>" class="form-control">
                             </td>
                             <td class="swbp-icon-center">
-                                <input class="form-control" type="checkbox" name="<%=idSemProp%>" <%=(docSection != null && docSection.getVisibleProperties().contains(idSemProp))?"checked":""%>>
+                                <input class="form-control" type="checkbox"
+                                   name="<%=idSemProp%>" <%=(docSection != null && docSection.getVisibleProperties().contains(idSemProp))?"checked":""%>>
                             </td>
                         </tr>
                     <%

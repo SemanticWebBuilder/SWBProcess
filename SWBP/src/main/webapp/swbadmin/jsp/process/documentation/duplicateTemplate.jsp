@@ -4,24 +4,22 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.text.DateFormat"%>
-<%@page import="java.util.Locale"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.documentation.DocumentTemplate"%>
+<%@page import="org.semanticwb.process.model.documentation.TemplateContainer"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
+<%@ page import="java.util.Iterator" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentTemplateResource.PARAM_REQUEST);
-    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").toString() : "";
+    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc") : "";
     TemplateContainer tc = (TemplateContainer) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uritc);
-    SWBResourceURL urlSave = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentTemplateResource.ACTION_DUPLICATE_TEMPLATE).setParameter("uritc", uritc);
+    SWBResourceURL urlSave = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setAction(SWPDocumentTemplateResource.ACTION_DUPLICATE_TEMPLATE).setParameter("uritc", uritc);
+
 %>
 <div class="modal-dialog">
     <div class="modal-content">
@@ -32,16 +30,17 @@
         <form action="<%= urlSave %>" method="post" id="formdte" class="form-horizontal swbp-form">
             <div class="modal-body">
                 <div class="form-group" id="divtitletcd">
-                    <label for="" class="col-sm-3 control-label">Título *:</label>
+                    <label class="col-sm-3 control-label">TÃ­tulo *:</label>
                     <div class="col-sm-8">
-                        <input name="titletcd" id="titletcd" required value="<%= tc == null ? "" : tc.getTitle()%>" class="form-control"/>
+                        <input name="titletcd" id="titletcd" required
+                               value="<%= tc == null ? "" : tc.getTitle()%>" class="form-control"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="" class="col-sm-3 control-label">Versión *:</label>
+                    <label class="col-sm-3 control-label">VersiÃ³n *:</label>
                     <div class="col-sm-8">
                         <select name="versiontemp" class="form-control" required>
-                            <option>Seleccione una versión</option>
+                            <option>Seleccione una versiÃ³n</option>
                             <%
                             if (null != tc) {
                                 Iterator<DocumentTemplate> it = SWBComparator.sortByCreated(tc.listTemplates(), false);
@@ -62,7 +61,7 @@
                     <span class="fa fa-save fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnSave")%></span>
                 </button>
                 <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                    <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnCancel")%></span>
+                    <span class="fa fa-times fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnCancel")%></span>
                 </button>
             </div>
         </form>

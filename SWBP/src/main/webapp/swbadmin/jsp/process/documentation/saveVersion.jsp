@@ -4,24 +4,16 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.model.Resource"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.model.Documentation"%>
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     String uridi = request.getParameter("uridi") != null ? request.getParameter("uridi") : "";
     String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
-    //SWBFormMgr forMgr = new SWBFormMgr(Documentation.sclass, paramRequest.getWebPage().getWebSite().getSemanticObject(), SWBFormMgr.MODE_CREATE);
-    //String title = forMgr.renderLabel(request, Documentation.swb_title, SWBFormMgr.MODE_CREATE);
-    //String description = forMgr.renderLabel(request, Documentation.swb_description, SWBFormMgr.MODE_CREATE);
-    SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentationResource.ACTION_SAVE_VERSION).setParameter("uridi", uridi);
+    SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setAction(SWPDocumentationResource.ACTION_SAVE_VERSION).setParameter("uridi", uridi);
 %>
 <div class="modal-dialog">
     <div class="modal-content">
@@ -34,7 +26,7 @@
             <input type="hidden" name="idp" value="<%= idp%>">
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="" class="col-sm-4 control-label">Comentarios *</label>
+                    <label class="col-sm-4 control-label">Comentarios *</label>
                     <div class="col-sm-7">
                         <input type="text" name="description" class="form-control">
                     </div>
@@ -45,7 +37,7 @@
                     <span class="fa fa-save fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnSave")%></span>
                 </button>
                 <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                    <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs"><%= paramRequest.getLocaleString("btnCancel")%></span>
+                    <span class="fa fa-times fa-fw"></span><span class="hidden-xs"><%= paramRequest.getLocaleString("btnCancel")%></span>
                 </button>
             </div>
         </form>

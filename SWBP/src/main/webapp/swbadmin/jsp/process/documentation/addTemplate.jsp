@@ -4,17 +4,9 @@
     Author     : hasdai
 --%>
 
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
-<%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     SWBResourceURL act = paramRequest.getActionUrl().setAction(SWBResourceURL.Action_ADD);
@@ -28,7 +20,7 @@
         <form class="form-horizontal swbp-form" action="<%= act %>" id="formNTP">
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label" for="">Título: *</label>
+                    <label class="col-sm-3 control-label">TÃ­tulo: *</label>
                     <div class="col-sm-8">
                         <input name="titletc" id="title" type="text" required class="form-control"/>
                     </div>
@@ -39,7 +31,7 @@
                     <span class="fa fa-save fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnSave")%></span>
                 </button>
                 <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                    <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs">Cancelar</span>
+                    <span class="fa fa-times fa-fw"></span><span class="hidden-xs">Cancelar</span>
                 </button>
             </div>
         </form>

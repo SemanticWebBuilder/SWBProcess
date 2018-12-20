@@ -3,31 +3,25 @@
     Created on : 28-ene-2016, 14:30:25
     Author     : hasdai
 --%>
-<%@page import="org.semanticwb.model.FormElement"%>
-<%@page import="org.semanticwb.process.model.SWBProcessFormMgr"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
-<%@page import="org.semanticwb.process.model.ItemAware"%>
-<%@page import="org.semanticwb.process.model.DataTypes"%>
-<%@page import="org.semanticwb.model.SWBClass"%>
-<%@page import="org.semanticwb.process.model.ItemAwareReference"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.platform.SemanticClass"%>
-<%@page import="org.semanticwb.platform.SemanticProperty"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="org.semanticwb.portal.SWBForms"%>
-<%@page import="org.semanticwb.process.forms.SWBFormMgrLayer"%>
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="java.util.Date"%>
-<%@page import="org.semanticwb.process.model.UserTask"%>
-<%@page import="org.semanticwb.model.Resource"%>
-<%@page import="org.semanticwb.process.model.Instance"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
+<%@page import="org.semanticwb.SWBPortal"%>
+<%@page import="org.semanticwb.SWBUtils"%>
+<%@page import="org.semanticwb.model.FormElement"%>
+<%@page import="org.semanticwb.model.Resource"%>
+<%@page import="org.semanticwb.model.SWBClass"%>
+<%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.platform.SemanticClass"%>
+<%@page import="org.semanticwb.platform.SemanticObject"%>
+<%@page import="org.semanticwb.platform.SemanticProperty"%>
+<%@page import="org.semanticwb.portal.SWBFormMgr"%>
+<%@page import="org.semanticwb.portal.SWBForms"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.forms.SWBFormMgrLayer"%>
+<%@page import="org.semanticwb.process.model.*"%>
 <%@page import="org.semanticwb.process.resources.ProcessForm"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Iterator"%>
 <jsp:useBean id="paramRequest" scope="request" type="org.semanticwb.portal.api.SWBParamRequest"/>
 <%
     FlowNodeInstance foi = (FlowNodeInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(request.getParameter(ProcessForm.PARAM_SURI));
@@ -261,7 +255,7 @@
                                 console.log("Se enviaron los datos");
                             },
                             error: function(error) {
-                                console.log("Ocurrió un error al enviar los datos");
+                                console.log("Ocurriï¿½ un error al enviar los datos");
                             }
                         });
                     } else

@@ -4,7 +4,7 @@ package org.semanticwb.process.model.base;
    /**
    * Grupo de Procesos 
    */
-public abstract class ProcessGroupBase extends org.semanticwb.process.model.ProcessElement implements org.semanticwb.model.Filterable,org.semanticwb.model.Activeable,org.semanticwb.model.FilterableNode,org.semanticwb.model.Descriptiveable,org.semanticwb.model.FilterableClass,org.semanticwb.model.Traceable,org.semanticwb.model.Trashable
+public abstract class ProcessGroupBase extends org.semanticwb.process.model.ProcessElement implements org.semanticwb.model.Filterable,org.semanticwb.model.FilterableClass,org.semanticwb.model.FilterableNode,org.semanticwb.model.Trashable,org.semanticwb.model.Traceable,org.semanticwb.model.Descriptiveable,org.semanticwb.model.Activeable
 {
    /**
    * Grupo de Procesos

@@ -4,19 +4,15 @@
     Author     : Hasdai Pacheco <ebenezer.sanchez@infotec.com.mx>
 --%>
 
-<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.model.RoleRef"%>
-<%@page import="org.semanticwb.model.Role"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.process.model.UserTask"%>
-<%@page import="org.semanticwb.model.UserRepository"%>
-<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
+<%@page import="org.semanticwb.model.*"%>
 <%@page import="org.semanticwb.platform.SemanticObject"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
+<%@page import="org.semanticwb.process.model.UserTask"%>
+<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Iterator"%>
 <%
 SWBParamRequest paramRequest = (SWBParamRequest)request.getAttribute("paramRequest");
 User user = paramRequest.getUser();
@@ -81,7 +77,7 @@ SWBResourceURL forward = paramRequest.getActionUrl().setAction(UserTaskInboxReso
                 <div class="modal-body">
                     <div class="row form-group">
                     <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12 swbp-modal-property">
-                        <label for="pid"><%=paramRequest.getLocaleString("promptFwd")%></label>
+                        <label><%=paramRequest.getLocaleString("promptFwd")%></label>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-10 col-xs-12">
                         <select class="form-control" name="owner">
@@ -101,10 +97,10 @@ SWBResourceURL forward = paramRequest.getActionUrl().setAction(UserTaskInboxReso
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                        <span class="fa fa-hand-o-right fa-fw"></span><%=paramRequest.getLocaleString("btnOk")%>
+                        <span class="fa fa-check fa-fw"></span><%=paramRequest.getLocaleString("btnOk")%>
                     </button>
                     <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                        <span class="fa fa-arrow-left fa-fw"></span><%=paramRequest.getLocaleString("btnCancel")%>
+                        <span class="fa fa-times fa-fw"></span><%=paramRequest.getLocaleString("btnCancel")%>
                     </button>
                     
                 </div>

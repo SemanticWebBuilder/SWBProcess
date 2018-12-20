@@ -1,81 +1,30 @@
-<%@page import="org.semanticwb.process.model.AnnotationArtifact"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.model.DataStore"%>
-<%@page import="org.semanticwb.process.model.Pool"%>
-<%@page import="org.semanticwb.process.model.DataObject"%>
-<%@page import="org.semanticwb.process.model.ServiceTask"%>
-<%@page import="org.semanticwb.process.model.MessageEndEvent"%>
-<%@page import="org.semanticwb.process.model.MessageIntermediateThrowEvent"%>
-<%@page import="org.semanticwb.process.model.MessageIntermediateCatchEvent"%>
-<%@page import="org.semanticwb.process.model.RuleIntermediateCatchEvent"%>
-<%@page import="org.semanticwb.process.model.RuleStartEvent"%>
-<%@page import="org.semanticwb.process.model.MessageStartEvent"%>
-<%@page import="org.semanticwb.process.model.StartEventNode"%>
-<%@page import="org.semanticwb.model.Descriptiveable"%>
-<%@page import="java.io.File"%>
-<%@page import="java.io.FileReader"%>
-<%@page import="java.io.BufferedReader"%>
-<%@page import="org.semanticwb.portal.SWBResourceMgr"%>
-<%@page import="org.semanticwb.process.model.ConnectionObject"%>
-<%@page import="org.semanticwb.process.model.ActionCodeable"%>
-<%@page import="org.semanticwb.process.model.ItemAware"%>
-<%@page import="org.semanticwb.process.model.ManualTask"%>
-<%@page import="org.semanticwb.process.model.ScriptTask"%>
-<%@page import="org.semanticwb.process.model.SignalEndEvent"%>
-<%@page import="org.semanticwb.process.model.EndEventNode"%>
-<%@page import="org.semanticwb.process.model.EndEvent"%>
-<%@page import="org.semanticwb.process.model.StartEvent"%>
-<%@page import="org.semanticwb.process.model.SignalIntermediateThrowEvent"%>
-<%@page import="org.semanticwb.process.model.IntermediateThrowEvent"%>
-<%@page import="org.semanticwb.process.model.TimerIntermediateCatchEvent"%>
-<%@page import="org.semanticwb.process.model.SignalIntermediateCatchEvent"%>
-<%@page import="org.semanticwb.process.model.TimerStartEvent"%>
-<%@page import="org.semanticwb.process.model.SignalStartEvent"%>
-<%@page import="org.semanticwb.process.model.IntermediateCatchEvent"%>
-<%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<%@page import="org.semanticwb.portal.resources.sem.HTMLContent"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.model.RoleRef"%>
-<%@page import="org.semanticwb.model.Role"%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
-<%@page import="org.semanticwb.model.Resource"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.process.model.SubProcessInstance"%>
-<%@page import="org.semanticwb.process.model.Activity"%>
-<%@page import="org.semanticwb.process.model.StartEvent"%>
-<%@page import="org.semanticwb.process.model.Lane"%>
-<%@page import="org.semanticwb.process.model.Instance"%>
-<%@page import="org.semanticwb.process.model.ProcessSite"%>
-<%@page import="org.semanticwb.process.model.UserTask"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.process.model.ProcessGroup"%>
-<%@page import="org.semanticwb.process.model.SWBProcessMgr"%>
-<%@page import="org.semanticwb.process.model.GraphicalElement"%>
-<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
-<%@page import="org.semanticwb.SWBUtils"%>
 <%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="java.util.List"%>
+<%@page import="org.semanticwb.SWBUtils"%>
+<%@page import="org.semanticwb.model.*"%>
+<%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.portal.resources.sem.HTMLContent"%>
+<%@page import="org.semanticwb.process.model.*"%>
+<%@page import="org.semanticwb.process.model.Process"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Iterator"%>
 
 <script type="text/javascript">
     dojo.require("dojo.fx");
     dojo.require("dijit.dijit");
+
     function expande(elementId) {
         var el = document.getElementById(elementId);
-        var anim1 = dojo.fx.wipeIn({node:el, duration:500 });
-        var anim2 = dojo.fadeIn({node:el, duration:500 });
-        dojo.fx.combine([anim1,anim2]).play();
+        var anim1 = dojo.fx.wipeIn({node: el, duration: 500});
+        var anim2 = dojo.fadeIn({node: el, duration: 500});
+        dojo.fx.combine([anim1, anim2]).play();
     }
 
     function colapsa(elementId) {
         var el = document.getElementById(elementId);
-        var anim1 = dojo.fx.wipeOut({node:el, duration:500 });
-        var anim2 = dojo.fadeOut({node:el, duration:500 });
-        dojo.fx.combine([anim1,anim2]).play();
+        var anim1 = dojo.fx.wipeOut({node: el, duration: 500});
+        var anim2 = dojo.fadeOut({node: el, duration: 500});
+        dojo.fx.combine([anim1, anim2]).play();
     }
 </script>
 

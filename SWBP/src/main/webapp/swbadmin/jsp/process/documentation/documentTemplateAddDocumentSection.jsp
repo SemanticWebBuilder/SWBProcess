@@ -4,25 +4,21 @@
     Author     : hasdai
 --%>
 
-<%@page import="org.semanticwb.process.documentation.model.ElementReference"%>
-<%@page import="org.semanticwb.process.documentation.model.Activity"%>
-<%@page import="org.semanticwb.process.documentation.model.Model"%>
-<%@page import="org.semanticwb.platform.SemanticClass"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSection"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentTemplate"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentTemplateResource"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
 <%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.documentation.*"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentTemplateResource"%>
+<%@ page import="java.util.Iterator" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
-    SWBResourceURL act = paramRequest.getActionUrl().setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
+    SWBResourceURL act = paramRequest.getActionUrl()
+            .setAction(SWPDocumentTemplateResource.ACTION_ADD_DOCUMENT_SECTION);
+
     String uridt = request.getParameter("uridt") != null ? request.getParameter("uridt") : "";
     DocumentTemplate docTemplate = (DocumentTemplate) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridt);
     
@@ -36,7 +32,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h5 class="modal-title">Agregar sección</h5>
+            <h5 class="modal-title">Agregar secciÃ³n</h5>
         </div>
         <%
         if (null == docTemplate) {
@@ -61,13 +57,13 @@
                 <input type="hidden" name="uridt" value="<%= docTemplate.getURI() %>"/>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label">Título: *</label>
+                        <label class="col-sm-4 control-label">TÃ­tulo: *</label>
                         <div class="col-sm-7">
                             <input name="titleSection" id="titltitleSectione" type="text" required class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label"><%=paramRequest.getLocaleString("lblSecType")%>*:</label>
+                        <label class="col-sm-4 control-label"><%=paramRequest.getLocaleString("lblSecType")%>*:</label>
                         <div class="col-sm-7">
                             <select required name="dstype" id="dstype" class="form-control">
                                 <option value="">Seleccione un tipo</option>
@@ -99,7 +95,7 @@
                         <span class="fa fa-save fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("btnSave")%></span>
                     </button>
                     <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal">
-                        <span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs">Cancelar</span>
+                        <span class="fa fa-times fa-fw"></span><span class="hidden-xs">Cancelar</span>
                     </button>
                 </div>
             </form>
