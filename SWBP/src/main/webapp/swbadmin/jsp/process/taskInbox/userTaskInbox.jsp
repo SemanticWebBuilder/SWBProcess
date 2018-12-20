@@ -4,25 +4,16 @@
     Author     : Hasdai Pacheco {ebenezer.sanchez@infotec.com.mx}
 --%>
 
-<%@page import="java.util.HashMap"%>
 <%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.process.model.UserTask"%>
-<%@page import="org.semanticwb.process.model.Instance"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.model.ProcessGroup"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.model.Resource"%>
-<%@page import="org.semanticwb.model.Role"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.model.WebPage"%>
+<%@page import="org.semanticwb.model.*"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.*"%>
+<%@page import="org.semanticwb.process.model.Process"%>
 <%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
-<%@page import="org.semanticwb.model.User"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Iterator"%>
 <%!
 public boolean isAdminUser(User user, UserTaskInboxResource base) {
     if (user == null) return false;
@@ -156,13 +147,13 @@ if (!user.isSigned()) {
         }
         %>
         <div class="row no-margin swbp-button-ribbon text-right">
-            <a href="<%=createPiUrl%>" class="btn btn-swbp-action" data-toggle="modal" data-target="#modalDialog">Crear instancia</a>
+            <a href="<%=createPiUrl%>" class="btn btn-swbp-action" data-toggle="modal" data-target="#modalDialog">Iniciar proceso</a>
         </div> 
         <hr>    
         <div class="row form-group swbp-filters">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 ">
                 <div class="col-lg-4 col-md-4 hidden-sm hidden-xs text-right">
-                    <label for="">Mostrar:</label>
+                    <label>Mostrar:</label>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding">
                     <%
@@ -212,7 +203,7 @@ if (!user.isSigned()) {
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                 <div class="col-lg-4 col-md-4 hidden-sm hidden-xs text-right">
-                    <label for="">ordenar:</label>
+                    <label>ordenar:</label>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding">
                     <%
@@ -236,7 +227,7 @@ if (!user.isSigned()) {
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                 <div class="col-lg-4 col-md-4 hidden-sm hidden-xs text-right">
-                    <label for="">Filtrar:</label>
+                    <label>Filtrar:</label>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding">
                     <%  optsUrl = paramRequest.getRenderUrl();
@@ -355,15 +346,15 @@ if (!user.isSigned()) {
                                         if (isAdminUser(user, utir)) {
                                             SWBResourceURL claimUrl = paramRequest.getActionUrl().setAction(UserTaskInboxResource.ACT_CLAIM);
                                             %>
-                                            <a class="btn btn-default col-xs-3" href="<%=claimUrl%>?suri=<%=instance.getEncodedURI()%>" <% if (instance.getAssignedto() != null && !user.getURI().equals(instance.getAssignedto().getURI())) {%>onclick="return (confirm('La tarea le será asignada y desaparecerá de la bandeja del dueño. ¿Desea continuar?'))"<%}%>>
-                                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-hand-o-up"></span>
+                                            <a class="btn btn-default col-xs-3" href="<%=claimUrl%>?suri=<%=instance.getEncodedURI()%>" <% if (instance.getAssignedto() != null && !user.getURI().equals(instance.getAssignedto().getURI())) {%>onclick="return (confirm('La tarea le serï¿½ asignada y desaparecerï¿½ de la bandeja del dueï¿½o. ï¿½Desea continuar?'))"<%}%>>
+                                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-envelope-open"></span>
                                                 <span class="col-lg-8 col-md-8 hidden-sm hidden-xs no-padding text-left"><%=paramRequest.getLocaleString("actTake")%></span>
                                             </a>
                                             <%
                                         } else {
                                             %>
                                             <a class="btn btn-default col-xs-3" href="<%=utask.getTaskWebPage().getUrl()%>?suri=<%=instance.getEncodedURI()%>" title="<%=paramRequest.getLocaleString("actTake")%>">
-                                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-hand-o-up"></span>
+                                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-envelope-open"></span>
                                                 <span class="col-lg-8 col-md-8 hidden-sm hidden-xs no-padding text-left"><%=paramRequest.getLocaleString("actTake")%></span>
                                             </a>
                                             <%
@@ -393,7 +384,7 @@ if (!user.isSigned()) {
                                         if (statusWp != null) {
                                             %>
                                             <a class="btn btn-default col-xs-3" href="<%=statusWp.getUrl()%>?suri=<%=instance.getProcessInstance().getEncodedURI()%>">
-                                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-sitemap fa-rotate-270"></span>
+                                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 fa fa-eye"></span>
                                                 <span class="col-lg-8 col-md-8 hidden-sm hidden-xs no-padding text-left"><%=paramRequest.getLocaleString("actMap")%></span>
                                             </a>
                                             <%

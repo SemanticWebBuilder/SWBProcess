@@ -4,31 +4,30 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.process.documentation.model.Activity"%>
-<%@page import="java.util.Date"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSectionInstance"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.model.WebSite"%>
+<%@page import="org.semanticwb.model.WebPage"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.documentation.SectionElement"%>
+<%@ page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     String urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
     String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
     String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
     SectionElement sei = (SectionElement) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
-    SWBResourceURL urlEditor = paramRequest.getActionUrl().setAction(SWPDocumentationResource.ACTION_EDIT_TEXT).setParameter("urise", urise);
+    SWBResourceURL urlEditor = paramRequest.getActionUrl().setAction(SWPDocumentationResource.ACTION_EDIT_TEXT)
+            .setParameter("urise", urise);
+
     urlEditor.setParameter("uridsi", uridsi);
     urlEditor.setParameter("idp", idp);
     WebPage wpage = paramRequest.getWebPage();
-    //DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
-    SWBResourceURL urlUpload = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentationResource.ACTION_UPLOAD_PICTURE).setParameter("urise", java.net.URLEncoder.encode(urise, "UTF-8"));
-    //final String fullHostname = request.getScheme() + "://" + request.getServerName() + (request.getServerPort() != 80? ":" + request.getServerPort():"");
+
+    SWBResourceURL urlUpload = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setAction(SWPDocumentationResource.ACTION_UPLOAD_PICTURE)
+            .setParameter("urise", java.net.URLEncoder.encode(urise, "UTF-8"));
+
 %>
 <div class="modal-dialog">
     <div class="modal-content">
@@ -115,12 +114,4 @@
             e.stopImmediatePropagation();
         }
     });
-
-
-    /*$('#open').click(function() {
-        $("#dialog").dialog({
-            width: 800,
-            modal: true
-        });
-    });*/
 </script>

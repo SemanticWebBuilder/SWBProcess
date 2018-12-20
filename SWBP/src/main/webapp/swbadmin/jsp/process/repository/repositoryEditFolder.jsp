@@ -4,20 +4,16 @@
     Author     : Ana Laura Garcia <ana.garcias@infotec.mx>
 --%>
 
-<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.model.Traceable"%>
 <%@page import="org.semanticwb.model.Descriptiveable"%>
-<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
 <%@page import="org.semanticwb.model.GenericObject"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="org.semanticwb.model.VersionInfo"%>
-<%@page import="org.semanticwb.process.model.RepositoryURL"%>
-<%@page import="org.semanticwb.process.model.RepositoryFile"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.process.model.RepositoryElement"%>
 <%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
+<%@page import="org.semanticwb.process.model.RepositoryFile"%>
+<%@page import="org.semanticwb.process.model.RepositoryURL"%>
+<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
@@ -81,7 +77,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" id="savedtes"><span class="fa fa-save fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("msgBTNSave")%></span></button>
-                        <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs">Cancelar</span>
+                        <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-times fa-fw"></span><span class="hidden-xs">Cancelar</span>
                         </button>
                     </div>
                 </form>

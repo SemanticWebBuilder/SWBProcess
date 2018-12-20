@@ -4,16 +4,12 @@
     Author     : hasdai
 --%>
 
-<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.model.User"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL" %>
+<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest" %>
-<%@page import="org.semanticwb.process.resources.reports.UserRolesSegregationBean" %>
-<%@page import="java.util.ArrayList" %>
-<%@page import="java.util.Iterator" %>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL" %>
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
-//ArrayList<UserRolesSegregationBean> beans = (ArrayList<UserRolesSegregationBean>) request.getAttribute("beans");
 SWBResourceURL viewUrl = paramRequest.getRenderUrl().setMode(paramRequest.Mode_VIEW);
 User user = paramRequest.getUser();
 WebSite site = paramRequest.getWebPage().getWebSite();

@@ -3,32 +3,31 @@
     Created on : 7/05/2013, 12:09:42 PM
     Author     : Hasdai Pacheco <develop@hasdaipacheco.com>
 --%>
-<%@page import="org.semanticwb.platform.SemanticObject"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.model.GenericObject"%>
-<%@page import="org.semanticwb.SWBPortal"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.SWBPortal"%>
+<%@page import="org.semanticwb.model.GenericObject"%>
 <%@page import="org.semanticwb.model.SWBContext"%>
-<%@page import="org.semanticwb.process.resources.SVGModeler"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.model.WebSite"%>
+<%@page import="org.semanticwb.platform.SemanticObject"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.model.ProcessInstance"%>
+<%@page import="org.semanticwb.process.resources.SVGModeler"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     boolean isViewMode = (Boolean) request.getAttribute("isViewMode");
     boolean showStatus = (Boolean) request.getAttribute("showStatus");
-    String suri = request.getParameter("suri");
 
     SWBResourceURL exportUrl = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT);
     exportUrl.setMode(SVGModeler.MODE_EXPORT);
-    Process p = null;
+	Process p = null;
 
     SemanticObject sogo = null;
-    GenericObject go = SWBPlatform.getSemanticMgr().getOntology().getGenericObject(suri);
+    GenericObject go = SWBPlatform.getSemanticMgr().getOntology().getGenericObject(request.getParameter("suri"));
     
     if (null != go) {
-    		sogo = go.getSemanticObject();
+        sogo = go.getSemanticObject();
     }
     
     if (null != sogo && sogo.instanceOf(Process.sclass)) {

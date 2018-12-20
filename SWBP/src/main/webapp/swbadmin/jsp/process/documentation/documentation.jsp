@@ -3,42 +3,28 @@
     Created on : 5/12/2013, 05:36:08 PM
     Author     : carlos.alvarez
 --%>
-<%@page import="org.semanticwb.process.documentation.model.Activity"%>
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.process.documentation.model.Model"%>
-<%@page import="org.semanticwb.process.documentation.model.FreeText"%>
-<%@page import="org.semanticwb.process.model.RepositoryURL"%>
-<%@page import="org.semanticwb.model.VersionInfo"%>
-<%@page import="org.semanticwb.process.model.RepositoryElement"%>
-<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
+<%@page import="org.semanticwb.SWBPortal"%>
+<%@page import="org.semanticwb.model.*"%>
+<%@page import="org.semanticwb.platform.SemanticClass"%>
 <%@page import="org.semanticwb.platform.SemanticProperty"%>
 <%@page import="org.semanticwb.portal.SWBFormMgr"%>
-<%@page import="org.semanticwb.process.documentation.model.ElementReference"%>
-<%@page import="org.semanticwb.process.documentation.model.Referable"%>
-<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.Date"%>
-<%@page import="org.semanticwb.process.documentation.model.Instantiable"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.platform.SemanticClass"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceModes"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPUserDocumentationResource"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURLImp"%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSectionInstance"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentationInstance"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.process.documentation.model.TemplateContainer"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.model.WebSite"%>
-<%@page import="org.semanticwb.model.Resource"%>
-<%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceModes"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURLImp"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
+<%@page import="org.semanticwb.process.model.RepositoryElement"%>
+<%@page import="org.semanticwb.process.model.RepositoryURL"%>
+<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
+<%@page import="org.semanticwb.process.model.documentation.*"%>
+<%@page import="org.semanticwb.process.resources.manager.SWBProcessManagerResource"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 	SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentationResource.PARAM_REQUEST);
@@ -48,15 +34,19 @@
 	boolean showEditText = null != base.getAttribute("allowEditText") && "true".equalsIgnoreCase(base.getAttribute("allowEditText"));
 	String editTools = "";
 	WebSite site = paramRequest.getWebPage().getWebSite();
-	String idp = request.getParameter("idp") != null ? request.getParameter("idp").toString() : "";
-	String idpg = request.getParameter("pg") != null ? request.getParameter("pg").toString() : "";
+	String idp = request.getParameter("idp") != null ? request.getParameter("idp") : "";
+	String idpg = request.getParameter("pg") != null ? request.getParameter("pg") : "";
 	String lang = user != null && user.getLanguage() != null ? user.getLanguage() : "es";
 	Process p = Process.ClassMgr.getProcess(idp, site);
 	String pg = request.getParameter("pg") != null ? request.getParameter("pg") : "";
 	String pag = request.getParameter("p") != null ? request.getParameter("p") : "";
-	SWBResourceURL urlText = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentationResource.ACTION_EDIT_TEXT);
+	SWBResourceURL urlText = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+			.setAction(SWPDocumentationResource.ACTION_EDIT_TEXT);
+
 	String wp = request.getParameter("wp");
-	SWBResourceURL urlUpload = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentationResource.ACTION_UPLOAD_PICTURE);
+	SWBResourceURL urlUpload = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+			.setAction(SWPDocumentationResource.ACTION_UPLOAD_PICTURE);
+
 	if (showEditText) {
 		editTools = "cut copy paste| link unlink | searchreplace | insertdatetime | spellchecker | formatselect fontselect fontsizeselect";
 	}
@@ -66,7 +56,8 @@
 		if (itTemplateCont == null || !itTemplateCont.hasNext()) {
 			%>
 			<div class="row no-margin swbp-button-ribbon text-right">
-				<a href="<%= paramRequest.getWebPage().getParent().getUrl(lang) %>?pg=<%= idpg %>" class="btn btn-swbp-action">Regresar</a>
+				<a href="<%= paramRequest.getWebPage().getParent().getUrl(lang) %>?pg=<%= idpg %>"
+				   class="btn btn-swbp-action">Regresar</a>
 			</div>
 			<hr>
 			<div class="alert alert-block alert-warning fade in">
@@ -87,7 +78,9 @@
 			}
 			itdsi = actives.iterator();
 
-			SWBResourceURL urlVersion = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setMode(SWPDocumentationResource.MODE_VERSION).setParameter("uridi", di.getURI());
+			SWBResourceURL urlVersion = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+					.setMode(SWPDocumentationResource.MODE_VERSION).setParameter("uridi", di.getURI());
+
 			SWBResourceURL urlAdminVersion = paramRequest.getRenderUrl().setMode(SWPDocumentationResource.MODE_ADMIN_VERSION);
 			urlAdminVersion.setParameter("idp", idp);
 			String _rid = request.getParameter("_rid");
@@ -99,7 +92,7 @@
 
 			Resource resource = Resource.ClassMgr.getResource(_rid, site);
 			SWBResourceURL urlView = new SWBResourceURLImp(request, resource, wpage, SWBResourceModes.UrlType_RENDER);
-			urlView.setMode(SWPUserDocumentationResource.MODE_VIEW_DOCUMENTATION);
+			urlView.setMode(SWBProcessManagerResource.MODE_VIEW_DOCUMENTATION);
 			urlView.setParameter("idp", idp);
 
 			String templatesUrl = wpage.getUrl(lang);
@@ -109,13 +102,16 @@
 					templatesUrl = twp.getUrl(lang);
 				}
 			}
-			SWBResourceURL urlZip = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setMode(SWPDocumentationResource.MODE_DOWNLOAD);
+			SWBResourceURL urlZip = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+                    .setMode(SWPDocumentationResource.MODE_DOWNLOAD);
+
 			urlZip.setParameter("idp", idp);
 			urlZip.setParameter("urip", p.getURI());
 			urlZip.setParameter("uridi", di.getURI());
 	    %>
 			<div class="row no-margin swbp-button-ribbon text-right">
-				<a href="<%= paramRequest.getWebPage().getParent().getUrl(lang) %>?pg=<%= idpg %>" class="btn btn-swbp-action">REGRESAR</a>
+				<a href="<%= paramRequest.getWebPage().getParent().getUrl(lang) %>?pg=<%= idpg %>"
+                   class="btn btn-swbp-action">Regresar</a>
 				<a href="<%= templatesUrl %>" class="btn btn-swbp-action"><%= paramRequest.getLocaleString("lblAdminTemplates") %></a>
 			</div>
 			<hr>
@@ -200,29 +196,35 @@
       		</script>
       		<div class="row hidden-margin">
       			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-padding pull-right">
-      				<a onclick="downloadVersion('<%= SWPDocumentationResource.FORMAT_HTML %>')" class="btn btn-default btn-block swbp-btn-inter2 hidden-margin">Descargar en HTML</a>
+      				<a onclick="downloadVersion('<%= SWPDocumentationResource.FORMAT_HTML %>')"
+                       class="btn btn-default btn-block swbp-btn-inter2 hidden-margin">Descargar en HTML</a>
     				</div>
     				<%
     				if (showWord) {
     					%>
     					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-padding pull-right">
-    						<a onclick="downloadVersion('<%= SWPDocumentationResource.FORMAT_WORD %>')" class="btn btn-default btn-block swbp-btn-inter2 hidden-margin">Descargar en Word</a>
+    						<a onclick="downloadVersion('<%= SWPDocumentationResource.FORMAT_WORD %>')"
+                               class="btn btn-default btn-block swbp-btn-inter2 hidden-margin">Descargar en Word</a>
   						</div>
   						<%
 					}
 					%>
 					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-padding pull-right">
-						<a href="<%= urlVersion.setParameter("idp", idp) %>" class="btn btn-default btn-block swbp-btn-inter2 hidden-margin" data-toggle="modal" data-target="#modalDialog">Publicar versión</a>
+						<a href="<%= urlVersion.setParameter("idp", idp) %>"
+                           class="btn btn-default btn-block swbp-btn-inter2 hidden-margin"
+                           data-toggle="modal" data-target="#modalDialog">Publicar versión</a>
 					</div>
 					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-padding pull-right">
-						<a href="<%=urlAdminVersion%>" class="btn btn-default btn-block swbp-btn-inter2 hidden-margin">Versiones publicadas</a>
+						<a href="<%=urlAdminVersion%>"
+                           class="btn btn-default btn-block swbp-btn-inter2 hidden-margin">Versiones publicadas</a>
 					</div>
 				</div>
 
 				<div class="panel panel-default swbp-panel-head">
 					<div class="panel-heading text-center"><%= p.getTitle() %>
 					<div class="pull-right">
-						<a class="accordion-toggle fa fa-bars fa-lg" data-toggle="collapse" data-parent="#UniqueName" href="#SWBP-MENU-PROCESO"></a>
+						<a class="accordion-toggle fa fa-bars fa-lg" data-toggle="collapse"
+                           data-parent="#UniqueName" href="#SWBP-MENU-PROCESO"></a>
 					</div>
 				</div>
 			</div>
@@ -233,7 +235,9 @@
 						DocumentSectionInstance docSectionInstance = itdsi.next();
 						String idDocSectionInstance = docSectionInstance.getId();
 						%>
-						<a href="#<%= idDocSectionInstance%>" class="list-group-item"> <%=docSectionInstance.getSecTypeDefinition().getTitle()%></a>
+						<a
+                            href="#<%= idDocSectionInstance%>"
+                            class="list-group-item"> <%=docSectionInstance.getSecTypeDefinition().getTitle()%></a>
 						<%
 					}
 					%>
@@ -242,26 +246,40 @@
 
 			<div class="panel-body swbp-panel-body">
 				<%
-				itdsi = actives.iterator();//SWBComparator.sortSortableObject(di.listDocumentSectionInstances());//Regerar c�digo para ordenamiento
+				itdsi = actives.iterator();
 				while (itdsi.hasNext()) {
 					DocumentSectionInstance docSectionInstance = itdsi.next();
 					String uriDocSectionInstance = docSectionInstance.getURI();
 					String idDocSectionInstance = docSectionInstance.getId();
-					SWBResourceURL urlEdit = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setParameter("idp", idp);
-					SWBResourceURL urlTrace = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setMode(SWPDocumentationResource.MODE_TRACEABLE);
-					SWBResourceURL urlRemove = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setMode(SWPDocumentationResource.MODE_VIEW_REMOVE);
-					SWBResourceURL urlAction = paramRequest.getActionUrl().setAction(SWBResourceURL.Action_REMOVE).setParameter("uridsi", uriDocSectionInstance);
-					SemanticClass cls = docSectionInstance.getSecTypeDefinition() != null && docSectionInstance.getSecTypeDefinition().getSectionType() != null ? docSectionInstance.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
+					SWBResourceURL urlEdit = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+                            .setParameter("idp", idp);
+
+					SWBResourceURL urlTrace = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+                            .setMode(SWPDocumentationResource.MODE_TRACEABLE);
+
+					SWBResourceURL urlRemove = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+                            .setMode(SWPDocumentationResource.MODE_VIEW_REMOVE);
+
+					SWBResourceURL urlAction = paramRequest.getActionUrl().setAction(SWBResourceURL.Action_REMOVE)
+                            .setParameter("uridsi", uriDocSectionInstance);
+
+					SemanticClass cls = docSectionInstance.getSecTypeDefinition() != null &&
+                            docSectionInstance.getSecTypeDefinition().getSectionType() != null ?
+                            docSectionInstance.getSecTypeDefinition().getSectionType().transformToSemanticClass() : null;
+
 					Iterator<SectionElement> itse = SWBComparator.sortSortableObject(docSectionInstance.listDocuSectionElementInstances());
 					%>
 					<h4 id="<%=idDocSectionInstance%>"><%= docSectionInstance.getSecTypeDefinition().getTitle() %></h4>
 					<hr>
 					<%
-					if (cls != null && cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) { //BusinesRole, BusinessRule, Definition, Format, Indicator, Objetive, Policy, Reference y Risk
+                    //BusinesRole, BusinessRule, Definition, Format, Indicator, Objetive, Policy, Reference y Risk
+					if (cls != null && cls.isSubClass(Instantiable.swpdoc_Instantiable, false)) {
 						%>
 						<div class="row">
 							<div class="col-lg-3 col-md-4 col-sm-5 col-xs-12 pull-right">
-								<a href="<%= urlEdit.setMode(SWPDocumentationResource.MODE_EDIT_INSTANTIABLE).setParameter("uridsi", uriDocSectionInstance) %>" class="btn btn-default btn-block swbp-btn-inter2" data-toggle="modal" data-target="#modalDialog" >
+								<a href="<%= urlEdit.setMode(SWPDocumentationResource.MODE_EDIT_INSTANTIABLE).setParameter("uridsi", uriDocSectionInstance) %>"
+                                   class="btn btn-default btn-block swbp-btn-inter2" data-toggle="modal"
+                                   data-target="#modalDialog" >
 									Agregar
 								</a>
 							</div>
@@ -359,7 +377,10 @@
                             	<%
                             	if (!isReference) {
                            			%>
-                            		<a href="<%= urlEdit.setMode(SWPDocumentationResource.MODE_EDIT_INSTANTIABLE).setParameter("urise", uriSectionElement) %>" class="btn btn-default col-lg-4 col-md-4" title="<%= paramRequest.getLocaleString("btnEdit") %>" data-toggle="modal" data-target="#modalDialog">
+                            		<a href="<%= urlEdit.setMode(SWPDocumentationResource.MODE_EDIT_INSTANTIABLE).setParameter("urise", uriSectionElement) %>"
+                                       class="btn btn-default col-lg-4 col-md-4"
+                                       title="<%= paramRequest.getLocaleString("btnEdit") %>"
+                                       data-toggle="modal" data-target="#modalDialog">
                             			<span class="fa fa-pencil"></span>
                             		</a>
                             		<%
@@ -548,10 +569,15 @@
               				SectionElement se = itse.next();
               				String titleSectionElement = se.getTitle() != null ? se.getTitle() : "";
               				String uriSectionElement = se.getURI();
-              				SWBResourceURL urlRelated = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setMode(SWPDocumentationResource.MODE_RELATED_ACTIVITY).setParameter("idp", idp).setParameter("uridsi", uriDocSectionInstance);
+              				SWBResourceURL urlRelated = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+                                    .setMode(SWPDocumentationResource.MODE_RELATED_ACTIVITY)
+                                    .setParameter("idp", idp).setParameter("uridsi", uriDocSectionInstance);
+
               				Activity act = (Activity) se.getSemanticObject().createGenericInstance();
               				String fill = act.getFill() != null ? ("color: #" + act.getFill()) : "";
-              				SWBResourceURL urlFill = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentationResource.ACTION_UPDATE_FILL);
+              				SWBResourceURL urlFill = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+                                    .setAction(SWPDocumentationResource.ACTION_UPDATE_FILL);
+
               				String text = act.getDescription() != null ? act.getDescription() : "";
              				%>
              				<tr>
@@ -560,12 +586,15 @@
             							<%= text %>
           							</td>
           							<td data-title="<%= paramRequest.getLocaleString("lblActions") %>" class="swbp-action-table">
-	          							<a href="<%= urlEdit.setMode(SWPDocumentationResource.MODE_EDIT_DESCRIPTION).setParameter("urise", uriSectionElement).setParameter("d", new Date().getTime() + "") %>" class="btn btn-default col-lg-4 col-md-4" title="<%= paramRequest.getLocaleString("btnEdit") %>"
+	          							<a href="<%= urlEdit.setMode(SWPDocumentationResource.MODE_EDIT_DESCRIPTION).setParameter("urise", uriSectionElement).setParameter("d", new Date().getTime() + "") %>"
+                                           class="btn btn-default col-lg-4 col-md-4" title="<%= paramRequest.getLocaleString("btnEdit") %>"
 	          								data-toggle="modal" data-target="#modalDialog">
 	          								<span class="fa fa-pencil"></span>
 	        								</a>
 	        								<div class="dropdown">
-	        									<a href="" class="btn btn-default col-lg-4 col-md-4" data-toggle="dropdown"><span class="fa fa-tint" style="<%= !fill.isEmpty() ? fill : "" %>"></span></a>
+	        									<a href=""
+                                                   class="btn btn-default col-lg-4 col-md-4"
+                                                   data-toggle="dropdown"><span class="fa fa-tint" style="<%= !fill.isEmpty() ? fill : "" %>"></span></a>
         										<ul class="dropdown-menu list-inline" role="menu">
         											<li>
         												<a href="<%= urlFill.setParameter("fill", "defaultFill").setParameter("urise", act.getURI()) %>" class="colorPicker">

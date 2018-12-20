@@ -3,19 +3,10 @@
     Created on : 11/03/2013, 05:23:28 PM
     Author     : carlos.alvarez
 --%>
-<%@page import="org.semanticwb.model.WebPage"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.lang.reflect.Array"%>
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.portal.SWBServiceMgr"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.process.resources.reports.FileReport"%>
-<%@page import="org.semanticwb.process.resources.reports.Report"%>
-<%@page import="org.semanticwb.SWBPortal"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="java.util.Iterator"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.resources.reports.Report"%>
+<%@page import="java.util.Iterator"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     SWBResourceURL url = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT);

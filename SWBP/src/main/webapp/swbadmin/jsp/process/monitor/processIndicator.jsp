@@ -4,14 +4,11 @@
     Author     : hasdai
 --%>
 
-<%@page import="org.semanticwb.model.WebPage"%>
+<%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
 <%@page import="org.semanticwb.process.model.Process"%>
 <%@page import="org.semanticwb.process.model.ProcessGroup"%>
 <%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.model.User"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Map"%>
 

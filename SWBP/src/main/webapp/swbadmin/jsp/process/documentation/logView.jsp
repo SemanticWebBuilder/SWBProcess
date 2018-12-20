@@ -4,23 +4,21 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.process.documentation.model.Documentation"%>
-<%@page import="org.semanticwb.process.documentation.model.base.DocumentationBase"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.Collections"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
-<%@page import="org.semanticwb.process.documentation.model.Referable"%>
-<%@page import="org.semanticwb.process.model.RepositoryElement"%>
-<%@page import="org.semanticwb.process.utils.SWPUtils"%>
 <%@page import="org.semanticwb.model.Descriptiveable"%>
 <%@page import="org.semanticwb.model.Traceable"%>
 <%@page import="org.semanticwb.platform.SemanticObject"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page import="org.semanticwb.process.model.RepositoryElement"%>
+<%@page import="org.semanticwb.process.model.documentation.Documentation"%>
+<%@page import="org.semanticwb.process.model.documentation.Referable"%>
+<%@page import="org.semanticwb.process.resources.utils.SWPUtils"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.Iterator"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
-    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc").toString() : "";
+    String uritc = request.getParameter("uritc") != null ? request.getParameter("uritc") : "";
     SemanticObject semObj = SemanticObject.createSemanticObject(uritc);
     String title = "";
 
@@ -49,13 +47,13 @@
             creator = tr.getCreator().getFullName();
         }
         if (tr.getCreated() != null) {
-            created = SWPUtils.DateFormatter.format(tr.getCreated());
+            created = SWPUtils.getDateFormatter().format(tr.getCreated());
         }
         if (tr.getModifiedBy() != null) {
             modifiedby = tr.getModifiedBy().getFullName();
         }
         if (tr.getUpdated() != null) {
-            modified = SWPUtils.DateFormatter.format(tr.getUpdated());
+            modified = SWPUtils.getDateFormatter().format(tr.getUpdated());
         }
         
         if (tr instanceof Referable) {

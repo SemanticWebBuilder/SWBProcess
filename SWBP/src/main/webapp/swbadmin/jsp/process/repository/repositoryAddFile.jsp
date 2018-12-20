@@ -5,19 +5,17 @@
 --%>
 
 <%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="org.semanticwb.process.model.ItemAwareStatus"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.model.VersionInfo"%>
-<%@page import="org.semanticwb.process.model.RepositoryURL"%>
-<%@page import="org.semanticwb.process.model.RepositoryFile"%>
-<%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.process.model.RepositoryElement"%>
-<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.model.User"%>
+<%@page import="org.semanticwb.model.VersionInfo"%>
+<%@page import="org.semanticwb.model.WebSite"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.ItemAwareStatus"%>
+<%@page import="org.semanticwb.process.model.RepositoryElement"%>
+<%@page import="org.semanticwb.process.model.RepositoryFile"%>
+<%@page import="org.semanticwb.process.model.RepositoryURL"%>
+<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
+<%@page import="java.util.Iterator"%>
 <%
 SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
 String validFiles = (String) request.getAttribute(ProcessFileRepository.VALID_FILES);
@@ -131,13 +129,13 @@ if (!user.isSigned()) {
                     if (re == null || (re != null && re instanceof RepositoryURL)) {
                         String val = "";
                         if (re != null) {
-                            val = vi.getVersionFile();//vi.getVersionFile().startsWith("http://")?vi.getVersionFile().replace("http://", ""):vi.getVersionFile();
+                            val = vi.getVersionFile();
                         }
                         %>
                         <div id="linkSelect" class="form-group">
                             <label for="" class="col-sm-3 control-label"><%=paramRequest.getLocaleString("lblLink")%> *</label>
                             <div class="col-sm-8">
-                                <input type="text" name="extfile" id="extfile" value="<%=val%>" class="form-control" placeholder="http://"/>
+                                <input type="url" name="extfile" id="extfile" value="<%=val%>" class="form-control" placeholder="http://"/>
                             </div>
                         </div>
                         <%
@@ -188,7 +186,7 @@ if (!user.isSigned()) {
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6"><span class="fa fa-plus fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("msgAdd")%></span></button>
-                    <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-arrow-left fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("msgBTNCancel")%></span></button>
+                    <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-times fa-fw"></span><span class="hidden-xs"><%=paramRequest.getLocaleString("msgBTNCancel")%></span></button>
                 </div>
             </form>
         </div>

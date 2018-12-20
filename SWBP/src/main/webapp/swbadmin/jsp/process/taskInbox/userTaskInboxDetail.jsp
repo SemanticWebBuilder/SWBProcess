@@ -3,25 +3,22 @@
     Created on : 4/07/2013, 10:14:08 PM
     Author     : Hasdai Pacheco <ebenezer.sanchez@infotec.com.mx>
 --%>
-<%@page import="org.semanticwb.process.model.Activity"%>
-<%@page import="org.semanticwb.SWBUtils"%>
-<%@page import="org.semanticwb.process.model.UserTask"%>
-<%@page import="org.semanticwb.process.model.Instance"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.platform.SemanticOntology"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
-<%@page import="org.semanticwb.model.WebPage"%>
+<%@page import="org.semanticwb.SWBUtils"%>
 <%@page import="org.semanticwb.model.Resource"%>
 <%@page import="org.semanticwb.model.User"%>
 <%@page import="org.semanticwb.model.WebSite"%>
+<%@page import="org.semanticwb.platform.SemanticOntology"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.Activity"%>
+<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.model.ProcessInstance"%>
+<%@page import="org.semanticwb.process.resources.taskinbox.UserTaskInboxResource"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Iterator"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute("paramRequest");
     WebSite site = paramRequest.getWebPage().getWebSite();
@@ -127,7 +124,7 @@
 } else {
     ArrayList<ProcessInstance> tinstancesPI = (ArrayList<ProcessInstance>) request.getAttribute("instances");
     SWBResourceURL viewUrl = paramRequest.getRenderUrl().setMode(SWBResourceURL.Mode_VIEW);
-    int maxPages = (Integer) request.getAttribute("maxPages"); //Sólo viene si se invoca como contenido
+    int maxPages = (Integer) request.getAttribute("maxPages"); //Sï¿½lo viene si se invoca como contenido
 
     if (pNum != null && !pNum.trim().equals("")) {
         pageNum = Integer.valueOf(pNum);

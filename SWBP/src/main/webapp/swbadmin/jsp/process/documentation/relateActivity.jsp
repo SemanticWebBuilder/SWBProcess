@@ -4,39 +4,30 @@
     Author     : carlos.alvarez
 --%>
 
-<%@page import="org.semanticwb.portal.SWBFormMgr"%>
-<%@page import="org.semanticwb.process.model.RepositoryURL"%>
-<%@page import="org.semanticwb.process.model.RepositoryElement"%>
-<%@page import="org.semanticwb.model.VersionInfo"%>
-<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURLImp"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceModes"%>
-<%@page import="org.semanticwb.process.documentation.model.ElementReference"%>
-<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
-<%@page import="org.semanticwb.process.documentation.model.Referable"%>
-<%@page import="org.semanticwb.platform.SemanticProperty"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElementRef"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.Map"%>
-<%@page import="org.semanticwb.process.documentation.model.Activity"%>
-<%@page import="org.semanticwb.process.documentation.resources.SWPDocumentationResource"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.documentation.model.Instantiable"%>
-<%@page import="org.semanticwb.platform.SemanticClass"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentationInstance"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.documentation.model.SectionElement"%>
-<%@page import="org.semanticwb.process.documentation.model.DocumentSectionInstance"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
-<%@page import="org.semanticwb.model.WebSite"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
+<%@page import="org.semanticwb.model.VersionInfo"%>
+<%@page import="org.semanticwb.platform.SemanticClass"%>
+<%@page import="org.semanticwb.platform.SemanticProperty"%>
 <%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<!--%@page contentType="text/html" pageEncoding="UTF-8"%-->
+<%@page import="org.semanticwb.portal.api.SWBResourceModes"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURLImp"%>
+<%@page import="org.semanticwb.process.model.RepositoryDirectory"%>
+<%@page import="org.semanticwb.process.model.RepositoryElement"%>
+<%@page import="org.semanticwb.process.model.RepositoryURL"%>
+<%@page import="org.semanticwb.process.resources.ProcessFileRepository"%>
+<%@page import="org.semanticwb.process.resources.documentation.SWPDocumentationResource"%>
+<%@page import="org.semanticwb.process.model.documentation.*"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.Map"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     SWBParamRequest paramRequest = (SWBParamRequest) request.getAttribute(SWPDocumentationResource.PARAM_REQUEST);
 
-    String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi").toString() : "";
-    String urise = request.getParameter("urise") != null ? request.getParameter("urise").toString() : "";
+    String uridsi = request.getParameter("uridsi") != null ? request.getParameter("uridsi") : "";
+    String urise = request.getParameter("urise") != null ? request.getParameter("urise") : "";
 
     DocumentSectionInstance dsi = (DocumentSectionInstance) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(uridsi);
     Activity a = (Activity) SWBPlatform.getSemanticMgr().getOntology().getGenericObject(urise);
@@ -55,8 +46,9 @@
             }
         }
     }
-    SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setAction(SWPDocumentationResource.ACTION_RELATED_ACTIVITY);
-    //SWBResourceURL urlEdit = paramRequest.getRenderUrl().setCallMethod(SWBResourceURL.Call_DIRECT).setParameter("read", "true");
+    SWBResourceURL urlAction = paramRequest.getActionUrl().setCallMethod(SWBResourceURL.Call_DIRECT)
+            .setAction(SWPDocumentationResource.ACTION_RELATED_ACTIVITY);
+
     boolean canSave = false;
 %>
 <div class="modal-dialog">
@@ -80,7 +72,8 @@
                     if (dsinstance.getSecTypeDefinition() != null && dsinstance.getSecTypeDefinition().getSectionType() != null) {
                         scls = dsinstance.getSecTypeDefinition().getSectionType().transformToSemanticClass();
                     }
-                    if (null != scls && scls.isSubClass(Instantiable.swpdoc_Instantiable, false) && dsinstance.listDocuSectionElementInstances().hasNext()) {
+                    if (null != scls && scls.isSubClass(Instantiable.swpdoc_Instantiable, false) &&
+                            dsinstance.listDocuSectionElementInstances().hasNext()) {
                         Iterator<SectionElement> elements = dsinstance.listDocuSectionElementInstances();
                         if (elements.hasNext()) {
                             canSave = true;
@@ -105,8 +98,14 @@
                                 if (sp.getPropId().equals(Referable.swpdoc_file.getPropId())) {
                                     Referable ref = (Referable) se;
                                     RepositoryDirectory rd = ref.getRefRepository().getRepositoryDirectory();
-                                    SWBResourceURL urlDownload = new SWBResourceURLImp(request, rd.getResource(), rd, SWBResourceModes.UrlType_RENDER);
-                                    urlDownload.setMode(ProcessFileRepository.MODE_GETFILE).setCallMethod(SWBResourceURL.Call_DIRECT).setParameter("fid", ref.getRefRepository().getId()).setParameter("verNum", ref.getRefRepository().getLastVersion().getVersionNumber() + "");
+                                    SWBResourceURL urlDownload = new SWBResourceURLImp(request, rd.getResource(), rd,
+                                            SWBResourceModes.UrlType_RENDER);
+
+                                    urlDownload.setMode(ProcessFileRepository.MODE_GETFILE)
+                                            .setCallMethod(SWBResourceURL.Call_DIRECT)
+                                            .setParameter("fid", ref.getRefRepository().getId())
+                                            .setParameter("verNum", ref.getRefRepository().getLastVersion().getVersionNumber() + "");
+
                                     RepositoryElement re = (RepositoryElement) ref.getRefRepository();
                                     VersionInfo vi = re.getLastVersion();
                                     if (re instanceof org.semanticwb.process.model.RepositoryFile) {
@@ -122,7 +121,8 @@
                                 <div class="swbp-list-item">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 swbp-list-title">
                                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-                                            <input type="checkbox" <% if (map.containsKey(se)) { %> checked="true"<% }%> name="<%= se.getURI()%>" id="<%= se.getURI()%>" class="css-checkbox">
+                                            <input type="checkbox" <% if (map.containsKey(se)) { %> checked="true"<% }%>
+                                                   name="<%= se.getURI()%>" id="<%= se.getURI()%>" class="css-checkbox">
                                             <label class="css-label" for="<%= se.getURI() %>"></label>
                                         </div>
                                         <div class="col-lg-11 col-md-11 col-sm-11 col-xs-10 swbp-list-text"><%= value %></div>
@@ -145,7 +145,7 @@
                     <%
                 }
                 %>
-                <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-arrow-left"></span><span class="hidden-xs"> <%=paramRequest.getLocaleString("btnCancel")%></span></button>
+                <button type="button" class="btn btn-default pull-right col-lg-3 col-md-3 col-sm-6 col-xs-6" data-dismiss="modal"><span class="fa fa-times"></span><span class="hidden-xs"> <%=paramRequest.getLocaleString("btnCancel")%></span></button>
             </div>
         </form>
     </div>

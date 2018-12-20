@@ -1,18 +1,14 @@
-<%@page import="org.semanticwb.process.resources.SWBAProcessInstanceList"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceException"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="org.semanticwb.model.SWBComparator"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.semanticwb.process.model.SubProcessInstance"%>
-<%@page import="org.semanticwb.process.model.Task"%>
-<%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
-<%@page import="org.semanticwb.process.model.FlowNodeInstance"%>
-<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
-<%@page import="org.semanticwb.process.model.ProcessInstance"%>
-<%@page import="org.semanticwb.process.model.Process"%>
-<%@page import="org.semanticwb.process.model.base.ProcessInstanceBase"%>
 <%@page import="org.semanticwb.SWBPlatform"%>
 <%@page import="org.semanticwb.model.GenericObject"%>
+<%@page import="org.semanticwb.model.SWBComparator"%>
+<%@page import="org.semanticwb.portal.api.SWBParamRequest"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceException"%>
+<%@page import="org.semanticwb.portal.api.SWBResourceURL"%>
+<%@page import="org.semanticwb.process.model.*"%>
+<%@page import="org.semanticwb.process.model.Process"%>
+<%@page import="org.semanticwb.process.resources.SWBAProcessInstanceList"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Iterator"%>
 <jsp:useBean id="paramRequest" scope="request" type="org.semanticwb.portal.api.SWBParamRequest"/>
 <%!
     public String printActivityInstance(FlowNodeInstance ai, SWBParamRequest paramRequest, int espacios) throws SWBResourceException {
@@ -100,7 +96,7 @@
         sbf.append("<td>");
         if(ai.getFlowNodeType() instanceof Task && (ai.getStatus()==FlowNodeInstance.STATUS_PROCESSING || ai.getStatus()==FlowNodeInstance.STATUS_OPEN))
         {
-            // Validación por status de FlowNodeInstance en relacion a las acciones posibles a realizar
+            // Validaciï¿½n por status de FlowNodeInstance en relacion a las acciones posibles a realizar
             SWBResourceURL urlprocess = paramRequest.getActionUrl().setAction(SWBAProcessInstanceList.ACT_PROCESSTASK);
             urlprocess.setParameter("act","accept");
             urlprocess.setParameter("iid",ai.getId());
