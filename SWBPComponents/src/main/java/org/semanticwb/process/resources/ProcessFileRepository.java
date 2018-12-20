@@ -18,7 +18,7 @@
  *
  * Si usted tiene cualquier duda o comentario sobre SemanticWebBuilder, INFOTEC pone a su disposición la siguiente
  * dirección electrónica:
- *  http://www.semanticwebbuilder.org.mx
+ * http://www.semanticwebbuilder.org.mx
  */
 package org.semanticwb.process.resources;
 
@@ -35,9 +35,13 @@ import org.semanticwb.process.model.*;
 import org.semanticwb.process.model.RepositoryFile;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -54,16 +58,18 @@ public class ProcessFileRepository extends GenericResource {
 	public static final String MODE_ADDFOLDER = "addFolder";
 	public static final String MODE_EDITFOLDER = "editFolder";
 	public static final String MODE_HISTORY = "versionHistory";
-	public static final String MODE_RESPONSE = "m_response";
+	private static final String MODE_RESPONSE = "m_response";
 	public static final String ACT_NEWFILE = "newfile";
 	public static final String ACT_NEWFOLDER = "newfolder";
 	public static final String ACT_EDITFOLDER = "updateFolder";
-	public static final String DEFAULT_MIME_TYPE = "application/octet-stream";
-	public static final String LVL_VIEW = "prop_view";
-	public static final String LVL_MODIFY = "prop_modify";
-	public static final String LVL_ADMIN = "prop_admin";
+	private static final String DEFAULT_MIME_TYPE = "application/octet-stream";
+	private static final String LVL_VIEW = "prop_view";
+	private static final String LVL_MODIFY = "prop_modify";
+	private static final String LVL_ADMIN = "prop_admin";
 	public static final String VALID_FILES = "prop_valid_files";
 	public static final String ATT_LEVELUSER = "levelUser";
+	public static final String ATT_PARAMREQUEST = "paramRequest";
+	private static final String TEXT_HTML = "text/html";
 
 	@Override
 	public void processRequest(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest)
@@ -89,59 +95,57 @@ public class ProcessFileRepository extends GenericResource {
 	}
 
 	public void doFileProps(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		response.setContentType("text/html");
-		response.setCharacterEncoding("UTF-8");
+		response.setContentType(TEXT_HTML);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
 		String jsp = "/swbadmin/jsp/process/repository/repositoryFileProps.jsp";
-		RequestDispatcher rd = request.getRequestDispatcher(jsp);
+		request.setAttribute(ATT_PARAMREQUEST, paramRequest);
 
 		try {
-			request.setAttribute("paramRequest", paramRequest);
-			rd.include(request, response);
+			includeJSP(jsp, request, response);
 		} catch (Exception ex) {
 			LOG.error("Error including props.jsp", ex);
 		}
 	}
 
 	public void doAddFile(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		response.setContentType("text/html");
-		response.setCharacterEncoding("UTF-8");
+		response.setContentType(TEXT_HTML);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		
 		String jsp = "/swbadmin/jsp/process/repository/repositoryAddFile.jsp";
-		RequestDispatcher rd = request.getRequestDispatcher(jsp);
+		request.setAttribute(VALID_FILES, getResourceBase().getAttribute(VALID_FILES, ""));
+		request.setAttribute(ATT_PARAMREQUEST, paramRequest);
+
 		try {
-			request.setAttribute(VALID_FILES, getResourceBase().getAttribute(VALID_FILES, ""));
-			request.setAttribute("paramRequest", paramRequest);
-			rd.include(request, response);
+			includeJSP(jsp, request, response);
 		} catch (Exception ex) {
 			LOG.error("Error including add.jsp", ex);
 		}
 	}
 
 	public void doAddFolder(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		response.setContentType("text/html");
-		response.setCharacterEncoding("UTF-8");
+		response.setContentType(TEXT_HTML);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		
 		String jsp = "/swbadmin/jsp/process/repository/repositoryAddFolder.jsp";
-		RequestDispatcher rd = request.getRequestDispatcher(jsp);
+		request.setAttribute(ATT_PARAMREQUEST, paramRequest);
+
 		try {
-			request.setAttribute("paramRequest", paramRequest);
-			rd.include(request, response);
+			includeJSP(jsp, request, response);
 		} catch (Exception ex) {
 			LOG.error("Error including addFolder.jsp", ex);
 		}
 	}
 
 	public void doEditFolder(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
-		response.setContentType("text/html");
-		response.setCharacterEncoding("UTF-8");
+		response.setContentType(TEXT_HTML);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		
 		String jsp = "/swbadmin/jsp/process/repository/repositoryEditFolder.jsp";
-		RequestDispatcher rd = request.getRequestDispatcher(jsp);
+		request.setAttribute(ATT_PARAMREQUEST, paramRequest);
 
 		try {
-			request.setAttribute("paramRequest", paramRequest);
-			rd.include(request, response);
+			includeJSP(jsp, request, response);
 		} catch (Exception ex) {
 			LOG.error("Error including props.jsp", ex);
 		}
@@ -149,7 +153,6 @@ public class ProcessFileRepository extends GenericResource {
 
 	public void doHistory(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		String jsp = "/swbadmin/jsp/process/repository/repositoryFileVersions.jsp";
-		RequestDispatcher rd = request.getRequestDispatcher(jsp);
 
 		String fid = request.getParameter("fid");
 		String type = request.getParameter("type");
@@ -163,12 +166,13 @@ public class ProcessFileRepository extends GenericResource {
 			}
 		}
 
+		request.setAttribute(ATT_PARAMREQUEST, paramRequest);
+		request.setAttribute("luser", getLevelUser(paramRequest.getUser()));
+		request.setAttribute("versionList", getFileVersions(re));
+		request.setAttribute("element", re);
+
 		try {
-			request.setAttribute("paramRequest", paramRequest);
-			request.setAttribute("luser", getLevelUser(paramRequest.getUser()));
-			request.setAttribute("versionList", getFileVersions(re));
-			request.setAttribute("element", re);
-			rd.include(request, response);
+			includeJSP(jsp, request, response);
 		} catch (Exception ex) {
 			LOG.error("Error including versions.jsp", ex);
 		}
@@ -182,16 +186,16 @@ public class ProcessFileRepository extends GenericResource {
 			folderPath = getFolderPath((RepositoryDirectory) paramRequest.getWebPage());
 		}
 
-		RequestDispatcher rd = request.getRequestDispatcher(jsp);
+		int luser = getLevelUser(paramRequest.getUser());
+		request.setAttribute(ATT_PARAMREQUEST, paramRequest);
+		if (luser > 0) {
+			request.setAttribute("files", listFiles(request, paramRequest));
+		}
+		request.setAttribute("luser", luser);
+		request.setAttribute("path", folderPath);
+
 		try {
-			int luser = getLevelUser(paramRequest.getUser());
-			request.setAttribute("paramRequest", paramRequest);
-			if (luser > 0) {
-				request.setAttribute("files", listFiles(request, paramRequest));
-			}
-			request.setAttribute("luser", luser);
-			request.setAttribute("path", folderPath);
-			rd.include(request, response);
+			includeJSP(jsp, request, response);
 		} catch (Exception ex) {
 			LOG.error("Error including view.jsp", ex);
 		}
@@ -199,7 +203,7 @@ public class ProcessFileRepository extends GenericResource {
 
 	public void doResponse(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		PrintWriter out = response.getWriter();
 		Map<String, String[]> params = request.getParameterMap();
 		Iterator<String> keys = params.keySet().iterator();
@@ -257,7 +261,7 @@ public class ProcessFileRepository extends GenericResource {
 	@Override
 	public void doAdmin(HttpServletRequest request, HttpServletResponse response, SWBParamRequest paramRequest) throws SWBResourceException, IOException {
 		response.setContentType("text/html");
-		response.setCharacterEncoding("ISO-8859-1");
+		response.setCharacterEncoding(StandardCharsets.ISO_8859_1.name());
 		response.setHeader("Cache-Control", "no-cache");
 		response.setHeader("Pragma", "no-cache");
 
@@ -400,6 +404,38 @@ public class ProcessFileRepository extends GenericResource {
 		return strTemp;
 	}
 
+
+	/**
+	 * Verifica si un usuario tiene un nivel de permisos.
+	 * @param user Usuario
+	 * @param roleOrGroup Objeto genérico de rol o grupo de usuarios.
+	 * @return true si el usuario tiene un nivel de permisos con los parámetros proporcionados.
+	 */
+	private boolean hasUserLevel(User user, GenericObject roleOrGroup) {
+		Role role = null;
+		UserGroup group = null;
+
+		if (null != roleOrGroup) {
+			if (roleOrGroup instanceof Role) {
+				role = (Role) roleOrGroup;
+			}
+
+			if (roleOrGroup instanceof UserGroup) {
+				group = (UserGroup) roleOrGroup;
+			}
+		}
+
+		if (null != user && null == role && null == group) {
+			return true;
+		}
+
+		if ((null != role && user.hasRole(role)) || (null != group && user.hasUserGroup(group))) {
+			return true;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Obtiene el nivel de permisos del usuario.
 	 * 
@@ -408,61 +444,22 @@ public class ProcessFileRepository extends GenericResource {
 	 * @return Entero que representa el nivel de permisos del usuario.
 	 */
 	public int getLevelUser(User user) {
-		if (null == user)
-			return 0;
 		SemanticOntology ont = SWBPlatform.getSemanticMgr().getOntology();
 		Resource base = getResourceBase();
 
-		GenericObject gobj = null;
-		UserGroup ugrp = null;
-		Role urole = null;
-
-		gobj = ont.getGenericObject(base.getAttribute(LVL_ADMIN));
-		if (null != gobj && gobj instanceof UserGroup)
-			ugrp = (UserGroup) gobj;
-		if (null != gobj && gobj instanceof Role)
-			urole = (Role) gobj;
-
-		// Si no hay rol o grupo para administrar, todos pueden administrar (nivel 3)
-		if (null == ugrp && null == urole)
+		if (hasUserLevel(user, ont.getGenericObject(base.getAttribute(LVL_ADMIN)))) {
 			return 3;
-		// Revisar permisos del usuario
-		if (user.hasUserGroup(ugrp) || user.hasRole(urole))
-			return 3;
+		}
 
-		// El usuario no puede administrar, revisar si puede modificar
-		ugrp = null;
-		urole = null;
-		gobj = ont.getGenericObject(base.getAttribute(LVL_MODIFY));
-		if (null != gobj && gobj instanceof UserGroup)
-			ugrp = (UserGroup) gobj;
-		if (null != gobj && gobj instanceof Role)
-			urole = (Role) gobj;
-
-		// Si no hay rol o grupo para modificar, todos pueden modificar (nivel 2)
-		if (null == ugrp && null == urole)
+		if (hasUserLevel(user, ont.getGenericObject(base.getAttribute(LVL_MODIFY)))) {
 			return 2;
-		// Revisar permisos del usuario
-		if (user.hasUserGroup(ugrp) || user.hasRole(urole))
-			return 2;
+		}
 
-		// El usuario no puede modificar, revisar si puede ver
-		ugrp = null;
-		urole = null;
-		gobj = ont.getGenericObject(base.getAttribute(LVL_VIEW));
-		if (null != gobj && gobj instanceof UserGroup)
-			ugrp = (UserGroup) gobj;
-		if (null != gobj && gobj instanceof Role)
-			urole = (Role) gobj;
-
-		// Si no hay rol o grupo para ver, todos pueden ver (nivel 1)
-		if (null == ugrp && null == urole)
+		if (hasUserLevel(user, ont.getGenericObject(base.getAttribute(LVL_VIEW)))) {
 			return 1;
-		// Revisar permisos del usuario
-		if (user.hasUserGroup(ugrp) || user.hasRole(urole))
-			return 1;
+		}
 
-		return 0; // Sin permisos
+		return 0;
 	}
 
 	@Override
@@ -550,6 +547,7 @@ public class ProcessFileRepository extends GenericResource {
 			} else {
 				RepositoryURL repoUrl = null;
 				boolean incremento = Boolean.FALSE;
+
 				if (fid != null) {
 					go = ont.getGenericObject(fid);
 					repoUrl = (RepositoryURL) go;
@@ -557,18 +555,27 @@ public class ProcessFileRepository extends GenericResource {
 						incremento = Boolean.TRUE;
 					}
 				} else {
-					repoUrl = RepositoryURL.ClassMgr.createRepositoryURL(repoDir.getProcessSite());
-					repoUrl.setRepositoryDirectory(repoDir);
+					try {
+						new URL(extfile);
+						repoUrl = RepositoryURL.ClassMgr.createRepositoryURL(repoDir.getProcessSite());
+						repoUrl.setRepositoryDirectory(repoDir);
+					} catch (MalformedURLException mfue) {
+
+					}
+
+					if (null != repoUrl) {
+						repoUrl.setTitle(ftitle);
+						repoUrl.setDescription(fdescription);
+
+						User usr = response.getUser();
+
+						repoUrl.setOwnerUserGroup(usr.getUserGroup());
+						repoUrl.storeFile(extfile, fcomment, incremento, repoEleStat);
+						response.setRenderParameter("status", "ok");
+					} else {
+						response.setRenderParameter("status", "error");
+					}
 				}
-				repoUrl.setTitle(ftitle);
-				repoUrl.setDescription(fdescription);
-
-				User usr = response.getUser();
-
-				repoUrl.setOwnerUserGroup(usr.getUserGroup());
-				repoUrl.storeFile(extfile.startsWith("http://") ? extfile : "http://" + extfile, fcomment, incremento,
-						repoEleStat);
-				response.setRenderParameter("status", "ok");
 			}
 			response.setCallMethod(SWBResourceURL.Call_DIRECT);
 			response.setMode(MODE_RESPONSE);
@@ -958,5 +965,18 @@ public class ProcessFileRepository extends GenericResource {
 			}
 		}
 		return ret;
+	}
+
+	/**
+	 * Includes JSP file for the view.
+	 * @param path Path of JSP file
+	 * @param request {@link HttpServletRequest}
+	 * @param response {@link HttpServletResponse}
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void includeJSP(String path, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
+		RequestDispatcher rd = request.getRequestDispatcher(path);
+		rd.include(request, response);
 	}
 }

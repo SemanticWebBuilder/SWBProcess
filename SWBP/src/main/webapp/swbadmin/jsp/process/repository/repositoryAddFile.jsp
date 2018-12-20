@@ -129,13 +129,13 @@ if (!user.isSigned()) {
                     if (re == null || (re != null && re instanceof RepositoryURL)) {
                         String val = "";
                         if (re != null) {
-                            val = vi.getVersionFile();//vi.getVersionFile().startsWith("http://")?vi.getVersionFile().replace("http://", ""):vi.getVersionFile();
+                            val = vi.getVersionFile();
                         }
                         %>
                         <div id="linkSelect" class="form-group">
                             <label for="" class="col-sm-3 control-label"><%=paramRequest.getLocaleString("lblLink")%> *</label>
                             <div class="col-sm-8">
-                                <input type="text" name="extfile" id="extfile" value="<%=val%>" class="form-control" placeholder="http://"/>
+                                <input type="url" name="extfile" id="extfile" value="<%=val%>" class="form-control" placeholder="http://"/>
                             </div>
                         </div>
                         <%
